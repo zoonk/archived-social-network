@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "module": "commonjs",
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "outDir": "lib",
+    "paths": {
+      "@zoonk/models": ["../src/models"]
+    },
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "target": "es2017",
+    "typeRoots": [],
+    "types": ["../node_modules/firebase", "jest"]
+  },
+  "compileOnSave": true,
+  "include": ["src"],
+  "exclude": ["node_modules", "__mocks__", "**/*.spec.ts"]
+}

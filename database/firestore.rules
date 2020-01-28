@@ -1,0 +1,403 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAdmin() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    function isModerator() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'moderator';
+    }
+
+    function isOneOf(field, values) {
+      return request.resource.data[field].matches(values);
+    }
+
+    // Check if a field did not change.
+    function isReadOnly(field) {
+    	return !(field in request.resource.data) || request.resource.data[field] == resource.data[field];
+    }
+
+    function hasField(field) {
+      return field in request.resource.data && request.resource.data[field] != null;
+    }
+
+    function hasSubscription() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.subscription == 'premium';
+    }
+
+    function hasValidLevel() {
+      return isOneOf('level', 'beginner|advanced|pro|expert');
+    }
+
+    function isPost() {
+      return request.resource.data.category == 'posts' && request.resource.data.format == 'text';
+    }
+
+    function isQuestion() {
+      return request.resource.data.category == 'questions' && request.resource.data.format == 'text';
+    }
+
+    function isValidCategory() {
+      return isOneOf('category', 'chapters|paths|posts|topics');
+    }
+
+    function isValidPostCategory() {
+      return isOneOf('category', 'examples|lessons|posts|questions');
+    }
+
+    function isValidFormat() {
+      return isOneOf('format', 'link|text|video');
+    }
+
+    function isValidLanguage() {
+      return isOneOf('language', 'en|pt');
+    }
+
+    function isValidProfile(field) {
+      return get(/databases/$(database)/documents/profile/$(request.auth.uid)).data.bio == request.resource.data[field].bio
+        && get(/databases/$(database)/documents/profile/$(request.auth.uid)).data.name == request.resource.data[field].name
+        && get(/databases/$(database)/documents/profile/$(request.auth.uid)).data.photo == request.resource.data[field].photo
+        && get(/databases/$(database)/documents/profile/$(request.auth.uid)).data.username == request.resource.data[field].username
+      ;
+    }
+
+    function linkHasUrl() {
+      return isOneOf('type', 'link|video') && request.resource.data.url is string;
+    }
+
+    function textWithoutUrl() {
+      return request.resource.data.type == 'text' && request.resource.data.url == null;
+    }
+
+    match /{category}/{categoryId}/likes/{createdById} {
+      allow get, create, update: if request.auth.uid == createdById;
+    }
+
+    match /{category}/{categoryId}/leaderboard/{createdById} {
+      allow get;
+      allow list: if request.query.limit <= 20;
+    }
+
+    match /activity/{id} {
+      allow get;
+      allow list: if request.query.limit <= 20;
+    }
+
+    match /chapters/{pathId} {
+      allow get;
+      allow list;
+      allow create:
+        if request.auth.uid != null
+        && request.resource.data.comments == 0
+        && request.resource.data.createdAt == request.time
+        && isValidProfile('createdBy')
+        && request.resource.data.createdById == request.auth.uid
+        && request.resource.data.description is string
+        && exists(/databases/$(database)/documents/paths/$(request.resource.data.pathId))
+        && request.resource.data.likes == 0
+        && request.resource.data.order is int
+        && (request.resource.data.photo is string || request.resource.data.photo == null)
+        && request.resource.data.title is string
+        && request.resource.data.topics is list
+        && request.resource.data.topics[0] is string
+        && request.resource.data.updatedAt == request.time
+        && isValidProfile('updatedBy')
+        && request.resource.data.updatedById == request.auth.uid
+        && isValidLanguage()
+      ;
+      allow update:
+        if request.auth.uid != null
+        && isReadOnly('comments')
+        && isReadOnly('createdAt')
+        && isReadOnly('createdBy')
+        && isReadOnly('createdById')
+        && request.resource.data.description is string
+        && isReadOnly('language')
+        && isReadOnly('pathId')
+        && isReadOnly('likes')
+        && request.resource.data.order is int
+        && (request.resource.data.photo is string || request.resource.data.photo == null)
+        && request.resource.data.title is string
+        && request.resource.data.topics is list
+        && request.resource.data.topics[0] is string
+        && request.resource.data.updatedAt == request.time
+        && isValidProfile('updatedBy')
+        && request.resource.data.updatedById == request.auth.uid
+      ;
+      allow delete: if isAdmin() || isModerator();
+    }
+
+    match /comments/{commentId} {
+      allow list;
+      allow get;
+      allow create:
+        if request.auth.uid != null
+        && request.resource.data.content is string
+        && request.resource.data.content.size() > 0
+        && request.resource.data.createdAt == request.time
+        && isValidProfile('createdBy')
+        && request.resource.data.createdById == request.auth.uid
+        && request.resource.data.likes == 0
+        && exists(/databases/$(database)/documents/posts/$(request.resource.data.postId))
+        && request.resource.data.replies == 0
+        && request.resource.data.topics == get(/databases/$(database)/documents/posts/$(request.resource.data.postId)).data.topics
+        && request.resource.data.updatedAt == request.time
+        && isValidProfile('updatedBy')
+        && request.resource.data.updatedById == request.auth.uid
+        && isValidLanguage()
+      ;
+      allow delete: if request.auth.uid == resource.data.createdById;
+    }
+
+    match /feedback/{id} {
+      allow read: if isAdmin();
+      allow create: if request.auth == null || request.auth.uid == request.resource.data.uid;
+    }
+
+    match /leaderboard/{createdById} {
+      allow get;
+      allow list: if request.query.limit <= 20;
+    }
+
+    match /paths/{pathId} {
+      allow get;
+      allow list: if request.query.limit <= 20;
+      allow create:
+        if request.auth.uid != null
+        && request.resource.data.comments == 0
+        && request.resource.data.createdAt == request.time
+        && isValidProfile('createdBy')
+        && request.resource.data.createdById == request.auth.uid
+        && request.resource.data.description is string
+        && request.resource.data.likes == 0
+        && (request.resource.data.photo is string || request.resource.data.photo == null)
+        && request.resource.data.title is string
+        && request.resource.data.topics is list
+        && request.resource.data.topics[0] is string
+        && request.resource.data.updatedAt == request.time
+        && isValidProfile('updatedBy')
+        && request.resource.data.updatedById == request.auth.uid
+        && hasValidLevel()
+        && isValidLanguage()
+      ;
+      allow update:
+        if request.auth.uid != null
+        && isReadOnly('comments')
+        && isReadOnly('createdAt')
+        && isReadOnly('createdBy')
+        && isReadOnly('createdById')
+        && request.resource.data.description is string
+        && isReadOnly('language')
+        && isReadOnly('likes')
+        && (request.resource.data.photo is string || request.resource.data.photo == null)
+        && request.resource.data.title is string
+        && request.resource.data.topics is list
+        && request.resource.data.topics[0] is string
+        && request.resource.data.updatedAt == request.time
+        && isValidProfile('updatedBy')
+        && request.resource.data.updatedById == request.auth.uid
+        && hasValidLevel()
+      ;
+      allow delete: if isAdmin() || isModerator();
+    }
+
+    match /posts/{activityId} {
+      allow get;
+      allow list: if request.query.limit <= 50;
+      allow create:
+        if request.auth.uid != null
+        && isValidPostCategory()
+        && request.resource.data.chapters is list
+        && request.resource.data.comments == 0
+        && request.resource.data.content is string
+        && request.resource.data.createdAt == request.time
+        && isValidProfile('createdBy')
+        && request.resource.data.createdById == request.auth.uid
+        && isValidFormat()
+        && isValidLanguage()
+        && request.resource.data.likes == 0
+        && (request.resource.data.links == null || (request.resource.data.links is list && request.resource.data.links[0] is string))
+        && request.resource.data.order is map
+        && request.resource.data.order.keys().hasAll(request.resource.data.chapters) == true
+        && (request.resource.data.order.size() == 0 || request.resource.data.order.values()[0] is number)
+        && request.resource.data.title is string
+        && request.resource.data.topics is list
+        && request.resource.data.topics[0] is string
+        && request.resource.data.updatedAt == request.time
+        && isValidProfile('updatedBy')
+        && request.resource.data.updatedById == request.auth.uid
+      ;
+      allow update:
+        if request.auth.uid != null
+        && isReadOnly('category')
+        && request.resource.data.chapters is list
+        && isReadOnly('comments')
+        && request.resource.data.content is string
+        && isReadOnly('createdAt')
+        && isReadOnly('createdBy')
+        && isReadOnly('createdById')
+        && ((!isPost() && !isQuestion()) || resource.data.createdById == request.auth.uid)
+        && isValidFormat()
+        && isReadOnly('language')
+        && isReadOnly('likes')
+        && (request.resource.data.links == null || request.resource.data.links.size() == 0 || (request.resource.data.links is list && request.resource.data.links[0] is string))
+        && request.resource.data.order is map
+        && request.resource.data.order.keys().hasAll(request.resource.data.chapters) == true
+        && (request.resource.data.order.size() == 0 || request.resource.data.order.values()[0] is number)
+        && request.resource.data.title is string
+        && request.resource.data.topics is list
+        && request.resource.data.topics[0] is string
+        && request.resource.data.updatedAt == request.time
+        && isValidProfile('updatedBy')
+        && request.resource.data.updatedById == request.auth.uid
+      ;
+      allow delete:
+        if resource.data.createdById == request.auth.uid
+        || isAdmin()
+        || isModerator() 
+      ;
+    }
+
+    match /profile/{createdById} {
+      allow get;
+      allow list: if request.query.limit == 1;
+      allow update:
+        if request.auth.uid == createdById
+        && isReadOnly('username')
+      ;
+    }
+
+    match /replies/{replyId} {
+      allow list;
+      allow get;
+      allow create:
+        if request.auth.uid != null
+        && exists(/databases/$(database)/documents/comments/$(request.resource.data.commentId))
+        && request.resource.data.content is string
+        && request.resource.data.createdAt == request.time
+        && isValidProfile('createdBy')
+        && request.resource.data.createdById == request.auth.uid
+        && request.resource.data.likes == 0
+        && exists(/databases/$(database)/documents/posts/$(request.resource.data.postId))
+        && request.resource.data.topics == get(/databases/$(database)/documents/comments/$(request.resource.data.commentId)).data.topics
+        && request.resource.data.updatedAt == request.time
+        && isValidProfile('updatedBy')
+        && request.resource.data.updatedById == request.auth.uid
+        && isValidLanguage()
+      ;
+      allow delete: if request.auth.uid == resource.data.createdById;
+    }
+
+    match /reports/{id} {
+      allow read: if isAdmin();
+      allow create: if request.auth == null || request.auth.uid == request.resource.data.uid;
+    }
+
+    match /topics/{id} {
+      allow get;
+      allow list: if request.query.limit <= 20;
+      allow create:
+        if request.auth.uid != null
+        && request.resource.data.comments == 0
+        && request.resource.data.createdAt == request.time
+        && isValidProfile('createdBy')
+        && request.resource.data.createdById == request.auth.uid
+        && request.resource.data.description is string
+        && request.resource.data.likes == 0
+        && (request.resource.data.photo == null || request.resource.data.photo is string)
+        && request.resource.data.title is string
+        && request.resource.data.topics is list
+        && request.resource.data.topics[0] is string
+        && request.resource.data.updatedAt == request.time
+        && isValidProfile('updatedBy')
+        && request.resource.data.updatedById == request.auth.uid
+        && isValidLanguage()
+      ;
+      allow update:
+        if request.auth.uid != null
+        && isReadOnly('comments')
+        && isReadOnly('createdAt')
+        && isReadOnly('createdBy')
+        && isReadOnly('createdById')
+        && request.resource.data.description is string
+        && isReadOnly('language')
+        && isReadOnly('likes')
+        && (request.resource.data.photo == null || request.resource.data.photo is string)
+        && isReadOnly('title')
+        && isReadOnly('topics')
+        && request.resource.data.updatedAt == request.time
+        && isValidProfile('updatedBy')
+        && request.resource.data.updatedById == request.auth.uid
+      ;
+    }
+
+    match /usernames/{username} {
+      allow get;
+      allow create, update:
+        if request.auth.uid != null
+        && request.resource.data.uid == request.auth.uid
+        && username.matches('^[a-z0-9][a-z0-9_]*([.][a-z0-9_]+)*$')
+      ;
+    }
+
+    match /users/{userId} {
+      allow read: if request.auth.uid == userId;
+      allow create, update: if
+        request.auth.uid == userId
+        && isReadOnly('bio')
+        && isReadOnly('name')
+        && isReadOnly('notes')
+        && isReadOnly('photo')
+        && isReadOnly('role')
+        && isReadOnly('saved')
+        && isReadOnly('stripe')
+        && isReadOnly('subscription')
+        && isReadOnly('subscriptionStart')
+        && isReadOnly('username')
+      ;
+
+      match /notes/{noteId} {
+        allow read, delete: if request.auth.uid == userId;
+        allow create: if
+          request.auth.uid == userId
+          && request.resource.data.updatedAt == request.time
+          && hasField('categoryId')
+          && hasField('itemPath')
+          && isValidCategory()
+          && (
+            hasSubscription()
+            || get(/databases/$(database)/documents/users/$(request.auth.uid)).data.notes < 20
+          )
+        ;
+        allow update: if
+          request.auth.uid == userId
+          && request.resource.data.updatedAt == request.time
+          && isReadOnly('category')
+          && isReadOnly('id')
+          && isReadOnly('itemPath')
+        ;
+      }
+
+      match /notifications/{notificationId} {
+        allow read: if request.auth.uid == userId;
+      }
+
+      match /saved/{savedId} {
+        allow read, delete: if request.auth.uid == userId;
+        allow create: if
+          request.auth.uid == userId
+          && request.resource.data.updatedAt == request.time
+          && hasField('categoryId')
+          && hasField('itemPath')
+          && hasField('title')
+          && isOneOf('category', 'chapters|comments|paths|posts|replies|topics')
+          && (
+            hasSubscription()
+            || get(/databases/$(database)/documents/users/$(request.auth.uid)).data.saved < 20
+          )
+        ;
+      }
+    }
+  }
+}

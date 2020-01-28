@@ -1,0 +1,100 @@
+import functions from 'firebase-functions-test';
+import * as admin from 'firebase-admin';
+import { when } from 'jest-when';
+
+const testEnv = functions();
+const db = admin.firestore();
+
+import { onCreateActivityEarnXP } from '../earnXp';
+
+beforeAll(() => {
+  spyOn(db.batch(), 'commit').and.returnValue(true);
+});
+
+test('update the XP for the /leaderboard collection', async (done) => {
+  when(db.doc as any)
+    .calledWith('leaderboard/editorId')
+    .mockReturnValue('leaderboardRef');
+
+  const snap = {
+    data: () => ({
+      topics: ['topic1', 'topic2', 'topic3'],
+      createdById: 'editorId',
+    }),
+  };
+  const expected = {
+    createdById: 'editorId',
+    xp: 1,
+  };
+  const wrapped = testEnv.wrap(onCreateActivityEarnXP);
+  const req = await wrapped(snap);
+
+  expect(req).toBe(true);
+  expect(db.batch().set).toHaveBeenCalledWith('leaderboardRef', expected, {
+    merge: true,
+  });
+  done();
+});
+
+test('update the XP for all topics', async (done) => {
+  when(db.doc as any)
+    .calledWith('topics/topic1/leaderboard/editorId')
+    .mockReturnValue('topic1Ref')
+    .calledWith('topics/topic2/leaderboard/editorId')
+    .mockReturnValue('topic2Ref')
+    .calledWith('topics/topic3/leaderboard/editorId')
+    .mockReturnValue('topic3Ref');
+
+  const snap = {
+    data: () => ({
+      category: 'references',
+      topics: ['topic1', 'topic2', 'topic3'],
+      createdById: 'editorId',
+    }),
+  };
+  const expected = {
+    createdById: 'editorId',
+    xp: 1,
+  };
+  const wrapped = testEnv.wrap(onCreateActivityEarnXP);
+  const req = await wrapped(snap);
+
+  expect(req).toBe(true);
+  expect(db.batch().set).toHaveBeenCalledWith('topic1Ref', expected, {
+    merge: true,
+  });
+  expect(db.batch().set).toHaveBeenCalledWith('topic2Ref', expected, {
+    merge: true,
+  });
+  expect(db.batch().set).toHaveBeenCalledWith('topic3Ref', expected, {
+    merge: true,
+  });
+  done();
+});
+
+test('decrease the XP when a user deleted their own data', async (done) => {
+  when(db.doc as any)
+    .calledWith('leaderboard/editorId')
+    .mockReturnValue('leaderboardRef');
+
+  const snap = {
+    data: () => ({
+      action: 'deleted',
+      before: { createdById: 'editorId' },
+      topics: [],
+      createdById: 'editorId',
+    }),
+  };
+  const expected = {
+    createdById: 'editorId',
+    xp: -1,
+  };
+  const wrapped = testEnv.wrap(onCreateActivityEarnXP);
+  const req = await wrapped(snap);
+
+  expect(req).toBe(true);
+  expect(db.batch().set).toHaveBeenCalledWith('leaderboardRef', expected, {
+    merge: true,
+  });
+  done();
+});

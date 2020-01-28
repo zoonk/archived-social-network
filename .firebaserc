@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "staging": "zoonk-dev",
+    "production": "zoonk-production"
+  }
+}
