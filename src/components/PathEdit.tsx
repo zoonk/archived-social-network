@@ -36,7 +36,7 @@ const PathEdit = ({ data }: PathEditProps) => {
     }
   };
 
-  const handleSubmit = (changes: Path.Fields, topics: string[]) => {
+  const handleSubmit = (changes: Path.EditableFields, topics: string[]) => {
     setSnackbar({ type: 'progress', msg: translate('saving') });
 
     updatePath(

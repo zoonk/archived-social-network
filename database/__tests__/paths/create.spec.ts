@@ -17,15 +17,19 @@ const profile = {
 };
 
 const data = {
+  chapters: 0,
   comments: 0,
   createdAt: firebase.firestore.FieldValue.serverTimestamp(),
   createdBy: profile,
   createdById: 'currentUser',
   description: 'description',
+  examples: 0,
   language: 'en',
+  lessons: 0,
   level: 'beginner',
   likes: 0,
   photo: null,
+  posts: 0,
   title: 'name',
   topics: ['topicId'],
   updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -56,6 +60,11 @@ test('anonymous users cannot create', async (done) => {
   const app = initializeFbApp(undefined);
   const appRef = app.collection('paths');
   await firebase.assertFails(appRef.add({ ...data, updatedById: null }));
+  done();
+});
+
+test('chapters is set to 0', async (done) => {
+  await firebase.assertFails(ref.add({ ...data, chapters: 1 }));
   done();
 });
 
@@ -108,9 +117,19 @@ test('description is a string', async (done) => {
   done();
 });
 
+test('examples is set to 0', async (done) => {
+  await firebase.assertFails(ref.add({ ...data, examples: 1 }));
+  done();
+});
+
 test('language has a valid string', async (done) => {
   await firebase.assertSucceeds(ref.add({ ...data, language: 'pt' }));
   await firebase.assertFails(ref.add({ ...data, language: 'other' }));
+  done();
+});
+
+test('lessons is set to 0', async (done) => {
+  await firebase.assertFails(ref.add({ ...data, lessons: 1 }));
   done();
 });
 
@@ -134,6 +153,11 @@ test('photo is a string or null', async (done) => {
   await firebase.assertFails(ref.add({ ...data, photo: ['test'] }));
   await firebase.assertSucceeds(ref.add({ ...data, photo: 'test.png' }));
   await firebase.assertSucceeds(ref.add({ ...data, photo: null }));
+  done();
+});
+
+test('posts is set to 0', async (done) => {
+  await firebase.assertFails(ref.add({ ...data, posts: 1 }));
   done();
 });
 

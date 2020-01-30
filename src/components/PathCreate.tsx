@@ -24,17 +24,21 @@ const PathCreate = () => {
     return null;
   }
 
-  const handleSubmit = (data: Path.Fields, topics: string[]) => {
+  const handleSubmit = (data: Path.EditableFields, topics: string[]) => {
     setSnackbar({ type: 'progress', msg: translate('saving') });
 
     createPath({
       ...data,
+      chapters: 0,
       comments: 0,
       createdAt: timestamp,
       createdBy: profile,
       createdById: user.uid,
+      examples: 0,
       language: appLanguage,
+      lessons: 0,
       likes: 0,
+      posts: 0,
       topics,
       updatedAt: timestamp,
       updatedBy: profile,

@@ -1,5 +1,5 @@
 import { pickBy } from 'lodash';
-import { Post, Profile } from '@zoonk/models';
+import { Post, PostProgress, Profile } from '@zoonk/models';
 import {
   analytics,
   appLanguage,
@@ -170,4 +170,23 @@ export const updateOrder = (
   });
 
   return batch.commit();
+};
+
+/**
+ * Toggle a post progress status.
+ */
+export const togglePostProgress = (
+  id: string,
+  current: boolean,
+  user: string,
+): Promise<void> => {
+  const data: PostProgress = { completed: !current };
+  return db.doc(`posts/${id}/progress/${user}`).set(data, { merge: true });
+};
+
+/**
+ * Mark a post as read.
+ */
+export const readPost = (id: string, user: string): Promise<void> => {
+  return togglePostProgress(id, false, user);
 };

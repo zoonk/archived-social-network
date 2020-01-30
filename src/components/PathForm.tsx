@@ -11,7 +11,7 @@ interface PathFormProps {
   saving: boolean;
   topicId?: string;
   data?: Path.Get;
-  onSubmit: (data: Path.Fields, topics: string[]) => void;
+  onSubmit: (data: Path.EditableFields, topics: string[]) => void;
   onDelete?: () => void;
 }
 

@@ -11,6 +11,7 @@ export * from './paths';
 export * from './payments';
 export * from './posts';
 export * from './profile';
+export * from './progress';
 export * from './replies';
 export * from './topics';
 export * from './usernames';

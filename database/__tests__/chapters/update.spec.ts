@@ -23,11 +23,14 @@ const data = {
   createdBy: profile,
   createdById: 'currentUser',
   description: 'description',
+  examples: 0,
   language: 'en',
+  lessons: 0,
   likes: 0,
   order: 1,
   pathId: 'pathId',
   photo: null,
+  posts: 0,
   title: 'name',
   topics: ['topicId'],
   updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -102,8 +105,18 @@ test('description is a string', async (done) => {
   done();
 });
 
+test('examples cannot be changed', async (done) => {
+  await firebase.assertFails(ref.update({ ...edit, examples: 1 }));
+  done();
+});
+
 test('language cannot be changed', async (done) => {
   await firebase.assertFails(ref.update({ ...edit, language: 'pt' }));
+  done();
+});
+
+test('lessons cannot be changed', async (done) => {
+  await firebase.assertFails(ref.update({ ...edit, lessons: 1 }));
   done();
 });
 
@@ -134,6 +147,11 @@ test('photo is a string or null', async (done) => {
   await firebase.assertFails(ref.update({ ...edit, photo: ['test'] }));
   await firebase.assertSucceeds(ref.update({ ...edit, photo: 'test.png' }));
   await firebase.assertSucceeds(ref.update({ ...edit, photo: null }));
+  done();
+});
+
+test('posts cannot be changed', async (done) => {
+  await firebase.assertFails(ref.update({ ...edit, posts: 1 }));
   done();
 });
 

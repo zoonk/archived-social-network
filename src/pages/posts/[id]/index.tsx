@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { NextPage } from 'next';
 import { Container, Grid } from '@material-ui/core';
 import ItemCredits from '@zoonk/components/ItemCredits';
@@ -8,14 +8,21 @@ import PostComments from '@zoonk/components/PostComments';
 import PostsBreadcrumb from '@zoonk/components/PostsBreadcrumb';
 import PostView from '@zoonk/components/PostView';
 import { Post } from '@zoonk/models';
-import { getPost } from '@zoonk/services';
-import { analytics, appLanguage, preRender, theme } from '@zoonk/utils';
+import { getPost, readPost } from '@zoonk/services';
+import {
+  analytics,
+  appLanguage,
+  GlobalContext,
+  preRender,
+  theme,
+} from '@zoonk/utils';
 
 interface PostPageProps {
   data: Post.Get;
 }
 
 const PostPage: NextPage<PostPageProps> = ({ data }) => {
+  const { user } = useContext(GlobalContext);
   const {
     category,
     chapters,
@@ -33,6 +40,13 @@ const PostPage: NextPage<PostPageProps> = ({ data }) => {
   useEffect(() => {
     analytics().setCurrentScreen('posts_view');
   }, []);
+
+  // Mark a post as read when the page is visited.
+  useEffect(() => {
+    if (user) {
+      readPost(id, user.uid);
+    }
+  }, [id, user]);
 
   return (
     <Container component="main">

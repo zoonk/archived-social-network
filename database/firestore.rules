@@ -94,10 +94,13 @@ service cloud.firestore {
         && isValidProfile('createdBy')
         && request.resource.data.createdById == request.auth.uid
         && request.resource.data.description is string
-        && exists(/databases/$(database)/documents/paths/$(request.resource.data.pathId))
+        && request.resource.data.examples == 0
+        && request.resource.data.lessons == 0
         && request.resource.data.likes == 0
         && request.resource.data.order is int
+        && exists(/databases/$(database)/documents/paths/$(request.resource.data.pathId))
         && (request.resource.data.photo is string || request.resource.data.photo == null)
+        && request.resource.data.posts == 0
         && request.resource.data.title is string
         && request.resource.data.topics is list
         && request.resource.data.topics[0] is string
@@ -113,11 +116,14 @@ service cloud.firestore {
         && isReadOnly('createdBy')
         && isReadOnly('createdById')
         && request.resource.data.description is string
+        && isReadOnly('examples')
         && isReadOnly('language')
-        && isReadOnly('pathId')
+        && isReadOnly('lessons')
         && isReadOnly('likes')
         && request.resource.data.order is int
+        && isReadOnly('pathId')
         && (request.resource.data.photo is string || request.resource.data.photo == null)
+        && isReadOnly('posts')
         && request.resource.data.title is string
         && request.resource.data.topics is list
         && request.resource.data.topics[0] is string
@@ -126,6 +132,10 @@ service cloud.firestore {
         && request.resource.data.updatedById == request.auth.uid
       ;
       allow delete: if isAdmin() || isModerator();
+
+      match /progress/{userId} {
+        allow get: if request.auth.uid == userId;
+      }
     }
 
     match /comments/{commentId} {
@@ -165,13 +175,17 @@ service cloud.firestore {
       allow list: if request.query.limit <= 20;
       allow create:
         if request.auth.uid != null
+        && request.resource.data.chapters == 0
         && request.resource.data.comments == 0
         && request.resource.data.createdAt == request.time
         && isValidProfile('createdBy')
         && request.resource.data.createdById == request.auth.uid
         && request.resource.data.description is string
+        && request.resource.data.examples == 0
+        && request.resource.data.lessons == 0
         && request.resource.data.likes == 0
         && (request.resource.data.photo is string || request.resource.data.photo == null)
+        && request.resource.data.posts == 0
         && request.resource.data.title is string
         && request.resource.data.topics is list
         && request.resource.data.topics[0] is string
@@ -183,14 +197,18 @@ service cloud.firestore {
       ;
       allow update:
         if request.auth.uid != null
+        && isReadOnly('chapters')
         && isReadOnly('comments')
         && isReadOnly('createdAt')
         && isReadOnly('createdBy')
         && isReadOnly('createdById')
         && request.resource.data.description is string
+        && isReadOnly('examples')
         && isReadOnly('language')
+        && isReadOnly('lessons')
         && isReadOnly('likes')
         && (request.resource.data.photo is string || request.resource.data.photo == null)
+        && isReadOnly('posts')
         && request.resource.data.title is string
         && request.resource.data.topics is list
         && request.resource.data.topics[0] is string
@@ -200,6 +218,10 @@ service cloud.firestore {
         && hasValidLevel()
       ;
       allow delete: if isAdmin() || isModerator();
+
+      match /progress/{userId} {
+        allow get: if request.auth.uid == userId;
+      }
     }
 
     match /posts/{activityId} {
@@ -257,6 +279,14 @@ service cloud.firestore {
         || isAdmin()
         || isModerator() 
       ;
+
+      match /progress/{userId} {
+        allow get: if request.auth.uid == userId;
+        allow create, update:
+          if request.auth.uid == userId
+          && request.resource.data.completed is bool
+        ;
+      }
     }
 
     match /profile/{createdById} {

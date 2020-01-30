@@ -13,7 +13,10 @@ export namespace Chapter {
   }
 
   interface Fields extends EditableFields {
+    examples: number;
+    lessons: number;
     pathId: string;
+    posts: number;
   }
 
   /**

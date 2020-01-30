@@ -7,11 +7,18 @@ export type ExpertLevel = 'beginner' | 'advanced' | 'pro' | 'expert';
  * Learning paths model.
  */
 export namespace Path {
-  export interface Fields {
+  export interface EditableFields {
     description: string;
     level: ExpertLevel;
     photo: string | null;
     title: string;
+  }
+
+  export interface Fields extends EditableFields {
+    chapters: number;
+    examples: number;
+    lessons: number;
+    posts: number;
   }
 
   /**
