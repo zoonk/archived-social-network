@@ -60,6 +60,7 @@ export const listTopics = async (
     .collection('topics')
     .withConverter(topicConverter)
     .orderBy('likes', 'desc')
+    .orderBy('posts', 'desc')
     .orderBy('updatedAt', 'desc')
     .where('language', '==', appLanguage)
     .limit(limit);

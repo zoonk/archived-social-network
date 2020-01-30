@@ -36,6 +36,7 @@ export const onCreateTopicFetchData = functions.firestore
       language: data.language,
       likes: 0,
       photo: page.photo,
+      posts: 0,
       title: page.title,
       topics: [snap.id],
       updatedAt: admin.firestore.FieldValue.serverTimestamp(),

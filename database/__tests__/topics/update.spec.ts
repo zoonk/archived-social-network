@@ -25,6 +25,7 @@ const data = {
   language: 'en',
   likes: 0,
   photo: null,
+  posts: 0,
   title: 'name',
   topics: ['topicId'],
   updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -118,6 +119,11 @@ test('photo is a string', async (done) => {
 
 test('photo can be null', async (done) => {
   await firebase.assertSucceeds(ref.update({ ...edit, photo: null }));
+  done();
+});
+
+test('posts cannot be changed', async (done) => {
+  await firebase.assertFails(ref.update({ ...edit, posts: 1 }));
   done();
 });
 

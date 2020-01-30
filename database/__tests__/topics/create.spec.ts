@@ -25,6 +25,7 @@ const data = {
   language: 'en',
   likes: 0,
   photo: null,
+  posts: 0,
   title: 'name',
   topics: ['topicId'],
   updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -128,6 +129,11 @@ test('photo is a string', async (done) => {
 
 test('photo can be null', async (done) => {
   await firebase.assertSucceeds(ref.add({ ...data, photo: null }));
+  done();
+});
+
+test('posts is set to 0', async (done) => {
+  await firebase.assertFails(ref.add({ ...data, posts: 1 }));
   done();
 });
 

@@ -52,6 +52,7 @@ test('fetch the topic data and update it', async (done) => {
     language: 'pt',
     likes: 0,
     photo: 'photo.png',
+    posts: 0,
     title: 'Albert Einstein',
     topics: ['Albert_Einstein_pt'],
     updatedAt: 'timestamp',

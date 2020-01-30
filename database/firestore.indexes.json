@@ -395,6 +395,10 @@
           "order": "DESCENDING"
         },
         {
+          "fieldPath": "posts",
+          "order": "DESCENDING"
+        },
+        {
           "fieldPath": "updatedAt",
           "order": "DESCENDING"
         }
@@ -414,6 +418,10 @@
         },
         {
           "fieldPath": "likes",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "posts",
           "order": "DESCENDING"
         },
         {

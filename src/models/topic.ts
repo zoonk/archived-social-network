@@ -11,6 +11,7 @@ export namespace Topic {
   }
 
   interface Fields extends EditableFields {
+    posts: number;
     title: string;
   }
 

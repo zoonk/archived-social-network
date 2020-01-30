@@ -336,6 +336,7 @@ service cloud.firestore {
         && request.resource.data.description is string
         && request.resource.data.likes == 0
         && (request.resource.data.photo == null || request.resource.data.photo is string)
+        && request.resource.data.posts == 0
         && request.resource.data.title is string
         && request.resource.data.topics is list
         && request.resource.data.topics[0] is string
@@ -354,6 +355,7 @@ service cloud.firestore {
         && isReadOnly('language')
         && isReadOnly('likes')
         && (request.resource.data.photo == null || request.resource.data.photo is string)
+        && isReadOnly('posts')
         && isReadOnly('title')
         && isReadOnly('topics')
         && request.resource.data.updatedAt == request.time

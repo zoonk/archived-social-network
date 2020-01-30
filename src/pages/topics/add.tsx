@@ -64,6 +64,7 @@ const CreateTopic: NextPage = () => {
       language: appLanguage,
       likes: 0,
       photo,
+      posts: 0,
       title,
       topics: [topicId],
       updatedAt: timestamp,
