@@ -10,7 +10,7 @@ interface PostFormProps {
   data?: Post.Get;
   format: Post.Format;
   saving: boolean;
-  topicId?: string;
+  topicIds?: string[];
   onDelete?: () => void;
   onSubmit: (
     data: Omit<Post.EditableFields, 'chapters' | 'order'>,
@@ -25,7 +25,7 @@ const PostForm = ({
   data,
   format,
   saving,
-  topicId,
+  topicIds,
   onDelete,
   onSubmit,
 }: PostFormProps) => {
@@ -43,10 +43,10 @@ const PostForm = ({
 
   // Add the current topicId when adding a new item.
   useEffect(() => {
-    if (topicId && !data) {
-      setTopics([topicId]);
+    if (topicIds && !data) {
+      setTopics(topicIds);
     }
-  }, [data, topicId]);
+  }, [data, topicIds]);
 
   return (
     <FormBase
@@ -104,7 +104,7 @@ const PostForm = ({
 
         <Grid item xs={12}>
           <TopicSelector
-            active={topicId}
+            active={topicIds ? topicIds[0] : undefined}
             items={topics}
             language={data ? data.language : appLanguage}
             onChange={setTopics}

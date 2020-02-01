@@ -1,7 +1,7 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Post, SnackbarAction } from '@zoonk/models';
-import { createPost } from '@zoonk/services';
+import { createPost, getChapter } from '@zoonk/services';
 import {
   appLanguage,
   firebaseError,
@@ -32,6 +32,13 @@ const PostCreate = ({
   const { push } = useRouter();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const [format, setFormat] = useState<Post.Format>('text');
+  const [topicIds, setTopics] = useState<string[]>(topicId ? [topicId] : []);
+
+  useEffect(() => {
+    if (chapterId) {
+      getChapter(chapterId).then((res) => setTopics(res.topics));
+    }
+  }, [chapterId]);
 
   if (!user || !profile) {
     return null;
@@ -70,7 +77,7 @@ const PostCreate = ({
     <FormatSelector format={format} onSelect={setFormat}>
       <PostForm
         format={format}
-        topicId={topicId}
+        topicIds={topicIds}
         saving={snackbar?.type === 'progress' || snackbar?.type === 'success'}
         onSubmit={handleSubmit}
       />
