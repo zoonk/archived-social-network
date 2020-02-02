@@ -6,14 +6,24 @@ import PathsList from './PathsList';
 
 interface PathsCardProps {
   allowAdd?: boolean;
+  allowLoadMore?: boolean;
   createdById?: string;
+  hideLink?: boolean;
+  limit?: number;
   topicId?: string;
 }
 
 /**
  * Cards containing a small list of learning paths.
  */
-const PathsCard = ({ allowAdd, createdById, topicId }: PathsCardProps) => {
+const PathsCard = ({
+  allowAdd,
+  allowLoadMore,
+  createdById,
+  hideLink,
+  limit = 3,
+  topicId,
+}: PathsCardProps) => {
   const { translate } = useContext(GlobalContext);
   const query = { topicId };
   const canAdd = allowAdd || topicId;
@@ -23,11 +33,17 @@ const PathsCard = ({ allowAdd, createdById, topicId }: PathsCardProps) => {
       <CardContent style={{ paddingBottom: 0 }}>
         <CategoryCardHeader
           canAdd={Boolean(canAdd)}
+          hideLink={hideLink}
           query={query}
           category="paths"
           title={translate('learningPaths')}
         />
-        <PathsList createdById={createdById} topicId={topicId} limit={3} />
+        <PathsList
+          allowLoadMore={allowLoadMore}
+          createdById={createdById}
+          topicId={topicId}
+          limit={limit}
+        />
       </CardContent>
     </Card>
   );

@@ -1,10 +1,9 @@
 import { useContext, useEffect } from 'react';
 import { NextPage } from 'next';
 import { Container } from '@material-ui/core';
-import AddButton from '@zoonk/components/AddButton';
 import Meta from '@zoonk/components/Meta';
 import PathsBreadcrumb from '@zoonk/components/PathsBreadcrumb';
-import PathsList from '@zoonk/components/PathsList';
+import PathsCard from '@zoonk/components/PathsCard';
 import { analytics, GlobalContext, rootUrl } from '@zoonk/utils';
 
 const Paths: NextPage = () => {
@@ -22,8 +21,7 @@ const Paths: NextPage = () => {
         canonicalUrl={`${rootUrl}/paths`}
       />
       <PathsBreadcrumb />
-      <PathsList allowLoadMore />
-      <AddButton href="/paths/add" />
+      <PathsCard allowLoadMore allowAdd hideLink limit={10} />
     </Container>
   );
 };

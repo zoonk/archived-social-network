@@ -1,9 +1,8 @@
 import { useContext, useEffect } from 'react';
 import { NextPage } from 'next';
 import { Container } from '@material-ui/core';
-import AddButton from '@zoonk/components/AddButton';
 import Meta from '@zoonk/components/Meta';
-import PathsList from '@zoonk/components/PathsList';
+import PathsCard from '@zoonk/components/PathsCard';
 import TopicsBreadcrumb from '@zoonk/components/TopicsBreadcrumb';
 import {
   analytics,
@@ -33,8 +32,7 @@ const Paths: NextPage<PathsProps> = ({ title, id }) => {
         canonicalUrl={`${rootUrl}/topics/${id}/paths`}
       />
       <TopicsBreadcrumb topicId={id} title={translate('learningPaths')} />
-      <PathsList allowLoadMore topicId={id} />
-      <AddButton href={{ pathname: '/paths/add', query: { topicId: id } }} />
+      <PathsCard allowLoadMore allowAdd hideLink topicId={id} />
     </Container>
   );
 };

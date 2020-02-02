@@ -1,9 +1,8 @@
 import { useContext, useEffect } from 'react';
 import { NextPage } from 'next';
 import { Container } from '@material-ui/core';
-import AddButton from '@zoonk/components/AddButton';
 import Meta from '@zoonk/components/Meta';
-import TopicList from '@zoonk/components/TopicList';
+import TopicsCard from '@zoonk/components/TopicsCard';
 import TopicsBreadcrumb from '@zoonk/components/TopicsBreadcrumb';
 import { analytics, GlobalContext, rootUrl } from '@zoonk/utils';
 
@@ -22,8 +21,7 @@ const Topics: NextPage = () => {
         canonicalUrl={`${rootUrl}/topics`}
       />
       <TopicsBreadcrumb />
-      <TopicList allowLoadMore />
-      <AddButton href="/topics/add" />
+      <TopicsCard allowLoadMore allowAdd hideLink limit={10} />
     </Container>
   );
 };

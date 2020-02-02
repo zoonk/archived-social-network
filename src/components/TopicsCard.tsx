@@ -6,13 +6,22 @@ import TopicList from './TopicList';
 
 interface TopicsCardProps {
   allowAdd?: boolean;
+  allowLoadMore?: boolean;
   createdById?: string;
+  hideLink?: boolean;
+  limit?: number;
 }
 
 /**
  * Cards containing a small list of topics.
  */
-const TopicsCard = ({ allowAdd, createdById }: TopicsCardProps) => {
+const TopicsCard = ({
+  allowAdd,
+  allowLoadMore,
+  createdById,
+  hideLink,
+  limit = 3,
+}: TopicsCardProps) => {
   const { translate } = useContext(GlobalContext);
 
   return (
@@ -21,9 +30,14 @@ const TopicsCard = ({ allowAdd, createdById }: TopicsCardProps) => {
         <CategoryCardHeader
           canAdd={allowAdd}
           category="topics"
+          hideLink={hideLink}
           title={translate('topics')}
         />
-        <TopicList createdById={createdById} limit={3} />
+        <TopicList
+          allowLoadMore={allowLoadMore}
+          createdById={createdById}
+          limit={limit}
+        />
       </CardContent>
     </Card>
   );
