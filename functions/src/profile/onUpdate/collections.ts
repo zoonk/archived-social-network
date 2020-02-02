@@ -1,9 +1,15 @@
 import * as functions from 'firebase-functions';
-import { updateProfile } from '../../helpers';
+import { getProfileChanges, updateProfile } from '../../helpers';
 
 export const onUpdateProfileUpdateCollections = functions.firestore
   .document('profile/{uid}')
   .onUpdate(async (change, context) => {
+    const profileData = getProfileChanges(change);
+
+    if (!profileData) {
+      return false;
+    }
+
     const { uid } = context.params;
     const collections = [
       'chapters',
