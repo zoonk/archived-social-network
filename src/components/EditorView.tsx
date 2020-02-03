@@ -1,7 +1,9 @@
 import ReactMarkdown from 'react-markdown';
+import shortcodes from 'remark-shortcodes';
 import { Link } from '@material-ui/core';
 import EditorHeading from './EditorHeading';
 import EditorText from './EditorText';
+import ShortcodeRenderer from './ShortcodeRenderer';
 import TableBodyView from './TableBodyView';
 import TableCellView from './TableCellView';
 import TableHeadView from './TableHeadView';
@@ -19,10 +21,12 @@ const EditorView = ({ content }: EditorViewProps) => {
   return (
     <ReactMarkdown
       source={content}
+      plugins={[[shortcodes, { startBlock: '[[', endBlock: ']]' }]]}
       renderers={{
         heading: EditorHeading,
         link: Link,
         paragraph: EditorText,
+        shortcode: ShortcodeRenderer,
         table: TableView,
         tableHead: TableHeadView,
         tableBody: TableBodyView,

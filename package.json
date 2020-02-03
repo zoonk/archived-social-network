@@ -40,7 +40,8 @@
     "react-dnd": "^10.0.2",
     "react-dnd-html5-backend": "^10.0.2",
     "react-dom": "^16.12.0",
-    "react-markdown": "^4.3.1"
+    "react-markdown": "^4.3.1",
+    "remark-shortcodes": "^0.3.1"
   },
   "devDependencies": {
     "@firebase/testing": "^0.16.6",
