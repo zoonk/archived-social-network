@@ -106,6 +106,8 @@ export type TranslationKeys =
   | 'post_edit'
   | 'posts'
   | 'premium'
+  | 'preview'
+  | 'preview_quit'
   | 'privacy_policy'
   | 'pro'
   | 'profile'

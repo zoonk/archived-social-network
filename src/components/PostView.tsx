@@ -14,12 +14,13 @@ import YoutubePlayer from './YoutubePlayer';
 
 interface PostViewProps {
   item: Post.Get;
+  preview?: boolean;
 }
 
 /**
  * Display a post view.
  */
-const PostView = ({ item }: PostViewProps) => {
+const PostView = ({ item, preview }: PostViewProps) => {
   const { content, id, likes, links, sites, title, topics } = item;
   const youtube = links ? containsYoutubeUrl(links[0]) : null;
 
@@ -30,7 +31,9 @@ const PostView = ({ item }: PostViewProps) => {
           {title}
         </Typography>
         <TopicChips items={topics} />
-        <ItemActions category="posts" id={id} likes={likes} title={title} />
+        {!preview && (
+          <ItemActions category="posts" id={id} likes={likes} title={title} />
+        )}
         <EditorView content={content} />
       </CardContent>
 

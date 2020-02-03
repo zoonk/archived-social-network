@@ -15,7 +15,7 @@ export const serializeLink = (url: string): Post.Link => {
  * Serialize a collection of links to get a website's name and URL.
  */
 export const serializeLinkCollection = (
-  links: string[] | null,
+  links?: string[] | null,
 ): Post.Link[] => {
   if (!links) return [];
   return links.map(serializeLink);

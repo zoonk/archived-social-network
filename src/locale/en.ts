@@ -115,6 +115,8 @@ const translate: TranslationFn = (key, args) => {
     post_edit: 'Edit post',
     posts: 'Posts',
     premium: 'Premium',
+    preview: 'Preview',
+    preview_quit: 'Back to the editor',
     privacy_policy: 'Privacy policy',
     pro: 'Pro',
     profile: 'Profile',

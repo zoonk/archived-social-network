@@ -115,6 +115,8 @@ const translate: TranslationFn = (key, args) => {
     post_edit: 'Editar postagem',
     posts: 'Postagens',
     premium: 'Premium',
+    preview: 'Visualizar',
+    preview_quit: 'Voltar ao editor',
     privacy_policy: 'Política de privacidade',
     pro: 'Profissional',
     profile: 'Perfil',

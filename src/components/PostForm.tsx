@@ -1,10 +1,11 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { Grid, TextField } from '@material-ui/core';
+import { Button, Grid, TextField } from '@material-ui/core';
 import { Post } from '@zoonk/models';
-import { appLanguage, GlobalContext } from '@zoonk/utils';
+import { appLanguage, GlobalContext, theme } from '@zoonk/utils';
 import FormBase from './FormBase';
 import ImageUpload from './ImageUpload';
 import LinkFormField from './LinkFormField';
+import PostPreview from './PostPreview';
 import TopicSelector from './TopicSelector';
 
 interface PostFormProps {
@@ -31,6 +32,7 @@ const PostForm = ({
   onSubmit,
 }: PostFormProps) => {
   const { translate } = useContext(GlobalContext);
+  const [preview, setPreview] = useState<boolean>(false);
   const [content, setContent] = useState<string>(data?.content || '');
   const [title, setTitle] = useState<string>(data?.title || '');
   const [topics, setTopics] = useState<string[]>(data?.topics || []);
@@ -59,6 +61,20 @@ const PostForm = ({
     [content],
   );
 
+  if (preview) {
+    return (
+      <PostPreview
+        data={{
+          content,
+          links,
+          title,
+          topics,
+        }}
+        onReturn={() => setPreview(false)}
+      />
+    );
+  }
+
   return (
     <FormBase
       valid={valid}
@@ -68,8 +84,25 @@ const PostForm = ({
         onSubmit({ content, format, links, title }, topics);
       }}
     >
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          marginBottom: theme.spacing(2),
+        }}
+      >
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => setPreview(true)}
+          style={{ textAlign: 'right' }}
+        >
+          {translate('preview')}
+        </Button>
+      </div>
+
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={12}>
+        <Grid item xs={12}>
           <TextField
             value={title}
             onChange={(e) => setTitle(e.target.value)}
