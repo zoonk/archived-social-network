@@ -8,14 +8,22 @@ import Snackbar from './Snackbar';
 
 interface ImageUploadProps {
   category: ContentCategory | 'users';
+  hideImg?: boolean;
   img: string | null;
+  label?: string;
   onSave: (url: string) => void;
 }
 
 /**
  * Upload an image to the backend storage.
  */
-const ImageUpload = ({ category, img, onSave }: ImageUploadProps) => {
+const ImageUpload = ({
+  category,
+  hideImg,
+  img,
+  label,
+  onSave,
+}: ImageUploadProps) => {
   const { translate } = useContext(GlobalContext);
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
 
@@ -51,13 +59,13 @@ const ImageUpload = ({ category, img, onSave }: ImageUploadProps) => {
 
   return (
     <Grid container alignItems="center">
-      {!img && (
+      {!img && !hideImg && (
         <Avatar>
           <AddAPhoto />
         </Avatar>
       )}
 
-      {img && (
+      {img && !hideImg && (
         <img
           src={img}
           alt={translate('photo_uploaded')}
@@ -77,7 +85,7 @@ const ImageUpload = ({ category, img, onSave }: ImageUploadProps) => {
         style={{ margin: theme.spacing(0, 2) }}
       >
         <Button color="primary" component="span">
-          {translate('photo_update')}
+          {label || translate('photo_update')}
         </Button>
       </label>
 

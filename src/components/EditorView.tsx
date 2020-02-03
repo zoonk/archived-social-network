@@ -3,6 +3,7 @@ import shortcodes from 'remark-shortcodes';
 import { Link } from '@material-ui/core';
 import EditorHeading from './EditorHeading';
 import EditorText from './EditorText';
+import Image from './Image';
 import ShortcodeRenderer from './ShortcodeRenderer';
 import TableBodyView from './TableBodyView';
 import TableCellView from './TableCellView';
@@ -24,6 +25,7 @@ const EditorView = ({ content }: EditorViewProps) => {
       plugins={[[shortcodes, { startBlock: '[[', endBlock: ']]' }]]}
       renderers={{
         heading: EditorHeading,
+        image: Image,
         link: Link,
         paragraph: EditorText,
         shortcode: ShortcodeRenderer,

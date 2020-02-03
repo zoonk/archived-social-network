@@ -1,8 +1,9 @@
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { Grid, TextField } from '@material-ui/core';
 import { Post } from '@zoonk/models';
 import { appLanguage, GlobalContext } from '@zoonk/utils';
 import FormBase from './FormBase';
+import ImageUpload from './ImageUpload';
 import LinkFormField from './LinkFormField';
 import TopicSelector from './TopicSelector';
 
@@ -47,6 +48,16 @@ const PostForm = ({
       setTopics(topicIds);
     }
   }, [data, topicIds]);
+
+  // Append an image to the current content.
+  const insertImage = useCallback(
+    (url: string) => {
+      const img = `![post](${url} "")`;
+      const newContent = `${content}\n${img}`;
+      setContent(newContent);
+    },
+    [content],
+  );
 
   return (
     <FormBase
@@ -100,6 +111,16 @@ const PostForm = ({
             label={hasUrl ? translate('description') : translate('content')}
             name="post-description"
           />
+
+          {!hasUrl && (
+            <ImageUpload
+              category="posts"
+              hideImg
+              img={null}
+              label={translate('add_image')}
+              onSave={insertImage}
+            />
+          )}
         </Grid>
 
         <Grid item xs={12}>
