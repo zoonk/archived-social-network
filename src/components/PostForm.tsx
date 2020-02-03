@@ -2,6 +2,7 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { Button, Grid, TextField } from '@material-ui/core';
 import { Post } from '@zoonk/models';
 import { appLanguage, GlobalContext, theme } from '@zoonk/utils';
+import FormattingTips from './FormattingTips';
 import FormBase from './FormBase';
 import ImageUpload from './ImageUpload';
 import LinkFormField from './LinkFormField';
@@ -91,11 +92,12 @@ const PostForm = ({
           marginBottom: theme.spacing(2),
         }}
       >
+        <FormattingTips />
         <Button
           variant="contained"
           color="primary"
           onClick={() => setPreview(true)}
-          style={{ textAlign: 'right' }}
+          style={{ textAlign: 'right', marginLeft: theme.spacing(1) }}
         >
           {translate('preview')}
         </Button>
