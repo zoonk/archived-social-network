@@ -1,9 +1,10 @@
 import dynamic from 'next/dynamic';
 
+const VimeoPlayer = dynamic(() => import('./VimeoPlayer'));
 const YoutubePlayer = dynamic(() => import('./YoutubePlayer'));
 
 interface ShortcodeRendererProps {
-  identifier: 'youtube';
+  identifier: 'vimeo' | 'youtube';
   attributes: {
     id: string;
   };
@@ -21,6 +22,8 @@ const ShortcodeRenderer = ({
   const { id } = attributes;
 
   switch (identifier) {
+    case 'vimeo':
+      return <VimeoPlayer id={id} />;
     case 'youtube':
       return <YoutubePlayer id={id} />;
     default:
