@@ -13,6 +13,7 @@ export namespace Post {
 
   export type Category = 'examples' | 'lessons' | 'posts' | 'questions';
   export type Format = 'link' | 'text' | 'video';
+  export type OrderBy = 'likes';
 
   export interface EditableFields {
     chapters: string[];

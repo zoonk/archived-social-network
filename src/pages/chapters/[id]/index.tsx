@@ -82,6 +82,7 @@ const ChapterPage: NextPage<ChapterProps> = ({ data }) => {
             chapterId={id}
             limit={3}
             allowAdd
+            orderBy={['likes']}
             title={translate('examples')}
           />
         </Grid>

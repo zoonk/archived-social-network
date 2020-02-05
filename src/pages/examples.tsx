@@ -27,6 +27,7 @@ const Examples: NextPage = () => {
         hideLink
         allowAdd
         allowLoadMore
+        orderBy={['likes']}
         title={translate('examples')}
       />
     </Container>

@@ -79,6 +79,7 @@ interface PostArgs {
   format?: Post.Format[];
   lastVisible?: firebase.firestore.DocumentSnapshot;
   limit?: number;
+  orderBy?: Post.OrderBy[];
   topicId?: string;
   userId?: string;
 }
@@ -92,15 +93,22 @@ export const listPosts = async ({
   format,
   lastVisible,
   limit = 10,
+  orderBy,
   topicId,
   userId,
 }: PostArgs): Promise<Post.Snapshot[]> => {
   let ref = db
     .collection('posts')
     .withConverter(postConverter)
-    .orderBy('likes', 'desc')
-    .orderBy('updatedAt', 'desc')
     .limit(limit);
+
+  if (orderBy) {
+    orderBy.forEach((field) => {
+      ref = ref.orderBy(field, 'desc');
+    });
+  }
+
+  ref = ref.orderBy('updatedAt', 'desc');
 
   // Filter by category
   if (category) {

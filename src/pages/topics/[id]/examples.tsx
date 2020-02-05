@@ -42,6 +42,7 @@ const TopicExamples: NextPage<TopicExamplesProps> = ({ title, topicId }) => {
         hideLink
         allowAdd
         allowLoadMore
+        orderBy={['likes']}
         title={translate('examples')}
       />
     </Container>

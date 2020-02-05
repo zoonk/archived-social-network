@@ -75,6 +75,7 @@ const TopicPage: NextPage<TopicPageProps> = ({ topic }) => {
             topicId={id}
             limit={3}
             allowAdd
+            orderBy={['likes']}
             title={translate('examples')}
           />
           <PostsCard

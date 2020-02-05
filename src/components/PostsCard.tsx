@@ -18,6 +18,7 @@ interface PostsCardProps {
   format?: Post.Format[];
   hideLink?: boolean;
   limit?: number;
+  orderBy?: Post.OrderBy[];
   title: string;
   topicId?: string;
   userId?: string;
@@ -34,6 +35,7 @@ const PostsCard = ({
   format,
   hideLink,
   limit,
+  orderBy,
   title,
   topicId,
   userId,
@@ -54,6 +56,7 @@ const PostsCard = ({
         format,
         lastVisible,
         limit,
+        orderBy,
         topicId,
         userId,
       }),
@@ -67,11 +70,12 @@ const PostsCard = ({
         chapterId,
         format,
         limit,
+        orderBy,
         topicId,
         userId,
       }),
     );
-  }, [category, chapterId, format, get, limit, topicId, userId]);
+  }, [category, chapterId, format, get, limit, orderBy, topicId, userId]);
 
   useEffect(() => {
     if (error) {
