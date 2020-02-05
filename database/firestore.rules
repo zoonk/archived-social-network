@@ -62,14 +62,6 @@ service cloud.firestore {
       ;
     }
 
-    function linkHasUrl() {
-      return isOneOf('type', 'link|video') && request.resource.data.url is string;
-    }
-
-    function textWithoutUrl() {
-      return request.resource.data.type == 'text' && request.resource.data.url == null;
-    }
-
     match /{category}/{categoryId}/likes/{createdById} {
       allow get, create, update: if request.auth.uid == createdById;
     }
