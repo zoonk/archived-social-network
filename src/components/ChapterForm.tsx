@@ -32,7 +32,11 @@ const ChapterForm = ({
     data?.description || '',
   );
   const [photo, setPhoto] = useState<string | null>(data?.photo || null);
-  const valid = title.length > 0 && description.length > 0;
+  const descriptionMax = 500;
+  const valid =
+    title.length > 0 &&
+    description.length > 0 &&
+    description.length <= descriptionMax;
 
   return (
     <FormBase
@@ -80,6 +84,8 @@ const ChapterForm = ({
             fullWidth
             id="chapter-description"
             label={translate('description')}
+            helperText={`${description.length} / ${descriptionMax}`}
+            error={description.length > descriptionMax}
             required
             name="description"
           />

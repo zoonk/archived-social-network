@@ -119,6 +119,12 @@ describe('/chapters - create', () => {
     done();
   });
 
+  test('description cannot have more than 500 characters', async (done) => {
+    const description = new Array(501).fill('a').join('');
+    await firebase.assertFails(ref.add({ ...data, description }));
+    done();
+  });
+
   test('examples is set to 0', async (done) => {
     await firebase.assertFails(ref.add({ ...data, examples: 1 }));
     done();
