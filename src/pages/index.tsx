@@ -45,8 +45,8 @@ const Home: NextPage = () => {
         </Grid>
 
         <Grid item xs={12} sm={6} className={classes.column}>
-          <TopicsCard allowAdd />
-          <PathsCard allowAdd />
+          <TopicsCard limit={7} allowAdd />
+          <PathsCard limit={7} allowAdd />
           <LeaderboardCard limit={5} />
         </Grid>
       </Grid>
