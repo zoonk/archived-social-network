@@ -79,7 +79,6 @@ const TopicPage: NextPage<TopicPageProps> = ({ topic }) => {
             title={translate('examples')}
           />
           <PostsCard
-            category="posts"
             format={['text']}
             topicId={id}
             limit={3}

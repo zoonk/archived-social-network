@@ -33,7 +33,6 @@ const TopicPosts: NextPage<TopicPostsProps> = ({ id, title }) => {
       />
       <TopicsBreadcrumb topicId={id} title={translate('forum')} />
       <PostsCard
-        category="posts"
         format={['text']}
         topicId={id}
         limit={10}
