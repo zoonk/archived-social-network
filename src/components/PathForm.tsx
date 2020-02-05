@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { Grid, TextField } from '@material-ui/core';
 import { ExpertLevel, Path } from '@zoonk/models';
-import { appLanguage, GlobalContext } from '@zoonk/utils';
+import { appLanguage, GlobalContext, imgSize } from '@zoonk/utils';
 import FormBase from './FormBase';
 import ImageUpload from './ImageUpload';
 import LevelSelector from './LevelSelector';
@@ -100,7 +100,12 @@ const PathForm = ({
         </Grid>
 
         <Grid item xs={12}>
-          <ImageUpload img={photo} category="paths" onSave={setPhoto} />
+          <ImageUpload
+            img={photo}
+            category="paths"
+            size={imgSize}
+            onSave={setPhoto}
+          />
         </Grid>
       </Grid>
     </FormBase>

@@ -125,6 +125,7 @@ export type TranslationKeys =
   | 'path_edit'
   | 'path'
   | 'paths'
+  | 'photo_suggested_size'
   | 'photo_update'
   | 'photo_uploaded'
   | 'photo'

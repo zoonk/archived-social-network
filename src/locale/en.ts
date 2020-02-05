@@ -134,6 +134,7 @@ const translate: TranslationFn = (key, args) => {
     path_edit: 'Edit path',
     path: 'Path',
     paths: 'Paths',
+    photo_suggested_size: `Suggested size: ${args?.size}`,
     photo_update: 'Update photo',
     photo_uploaded: 'Uploaded photo',
     photo: 'Photo',

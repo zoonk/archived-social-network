@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Grid, TextField } from '@material-ui/core';
 import { Chapter } from '@zoonk/models';
-import { GlobalContext } from '@zoonk/utils';
+import { GlobalContext, imgSize } from '@zoonk/utils';
 import FormBase from './FormBase';
 import ImageUpload from './ImageUpload';
 
@@ -92,7 +92,12 @@ const ChapterForm = ({
         </Grid>
 
         <Grid item xs={12}>
-          <ImageUpload img={photo} category="chapters" onSave={setPhoto} />
+          <ImageUpload
+            img={photo}
+            category="chapters"
+            size={imgSize}
+            onSave={setPhoto}
+          />
         </Grid>
       </Grid>
     </FormBase>

@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Button, Grid, Paper, TextField, Typography } from '@material-ui/core';
 import { SnackbarAction } from '@zoonk/models';
 import { updateProfile } from '@zoonk/services';
-import { firebaseError, GlobalContext, theme } from '@zoonk/utils';
+import { firebaseError, GlobalContext, imgSize, theme } from '@zoonk/utils';
 import Snackbar from './Snackbar';
 import ImageUpload from './ImageUpload';
 
@@ -76,7 +76,12 @@ const ProfileUpdate = () => {
           </Grid>
 
           <Grid item xs={12}>
-            <ImageUpload img={photo} category="users" onSave={setPhoto} />
+            <ImageUpload
+              img={photo}
+              category="users"
+              size={imgSize}
+              onSave={setPhoto}
+            />
           </Grid>
         </Grid>
 

@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import { Grid, TextField } from '@material-ui/core';
 import { SnackbarAction, Topic } from '@zoonk/models';
 import { updateTopic } from '@zoonk/services';
-import { firebaseError, GlobalContext, timestamp } from '@zoonk/utils';
+import { firebaseError, GlobalContext, imgSize, timestamp } from '@zoonk/utils';
 import FormBase from './FormBase';
 import ImageUpload from './ImageUpload';
 import Snackbar from './Snackbar';
@@ -67,7 +67,12 @@ const TopicEdit = ({ topic }: TopicEditProps) => {
         </Grid>
 
         <Grid item xs={12}>
-          <ImageUpload img={photo} category="topics" onSave={setPhoto} />
+          <ImageUpload
+            img={photo}
+            category="topics"
+            size={imgSize}
+            onSave={setPhoto}
+          />
         </Grid>
       </Grid>
       <Snackbar action={snackbar} />

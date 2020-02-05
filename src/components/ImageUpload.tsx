@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { Avatar, Button, Grid } from '@material-ui/core';
+import { Avatar, Button, Grid, Typography } from '@material-ui/core';
 import { AddAPhoto } from '@material-ui/icons';
 import { ContentCategory, SnackbarAction } from '@zoonk/models';
 import { upload } from '@zoonk/services';
@@ -11,6 +11,7 @@ interface ImageUploadProps {
   hideImg?: boolean;
   img: string | null;
   label?: string;
+  size?: string;
   onSave: (url: string) => void;
 }
 
@@ -22,6 +23,7 @@ const ImageUpload = ({
   hideImg,
   img,
   label,
+  size,
   onSave,
 }: ImageUploadProps) => {
   const { translate } = useContext(GlobalContext);
@@ -87,6 +89,12 @@ const ImageUpload = ({
         <Button color="primary" component="span">
           {label || translate('photo_update')}
         </Button>
+        <br />
+        {size && (
+          <Typography variant="caption">
+            {translate('photo_suggested_size', { size })}
+          </Typography>
+        )}
       </label>
 
       <Snackbar action={snackbar} />
