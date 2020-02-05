@@ -352,6 +352,7 @@ service cloud.firestore {
         && isReadOnly('createdBy')
         && isReadOnly('createdById')
         && request.resource.data.description is string
+        && request.resource.data.description.size() <= 1000
         && isReadOnly('language')
         && isReadOnly('likes')
         && (request.resource.data.photo == null || request.resource.data.photo is string)

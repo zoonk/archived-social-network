@@ -19,6 +19,8 @@ const TopicEdit = ({ topic }: TopicEditProps) => {
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const [description, setDescription] = useState<string>(topic.description);
   const [photo, setPhoto] = useState<string | null>(topic.photo);
+  const descriptionMax = 1000;
+  const isValid = description.length <= descriptionMax;
 
   if (!user || !profile) {
     return null;
@@ -43,7 +45,7 @@ const TopicEdit = ({ topic }: TopicEditProps) => {
 
   return (
     <FormBase
-      valid
+      valid={isValid}
       saving={snackbar?.type === 'progress'}
       onSubmit={handleSubmit}
     >
@@ -54,6 +56,8 @@ const TopicEdit = ({ topic }: TopicEditProps) => {
             rows={10}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            helperText={`${description.length} / ${descriptionMax}`}
+            error={description.length > descriptionMax}
             variant="outlined"
             fullWidth
             id="topic-description-update"
