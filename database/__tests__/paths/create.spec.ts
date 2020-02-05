@@ -117,6 +117,12 @@ test('description is a string', async (done) => {
   done();
 });
 
+test('description cannot have more than 1000 characters', async (done) => {
+  const description = new Array(1001).fill('a').join('');
+  await firebase.assertFails(ref.add({ ...data, description }));
+  done();
+});
+
 test('examples is set to 0', async (done) => {
   await firebase.assertFails(ref.add({ ...data, examples: 1 }));
   done();

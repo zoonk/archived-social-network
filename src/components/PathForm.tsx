@@ -33,7 +33,12 @@ const PathForm = ({
   const [level, setLevel] = useState<ExpertLevel>(data?.level || 'beginner');
   const [photo, setPhoto] = useState<string | null>(data?.photo || null);
   const [topics, setTopics] = useState<string[]>(data?.topics || []);
-  const valid = description.length > 0 && title.length > 0 && topics.length > 0;
+  const descriptionMax = 1000;
+  const valid =
+    description.length > 0 &&
+    description.length <= descriptionMax &&
+    title.length > 0 &&
+    topics.length > 0;
 
   // Add the current topicId when adding a new item.
   useEffect(() => {
@@ -70,6 +75,8 @@ const PathForm = ({
             rows={5}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            helperText={`${description.length} / ${descriptionMax}`}
+            error={description.length > descriptionMax}
             variant="outlined"
             fullWidth
             id="path-description"

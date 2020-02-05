@@ -181,6 +181,7 @@ service cloud.firestore {
         && isValidProfile('createdBy')
         && request.resource.data.createdById == request.auth.uid
         && request.resource.data.description is string
+        && request.resource.data.description.size() <= 1000
         && request.resource.data.examples == 0
         && request.resource.data.lessons == 0
         && request.resource.data.likes == 0
@@ -203,6 +204,7 @@ service cloud.firestore {
         && isReadOnly('createdBy')
         && isReadOnly('createdById')
         && request.resource.data.description is string
+        && request.resource.data.description.size() <= 1000
         && isReadOnly('examples')
         && isReadOnly('language')
         && isReadOnly('lessons')
