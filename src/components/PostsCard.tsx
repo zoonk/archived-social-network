@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { Button, Card, CardContent } from '@material-ui/core';
-import { Post, SnackbarAction } from '@zoonk/models';
+import { EditableOrder, Post, SnackbarAction } from '@zoonk/models';
 import { listPosts } from '@zoonk/services';
 import { firebaseError, GlobalContext, theme } from '@zoonk/utils';
 import CategoryCardHeader from './CategoryCardHeader';
@@ -15,6 +15,7 @@ interface PostsCardProps {
   allowLoadMore?: boolean;
   category?: Post.Category;
   chapterId?: string;
+  edit?: EditableOrder;
   format?: Post.Format[];
   hideLink?: boolean;
   limit?: number;
@@ -32,6 +33,7 @@ const PostsCard = ({
   allowLoadMore,
   category,
   chapterId,
+  edit,
   format,
   hideLink,
   limit,
@@ -88,6 +90,7 @@ const PostsCard = ({
       <CardContent style={{ paddingBottom: 0 }}>
         <CategoryCardHeader
           canAdd={canAdd}
+          edit={edit}
           hideLink={hideLink}
           query={query}
           category="posts"

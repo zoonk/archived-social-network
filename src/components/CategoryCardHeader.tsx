@@ -3,12 +3,13 @@ import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { Button, Link, Typography } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
-import { ContentCategory, Post } from '@zoonk/models';
+import { ContentCategory, EditableOrder, Post } from '@zoonk/models';
 import { GlobalContext, removeTrailingSlash, theme } from '@zoonk/utils';
 
 interface CategoryCardHeaderProps {
   canAdd?: boolean;
   category: ContentCategory | 'leaderboard';
+  edit?: EditableOrder;
   hideLink?: boolean;
   list?: Post.Category | 'references';
   query?: any;
@@ -18,6 +19,7 @@ interface CategoryCardHeaderProps {
 const CategoryCardHeader = ({
   canAdd,
   category,
+  edit,
   hideLink,
   list,
   query,
@@ -65,8 +67,8 @@ const CategoryCardHeader = ({
         </NextLink>
       )}
 
-      {list === 'lessons' && (
-        <NextLink href={`${href}/lessons`} as={`${as}/lessons`} passHref>
+      {edit && (
+        <NextLink href={`${href}/${edit}`} as={`${as}/${edit}`} passHref>
           <Button component="a" size="small" color="secondary">
             {translate('edit')}
           </Button>

@@ -71,6 +71,7 @@ const ChapterPage: NextPage<ChapterProps> = ({ data }) => {
           <PostsCard
             category="lessons"
             chapterId={id}
+            edit="lessons"
             limit={20}
             allowAdd
             allowLoadMore

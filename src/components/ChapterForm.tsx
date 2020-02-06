@@ -1,5 +1,4 @@
 import { useContext, useState } from 'react';
-import { useRouter } from 'next/router';
 import { Grid, TextField } from '@material-ui/core';
 import { Chapter } from '@zoonk/models';
 import { GlobalContext, imgSize } from '@zoonk/utils';
@@ -9,7 +8,7 @@ import ImageUpload from './ImageUpload';
 interface ChapterFormProps {
   data?: Chapter.Get;
   saving: boolean;
-  onSubmit: (data: Chapter.EditableFields) => void;
+  onSubmit: (data: Omit<Chapter.EditableFields, 'order'>) => void;
   onDelete?: () => void;
 }
 
@@ -23,10 +22,6 @@ const ChapterForm = ({
   onSubmit,
 }: ChapterFormProps) => {
   const { translate } = useContext(GlobalContext);
-  const { query } = useRouter();
-  const [order, setOrder] = useState<number>(
-    data?.order || Number(query.order) || 0,
-  );
   const [title, setTitle] = useState<string>(data?.title || '');
   const [description, setDescription] = useState<string>(
     data?.description || '',
@@ -43,10 +38,10 @@ const ChapterForm = ({
       valid={valid}
       saving={saving}
       onDelete={onDelete}
-      onSubmit={() => onSubmit({ description, order, photo, title })}
+      onSubmit={() => onSubmit({ description, photo, title })}
     >
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={9}>
+        <Grid item xs={12}>
           <TextField
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -57,20 +52,6 @@ const ChapterForm = ({
             name="title"
             required
             type="text"
-          />
-        </Grid>
-
-        <Grid item xs={12} sm={3}>
-          <TextField
-            value={order}
-            onChange={(e) => setOrder(Number(e.target.value))}
-            variant="outlined"
-            fullWidth
-            id="chapter-order"
-            label={translate('order')}
-            name="order"
-            required
-            type="number"
           />
         </Grid>
 

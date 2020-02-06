@@ -36,6 +36,28 @@ export const updateChapter = (
 };
 
 /**
+ * Update chapter order.
+ */
+export const updateChapterOrder = (
+  chapters: Chapter.Get[],
+  profile: Profile.Response,
+  editorId: string,
+): Promise<void> => {
+  const batch = db.batch();
+  chapters.forEach((chapter) => {
+    const ref = db.doc(`chapters/${chapter.id}`);
+    batch.update(ref, {
+      order: chapter.order,
+      updatedAt: timestamp,
+      updatedBy: profile,
+      updatedById: editorId,
+    });
+  });
+
+  return batch.commit();
+};
+
+/**
  * Get a single chapter from the database.
  */
 export const getChapter = async (id: string): Promise<Chapter.Get> => {

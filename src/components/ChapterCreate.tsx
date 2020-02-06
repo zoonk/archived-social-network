@@ -20,14 +20,14 @@ interface ChapterCreateProps {
  */
 const ChapterCreate = ({ pathId }: ChapterCreateProps) => {
   const { profile, translate, user } = useContext(GlobalContext);
-  const { push } = useRouter();
+  const { query, push } = useRouter();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
 
   if (!user || !profile) {
     return null;
   }
 
-  const handleSubmit = async (data: Chapter.EditableFields) => {
+  const handleSubmit = async (data: Omit<Chapter.EditableFields, 'order'>) => {
     setSnackbar({ type: 'progress', msg: translate('saving') });
 
     // Get the current path data the topics list.
@@ -43,6 +43,7 @@ const ChapterCreate = ({ pathId }: ChapterCreateProps) => {
       language: appLanguage,
       lessons: 0,
       likes: 0,
+      order: query.order ? Number(query.order) : 1,
       pathId,
       posts: 0,
       topics: path.topics,

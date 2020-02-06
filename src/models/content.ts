@@ -73,3 +73,8 @@ export type ContentTypes =
   | Path.Response
   | Post.Response
   | Topic.Response;
+
+/**
+ * Content with editable order.
+ */
+export type EditableOrder = 'chapters' | 'lessons';

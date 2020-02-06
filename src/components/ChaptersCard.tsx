@@ -1,10 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
-import NextLink from 'next/link';
-import { Card, CardContent, IconButton, Typography } from '@material-ui/core';
-import { Add } from '@material-ui/icons';
+import { Card, CardContent } from '@material-ui/core';
 import { Chapter, SnackbarAction } from '@zoonk/models';
 import { listChapters } from '@zoonk/services';
 import { firebaseError, GlobalContext } from '@zoonk/utils';
+import CategoryCardHeader from './CategoryCardHeader';
 import ChapterList from './ChapterList';
 import Snackbar from './Snackbar';
 
@@ -45,26 +44,14 @@ const ChaptersCard = ({ pathId }: ChaptersCardProps) => {
   return (
     <Card variant="outlined">
       <CardContent style={{ paddingBottom: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Typography variant="h5" component="h2">
-            {translate('chapters')}
-          </Typography>
-
-          <div style={{ flexGrow: 1 }} />
-
-          <NextLink
-            href={{
-              pathname: '/chapters/add',
-              query: { pathId, order: items.length },
-            }}
-            passHref
-          >
-            <IconButton component="a" size="small" color="primary">
-              <Add />
-            </IconButton>
-          </NextLink>
-        </div>
-
+        <CategoryCardHeader
+          canAdd
+          edit="chapters"
+          hideLink
+          query={{ pathId, order: items.length + 1 }}
+          category="chapters"
+          title={translate('chapters')}
+        />
         <ChapterList items={items} loading={loading} />
         <Snackbar action={snackbar} />
       </CardContent>

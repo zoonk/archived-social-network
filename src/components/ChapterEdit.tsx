@@ -37,7 +37,7 @@ const ChapterEdit = ({ data }: ChapterEditProps) => {
     }
   };
 
-  const handleSubmit = (changes: Chapter.EditableFields) => {
+  const handleSubmit = (changes: Omit<Chapter.EditableFields, 'order'>) => {
     setSnackbar({ type: 'progress', msg: translate('saving') });
 
     updateChapter(
