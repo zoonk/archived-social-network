@@ -35,6 +35,9 @@ const PostPage: NextPage<PostPageProps> = ({ data }) => {
     language,
     title,
     topics,
+    updatedAt,
+    updatedBy,
+    updatedById,
   } = data;
 
   useEffect(() => {
@@ -74,6 +77,9 @@ const PostPage: NextPage<PostPageProps> = ({ data }) => {
             createdAt={createdAt}
             createdBy={createdBy}
             createdById={createdById}
+            updatedAt={updatedAt}
+            updatedBy={updatedBy}
+            updatedById={updatedById}
           />
           <div style={{ padding: theme.spacing(1) }} />
           <NotesCard category="posts" id={id} itemPath={`posts/${id}`} />
