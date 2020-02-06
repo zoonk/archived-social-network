@@ -9,13 +9,15 @@ import {
 } from '@material-ui/core';
 import { Edit, Reorder } from '@material-ui/icons';
 import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd';
-import { Post } from '@zoonk/models';
+import { ContentCategory } from '@zoonk/models';
 import { GlobalContext } from '@zoonk/utils';
 
-interface LessonSortableItemProps {
+interface SortableListItemProps {
+  category: ContentCategory;
   divider?: boolean;
+  id: string;
   index: number;
-  item: Post.Get;
+  title: string;
   moveItem: (drag: number, hover: number) => void;
 }
 
@@ -26,16 +28,17 @@ interface DragItem {
 }
 
 /**
- * Sortable lesson item.
+ * Sortable list item.
  */
-const LessonSortableItem = ({
+const SortableListItem = ({
+  category,
   divider,
+  id,
   index,
-  item,
   moveItem,
-}: LessonSortableItemProps) => {
+  title,
+}: SortableListItemProps) => {
   const { translate } = useContext(GlobalContext);
-  const { id, title } = item;
   const ref = useRef<HTMLDivElement>(null);
   const [, drop] = useDrop({
     accept: 'list',
@@ -114,7 +117,11 @@ const LessonSortableItem = ({
       </ListItemIcon>
       <ListItemText primary={title} />
       <ListItemSecondaryAction>
-        <NextLink href="/posts/[id]/edit" as={`/posts/${id}/edit`} passHref>
+        <NextLink
+          href={`/${category}/[id]/edit`}
+          as={`/${category}/${id}/edit`}
+          passHref
+        >
           <IconButton component="a" edge="end" aria-label={translate('edit')}>
             <Edit />
           </IconButton>
@@ -124,4 +131,4 @@ const LessonSortableItem = ({
   );
 };
 
-export default LessonSortableItem;
+export default SortableListItem;

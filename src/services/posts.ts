@@ -160,7 +160,7 @@ export const listPosts = async ({
 /**
  * Update order.
  */
-export const updateOrder = (
+export const updatePostOrder = (
   posts: Post.Get[],
   chapterId: string,
   profile: Profile.Response,
