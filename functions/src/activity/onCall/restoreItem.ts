@@ -27,12 +27,10 @@ export const restoreDeletedItem = functions.https.onCall(
     const isAuthor = uid === activityData.before.createdById;
     const isPost =
       activityData.category === 'posts' &&
-      activityData.before.category === 'posts' &&
-      activityData.before.format === 'text';
+      activityData.before.category === 'posts';
     const isQuestion =
       activityData.category === 'posts' &&
-      activityData.before.category === 'questions' &&
-      activityData.before.format === 'text';
+      activityData.before.category === 'questions';
 
     // Only the author can restore posts can questions
     if (!isAuthor && (isPost || isQuestion)) {

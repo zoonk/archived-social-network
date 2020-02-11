@@ -255,42 +255,6 @@
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "topics",
-          "arrayConfig": "CONTAINS"
-        },
-        {
-          "fieldPath": "format",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "updatedAt",
-          "order": "DESCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "posts",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "language",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "format",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "updatedAt",
-          "order": "DESCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "posts",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
           "fieldPath": "createdById",
           "order": "ASCENDING"
         },
@@ -375,14 +339,6 @@
           "arrayConfig": "CONTAINS"
         },
         {
-          "fieldPath": "category",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "likes",
-          "order": "DESCENDING"
-        },
-        {
           "fieldPath": "updatedAt",
           "order": "DESCENDING"
         }
@@ -397,29 +353,7 @@
           "arrayConfig": "CONTAINS"
         },
         {
-          "fieldPath": "format",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "likes",
-          "order": "DESCENDING"
-        },
-        {
-          "fieldPath": "updatedAt",
-          "order": "DESCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "posts",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "language",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "format",
+          "fieldPath": "category",
           "order": "ASCENDING"
         },
         {

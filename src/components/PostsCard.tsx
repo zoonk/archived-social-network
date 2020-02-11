@@ -16,7 +16,6 @@ interface PostsCardProps {
   category?: Post.Category;
   chapterId?: string;
   edit?: EditableOrder;
-  format?: Post.Format[];
   hideLink?: boolean;
   limit?: number;
   orderBy?: Post.OrderBy[];
@@ -34,7 +33,6 @@ const PostsCard = ({
   category,
   chapterId,
   edit,
-  format,
   hideLink,
   limit,
   orderBy,
@@ -55,7 +53,6 @@ const PostsCard = ({
       listPosts({
         category,
         chapterId,
-        format,
         lastVisible,
         limit,
         orderBy,
@@ -70,14 +67,13 @@ const PostsCard = ({
       listPosts({
         category,
         chapterId,
-        format,
         limit,
         orderBy,
         topicId,
         userId,
       }),
     );
-  }, [category, chapterId, format, get, limit, orderBy, topicId, userId]);
+  }, [category, chapterId, get, limit, orderBy, topicId, userId]);
 
   useEffect(() => {
     if (error) {
@@ -94,12 +90,12 @@ const PostsCard = ({
           hideLink={hideLink}
           query={query}
           category="posts"
-          list={format && format[0] !== 'text' ? 'references' : category}
+          list={category}
           title={title}
         />
 
         {items.length === 0 && loading === false && <NoItems />}
-        {items.length > 0 && <PostList items={items} />}
+        {items.length > 0 && <PostList category={category} items={items} />}
         {loading && <ListSkeleton items={limit} />}
 
         {allowLoadMore && lastVisible && (

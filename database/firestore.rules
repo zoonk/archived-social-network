@@ -30,24 +30,12 @@ service cloud.firestore {
       return isOneOf('level', 'beginner|advanced|pro|expert');
     }
 
-    function isPost() {
-      return request.resource.data.category == 'posts' && request.resource.data.format == 'text';
-    }
-
-    function isQuestion() {
-      return request.resource.data.category == 'questions' && request.resource.data.format == 'text';
-    }
-
     function isValidCategory() {
       return isOneOf('category', 'chapters|paths|posts|topics');
     }
 
     function isValidPostCategory() {
       return isOneOf('category', 'examples|lessons|posts|questions');
-    }
-
-    function isValidFormat() {
-      return isOneOf('format', 'link|text|video');
     }
 
     function isValidLanguage() {
@@ -232,10 +220,9 @@ service cloud.firestore {
         && request.resource.data.createdAt == request.time
         && isValidProfile('createdBy')
         && request.resource.data.createdById == request.auth.uid
-        && isValidFormat()
         && isValidLanguage()
         && request.resource.data.likes == 0
-        && (request.resource.data.links == null || (request.resource.data.links is list && request.resource.data.links[0] is string))
+        && (request.resource.data.links == null || request.resource.data.links.size() == 0 || (request.resource.data.links is list && request.resource.data.links[0] is string))
         && request.resource.data.order is map
         && request.resource.data.order.keys().hasAll(request.resource.data.chapters) == true
         && (request.resource.data.order.size() == 0 || request.resource.data.order.values()[0] is number)
@@ -255,8 +242,7 @@ service cloud.firestore {
         && isReadOnly('createdAt')
         && isReadOnly('createdBy')
         && isReadOnly('createdById')
-        && ((!isPost() && !isQuestion()) || resource.data.createdById == request.auth.uid)
-        && isValidFormat()
+        && (!isOneOf('category', 'posts|questions') || resource.data.createdById == request.auth.uid)
         && isReadOnly('language')
         && isReadOnly('likes')
         && (request.resource.data.links == null || request.resource.data.links.size() == 0 || (request.resource.data.links is list && request.resource.data.links[0] is string))

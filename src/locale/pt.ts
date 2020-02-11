@@ -106,6 +106,7 @@ const translate: TranslationFn = (key, args) => {
       Number(args?.likes) === 1
         ? `${args?.likes} curtida`
         : `${args?.likes} curtidas`,
+    link_helper: 'Link para uma referência',
     link: 'Link',
     load_more: 'Carregar mais',
     login: 'Entrar',
@@ -150,7 +151,6 @@ const translate: TranslationFn = (key, args) => {
     questions: 'Perguntas',
     read_wikipedia: 'Ler na Wikipédia',
     real_life_examples: 'Exemplos na vida Real',
-    references: 'Referências',
     replies: 'Respostas',
     report: 'Reportar',
     reports: 'Reportes',
@@ -212,8 +212,6 @@ const translate: TranslationFn = (key, args) => {
     seo_profile_posts_title: `Postagens de ${args?.name}`,
     seo_profile_topics_desc: `${args?.name} está escrevendo sobre muitos assuntos interessantes. Veja os assuntos criados por ${args?.name} no Zoonk.`,
     seo_profile_topics_title: `Assuntos de ${args?.name}`,
-    seo_ref_desc:
-      'Encontre referências sobre qualquer assunto online. Onde encontrar boas fontes online.',
     seo_reset_password_desc:
       'Como posso recuperar ou restaurar minha senha do Zoonk?',
     seo_search_desc: `Aprenda mais sobre ${args?.searchTerm} no Zoonk. Saiba como ${args?.searchTerm} funciona.`,
@@ -231,8 +229,6 @@ const translate: TranslationFn = (key, args) => {
     seo_topic_paths_title: `Trilhas de aprendizagem sobre ${args?.title}`,
     seo_topic_posts_desc: `Encontre postagens sobre ${args?.title}. Os melhores artigos sobre ${args?.title} online.`,
     seo_topic_posts_title: `Fórum sobre ${args?.title}`,
-    seo_topic_refs_desc: `Referências sobre ${args?.title}. Como encontrar fontes confiáveis sobre ${args?.title} online.`,
-    seo_topic_refs_title: `Referências sobre ${args?.title}`,
     seo_topics_desc: 'Aprenda qualquer assunto de graça no Zoonk.',
     seo_topics_create_desc: 'Como criar um assunto novo no Zoonk.',
     settings: 'Configurações',
@@ -263,7 +259,7 @@ const translate: TranslationFn = (key, args) => {
     topic_create: 'Criar assunto',
     topic_create_desc: 'Selecione um assunto:',
     topic_selector_helper:
-      'Quais assuntos você está abordando? (Ex. Física, Futebol, Geografia, etc.).',
+      'Quais assuntos você está ensinando? (Ex. Física, Futebol, Geografia, etc.).',
     topics: 'Assuntos',
     updated: 'editado',
     upgrade_desc:

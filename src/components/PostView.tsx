@@ -22,7 +22,7 @@ interface PostViewProps {
  */
 const PostView = ({ item, preview }: PostViewProps) => {
   const { content, id, likes, links, sites, title, topics } = item;
-  const youtube = links ? containsYoutubeUrl(links[0]) : null;
+  const youtube = links?.find((link) => containsYoutubeUrl(link));
 
   return (
     <Card variant="outlined">
@@ -37,7 +37,7 @@ const PostView = ({ item, preview }: PostViewProps) => {
         <EditorView content={content} />
       </CardContent>
 
-      {links && links.length > 0 && !youtube && (
+      {links && links.length > 0 && (
         <CardActions>
           {sites.map((site) => (
             <Button

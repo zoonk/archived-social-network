@@ -24,7 +24,6 @@ const add = {
   createdAt: firebase.firestore.FieldValue.serverTimestamp(),
   createdBy: profile,
   createdById: 'currentUser',
-  format: 'text',
   language: 'en',
   links: null,
   likes: 0,
@@ -73,12 +72,11 @@ test('anonymous users cannot update', async (done) => {
   done();
 });
 
-test('cannot update posts from other users whose format is text', async (done) => {
+test('cannot update posts from other users', async (done) => {
   const docRef = db.doc('posts/otherUser');
   const changes = {
     ...add,
     category: 'posts',
-    format: 'text',
     createdById: 'otherUser',
   };
   await admin.doc('posts/otherUser').set(changes);
@@ -91,7 +89,6 @@ test('can update examples', async (done) => {
   const changes = {
     ...add,
     category: 'examples',
-    format: 'text',
     createdById: 'otherUser',
   };
   await admin.doc('posts/otherUser').set(changes);
@@ -104,7 +101,6 @@ test('can update lessons', async (done) => {
   const changes = {
     ...add,
     category: 'lessons',
-    format: 'text',
     createdById: 'otherUser',
   };
   await admin.doc('posts/otherUser').set(changes);
@@ -112,68 +108,15 @@ test('can update lessons', async (done) => {
   done();
 });
 
-test('can update posts from other users whose format is a link', async (done) => {
-  const docRef = db.doc('posts/otherUser');
-  const changes = {
-    ...add,
-    category: 'posts',
-    format: 'link',
-    createdById: 'otherUser',
-  };
-  await admin.doc('posts/otherUser').set(changes);
-  await firebase.assertSucceeds(docRef.update({ ...edit, title: 'new' }));
-  done();
-});
-
-test('can update posts from other users whose format is a video', async (done) => {
-  const docRef = db.doc('posts/otherUser');
-  const changes = {
-    ...add,
-    category: 'posts',
-    format: 'video',
-    createdById: 'otherUser',
-  };
-  await admin.doc('posts/otherUser').set(changes);
-  await firebase.assertSucceeds(docRef.update({ ...edit, title: 'new' }));
-  done();
-});
-
-test('cannot update questions from other users whose format is text', async (done) => {
+test('cannot update questions from other users', async (done) => {
   const docRef = db.doc('posts/otherUser');
   const changes = {
     ...add,
     category: 'questions',
-    format: 'text',
     createdById: 'otherUser',
   };
   await admin.doc('posts/otherUser').set(changes);
   await firebase.assertFails(docRef.update({ ...edit, title: 'new' }));
-  done();
-});
-
-test('can update questions from other users whose format is link', async (done) => {
-  const docRef = db.doc('posts/otherUser');
-  const changes = {
-    ...add,
-    category: 'questions',
-    format: 'link',
-    createdById: 'otherUser',
-  };
-  await admin.doc('posts/otherUser').set(changes);
-  await firebase.assertSucceeds(docRef.update({ ...edit, title: 'new' }));
-  done();
-});
-
-test('can update questions from other users whose format is video', async (done) => {
-  const docRef = db.doc('posts/otherUser');
-  const changes = {
-    ...add,
-    category: 'questions',
-    format: 'video',
-    createdById: 'otherUser',
-  };
-  await admin.doc('posts/otherUser').set(changes);
-  await firebase.assertSucceeds(docRef.update({ ...edit, title: 'new' }));
   done();
 });
 
@@ -235,14 +178,6 @@ test('createdBy cannot be changed', async (done) => {
 
 test('createdById cannot be changed', async (done) => {
   await firebase.assertFails(ref.update({ ...edit, createdById: 'other' }));
-  done();
-});
-
-test('format has a valid string', async (done) => {
-  await firebase.assertSucceeds(ref.update({ ...edit, format: 'link' }));
-  await firebase.assertSucceeds(ref.update({ ...edit, format: 'text' }));
-  await firebase.assertSucceeds(ref.update({ ...edit, format: 'video' }));
-  await firebase.assertFails(ref.update({ ...edit, format: 'other' }));
   done();
 });
 

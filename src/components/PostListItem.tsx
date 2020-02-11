@@ -3,38 +3,28 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
-  makeStyles,
 } from '@material-ui/core';
-import { Description, Link, VideoLibrary } from '@material-ui/icons';
 import NextLink from 'next/link';
 import { Post } from '@zoonk/models';
-
-const useStyles = makeStyles((theme) => ({
-  link: {
-    color: theme.palette.primary.contrastText,
-    backgroundColor: theme.palette.primary.main,
-  },
-  text: {
-    color: theme.palette.success.contrastText,
-    backgroundColor: theme.palette.success.main,
-  },
-  video: {
-    color: theme.palette.secondary.contrastText,
-    backgroundColor: theme.palette.secondary.main,
-  },
-}));
+import { theme } from '@zoonk/utils';
 
 interface PostListItemProps {
+  category?: Post.Category;
   divider?: boolean;
+  index: number;
   item: Post.Get;
 }
 
 /**
  * Display a single post as a list item.
  */
-const PostListItem = ({ divider, item }: PostListItemProps) => {
-  const { content, format, title } = item;
-  const classes = useStyles();
+const PostListItem = ({
+  category,
+  divider,
+  index,
+  item,
+}: PostListItemProps) => {
+  const { content, createdBy, title } = item;
 
   return (
     <NextLink href="/posts/[id]" as={`/posts/${item.id}`} passHref>
@@ -45,13 +35,20 @@ const PostListItem = ({ divider, item }: PostListItemProps) => {
         divider={divider}
         disableGutters
       >
-        <ListItemAvatar>
-          <Avatar className={classes[format]}>
-            {format === 'text' && <Description />}
-            {format === 'link' && <Link />}
-            {format === 'video' && <VideoLibrary />}
-          </Avatar>
-        </ListItemAvatar>
+        {category !== 'lessons' && (
+          <ListItemAvatar>
+            <Avatar src={createdBy.photo || undefined} />
+          </ListItemAvatar>
+        )}
+
+        {category === 'lessons' && (
+          <ListItemAvatar>
+            <Avatar style={{ backgroundColor: theme.palette.primary.main }}>
+              {index + 1}
+            </Avatar>
+          </ListItemAvatar>
+        )}
+
         <ListItemText
           primary={title}
           secondary={content.slice(0, 200)}

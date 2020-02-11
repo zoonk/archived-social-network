@@ -1,5 +1,5 @@
-import { Fragment, useContext } from 'react';
-import { Button } from '@material-ui/core';
+import { useContext } from 'react';
+import { Button, Container } from '@material-ui/core';
 import { Post } from '@zoonk/models';
 import { serializeLinkCollection } from '@zoonk/serializers';
 import { GlobalContext, theme } from '@zoonk/utils';
@@ -17,7 +17,7 @@ const PostPreview = ({ data, onReturn }: PostPreviewProps) => {
   const { translate } = useContext(GlobalContext);
   const { content, links, title, topics } = data;
   return (
-    <Fragment>
+    <Container maxWidth="sm">
       <div
         style={{
           display: 'flex',
@@ -41,7 +41,7 @@ const PostPreview = ({ data, onReturn }: PostPreviewProps) => {
         }
         preview
       />
-    </Fragment>
+    </Container>
   );
 };
 

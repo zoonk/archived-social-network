@@ -14,7 +14,6 @@ import {
   Forum,
   History,
   Language,
-  LibraryBooks,
   Note,
   Subject,
   SupervisorAccount,
@@ -83,15 +82,6 @@ const MenuPages = () => {
               <Language />
             </ListItemIcon>
             <ListItemText primary={translate('real_life_examples')} />
-          </ListItem>
-        </NextLink>
-
-        <NextLink href="/references" passHref>
-          <ListItem button component="a">
-            <ListItemIcon>
-              <LibraryBooks />
-            </ListItemIcon>
-            <ListItemText primary={translate('references')} />
           </ListItem>
         </NextLink>
 

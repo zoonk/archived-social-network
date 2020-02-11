@@ -11,7 +11,7 @@ interface CategoryCardHeaderProps {
   category: ContentCategory | 'leaderboard';
   edit?: EditableOrder;
   hideLink?: boolean;
-  list?: Post.Category | 'references';
+  list?: Post.Category;
   query?: any;
   title: string;
 }

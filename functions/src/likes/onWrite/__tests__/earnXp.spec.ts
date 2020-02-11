@@ -138,7 +138,7 @@ test('update the XP for all topics', async (done) => {
     .mockReturnValue({
       get: jest.fn().mockReturnValue({
         data: () => ({
-          category: 'references',
+          category: 'posts',
           topics: ['topic1', 'topic2', 'topic3'],
           createdById: 'editorId',
         }),

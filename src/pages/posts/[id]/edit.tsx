@@ -19,8 +19,8 @@ const EditPost: NextPage = () => {
   const [data, setData] = useState<Post.Get>();
   const { query } = useRouter();
   const isAuthor = user?.uid === data?.createdById;
-  const isPost = data?.category === 'posts' && data?.format === 'text';
-  const isQuestion = data?.category === 'questions' && data?.format === 'text';
+  const isPost = data?.category === 'posts';
+  const isQuestion = data?.category === 'questions';
   const isEditable = !isPost && !isQuestion;
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const EditPost: NextPage = () => {
   }
 
   return (
-    <Container component="main" maxWidth="sm">
+    <Container component="main">
       <Meta title={translate('post_edit')} />
       <PostsBreadcrumb
         category={data.category}

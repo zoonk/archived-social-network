@@ -105,6 +105,7 @@ const translate: TranslationFn = (key, args) => {
       Number(args?.likes) === 1
         ? `${args?.likes} like`
         : `${args?.likes} likes`,
+    link_helper: 'Add a link to a reference',
     link: 'Link',
     load_more: 'Load more',
     login: 'Login',
@@ -150,7 +151,6 @@ const translate: TranslationFn = (key, args) => {
     questions: 'Questions',
     read_wikipedia: 'Read on Wikipedia',
     real_life_examples: 'Real-life examples',
-    references: 'References',
     replies: 'Replies',
     report: 'Report',
     reports: 'Reports',
@@ -212,8 +212,6 @@ const translate: TranslationFn = (key, args) => {
     seo_profile_posts_title: `Posts by ${args?.name}`,
     seo_profile_topics_desc: `${args?.name} is teaching about many topics online. See all topics created by ${args?.name} on Zoonk.`,
     seo_profile_topics_title: `Topics by ${args?.name}`,
-    seo_ref_desc:
-      'Find references about any subject online. Where to find good sources online.',
     seo_reset_password_desc: 'How can I recover or reset my Zoonk password?',
     seo_search_desc: `Start learning about ${args?.searchTerm} on Zoonk. How ${args?.searchTerm} works.`,
     seo_search_title: `Learn about ${args?.searchTerm} on Zoonk`,
@@ -229,8 +227,6 @@ const translate: TranslationFn = (key, args) => {
     seo_topic_paths_title: `Learning paths about ${args?.title}`,
     seo_topic_posts_desc: `Find posts about ${args?.title}. Most interesting articles about ${args?.title} online.`,
     seo_topic_posts_title: `Forum about ${args?.title}`,
-    seo_topic_refs_desc: `Good references about ${args?.title}. How to find reliable sources about ${args?.title} online.`,
-    seo_topic_refs_title: `References about ${args?.title}`,
     seo_topics_desc: 'Learn about any topic or subject on Zoonk for free.',
     seo_topics_create_desc: 'How to create a new topic or subject on Zoonk.',
     settings: 'Settings',
@@ -261,7 +257,7 @@ const translate: TranslationFn = (key, args) => {
     topic_create: 'Create topic',
     topic_create_desc: 'Select a topic name:',
     topic_selector_helper:
-      'What subjects are you talking about? (e.g. Chemistry, Star Trek, History, etc.).',
+      'What subjects are you teaching? (e.g. Chemistry, Star Trek, History, etc.).',
     topics: 'Topics',
     updated: 'edited',
     upgrade_desc:

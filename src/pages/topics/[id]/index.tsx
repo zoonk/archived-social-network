@@ -79,18 +79,10 @@ const TopicPage: NextPage<TopicPageProps> = ({ topic }) => {
             title={translate('examples')}
           />
           <PostsCard
-            format={['text']}
             topicId={id}
             limit={3}
             allowAdd
             title={translate('posts')}
-          />
-          <PostsCard
-            topicId={id}
-            format={['link', 'video']}
-            limit={3}
-            allowAdd
-            title={translate('references')}
           />
           <LeaderboardCard topicId={id} />
         </Grid>

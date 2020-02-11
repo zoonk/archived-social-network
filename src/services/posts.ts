@@ -76,7 +76,6 @@ export const deletePost = async (
 interface PostArgs {
   category?: Post.Category;
   chapterId?: string;
-  format?: Post.Format[];
   lastVisible?: firebase.firestore.DocumentSnapshot;
   limit?: number;
   orderBy?: Post.OrderBy[];
@@ -90,7 +89,6 @@ interface PostArgs {
 export const listPosts = async ({
   category,
   chapterId,
-  format,
   lastVisible,
   limit = 10,
   orderBy,
@@ -113,11 +111,6 @@ export const listPosts = async ({
   // Filter by category
   if (category) {
     ref = ref.where('category', '==', category);
-  }
-
-  // Filter by format
-  if (format) {
-    ref = ref.where('format', 'in', format);
   }
 
   // Filter by topic

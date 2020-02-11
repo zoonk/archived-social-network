@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { Fragment, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Post, SnackbarAction } from '@zoonk/models';
 import { createPost, getChapter } from '@zoonk/services';
@@ -8,7 +8,6 @@ import {
   GlobalContext,
   timestamp,
 } from '@zoonk/utils';
-import FormatSelector from './FormatSelector';
 import PostForm from './PostForm';
 import Snackbar from './Snackbar';
 
@@ -31,7 +30,6 @@ const PostCreate = ({
   const { profile, translate, user } = useContext(GlobalContext);
   const { push } = useRouter();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
-  const [format, setFormat] = useState<Post.Format>('text');
   const [topicIds, setTopics] = useState<string[]>(topicId ? [topicId] : []);
 
   useEffect(() => {
@@ -49,6 +47,7 @@ const PostCreate = ({
     topics: string[],
   ) => {
     setSnackbar({ type: 'progress', msg: translate('saving') });
+    const links = data.links ? data.links.filter(Boolean) : [];
 
     createPost({
       ...data,
@@ -60,6 +59,7 @@ const PostCreate = ({
       createdById: user.uid,
       language: appLanguage,
       likes: 0,
+      links,
       order: chapterId && order ? { [chapterId]: order } : {},
       topics,
       updatedAt: timestamp,
@@ -74,15 +74,14 @@ const PostCreate = ({
   };
 
   return (
-    <FormatSelector format={format} onSelect={setFormat}>
+    <Fragment>
       <PostForm
-        format={format}
         topicIds={topicIds}
         saving={snackbar?.type === 'progress' || snackbar?.type === 'success'}
         onSubmit={handleSubmit}
       />
       <Snackbar action={snackbar} />
-    </FormatSelector>
+    </Fragment>
   );
 };
 

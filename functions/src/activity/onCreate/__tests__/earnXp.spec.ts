@@ -47,7 +47,7 @@ test('update the XP for all topics', async (done) => {
 
   const snap = {
     data: () => ({
-      category: 'references',
+      category: 'posts',
       topics: ['topic1', 'topic2', 'topic3'],
       createdById: 'editorId',
     }),

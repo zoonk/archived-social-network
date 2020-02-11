@@ -24,7 +24,6 @@ const data = {
   createdAt: firebase.firestore.FieldValue.serverTimestamp(),
   createdBy: profile,
   createdById: 'currentUser',
-  format: 'text',
   language: 'en',
   links: null,
   likes: 0,
@@ -142,14 +141,6 @@ test('createdById has the current user UID', async (done) => {
   done();
 });
 
-test('format has a valid string', async (done) => {
-  await firebase.assertSucceeds(ref.add({ ...data, format: 'link' }));
-  await firebase.assertSucceeds(ref.add({ ...data, format: 'text' }));
-  await firebase.assertSucceeds(ref.add({ ...data, format: 'video' }));
-  await firebase.assertFails(ref.add({ ...data, format: 'other' }));
-  done();
-});
-
 test('language has a valid string', async (done) => {
   await firebase.assertSucceeds(ref.add({ ...data, language: 'pt' }));
   await firebase.assertFails(ref.add({ ...data, language: 'other' }));
@@ -162,6 +153,7 @@ test('likes is set to 0', async (done) => {
 });
 
 test('links is an array', async (done) => {
+  await firebase.assertSucceeds(ref.add({ ...data, links: [] }));
   await firebase.assertFails(ref.add({ ...data, links: 'test' }));
   await firebase.assertFails(ref.add({ ...data, links: 123 }));
   await firebase.assertFails(ref.add({ ...data, links: true }));
