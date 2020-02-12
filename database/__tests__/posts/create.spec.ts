@@ -18,7 +18,7 @@ const profile = {
 
 const data = {
   category: 'posts',
-  chapters: [],
+  chapterId: null,
   comments: 0,
   content: 'content',
   createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -27,7 +27,7 @@ const data = {
   language: 'en',
   links: null,
   likes: 0,
-  order: {},
+  order: null,
   title: 'new name',
   topics: ['topicId'],
   updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -41,6 +41,7 @@ beforeAll(async (done) => {
   ref = db.collection('posts');
   await loadFirestoreRules();
   await admin.doc('profile/currentUser').set(profile);
+  await admin.doc('chapters/valid').set({ lessons: 10 });
   done();
 });
 
@@ -63,32 +64,30 @@ test('anonymous cannot create an item', async (done) => {
   done();
 });
 
+test('cannot add more than 20 lessons to a chapter', async (done) => {
+  const add = { ...data, chapterId: 'full', order: 3 };
+  await admin.doc('chapters/full').set({ lessons: 20 });
+  await firebase.assertFails(ref.add({ ...add, category: 'lessons' }));
+  await firebase.assertSucceeds(ref.add({ ...add, category: 'examples' }));
+  await firebase.assertSucceeds(ref.add({ ...add, category: 'posts' }));
+  await firebase.assertSucceeds(ref.add({ ...add, category: 'questions' }));
+  done();
+});
+
 test('category has a valid string', async (done) => {
   await firebase.assertSucceeds(ref.add({ ...data, category: 'examples' }));
-  await firebase.assertSucceeds(ref.add({ ...data, category: 'lessons' }));
+  await firebase.assertSucceeds(
+    ref.add({ ...data, chapterId: 'valid', category: 'lessons', order: 1 }),
+  );
   await firebase.assertSucceeds(ref.add({ ...data, category: 'posts' }));
   await firebase.assertSucceeds(ref.add({ ...data, category: 'questions' }));
   await firebase.assertFails(ref.add({ ...data, category: 'other' }));
   done();
 });
 
-test('chapters is an array', async (done) => {
-  await firebase.assertSucceeds(
-    ref.add({ ...data, chapters: ['item1'], order: { item1: 1 } }),
-  );
-  await firebase.assertFails(
-    ref.add({ ...data, chapters: 'test', order: { test: 1 } }),
-  );
-  await firebase.assertFails(
-    ref.add({ ...data, chapters: 123, order: { 123: 1 } }),
-  );
-  await firebase.assertFails(
-    ref.add({ ...data, chapters: true, order: { true: 1 } }),
-  );
-  await firebase.assertFails(ref.add({ ...data, chapters: { 1: true } }));
-  await firebase.assertFails(
-    ref.add({ ...data, chapters: null, order: { null: 1 } }),
-  );
+test('chapterId is an existing chapter', async (done) => {
+  await firebase.assertSucceeds(ref.add({ ...data, chapterId: 'valid' }));
+  await firebase.assertFails(ref.add({ ...data, chapterId: 'invalid' }));
   done();
 });
 
@@ -175,33 +174,14 @@ test('links can be null', async (done) => {
   done();
 });
 
-test('order is a map', async (done) => {
-  await firebase.assertSucceeds(ref.add({ ...data, order: {} }));
-  await firebase.assertFails(ref.add({ ...data, order: 'test' }));
-  await firebase.assertFails(ref.add({ ...data, order: 123 }));
-  await firebase.assertFails(ref.add({ ...data, order: true }));
-  await firebase.assertFails(ref.add({ ...data, order: [1, 2, 3] }));
-  done();
-});
-
-test('order has all chapter keys', async (done) => {
-  const newData = { ...data, chapters: ['item1', 'item2', 'item3'] };
-  const valid = { ...newData, order: { item1: 1, item2: 2, item3: 3 } };
-  await firebase.assertSucceeds(ref.add(valid));
-  await firebase.assertFails(ref.add(newData));
-  await firebase.assertFails(ref.add({ ...newData, order: { item1: 1 } }));
-  done();
-});
-
-test('order is a number', async (done) => {
-  const newData = { ...data, chapters: ['item1'] };
-  const valid = { ...newData, order: { item1: 1 } };
-  await firebase.assertSucceeds(ref.add(valid));
-  await firebase.assertFails(ref.add({ ...newData, order: { item1: '1' } }));
-  await firebase.assertFails(ref.add({ ...newData, order: { item1: {} } }));
-  await firebase.assertFails(ref.add({ ...newData, order: { item1: [1] } }));
-  await firebase.assertFails(ref.add({ ...newData, order: { item1: true } }));
-  await firebase.assertFails(ref.add({ ...newData, order: { item1: null } }));
+test('order is a number when the category is a lesson', async (done) => {
+  const add = { ...data, category: 'lessons', chapterId: 'valid' };
+  await firebase.assertSucceeds(ref.add({ ...add, order: 3 }));
+  await firebase.assertFails(ref.add({ ...add, order: '3' }));
+  await firebase.assertFails(ref.add({ ...add, order: true }));
+  await firebase.assertFails(ref.add({ ...add, order: { 1: true } }));
+  await firebase.assertFails(ref.add({ ...add, order: ['test'] }));
+  await firebase.assertFails(ref.add({ ...add, order: null }));
   done();
 });
 

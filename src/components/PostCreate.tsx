@@ -52,7 +52,7 @@ const PostCreate = ({
     createPost({
       ...data,
       category: category || 'posts',
-      chapters: chapterId ? [chapterId] : [],
+      chapterId: chapterId || null,
       comments: 0,
       createdAt: timestamp,
       createdBy: profile,
@@ -60,7 +60,7 @@ const PostCreate = ({
       language: appLanguage,
       likes: 0,
       links,
-      order: chapterId && order ? { [chapterId]: order } : {},
+      order: order || null,
       topics,
       updatedAt: timestamp,
       updatedBy: profile,

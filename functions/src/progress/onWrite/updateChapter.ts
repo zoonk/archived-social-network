@@ -8,7 +8,6 @@ export const onWritePostProgressUpdateChapter = functions.firestore
   .document('posts/{postId}/progress/{userId}')
   .onWrite(async (change, context) => {
     const { postId, userId } = context.params;
-    const batch = db.batch();
     const before = change.before.data() as PostProgress | undefined;
     const after = change.after.data() as PostProgress | undefined;
     let count = 0;
@@ -33,16 +32,17 @@ export const onWritePostProgressUpdateChapter = functions.firestore
     const postData = post.data() as Post.Response;
     const { increment } = admin.firestore.FieldValue;
 
-    // Update the completed counter for every chapter this post belongs to.
-    postData.chapters.forEach((chapter) => {
-      const ref = db.doc(`chapters/${chapter}/progress/${userId}`);
-      const data: ChapterProgress.Create = {
-        examples: increment(postData.category === 'examples' ? count : 0),
-        lessons: increment(postData.category === 'lessons' ? count : 0),
-        posts: increment(count),
-      };
-      batch.set(ref, data, { merge: true });
-    });
+    if (!postData.chapterId) {
+      return false;
+    }
 
-    return batch.commit();
+    // Update the completed counter for the chapter this post belongs to.
+    const ref = db.doc(`chapters/${postData.chapterId}/progress/${userId}`);
+    const data: ChapterProgress.Create = {
+      examples: increment(postData.category === 'examples' ? count : 0),
+      lessons: increment(postData.category === 'lessons' ? count : 0),
+      posts: increment(count),
+    };
+
+    return ref.set(data, { merge: true });
   });

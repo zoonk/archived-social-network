@@ -18,7 +18,7 @@ const profile = {
 
 const add = {
   category: 'posts',
-  chapters: [],
+  chapterId: null,
   comments: 0,
   content: 'content',
   createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -27,7 +27,8 @@ const add = {
   language: 'en',
   links: null,
   likes: 0,
-  order: {},
+  order: null,
+  pathId: null,
   title: 'new name',
   topics: ['topicId'],
   updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -102,6 +103,7 @@ test('can update lessons', async (done) => {
     ...add,
     category: 'lessons',
     createdById: 'otherUser',
+    order: 3,
   };
   await admin.doc('posts/otherUser').set(changes);
   await firebase.assertSucceeds(docRef.update({ ...edit, title: 'new' }));
@@ -125,25 +127,13 @@ test('category cannot be changed', async (done) => {
   done();
 });
 
-test('chapters is an array', async (done) => {
-  await firebase.assertSucceeds(
-    ref.update({ ...edit, chapters: ['item1'], order: { item1: 1 } }),
-  );
-  await firebase.assertFails(
-    ref.update({ ...edit, chapters: 'test', order: { test: 1 } }),
-  );
-  await firebase.assertFails(
-    ref.update({ ...edit, chapters: 123, order: { 123: 1 } }),
-  );
-  await firebase.assertFails(
-    ref.update({ ...edit, chapters: true, order: { true: 1 } }),
-  );
-  await firebase.assertFails(
-    ref.update({ ...edit, chapters: { 1: true }, order: { 1: true } }),
-  );
-  await firebase.assertFails(
-    ref.update({ ...edit, chapters: null, order: { null: 1 } }),
-  );
+test('chapter cannot be changed', async (done) => {
+  await firebase.assertFails(ref.update({ ...edit, chapter: 'new' }));
+  done();
+});
+
+test('chapterId cannot be changed', async (done) => {
+  await firebase.assertFails(ref.update({ ...edit, chapterId: 'new' }));
   done();
 });
 
@@ -214,38 +204,25 @@ test('links can be null', async (done) => {
   done();
 });
 
-test('order is a map', async (done) => {
-  await firebase.assertSucceeds(
-    ref.update({ ...edit, chapters: [], order: {} }),
-  );
-  await firebase.assertFails(ref.update({ ...edit, order: 'test' }));
-  await firebase.assertFails(ref.update({ ...edit, order: 123 }));
-  await firebase.assertFails(ref.update({ ...edit, order: true }));
-  await firebase.assertFails(ref.update({ ...edit, order: [1, 2, 3] }));
+test('order is a number when the category is a lesson', async (done) => {
+  const lesson = db.doc('posts/order');
+  await admin.doc('posts/order').set({ ...add, category: 'lessons', order: 1 });
+  await firebase.assertSucceeds(lesson.update({ ...edit, order: 8 }));
+  await firebase.assertFails(lesson.update({ ...edit, order: '3' }));
+  await firebase.assertFails(lesson.update({ ...edit, order: true }));
+  await firebase.assertFails(lesson.update({ ...edit, order: { 1: true } }));
+  await firebase.assertFails(lesson.update({ ...edit, order: ['test'] }));
+  await firebase.assertFails(lesson.update({ ...edit, order: null }));
   done();
 });
 
-test('order has all chapter keys', async (done) => {
-  const data = { ...edit, chapters: ['item1', 'item2', 'item3'] };
-  const valid = { ...data, order: { item1: 1, item2: 2, item3: 3 } };
-  await firebase.assertSucceeds(ref.update(valid));
-  await firebase.assertFails(ref.update({ ...data, order: {} }));
-  await firebase.assertFails(ref.update({ ...data, order: { item1: 1 } }));
+test('path cannot be changed', async (done) => {
+  await firebase.assertFails(ref.update({ ...edit, path: { title: 'new' } }));
   done();
 });
 
-test('order is a number or empry', async (done) => {
-  const data = { ...edit, chapters: ['item1'] };
-  const valid = { ...data, order: { item1: 1 } };
-  await firebase.assertSucceeds(ref.update(valid));
-  await firebase.assertSucceeds(
-    ref.update({ ...edit, chapters: [], order: {} }),
-  );
-  await firebase.assertFails(ref.update({ ...data, order: { item1: '1' } }));
-  await firebase.assertFails(ref.update({ ...data, order: { item1: {} } }));
-  await firebase.assertFails(ref.update({ ...data, order: { item1: [1] } }));
-  await firebase.assertFails(ref.update({ ...data, order: { item1: true } }));
-  await firebase.assertFails(ref.update({ ...data, order: { item1: null } }));
+test('pathId cannot be changed', async (done) => {
+  await firebase.assertFails(ref.update({ ...edit, pathId: 'new' }));
   done();
 });
 

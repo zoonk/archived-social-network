@@ -46,11 +46,11 @@ const LessonSortableList = ({ chapterId }: LessonSortableListProps) => {
       newOrder.splice(hover, 0, dragValue);
       newOrder = newOrder.map((item, index) => ({
         ...item,
-        order: { ...item.order, [chapterId]: index + 1 },
+        order: index + 1,
       }));
       setItems(newOrder);
     },
-    [chapterId, items],
+    [items],
   );
 
   if (!user || !profile) {
@@ -64,7 +64,7 @@ const LessonSortableList = ({ chapterId }: LessonSortableListProps) => {
   const save = () => {
     const changes = differenceWith(items, original, isEqual);
     setSnackbar({ type: 'progress', msg: translate('saving') });
-    updatePostOrder(changes, chapterId, profile, user.uid)
+    updatePostOrder(changes, profile, user.uid)
       .then(() => setSnackbar({ type: 'success', msg: translate('saved') }))
       .catch((e) => setSnackbar(firebaseError(e, 'update_order')));
   };

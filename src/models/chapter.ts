@@ -1,4 +1,4 @@
-import { ContentMetadata } from './content';
+import { ContentMetadata, ContentSummary } from './content';
 import { SearchIndex } from './search';
 
 /**
@@ -19,6 +19,10 @@ export namespace Chapter {
     posts: number;
   }
 
+  interface Metadata {
+    path?: ContentSummary;
+  }
+
   /**
    * Required fields for creating a chapter.
    */
@@ -34,12 +38,15 @@ export namespace Chapter {
   /**
    * Fields returned from the backend.
    */
-  export interface Response extends Fields, ContentMetadata.Response {}
+  export interface Response
+    extends Fields,
+      Metadata,
+      ContentMetadata.Response {}
 
   /**
    * Serialized fields.
    */
-  export interface Get extends Fields, ContentMetadata.Get {
+  export interface Get extends Fields, Metadata, ContentMetadata.Get {
     id: string;
   }
 

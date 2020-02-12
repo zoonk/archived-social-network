@@ -103,6 +103,7 @@ service cloud.firestore {
         && isReadOnly('lessons')
         && isReadOnly('likes')
         && request.resource.data.order is int
+        && isReadOnly('path')
         && isReadOnly('pathId')
         && (request.resource.data.photo is string || request.resource.data.photo == null)
         && isReadOnly('posts')
@@ -214,7 +215,8 @@ service cloud.firestore {
       allow create:
         if request.auth.uid != null
         && isValidPostCategory()
-        && request.resource.data.chapters is list
+        && (request.resource.data.category != 'lessons' || get(/databases/$(database)/documents/chapters/$(request.resource.data.chapterId)).data.lessons < 20)
+        && (request.resource.data.chapterId == null || exists(/databases/$(database)/documents/chapters/$(request.resource.data.chapterId)))
         && request.resource.data.comments == 0
         && request.resource.data.content is string
         && request.resource.data.createdAt == request.time
@@ -223,9 +225,7 @@ service cloud.firestore {
         && isValidLanguage()
         && request.resource.data.likes == 0
         && (request.resource.data.links == null || request.resource.data.links.size() == 0 || (request.resource.data.links is list && request.resource.data.links[0] is string))
-        && request.resource.data.order is map
-        && request.resource.data.order.keys().hasAll(request.resource.data.chapters) == true
-        && (request.resource.data.order.size() == 0 || request.resource.data.order.values()[0] is number)
+        && (request.resource.data.order is int || request.resource.data.category != 'lessons')
         && request.resource.data.title is string
         && request.resource.data.topics is list
         && request.resource.data.topics[0] is string
@@ -236,7 +236,8 @@ service cloud.firestore {
       allow update:
         if request.auth.uid != null
         && isReadOnly('category')
-        && request.resource.data.chapters is list
+        && isReadOnly('chapter')
+        && isReadOnly('chapterId')
         && isReadOnly('comments')
         && request.resource.data.content is string
         && isReadOnly('createdAt')
@@ -246,9 +247,9 @@ service cloud.firestore {
         && isReadOnly('language')
         && isReadOnly('likes')
         && (request.resource.data.links == null || request.resource.data.links.size() == 0 || (request.resource.data.links is list && request.resource.data.links[0] is string))
-        && request.resource.data.order is map
-        && request.resource.data.order.keys().hasAll(request.resource.data.chapters) == true
-        && (request.resource.data.order.size() == 0 || request.resource.data.order.values()[0] is number)
+        && (request.resource.data.order is int || request.resource.data.category != 'lessons')
+        && isReadOnly('path')
+        && isReadOnly('pathId')
         && request.resource.data.title is string
         && request.resource.data.topics is list
         && request.resource.data.topics[0] is string

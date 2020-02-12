@@ -78,3 +78,13 @@ export type ContentTypes =
  * Content with editable order.
  */
 export type EditableOrder = 'chapters' | 'lessons';
+
+/**
+ * Summary for displaying some content.
+ */
+export interface ContentSummary {
+  description: string;
+  id: string;
+  photo: string | null;
+  title: string;
+}

@@ -100,13 +100,21 @@ export const listPosts = async ({
     .withConverter(postConverter)
     .limit(limit);
 
+  // Order lessons by the user-defined order.
+  if (category === 'lessons') {
+    ref = ref.orderBy('order', 'asc');
+  }
+
   if (orderBy) {
     orderBy.forEach((field) => {
       ref = ref.orderBy(field, 'desc');
     });
   }
 
-  ref = ref.orderBy('updatedAt', 'desc');
+  // When it's not a lesson, then order by date.
+  if (category !== 'lessons') {
+    ref = ref.orderBy('updatedAt', 'desc');
+  }
 
   // Filter by category
   if (category) {
@@ -120,7 +128,7 @@ export const listPosts = async ({
 
   // Filter by chapter
   if (chapterId) {
-    ref = ref.where('chapters', 'array-contains', chapterId);
+    ref = ref.where('chapterId', '==', chapterId);
   }
 
   // Filter by user
@@ -138,16 +146,7 @@ export const listPosts = async ({
   }
 
   const snap = await ref.get();
-  let serialized = snap.docs.map((doc) => ({ ...doc.data(), snap: doc }));
-
-  // Sort by order when there's a chapterId (i.e. a lesson).
-  if (chapterId) {
-    serialized = serialized.sort(
-      (a, b) => a.order[chapterId] - b.order[chapterId],
-    );
-  }
-
-  return serialized;
+  return snap.docs.map((doc) => ({ ...doc.data(), snap: doc }));
 };
 
 /**
@@ -155,7 +154,6 @@ export const listPosts = async ({
  */
 export const updatePostOrder = (
   posts: Post.Get[],
-  chapterId: string,
   profile: Profile.Response,
   editorId: string,
 ): Promise<void> => {
@@ -163,7 +161,7 @@ export const updatePostOrder = (
   posts.forEach((post) => {
     const ref = db.doc(`posts/${post.id}`);
     batch.update(ref, {
-      [`order.${chapterId}`]: post.order[chapterId],
+      order: post.order,
       updatedAt: timestamp,
       updatedBy: profile,
       updatedById: editorId,

@@ -141,6 +141,11 @@ test('order is an integer', async (done) => {
   done();
 });
 
+test('path cannot be changed', async (done) => {
+  await firebase.assertFails(ref.update({ ...edit, path: 'new' }));
+  done();
+});
+
 test('pathId cannot be changed', async (done) => {
   await firebase.assertFails(ref.update({ ...edit, pathId: 'other' }));
   done();

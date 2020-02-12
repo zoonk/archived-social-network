@@ -1,6 +1,5 @@
 import functions from 'firebase-functions-test';
 import * as admin from 'firebase-admin';
-import { when } from 'jest-when';
 
 const testEnv = functions();
 const db = admin.firestore();
@@ -20,26 +19,31 @@ test('return if the data did not change', async (done) => {
   done();
 });
 
+test('return if the post does not have a chapterId', async (done) => {
+  spyOn(db.doc(''), 'get').and.returnValue({
+    data: () => ({ chapterId: null, category: 'lessons' }),
+  });
+
+  const change = {
+    before: { data: () => undefined },
+    after: { data: () => ({ completed: true }) },
+  };
+  const context = { params: { postId: 'postId', userId: 'userId' } };
+  const wrapped = testEnv.wrap(onWritePostProgressUpdateChapter);
+  const req = await wrapped(change, context);
+
+  expect(req).toBe(false);
+  expect(db.doc).toHaveBeenCalledWith('posts/postId');
+  expect(db.doc).not.toHaveBeenCalledWith('chapters/null/progress/userId');
+  expect(db.doc('').set).not.toHaveBeenCalled();
+  done();
+});
+
 test('increment the completed counter', async (done) => {
-  spyOn(db.batch(), 'commit').and.returnValue('updated');
-  when(db.doc as any)
-    .calledWith('posts/postId')
-    .mockReturnValue({
-      get: jest.fn().mockReturnValue({
-        data: () => ({
-          category: 'lessons',
-          chapters: ['chapter1', 'chapter2'],
-        }),
-      }),
-    });
-
-  when(db.doc as any)
-    .calledWith('chapters/chapter1/progress/userId')
-    .mockReturnValue('chapter1Ref');
-
-  when(db.doc as any)
-    .calledWith('chapters/chapter2/progress/userId')
-    .mockReturnValue('chapter2Ref');
+  spyOn(db.doc(''), 'set').and.returnValue('updated');
+  spyOn(db.doc(''), 'get').and.returnValue({
+    data: () => ({ chapterId: 'chapterId', category: 'lessons' }),
+  });
 
   const change = {
     before: { data: () => undefined },
@@ -55,42 +59,23 @@ test('increment the completed counter', async (done) => {
   };
 
   expect(req).toBe('updated');
-  expect(db.batch().set).toHaveBeenCalledWith('chapter1Ref', expected, {
-    merge: true,
-  });
-  expect(db.batch().set).toHaveBeenCalledWith('chapter2Ref', expected, {
-    merge: true,
-  });
+  expect(db.doc).toHaveBeenCalledWith('posts/postId');
+  expect(db.doc).toHaveBeenCalledWith('chapters/chapterId/progress/userId');
+  expect(db.doc('').set).toHaveBeenCalledWith(expected, { merge: true });
   done();
 });
 
 test('decrement the completed counter', async (done) => {
-  spyOn(db.batch(), 'commit').and.returnValue('updated');
-
-  when(db.doc as any)
-    .calledWith('posts/postId')
-    .mockReturnValue({
-      get: jest.fn().mockReturnValue({
-        data: () => ({
-          category: 'examples',
-          chapters: ['chapter3', 'chapter4'],
-        }),
-      }),
-    });
-
-  when(db.doc as any)
-    .calledWith('chapters/chapter3/progress/userId')
-    .mockReturnValue('chapter3Ref');
-
-  when(db.doc as any)
-    .calledWith('chapters/chapter4/progress/userId')
-    .mockReturnValue('chapter4Ref');
+  spyOn(db.doc(''), 'set').and.returnValue('updated');
+  spyOn(db.doc(''), 'get').and.returnValue({
+    data: () => ({ chapterId: 'chapter2', category: 'examples' }),
+  });
 
   const change = {
     before: { data: () => ({ completed: true }) },
-    after: { data: () => undefined },
+    after: { data: () => ({ completed: false }) },
   };
-  const context = { params: { postId: 'postId', userId: 'userId' } };
+  const context = { params: { postId: 'post2', userId: 'user2' } };
   const wrapped = testEnv.wrap(onWritePostProgressUpdateChapter);
   const req = await wrapped(change, context);
   const expected = {
@@ -100,11 +85,8 @@ test('decrement the completed counter', async (done) => {
   };
 
   expect(req).toBe('updated');
-  expect(db.batch().set).toHaveBeenCalledWith('chapter3Ref', expected, {
-    merge: true,
-  });
-  expect(db.batch().set).toHaveBeenCalledWith('chapter4Ref', expected, {
-    merge: true,
-  });
+  expect(db.doc).toHaveBeenCalledWith('posts/post2');
+  expect(db.doc).toHaveBeenCalledWith('chapters/chapter2/progress/user2');
+  expect(db.doc('').set).toHaveBeenCalledWith(expected, { merge: true });
   done();
 });

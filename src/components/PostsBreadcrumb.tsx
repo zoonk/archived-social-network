@@ -9,7 +9,7 @@ import LinkTopic from './LinkTopic';
 
 interface PostsBreadcrumbProps {
   category?: Post.Category;
-  chapterId?: string;
+  chapterId?: string | null;
   children?: React.ReactNode;
   title?: string;
   topicId?: string;

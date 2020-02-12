@@ -187,8 +187,8 @@
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "chapters",
-          "arrayConfig": "CONTAINS"
+          "fieldPath": "chapterId",
+          "order": "ASCENDING"
         },
         {
           "fieldPath": "category",
@@ -197,6 +197,24 @@
         {
           "fieldPath": "updatedAt",
           "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "posts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "category",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "chapterId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "order",
+          "order": "ASCENDING"
         }
       ]
     },
@@ -273,8 +291,8 @@
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "chapters",
-          "arrayConfig": "CONTAINS"
+          "fieldPath": "chapterId",
+          "order": "ASCENDING"
         },
         {
           "fieldPath": "category",

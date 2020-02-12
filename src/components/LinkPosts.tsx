@@ -6,7 +6,7 @@ import { GlobalContext } from '@zoonk/utils';
 
 interface LinkPostsProps {
   category?: Post.Category;
-  chapterId?: string;
+  chapterId?: string | null;
   topicId?: string;
 }
 
