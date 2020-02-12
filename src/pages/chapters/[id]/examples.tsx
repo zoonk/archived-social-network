@@ -20,10 +20,7 @@ const ChapterExamples: NextPage = () => {
     <Container component="main">
       <Meta title={translate('real_life_examples')} noIndex />
       <ChaptersBreadcrumb title={translate('real_life_examples')}>
-        <LinkChapter
-          title={translate('chapter')}
-          chapterId={String(query.id)}
-        />
+        <LinkChapter title={translate('chapter')} id={String(query.id)} />
       </ChaptersBreadcrumb>
       {query.id && (
         <PostsCard

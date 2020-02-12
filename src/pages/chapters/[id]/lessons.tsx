@@ -21,10 +21,7 @@ const ChapterEdits: NextPage = () => {
       <Meta title={translate('lessons')} noIndex />
 
       <ChaptersBreadcrumb title={translate('lessons')}>
-        <LinkChapter
-          title={translate('chapter')}
-          chapterId={String(query.id)}
-        />
+        <LinkChapter title={translate('chapter')} id={String(query.id)} />
       </ChaptersBreadcrumb>
 
       {query.id && <LessonSortableList chapterId={String(query.id)} />}

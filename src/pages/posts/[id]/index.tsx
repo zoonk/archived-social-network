@@ -25,7 +25,7 @@ const PostPage: NextPage<PostPageProps> = ({ data }) => {
   const { user } = useContext(GlobalContext);
   const {
     category,
-    chapterId,
+    chapter,
     comments,
     content,
     createdAt,
@@ -33,6 +33,7 @@ const PostPage: NextPage<PostPageProps> = ({ data }) => {
     createdById,
     id,
     language,
+    path,
     title,
     topics,
     updatedAt,
@@ -62,7 +63,8 @@ const PostPage: NextPage<PostPageProps> = ({ data }) => {
 
       <PostsBreadcrumb
         category={category}
-        chapterId={chapterId}
+        chapter={chapter}
+        path={path}
         topicId={topics[0]}
         title={title}
       />

@@ -21,10 +21,7 @@ const ChapterEdits: NextPage = () => {
       <Meta title={translate('page_edits')} noIndex />
 
       <ChaptersBreadcrumb title={translate('see_all_edits')}>
-        <LinkChapter
-          title={translate('chapter')}
-          chapterId={String(query.id)}
-        />
+        <LinkChapter title={translate('chapter')} id={String(query.id)} />
       </ChaptersBreadcrumb>
 
       {query.id && <EditsList itemPath={`chapters/${query.id}`} />}

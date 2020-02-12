@@ -36,9 +36,9 @@ const PostAddPage: NextPage = () => {
       <Meta title={translate('post_add')} noIndex />
       <PostsBreadcrumb
         category={category}
-        chapterId={chapterId}
+        chapter={{ id: chapterId } as any}
         topicId={topicId}
-        title={translate('create')}
+        title={translate('post_add')}
       />
       <PostCreate
         category={category}

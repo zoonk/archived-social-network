@@ -39,7 +39,7 @@ const EditChapter: NextPage = () => {
       <Meta title={translate('edit')} />
 
       <ChaptersBreadcrumb pathId={data.pathId} title={translate('edit')}>
-        <LinkChapter title={data.title} chapterId={data.id} />
+        <LinkChapter title={data.title} id={data.id} />
       </ChaptersBreadcrumb>
 
       <ChapterFormContainer>

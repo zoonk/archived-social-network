@@ -52,7 +52,8 @@ const EditPost: NextPage = () => {
       <Meta title={translate('post_edit')} />
       <PostsBreadcrumb
         category={data.category}
-        chapterId={data.chapterId}
+        chapter={data.chapter}
+        path={data.path}
         topicId={data.topics[0]}
         title={translate('edit')}
       >
