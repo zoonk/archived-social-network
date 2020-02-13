@@ -2,9 +2,9 @@ import { useContext } from 'react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { Button, Link, Typography } from '@material-ui/core';
-import { Add } from '@material-ui/icons';
 import { ContentCategory, EditableOrder, Post } from '@zoonk/models';
-import { GlobalContext, removeTrailingSlash, theme } from '@zoonk/utils';
+import { GlobalContext, removeTrailingSlash } from '@zoonk/utils';
+import AddButton from './AddButton';
 
 interface CategoryCardHeaderProps {
   canAdd?: boolean;
@@ -54,19 +54,7 @@ const CategoryCardHeader = ({
       )}
 
       <div style={{ flexGrow: 1 }} />
-
-      {canAdd && (
-        <NextLink href={{ pathname: `/${category}/add`, query }} passHref>
-          <Button component="a" size="small" color="primary">
-            <Add
-              aria-label={translate('create')}
-              style={{ marginRight: theme.spacing(0.5) }}
-            />
-            {translate('create')}
-          </Button>
-        </NextLink>
-      )}
-
+      {canAdd && <AddButton category={category} query={query} />}
       {edit && (
         <NextLink href={`${href}/${edit}`} as={`${as}/${edit}`} passHref>
           <Button component="a" size="small" color="secondary">

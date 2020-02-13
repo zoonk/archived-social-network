@@ -4,6 +4,7 @@ import { CircularProgress } from '@material-ui/core';
 import { Post, SnackbarAction } from '@zoonk/models';
 import { listPosts, updatePostOrder } from '@zoonk/services';
 import { firebaseError, GlobalContext } from '@zoonk/utils';
+import AddButton from './AddButton';
 import Snackbar from './Snackbar';
 import SortableList from './SortableList';
 
@@ -71,6 +72,12 @@ const LessonSortableList = ({ chapterId }: LessonSortableListProps) => {
 
   return (
     <Fragment>
+      <div style={{ display: 'flex' }}>
+        <AddButton
+          category="posts"
+          query={{ chapterId, category: 'lessons', order: items.length + 1 }}
+        />
+      </div>
       <SortableList
         category="posts"
         items={items}
