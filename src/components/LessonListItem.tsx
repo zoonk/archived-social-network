@@ -6,17 +6,19 @@ import {
 } from '@material-ui/core';
 import NextLink from 'next/link';
 import { Post } from '@zoonk/models';
+import { theme } from '@zoonk/utils';
 
-interface PostListItemProps {
+interface LessonListItemProps {
   divider?: boolean;
+  index: number;
   item: Post.Get;
 }
 
 /**
- * Display a single post as a list item.
+ * Display a single lesson as a list item.
  */
-const PostListItem = ({ divider, item }: PostListItemProps) => {
-  const { content, createdBy, title } = item;
+const LessonListItem = ({ divider, index, item }: LessonListItemProps) => {
+  const { content, title } = item;
 
   return (
     <NextLink href="/posts/[id]" as={`/posts/${item.id}`} passHref>
@@ -28,7 +30,9 @@ const PostListItem = ({ divider, item }: PostListItemProps) => {
         disableGutters
       >
         <ListItemAvatar>
-          <Avatar src={createdBy.photo || undefined} />
+          <Avatar style={{ backgroundColor: theme.palette.primary.main }}>
+            {index + 1}
+          </Avatar>
         </ListItemAvatar>
         <ListItemText
           primary={title}
@@ -43,4 +47,4 @@ const PostListItem = ({ divider, item }: PostListItemProps) => {
   );
 };
 
-export default PostListItem;
+export default LessonListItem;

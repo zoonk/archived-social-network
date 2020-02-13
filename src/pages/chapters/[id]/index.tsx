@@ -4,6 +4,7 @@ import { Container, Grid, makeStyles } from '@material-ui/core';
 import ChapterDetails from '@zoonk/components/ChapterDetails';
 import ChaptersBreadcrumb from '@zoonk/components/ChaptersBreadcrumb';
 import ItemCredits from '@zoonk/components/ItemCredits';
+import LessonsCard from '@zoonk/components/LessonsCard';
 import Meta from '@zoonk/components/Meta';
 import NotesCard from '@zoonk/components/NotesCard';
 import PostsCard from '@zoonk/components/PostsCard';
@@ -68,16 +69,7 @@ const ChapterPage: NextPage<ChapterProps> = ({ data }) => {
         </Grid>
 
         <Grid item xs={12} sm={6} md={8} className={classes.column}>
-          <PostsCard
-            category="lessons"
-            chapterId={id}
-            edit="lessons"
-            limit={20}
-            allowAdd
-            allowLoadMore
-            hideLink
-            title={translate('lessons')}
-          />
+          <LessonsCard chapterId={id} />
           <PostsCard
             category="examples"
             chapterId={id}

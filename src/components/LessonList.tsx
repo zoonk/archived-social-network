@@ -1,21 +1,22 @@
 import { List } from '@material-ui/core';
 import { Post } from '@zoonk/models';
-import PostListItem from './PostListItem';
+import LessonListItem from './LessonListItem';
 
-interface PostListProps {
+interface LessonListProps {
   items: Post.Get[];
 }
 
 /**
- * Display a list of posts.
+ * Display a list of lessons.
  */
-const PostList = ({ items }: PostListProps) => {
+const LessonList = ({ items }: LessonListProps) => {
   return (
     <List disablePadding>
       {items.map((item, index) => (
-        <PostListItem
+        <LessonListItem
           key={item.id}
           divider={index !== items.length - 1}
+          index={index}
           item={item}
         />
       ))}
@@ -23,4 +24,4 @@ const PostList = ({ items }: PostListProps) => {
   );
 };
 
-export default PostList;
+export default LessonList;
