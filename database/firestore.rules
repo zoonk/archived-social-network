@@ -35,7 +35,7 @@ service cloud.firestore {
     }
 
     function isValidPostCategory() {
-      return isOneOf('category', 'examples|lessons|posts|questions');
+      return isOneOf('category', 'courses|examples|lessons|posts|questions');
     }
 
     function isValidLanguage() {

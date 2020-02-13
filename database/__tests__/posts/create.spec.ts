@@ -75,6 +75,7 @@ test('cannot add more than 10 lessons to a chapter', async (done) => {
 });
 
 test('category has a valid string', async (done) => {
+  await firebase.assertSucceeds(ref.add({ ...data, category: 'courses' }));
   await firebase.assertSucceeds(ref.add({ ...data, category: 'examples' }));
   await firebase.assertSucceeds(
     ref.add({ ...data, chapterId: 'valid', category: 'lessons', order: 1 }),

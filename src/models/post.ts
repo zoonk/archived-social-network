@@ -10,7 +10,12 @@ export namespace Post {
     url: string;
   }
 
-  export type Category = 'examples' | 'lessons' | 'posts' | 'questions';
+  export type Category =
+    | 'courses'
+    | 'examples'
+    | 'lessons'
+    | 'posts'
+    | 'questions';
   export type OrderBy = 'likes';
 
   export interface EditableFields {
