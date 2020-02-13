@@ -6,6 +6,7 @@ import {
 } from '@material-ui/core';
 import NextLink from 'next/link';
 import { Post } from '@zoonk/models';
+import { getPostImage } from '@zoonk/utils';
 
 interface PostListItemProps {
   divider?: boolean;
@@ -16,7 +17,9 @@ interface PostListItemProps {
  * Display a single post as a list item.
  */
 const PostListItem = ({ divider, item }: PostListItemProps) => {
-  const { content, createdBy, title } = item;
+  const { chapter, content, createdBy, path, title } = item;
+  const image =
+    getPostImage(content) || chapter?.photo || path?.photo || createdBy?.photo;
 
   return (
     <NextLink href="/posts/[id]" as={`/posts/${item.id}`} passHref>
@@ -28,7 +31,7 @@ const PostListItem = ({ divider, item }: PostListItemProps) => {
         disableGutters
       >
         <ListItemAvatar>
-          <Avatar src={createdBy.photo || undefined} />
+          <Avatar src={image || undefined} />
         </ListItemAvatar>
         <ListItemText
           primary={title}
