@@ -10,7 +10,7 @@ import { Description } from '@material-ui/icons';
 import NextLink from 'next/link';
 import { Post } from '@zoonk/models';
 import { getPostImage, theme } from '@zoonk/utils';
-import TopicLabel from './TopicLabel';
+import PostListMeta from './PostListMeta';
 
 interface PostListItemProps {
   divider?: boolean;
@@ -21,7 +21,7 @@ interface PostListItemProps {
  * Display a single post as a list item.
  */
 const PostListItem = ({ divider, item }: PostListItemProps) => {
-  const { chapter, content, path, title, topics } = item;
+  const { chapter, content, path, title } = item;
   const image = getPostImage(content) || chapter?.photo || path?.photo;
 
   return (
@@ -35,16 +35,15 @@ const PostListItem = ({ divider, item }: PostListItemProps) => {
         </Avatar>
       </ListItemAvatar>
       <ListItemText
+        disableTypography
         primary={
           <NextLink href="/posts/[id]" as={`/posts/${item.id}`} passHref>
             <Link color="textPrimary">
-              <Typography gutterBottom>{title}</Typography>
+              <Typography>{title}</Typography>
             </Link>
           </NextLink>
         }
-        secondary={topics.slice(0, 3).map((id) => (
-          <TopicLabel key={id} id={id} />
-        ))}
+        secondary={<PostListMeta post={item} />}
       />
     </ListItem>
   );
