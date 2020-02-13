@@ -97,6 +97,8 @@ const translate: TranslationFn = (key, args) => {
     learn_about: `Learn about ${args?.title}`,
     learningPaths: 'Learning paths',
     let_us_know: 'Please, let us know.',
+    lessons_limit:
+      'You cannot create more than 10 lessons in the same chapter. Please, split them in different chapters instead.',
     lessons: 'Lessons',
     level: 'Level',
     like: 'Like',

@@ -93,6 +93,7 @@ export type TranslationKeys =
   | 'learn_about'
   | 'learningPaths'
   | 'let_us_know'
+  | 'lessons_limit'
   | 'lessons'
   | 'level'
   | 'like'

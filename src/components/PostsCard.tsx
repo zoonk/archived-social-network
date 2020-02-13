@@ -43,7 +43,7 @@ const PostsCard = ({
   const { error, get, items, lastVisible, loading } = useLoadMore<
     Post.Snapshot
   >(limit);
-  const query = { category, chapterId, order: items.length + 1, topicId };
+  const query = { category, chapterId, topicId };
   const canAdd = allowAdd || Boolean(chapterId);
 
   const loadMore = () => {

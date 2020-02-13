@@ -215,7 +215,7 @@ service cloud.firestore {
       allow create:
         if request.auth.uid != null
         && isValidPostCategory()
-        && (request.resource.data.category != 'lessons' || get(/databases/$(database)/documents/chapters/$(request.resource.data.chapterId)).data.lessons < 20)
+        && (request.resource.data.category != 'lessons' || get(/databases/$(database)/documents/chapters/$(request.resource.data.chapterId)).data.lessons < 10)
         && (request.resource.data.chapterId == null || exists(/databases/$(database)/documents/chapters/$(request.resource.data.chapterId)))
         && request.resource.data.comments == 0
         && request.resource.data.content is string

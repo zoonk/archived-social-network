@@ -41,7 +41,7 @@ beforeAll(async (done) => {
   ref = db.collection('posts');
   await loadFirestoreRules();
   await admin.doc('profile/currentUser').set(profile);
-  await admin.doc('chapters/valid').set({ lessons: 10 });
+  await admin.doc('chapters/valid').set({ lessons: 5 });
   done();
 });
 
@@ -64,9 +64,9 @@ test('anonymous cannot create an item', async (done) => {
   done();
 });
 
-test('cannot add more than 20 lessons to a chapter', async (done) => {
+test('cannot add more than 10 lessons to a chapter', async (done) => {
   const add = { ...data, chapterId: 'full', order: 3 };
-  await admin.doc('chapters/full').set({ lessons: 20 });
+  await admin.doc('chapters/full').set({ lessons: 10 });
   await firebase.assertFails(ref.add({ ...add, category: 'lessons' }));
   await firebase.assertSucceeds(ref.add({ ...add, category: 'examples' }));
   await firebase.assertSucceeds(ref.add({ ...add, category: 'posts' }));

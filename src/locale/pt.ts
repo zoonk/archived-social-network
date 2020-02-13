@@ -97,6 +97,8 @@ const translate: TranslationFn = (key, args) => {
     leaderboard: 'Ranking',
     learn_about: `Aprenda sobre ${args?.title}`,
     learningPaths: 'Trilhas de aprendizado',
+    lessons_limit:
+      'Você não pode criar mais de 10 lições em um capítulo. Por favore, divida as lições em mais capítulos.',
     lessons: 'Lições',
     let_us_know: 'Por favor, nos avise.',
     level: 'Nível',
