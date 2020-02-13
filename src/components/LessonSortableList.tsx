@@ -1,4 +1,5 @@
 import { Fragment, useCallback, useContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { differenceWith, isEqual } from 'lodash';
 import { CircularProgress } from '@material-ui/core';
 import { Post, SnackbarAction } from '@zoonk/models';
@@ -17,6 +18,7 @@ interface LessonSortableListProps {
  */
 const LessonSortableList = ({ chapterId }: LessonSortableListProps) => {
   const { profile, translate, user } = useContext(GlobalContext);
+  const { push } = useRouter();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [items, setItems] = useState<Post.Get[]>([]);
@@ -82,6 +84,7 @@ const LessonSortableList = ({ chapterId }: LessonSortableListProps) => {
         category="posts"
         items={items}
         saving={snackbar?.type === 'progress'}
+        onCancel={() => push('/chapters/[id]', `/chapters/${chapterId}`)}
         onMove={handleMove}
         onSave={save}
       />

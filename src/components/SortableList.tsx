@@ -16,6 +16,7 @@ interface SortableListProps {
   items: ListContent[];
   saving: boolean;
   onMove: (drag: number, hover: number) => void;
+  onCancel?: () => void;
   onSave: () => void;
 }
 
@@ -26,6 +27,7 @@ const SortableList = ({
   category,
   items,
   saving,
+  onCancel,
   onMove,
   onSave,
 }: SortableListProps) => {
@@ -63,7 +65,7 @@ const SortableList = ({
         color="secondary"
         style={{ margin: theme.spacing(3, 2, 0) }}
         disabled={saving}
-        onClick={back}
+        onClick={onCancel || back}
       >
         {translate('cancel')}
       </Button>
