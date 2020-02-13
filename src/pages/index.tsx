@@ -37,7 +37,7 @@ const Home: NextPage = () => {
       <Grid container spacing={2} className={classes.container}>
         <Grid item xs={12} sm={6} className={classes.column}>
           <PostsCard
-            limit={20}
+            limit={10}
             allowAdd
             allowLoadMore
             title={translate('posts')}
