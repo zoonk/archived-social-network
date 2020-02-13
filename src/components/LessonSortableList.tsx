@@ -28,7 +28,7 @@ const LessonSortableList = ({ chapterId }: LessonSortableListProps) => {
     let active = true;
     setLoading(true);
 
-    listPosts({ category: 'lessons', chapterId, limit: 20 }).then((res) => {
+    listPosts({ category: ['lessons'], chapterId, limit: 20 }).then((res) => {
       if (active) {
         setItems(res);
         setOriginal(res);

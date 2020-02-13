@@ -22,7 +22,7 @@ const Examples: NextPage = () => {
       />
       <HomeBreadcrumb title={translate('real_life_examples')} />
       <PostsCard
-        category="examples"
+        category={['examples']}
         limit={10}
         hideLink
         allowAdd

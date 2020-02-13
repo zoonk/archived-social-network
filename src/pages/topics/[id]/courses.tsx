@@ -33,7 +33,7 @@ const TopicCourses: NextPage<TopicCoursesProps> = ({ title, topicId }) => {
       />
       <TopicsBreadcrumb topicId={topicId} title={translate('courses_books')} />
       <PostsCard
-        category="courses"
+        category={['courses']}
         topicId={topicId}
         limit={10}
         hideLink

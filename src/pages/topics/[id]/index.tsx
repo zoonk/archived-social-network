@@ -71,7 +71,7 @@ const TopicPage: NextPage<TopicPageProps> = ({ topic }) => {
         <Grid item xs={12} sm={6} md={8} className={classes.column}>
           <PathsCard topicId={id} />
           <PostsCard
-            category="examples"
+            category={['examples']}
             topicId={id}
             limit={3}
             allowAdd
@@ -79,13 +79,15 @@ const TopicPage: NextPage<TopicPageProps> = ({ topic }) => {
             title={translate('examples')}
           />
           <PostsCard
+            category={['lessons', 'posts']}
             topicId={id}
             limit={3}
+            list="posts"
             allowAdd
             title={translate('posts')}
           />
           <PostsCard
-            category="courses"
+            category={['courses']}
             topicId={id}
             limit={3}
             allowAdd

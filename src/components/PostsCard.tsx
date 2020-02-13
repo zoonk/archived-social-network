@@ -13,10 +13,11 @@ import useLoadMore from './useLoadMore';
 interface PostsCardProps {
   allowAdd?: boolean;
   allowLoadMore?: boolean;
-  category?: Post.Category;
+  category?: Post.Category[];
   chapterId?: string;
   hideLink?: boolean;
   limit?: number;
+  list?: Post.Category;
   orderBy?: Post.OrderBy[];
   title: string;
   topicId?: string;
@@ -33,6 +34,7 @@ const PostsCard = ({
   chapterId,
   hideLink,
   limit,
+  list,
   orderBy,
   title,
   topicId,
@@ -87,7 +89,7 @@ const PostsCard = ({
           hideLink={hideLink}
           query={query}
           category="posts"
-          list={category}
+          list={list || category?.[0]}
           title={title}
         />
 

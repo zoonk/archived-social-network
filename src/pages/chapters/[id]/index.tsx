@@ -71,7 +71,7 @@ const ChapterPage: NextPage<ChapterProps> = ({ data }) => {
         <Grid item xs={12} sm={6} md={8} className={classes.column}>
           <LessonsCard chapterId={id} />
           <PostsCard
-            category="examples"
+            category={['examples']}
             chapterId={id}
             limit={3}
             allowAdd

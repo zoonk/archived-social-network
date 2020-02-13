@@ -75,7 +75,7 @@ export const deletePost = async (
 };
 
 interface PostArgs {
-  category?: Post.Category;
+  category?: Post.Category[];
   chapterId?: string;
   lastVisible?: firebase.firestore.DocumentSnapshot;
   limit?: number;
@@ -101,25 +101,21 @@ export const listPosts = async ({
     .withConverter(postConverter)
     .limit(limit);
 
-  // Order lessons by the user-defined order.
-  if (category === 'lessons') {
-    ref = ref.orderBy('order', 'asc');
-  }
-
   if (orderBy) {
     orderBy.forEach((field) => {
-      ref = ref.orderBy(field, 'desc');
+      const direction = field === 'likes' ? 'desc' : 'asc';
+      ref = ref.orderBy(field, direction);
     });
   }
 
-  // When it's not a lesson, then order by date.
-  if (category !== 'lessons') {
+  // Also order by date when orderBy is not by oder.
+  if (!orderBy?.includes('order')) {
     ref = ref.orderBy('updatedAt', 'desc');
   }
 
   // Filter by category
   if (category) {
-    ref = ref.where('category', '==', category);
+    ref = ref.where('category', 'in', category);
   }
 
   // Filter by topic

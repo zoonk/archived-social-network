@@ -30,9 +30,10 @@ const LessonsCard = ({ chapterId }: LessonsCardProps) => {
   useEffect(() => {
     get(
       listPosts({
-        category: 'lessons',
+        category: ['lessons'],
         chapterId,
         limit: maxLessons,
+        orderBy: ['order'],
       }),
     );
   }, [chapterId, get]);

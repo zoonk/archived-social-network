@@ -16,7 +16,7 @@ export namespace Post {
     | 'lessons'
     | 'posts'
     | 'questions';
-  export type OrderBy = 'likes';
+  export type OrderBy = 'likes' | 'order';
 
   export interface EditableFields {
     content: string;

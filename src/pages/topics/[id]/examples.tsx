@@ -36,7 +36,7 @@ const TopicExamples: NextPage<TopicExamplesProps> = ({ title, topicId }) => {
         title={translate('real_life_examples')}
       />
       <PostsCard
-        category="examples"
+        category={['examples']}
         topicId={topicId}
         limit={10}
         hideLink

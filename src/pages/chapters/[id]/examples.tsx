@@ -24,7 +24,7 @@ const ChapterExamples: NextPage = () => {
       </ChaptersBreadcrumb>
       {query.id && (
         <PostsCard
-          category="examples"
+          category={['examples']}
           chapterId={String(query.id)}
           limit={10}
           hideLink
