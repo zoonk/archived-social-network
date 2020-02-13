@@ -36,7 +36,7 @@ const PostsBreadcrumb = ({
         <LinkHome />
         {topicId && <LinkTopic id={topicId} />}
         {path && <LinkPath id={path.id} title={path.title} />}
-        {chapter && <LinkChapter id={chapter.id} title={chapter.title} />}
+        {chapter?.id && <LinkChapter id={chapter.id} title={chapter.title} />}
         {category !== 'lessons' && (
           <LinkPosts
             category={category}
