@@ -31,6 +31,8 @@ const FormattingTips = () => {
     'ol',
     'code_inline',
     'code_multiline',
+    'pdf',
+    'drive',
   ];
 
   return (

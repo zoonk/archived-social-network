@@ -1,12 +1,14 @@
 import dynamic from 'next/dynamic';
 
+const GoogleDriveViewer = dynamic(() => import('./GoogleDriveViewer'));
+const PDFViewer = dynamic(() => import('./PDFViewer'));
 const VimeoPlayer = dynamic(() => import('./VimeoPlayer'));
 const YoutubePlayer = dynamic(() => import('./YoutubePlayer'));
 
 interface ShortcodeRendererProps {
-  identifier: 'vimeo' | 'youtube';
+  identifier: 'drive' | 'pdf' | 'vimeo' | 'youtube';
   attributes: {
-    id: string;
+    [key: string]: string;
   };
 }
 
@@ -19,9 +21,13 @@ const ShortcodeRenderer = ({
   identifier,
   attributes,
 }: ShortcodeRendererProps) => {
-  const { id } = attributes;
+  const { id, url } = attributes;
 
   switch (identifier) {
+    case 'drive':
+      return <GoogleDriveViewer id={id} />;
+    case 'pdf':
+      return <PDFViewer url={url} />;
     case 'vimeo':
       return <VimeoPlayer id={id} />;
     case 'youtube':
