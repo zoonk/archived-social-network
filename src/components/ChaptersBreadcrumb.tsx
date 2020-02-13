@@ -1,6 +1,6 @@
-import { useContext } from 'react';
 import { Breadcrumbs, Paper, Typography } from '@material-ui/core';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { ContentSummary } from '@zoonk/models';
+import { theme } from '@zoonk/utils';
 import LinkHome from './LinkHome';
 import LinkPath from './LinkPath';
 import LinkTopic from './LinkTopic';
@@ -8,7 +8,7 @@ import LinkTopic from './LinkTopic';
 interface ChaptersBreadcrumbProps {
   children?: React.ReactNode;
   title: string;
-  pathId?: string;
+  path?: ContentSummary;
   topicId?: string;
 }
 
@@ -17,18 +17,16 @@ interface ChaptersBreadcrumbProps {
  */
 const ChaptersBreadcrumb = ({
   children,
-  pathId,
+  path,
   title,
   topicId,
 }: ChaptersBreadcrumbProps) => {
-  const { translate } = useContext(GlobalContext);
-
   return (
     <Paper elevation={0} style={{ padding: theme.spacing(2, 0) }}>
       <Breadcrumbs>
         <LinkHome />
         {topicId && <LinkTopic id={topicId} />}
-        {pathId && <LinkPath id={pathId} title={translate('chapters')} />}
+        {path && <LinkPath id={path.id} title={path.title} />}
         {children}
         <Typography color="textPrimary">{title}</Typography>
       </Breadcrumbs>

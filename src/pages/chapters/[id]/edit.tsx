@@ -38,7 +38,7 @@ const EditChapter: NextPage = () => {
     <Container component="main" maxWidth="xs">
       <Meta title={translate('edit')} />
 
-      <ChaptersBreadcrumb pathId={data.pathId} title={translate('edit')}>
+      <ChaptersBreadcrumb path={data.path} title={translate('edit')}>
         <LinkChapter title={data.title} id={data.id} />
       </ChaptersBreadcrumb>
 

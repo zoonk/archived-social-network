@@ -32,7 +32,7 @@ const ChapterPage: NextPage<ChapterProps> = ({ data }) => {
     id,
     description,
     language,
-    pathId,
+    path,
     photo,
     title,
     topics,
@@ -50,10 +50,10 @@ const ChapterPage: NextPage<ChapterProps> = ({ data }) => {
         title={title}
         description={description.slice(0, 200)}
         image={photo}
-        canonicalUrl={`https://${language}.zoonk.org/paths/${pathId}/chapters/${id}`}
+        canonicalUrl={`https://${language}.zoonk.org/chapters/${id}`}
       />
 
-      <ChaptersBreadcrumb topicId={topics[0]} pathId={pathId} title={title} />
+      <ChaptersBreadcrumb topicId={topics[0]} path={path} title={title} />
 
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6} md={4} className={classes.column}>
