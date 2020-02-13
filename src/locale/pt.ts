@@ -236,6 +236,8 @@ const translate: TranslationFn = (key, args) => {
     seo_topic_paths_title: `Trilhas de aprendizagem sobre ${args?.title}`,
     seo_topic_posts_desc: `Encontre postagens sobre ${args?.title}. Os melhores artigos sobre ${args?.title} online.`,
     seo_topic_posts_title: `Fórum sobre ${args?.title}`,
+    seo_topic_questions_desc: `Tire todas as dúvidas ${args?.title}. Faça perguntas e encontre respostas sobre ${args?.title} online.`,
+    seo_topic_questions_title: `Tire dúvidas sobre ${args?.title}`,
     seo_topics_desc: 'Aprenda qualquer assunto de graça no Zoonk.',
     seo_topics_create_desc: 'Como criar um assunto novo no Zoonk.',
     settings: 'Configurações',

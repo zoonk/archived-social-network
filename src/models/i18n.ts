@@ -212,6 +212,8 @@ export type TranslationKeys =
   | 'seo_topic_paths_title'
   | 'seo_topic_posts_desc'
   | 'seo_topic_posts_title'
+  | 'seo_topic_questions_desc'
+  | 'seo_topic_questions_title'
   | 'seo_topics_create_desc'
   | 'seo_topics_desc'
   | 'settings'
