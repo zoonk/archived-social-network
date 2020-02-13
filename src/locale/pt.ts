@@ -118,6 +118,7 @@ const translate: TranslationFn = (key, args) => {
     my_studies: 'Meus estudos',
     name: 'Nome',
     need_to_be_loggedin: 'Você precisa estar logado para fazer isso.',
+    next_lesson: 'Próxima lição',
     notes_first:
       'Escreva a sua primeira anotação. Elas são privadas. Portanto, apenas você pode visualizá-las.',
     notes_new: 'Nova anotação',

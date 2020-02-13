@@ -117,6 +117,7 @@ const translate: TranslationFn = (key, args) => {
     my_studies: 'My studies',
     name: 'Name',
     need_to_be_loggedin: 'You need to be logged in to perform this action.',
+    next_lesson: 'Next lesson',
     notes_first:
       'Write your first note. Your notes are private. They will only be visible to you.',
     notes_new: 'Create a note',

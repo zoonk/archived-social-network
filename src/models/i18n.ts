@@ -110,6 +110,7 @@ export type TranslationKeys =
   | 'my_studies'
   | 'name'
   | 'need_to_be_loggedin'
+  | 'next_lesson'
   | 'notes_first'
   | 'notes_new'
   | 'notes_required_fields'

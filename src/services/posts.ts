@@ -8,6 +8,7 @@ import {
   timestamp,
 } from '@zoonk/utils';
 import { serializePost } from '../serializers';
+import { getChapter } from './chapters';
 
 const postConverter: firebase.firestore.FirestoreDataConverter<Post.Get> = {
   toFirestore(data: Post.Get) {
@@ -188,4 +189,48 @@ export const togglePostProgress = (
  */
 export const readPost = (id: string, user: string): Promise<void> => {
   return togglePostProgress(id, false, user);
+};
+
+/**
+ * Get next lesson from a chapter.
+ */
+export const getNextLesson = async (
+  chapterId: string,
+  order: number,
+): Promise<string | null> => {
+  // Get the next lesson based on the current order.
+  const lessons = await db
+    .collection('posts')
+    .where('chapterId', '==', chapterId)
+    .where('category', '==', 'lessons')
+    .where('order', '>', order)
+    .orderBy('order', 'asc')
+    .limit(1)
+    .get();
+
+  // If the query returns any lessons, then use its ID.
+  if (lessons.size > 0) return lessons.docs[0].id;
+
+  /**
+   * If the query doesn't return any lessons, then
+   * get the data from the current chapter to find the next one.
+   */
+  const chapter = await getChapter(chapterId);
+  const chapters = await db
+    .collection('chapters')
+    .where('pathId', '==', chapter.pathId)
+    .where('order', '>', chapter.order)
+    .orderBy('order', 'asc')
+    .orderBy('createdAt', 'asc')
+    .limit(1)
+    .get();
+
+  // Return `null` when there are no more chapters.
+  if (chapters.empty) return null;
+
+  // Get the next chapter ID.
+  const nextChapter = chapters.docs[0].id;
+
+  // Get the first lesson from the next chapter.
+  return getNextLesson(nextChapter, 0);
 };
