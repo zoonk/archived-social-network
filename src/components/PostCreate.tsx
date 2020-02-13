@@ -42,6 +42,28 @@ const PostCreate = ({
     return null;
   }
 
+  const redirect = (id: string) => {
+    setSnackbar({ type: 'success', msg: translate('saved') });
+
+    let href = '/posts/[id]';
+    let linkAs = `/posts/${id}`;
+
+    // Go to lessons page when the category is a lesson.
+    // This makes easier for reordering items.
+    if (chapterId && category === 'lessons') {
+      href = '/chapters/[id]/lessons';
+      linkAs = `/chapters/${chapterId}/lessons`;
+    }
+
+    // Go to the chapter page when there's a chapter id but it's not a lesson.
+    if (chapterId && category !== 'lessons') {
+      href = '/chapters/[id]';
+      linkAs = `/chapters/${chapterId}`;
+    }
+
+    push(href, linkAs);
+  };
+
   const handleSubmit = async (
     data: Omit<Post.EditableFields, 'chapters' | 'order'>,
     topics: string[],
@@ -66,10 +88,7 @@ const PostCreate = ({
       updatedBy: profile,
       updatedById: user.uid,
     })
-      .then((id) => {
-        setSnackbar({ type: 'success', msg: translate('saved') });
-        push('/posts/[id]', `/posts/${id}`);
-      })
+      .then(redirect)
       .catch((e) => setSnackbar(firebaseError(e, 'post_add')));
   };
 
