@@ -191,7 +191,7 @@ const translate: TranslationFn = (key, args) => {
     search_ph: 'Press Enter to search',
     search_topic: 'Search a topic name',
     search_topic_help:
-      'We have a list of pre-defined topics. To create a page, you need to choose an existing name from that list. You can search for topic names by typing a word and selecting a topic in the box below.',
+      'We use Wikipedia as the source for topics. To create a new topic, you need to choose an existing Wikipedia page. You can search for topic names by typing a word and selecting an item in the box below.',
     search_topic_not_found: 'No topics found. Try another word.',
     see_all: 'See all',
     see_all_edits: 'See all edits',

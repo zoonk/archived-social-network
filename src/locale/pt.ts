@@ -190,7 +190,7 @@ const translate: TranslationFn = (key, args) => {
     search_ph: 'Pressione Enter para pesquisar',
     search_topic: 'Busque um assunto',
     search_topic_help:
-      'Nós temos uma lista de assuntos pré-definidos. Para criar uma página, selecione um assunto da lista. Você pode procurar assuntos digitando uma palavra na caixa de busca abaixo.',
+      'Nós usamos a Wikipedia como fonte para os assuntos. Portanto, para criar um novo assunto, você precisa escolher uma página que já existe na Wikipedia. Você pode procurar assuntos digitando uma palavra na caixa de busca abaixo.',
     search_topic_not_found: 'Nenhum tópico encontrado. Tente outra palavra.',
     see_all: 'Ver tudo',
     see_all_edits: 'Ver todas alterações',
