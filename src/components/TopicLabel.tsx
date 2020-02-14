@@ -18,7 +18,10 @@ const TopicLabel = ({ id }: TopicLabelProps) => {
         variant="outlined"
         color="primary"
         label={getPageTitle(id)}
-        style={{ marginRight: theme.spacing(0.5) }}
+        style={{
+          marginRight: theme.spacing(0.5),
+          marginBottom: theme.spacing(0.5),
+        }}
       />
     </NextLink>
   );
