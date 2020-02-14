@@ -31,7 +31,7 @@ const TopicPosts: NextPage<TopicPostsProps> = ({ id, title }) => {
         description={translate('seo_topic_posts_desc', { title })}
         canonicalUrl={`${rootUrl}/topics/${id}/posts`}
       />
-      <TopicsBreadcrumb topicId={id} title={translate('forum')} />
+      <TopicsBreadcrumb topicId={id} title={translate('posts')} />
       <PostsCard
         category={['lessons', 'posts']}
         topicId={id}

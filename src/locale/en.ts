@@ -92,7 +92,6 @@ const translate: TranslationFn = (key, args) => {
     formatting_vimeo: 'Vimeo',
     formatting_youtube_example: '[[ youtube id="video-id" ]]',
     formatting_youtube: 'YouTube',
-    forum: 'Forum',
     go_back: 'Go back',
     go_home: 'Go to the home page.',
     having_issues:
@@ -237,7 +236,7 @@ const translate: TranslationFn = (key, args) => {
     seo_topic_paths_desc: `Learning paths about ${args?.title}. Collaborative ways to learn ${args?.title} online.`,
     seo_topic_paths_title: `Learning paths about ${args?.title}`,
     seo_topic_posts_desc: `Find posts about ${args?.title}. Most interesting articles about ${args?.title} online.`,
-    seo_topic_posts_title: `Forum about ${args?.title}`,
+    seo_topic_posts_title: `Posts about ${args?.title}`,
     seo_topic_questions_desc: `Ask anything about ${args?.title}. Find every questions and answer about ${args?.title}.`,
     seo_topic_questions_title: `Ask questions about ${args?.title}`,
     seo_topics_desc: 'Learn about any topic or subject on Zoonk for free.',

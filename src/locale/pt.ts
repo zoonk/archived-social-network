@@ -94,7 +94,6 @@ const translate: TranslationFn = (key, args) => {
     formatting_vimeo: 'Vimeo',
     formatting_youtube_example: '[[ youtube id="video-id" ]]',
     formatting_youtube: 'YouTube',
-    forum: 'Fórum',
     go_back: 'Voltar',
     go_home: 'Ir para a página inicial.',
     having_issues: 'Está achando complicado ou encontrando alguma dificuldade?',

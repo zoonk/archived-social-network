@@ -89,7 +89,6 @@ export type TranslationKeys =
   | 'formatting_vimeo'
   | 'formatting_youtube_example'
   | 'formatting_youtube'
-  | 'forum'
   | 'go_back'
   | 'go_home'
   | 'having_issues'

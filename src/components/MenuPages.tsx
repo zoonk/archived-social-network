@@ -90,7 +90,7 @@ const MenuPages = () => {
             <ListItemIcon>
               <Forum />
             </ListItemIcon>
-            <ListItemText primary={translate('forum')} />
+            <ListItemText primary={translate('posts')} />
           </ListItem>
         </NextLink>
 
