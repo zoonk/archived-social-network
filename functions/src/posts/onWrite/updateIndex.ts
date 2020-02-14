@@ -7,7 +7,7 @@ export const onWritePostUpdateIndex = functions.firestore
   .document('posts/{id}')
   .onWrite((change, context) => {
     const { id } = context.params;
-    const indexFields = ['content', 'title'];
+    const indexFields = ['category', 'content', 'title'];
     const before = change.before.data() as Post.Response | undefined;
     const after = change.after.data() as Post.Response | undefined;
     const language = before?.language || after?.language || 'en';
