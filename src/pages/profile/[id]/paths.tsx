@@ -24,7 +24,7 @@ const Paths: NextPage<PathsProps> = ({ profile }) => {
     <Container component="main">
       <Meta
         title={translate('seo_profile_paths_title', { name })}
-        description={translate('seo_profile_paths_desc')}
+        description={translate('seo_profile_paths_desc', { name })}
         image={photo}
         canonicalUrl={`${rootUrl}/profile/${username}/paths`}
       />

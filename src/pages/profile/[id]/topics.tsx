@@ -24,7 +24,7 @@ const Topics: NextPage<TopicsProps> = ({ profile }) => {
     <Container component="main">
       <Meta
         title={translate('seo_profile_topics_title', { name })}
-        description={translate('seo_profile_topics_desc')}
+        description={translate('seo_profile_topics_desc', { name })}
         image={photo}
         canonicalUrl={`${rootUrl}/profile/${username}/topics`}
       />
