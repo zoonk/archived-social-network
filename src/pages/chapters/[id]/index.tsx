@@ -78,6 +78,14 @@ const ChapterPage: NextPage<ChapterProps> = ({ data }) => {
             orderBy={['likes']}
             title={translate('examples')}
           />
+          <PostsCard
+            category={['questions']}
+            chapterId={id}
+            limit={3}
+            allowAdd
+            orderBy={['likes']}
+            title={translate('questions')}
+          />
         </Grid>
       </Grid>
     </Container>
