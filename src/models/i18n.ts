@@ -184,6 +184,7 @@ export type TranslationKeys =
   | 'sending'
   | 'sent'
   | 'seo_contact_desc'
+  | 'seo_courses_desc'
   | 'seo_edits_desc'
   | 'seo_examples_desc'
   | 'seo_home_desc'

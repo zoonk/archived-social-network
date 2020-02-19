@@ -199,6 +199,8 @@ const translate: TranslationFn = (key, args) => {
     sending: 'Enviando...',
     sent: 'Enviado!',
     seo_contact_desc: 'Como entrar em contato com a equipe do Zoonk.',
+    seo_courses_desc:
+      'Como encontrar cursos e livros sobre qualquer assunto. Os melhores cursos e livros online.',
     seo_edits_desc:
       'Veja todo o histórico de alterações feitas no Zoonk. Saiba como reverter ou relatar problemas no Zoonk.',
     seo_examples_desc:

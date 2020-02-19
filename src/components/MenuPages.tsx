@@ -14,6 +14,7 @@ import {
   EmojiEvents,
   History,
   Language,
+  MenuBook,
   Note,
   QuestionAnswer,
   Subject,
@@ -92,6 +93,15 @@ const MenuPages = () => {
               <Description />
             </ListItemIcon>
             <ListItemText primary={translate('posts')} />
+          </ListItem>
+        </NextLink>
+
+        <NextLink href="/courses" passHref>
+          <ListItem button component="a">
+            <ListItemIcon>
+              <MenuBook />
+            </ListItemIcon>
+            <ListItemText primary={translate('courses_books')} />
           </ListItem>
         </NextLink>
 

@@ -200,6 +200,8 @@ const translate: TranslationFn = (key, args) => {
     sending: 'Sending...',
     sent: 'Sent!',
     seo_contact_desc: 'How to contact the Zoonk team.',
+    seo_courses_desc:
+      'How to find courses and books about any subjects. The best courses and books online.',
     seo_edits_desc:
       'See all changes made to Zoonk pages. Navigate the whole edit history, revert and report changes on Zoonk.',
     seo_examples_desc:
