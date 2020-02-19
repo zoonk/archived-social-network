@@ -1,5 +1,21 @@
 import { IconButton } from '@material-ui/core';
 import { Facebook, GitHub, Instagram, Twitter } from '@material-ui/icons';
+import { appLanguage } from '@zoonk/utils';
+
+const links = {
+  facebook: {
+    en: 'https://facebook.com/zoonkapp',
+    pt: 'https://facebook.com/ZoonkBrasil',
+  },
+  instagram: {
+    en: 'https://instagram.com/zoonkapp',
+    pt: 'https://instagram.com/zoonkbr',
+  },
+  twitter: {
+    en: 'https://twitter.com/zoonkapp',
+    pt: 'https://twitter.com/ZoonkBrasil',
+  },
+};
 
 /**
  * Display a link for our social media profiles.
@@ -11,7 +27,7 @@ const SocialLinks = () => {
         aria-label="Facebook"
         title="Facebook"
         component="a"
-        href="https://www.facebook.com/zoonkofficial"
+        href={links.facebook[appLanguage]}
       >
         <Facebook />
       </IconButton>
@@ -20,7 +36,7 @@ const SocialLinks = () => {
         aria-label="Instagram"
         title="Instagram"
         component="a"
-        href="https://www.facebook.com/zoonkofficial"
+        href={links.instagram[appLanguage]}
       >
         <Instagram />
       </IconButton>
@@ -29,14 +45,14 @@ const SocialLinks = () => {
         aria-label="Twitter"
         title="Twitter"
         component="a"
-        href="https://twitter.com/zoonkofficial"
+        href={links.twitter[appLanguage]}
       >
         <Twitter />
       </IconButton>
 
       <IconButton
-        aria-label="GitLab"
-        title="GitLab"
+        aria-label="GitHub"
+        title="GitHub"
         component="a"
         href="https://github.com/zoonk"
       >
