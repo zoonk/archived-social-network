@@ -9,12 +9,13 @@ import {
 } from '@material-ui/core';
 import {
   Bookmarks,
+  Description,
   DeviceHub,
   EmojiEvents,
-  Forum,
   History,
   Language,
   Note,
+  QuestionAnswer,
   Subject,
   SupervisorAccount,
 } from '@material-ui/icons';
@@ -88,9 +89,18 @@ const MenuPages = () => {
         <NextLink href="/posts" passHref>
           <ListItem button component="a">
             <ListItemIcon>
-              <Forum />
+              <Description />
             </ListItemIcon>
             <ListItemText primary={translate('posts')} />
+          </ListItem>
+        </NextLink>
+
+        <NextLink href="/questions" passHref>
+          <ListItem button component="a">
+            <ListItemIcon>
+              <QuestionAnswer />
+            </ListItemIcon>
+            <ListItemText primary={translate('questions')} />
           </ListItem>
         </NextLink>
 

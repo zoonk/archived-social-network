@@ -220,6 +220,8 @@ const translate: TranslationFn = (key, args) => {
     seo_profile_posts_title: `Posts by ${args?.name}`,
     seo_profile_topics_desc: `${args?.name} is teaching about many topics online. See all topics created by ${args?.name} on Zoonk.`,
     seo_profile_topics_title: `Topics by ${args?.name}`,
+    seo_questions_desc:
+      'Ask questions about any subjects online. Find answers for everything online.',
     seo_reset_password_desc: 'How can I recover or reset my Zoonk password?',
     seo_search_desc: `Start learning about ${args?.searchTerm} on Zoonk. How ${args?.searchTerm} works.`,
     seo_search_title: `Learn about ${args?.searchTerm} on Zoonk`,

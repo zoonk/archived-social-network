@@ -199,6 +199,7 @@ export type TranslationKeys =
   | 'seo_profile_posts_title'
   | 'seo_profile_topics_desc'
   | 'seo_profile_topics_title'
+  | 'seo_questions_desc'
   | 'seo_reset_password_desc'
   | 'seo_search_desc'
   | 'seo_search_title'
