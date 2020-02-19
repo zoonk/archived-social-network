@@ -34,6 +34,7 @@ const TopicPosts: NextPage<TopicPostsProps> = ({ id, title }) => {
       <TopicsBreadcrumb topicId={id} title={translate('posts')} />
       <PostsCard
         category={['lessons', 'posts']}
+        list="posts"
         topicId={id}
         limit={10}
         hideLink
