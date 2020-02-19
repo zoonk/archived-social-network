@@ -1,6 +1,7 @@
 import ReactMarkdown from 'react-markdown';
 import shortcodes from 'remark-shortcodes';
 import { Link } from '@material-ui/core';
+import DividerView from './DividerView';
 import EditorHeading from './EditorHeading';
 import EditorText from './EditorText';
 import Image from './Image';
@@ -34,6 +35,7 @@ const EditorView = ({ content }: EditorViewProps) => {
         tableBody: TableBodyView,
         tableRow: TableRowView,
         tableCell: TableCellView,
+        thematicBreak: DividerView,
       }}
     />
   );

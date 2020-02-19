@@ -110,15 +110,7 @@ class CustomDocument extends Document<CustomDocumentProps> {
                 padding: ${theme.spacing(2, 2)};
                 margin: ${theme.spacing(2, 0)};
                 overflow: auto;
-              }
-
-              hr {
-                margin: 16px 25%;
-                border: none;
-                height: 1px;
-                width: 50%;
-                background-color: ${theme.palette.divider};
-              }
+              } 
             `}
           </style>
 
