@@ -48,6 +48,14 @@ const PostsCard = ({
   const query = { category: list || category?.[0], chapterId, topicId };
   const canAdd = allowAdd || Boolean(chapterId);
 
+  /**
+   * React runs a shallow comparison only, so we're converting
+   * these arrays into strings to make sure our effect isn't called
+   * multiple times.
+   */
+  const rawCategory = JSON.stringify(category) as string | undefined;
+  const rawOrderBy = JSON.stringify(orderBy) as string | undefined;
+
   const loadMore = () => {
     get(
       listPosts({
@@ -65,15 +73,15 @@ const PostsCard = ({
   useEffect(() => {
     get(
       listPosts({
-        category,
+        category: rawCategory ? JSON.parse(rawCategory) : undefined,
         chapterId,
         limit,
-        orderBy,
+        orderBy: rawOrderBy ? JSON.parse(rawOrderBy) : undefined,
         topicId,
         userId,
       }),
     );
-  }, [category, chapterId, get, limit, orderBy, topicId, userId]);
+  }, [rawCategory, chapterId, get, limit, rawOrderBy, topicId, userId]);
 
   useEffect(() => {
     if (error) {
