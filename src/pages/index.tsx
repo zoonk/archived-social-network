@@ -36,18 +36,36 @@ const Home: NextPage = () => {
 
       <Grid container spacing={2} className={classes.container}>
         <Grid item xs={12} sm={6} className={classes.column}>
+          <TopicsCard limit={10} allowAdd />
+          <PathsCard limit={5} allowAdd />
+          <LeaderboardCard limit={3} />
+        </Grid>
+        <Grid item xs={12} sm={6} className={classes.column}>
           <PostsCard
-            limit={10}
+            category={['posts', 'lessons']}
+            limit={3}
             allowAdd
-            allowLoadMore
+            list="posts"
             title={translate('posts')}
           />
-        </Grid>
-
-        <Grid item xs={12} sm={6} className={classes.column}>
-          <TopicsCard limit={7} allowAdd />
-          <PathsCard limit={7} allowAdd />
-          <LeaderboardCard limit={5} />
+          <PostsCard
+            category={['questions']}
+            limit={3}
+            allowAdd
+            title={translate('questions')}
+          />
+          <PostsCard
+            category={['courses']}
+            limit={3}
+            allowAdd
+            title={translate('courses_books')}
+          />
+          <PostsCard
+            category={['examples']}
+            limit={3}
+            allowAdd
+            title={translate('examples')}
+          />
         </Grid>
       </Grid>
     </Container>
