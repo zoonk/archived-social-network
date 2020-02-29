@@ -44,12 +44,17 @@ test('add the user info to their profile', async (done) => {
   const ref = db.doc('profile/testUID');
 
   const wrapped = testEnv.wrap(onCreateUserSetupProfile);
-  await wrapped({ email: 'test@test.com', uid: 'testUID' });
+  await wrapped({
+    displayName: 'user name',
+    email: 'test@test.com',
+    photoURL: 'photo.png',
+    uid: 'testUID',
+  });
 
   const userInfo = {
     bio: null,
-    name: 'test',
-    photo: null,
+    name: 'user name',
+    photo: 'photo.png',
     username: 'testUID',
   };
 

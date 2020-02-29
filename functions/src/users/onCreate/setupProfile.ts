@@ -17,8 +17,8 @@ export const onCreateUserSetupProfile = functions.auth
     // Set a user's profile.
     const userInfo = {
       bio: null,
-      name: getNameFromEmail(user.email || user.uid),
-      photo: null,
+      name: user.displayName || getNameFromEmail(user.email || user.uid),
+      photo: user.photoURL || null,
       username: user.uid,
     };
 
