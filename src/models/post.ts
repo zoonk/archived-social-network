@@ -24,6 +24,11 @@ export namespace Post {
     title: string;
   }
 
+  export interface NextLesson {
+    chapterId: string;
+    lessonId: string;
+  }
+
   export interface EditableFields {
     content: string;
     links: string[] | null;

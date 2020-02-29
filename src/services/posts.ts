@@ -196,14 +196,14 @@ export const getNextLesson = async (
   chapterId: string,
   postId: string | null,
   topicId: string,
-): Promise<string | null> => {
+): Promise<Post.NextLesson | null> => {
   // Get the next lesson from this chapter.
   const { lessons } = await getChapter(chapterId);
   const postOrder = lessons.findIndex((lesson) => lesson === postId);
   const nextPost = postOrder + 1;
 
   // If there's another lesson after the current one, then use its ID.
-  if (lessons[nextPost]) return lessons[nextPost];
+  if (lessons[nextPost]) return { chapterId, lessonId: lessons[nextPost] };
 
   /**
    * If the current chapter doesn't have more lessons, then

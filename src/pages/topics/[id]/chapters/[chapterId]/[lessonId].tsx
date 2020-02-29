@@ -19,9 +19,10 @@ import {
 interface PostPageProps {
   data: Post.Get;
   chapterId: string;
+  topicId: string;
 }
 
-const LessonPage: NextPage<PostPageProps> = ({ chapterId, data }) => {
+const LessonPage: NextPage<PostPageProps> = ({ chapterId, data, topicId }) => {
   const { translate, user } = useContext(GlobalContext);
   const {
     category,
@@ -67,7 +68,7 @@ const LessonPage: NextPage<PostPageProps> = ({ chapterId, data }) => {
 
       <Grid container spacing={2}>
         <Grid item xs={12} sm={9} md={8}>
-          <PostView item={data} />
+          <PostView chapterId={chapterId} topicId={topicId} item={data} />
         </Grid>
 
         <Grid item xs={12} sm={3} md={4}>
@@ -95,7 +96,11 @@ LessonPage.getInitialProps = async ({ query }) => {
   const postId = String(query.lessonId);
   const data = await getPost(postId);
   preRender();
-  return { data, chapterId: String(query.chapterId) };
+  return {
+    data,
+    chapterId: String(query.chapterId),
+    topicId: String(query.id),
+  };
 };
 
 export default LessonPage;
