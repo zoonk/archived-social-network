@@ -3,7 +3,6 @@ import { NextPage } from 'next';
 import { Container, Grid, makeStyles } from '@material-ui/core';
 import LeaderboardCard from '@zoonk/components/LeaderboardCard';
 import Meta from '@zoonk/components/Meta';
-import PathsCard from '@zoonk/components/PathsCard';
 import PostsCard from '@zoonk/components/PostsCard';
 import TopicsCard from '@zoonk/components/TopicsCard';
 import { analytics, GlobalContext, rootUrl } from '@zoonk/utils';
@@ -37,7 +36,6 @@ const Home: NextPage = () => {
       <Grid container spacing={2} className={classes.container}>
         <Grid item xs={12} sm={6} className={classes.column}>
           <TopicsCard limit={10} allowAdd />
-          <PathsCard limit={5} allowAdd />
           <LeaderboardCard limit={3} />
         </Grid>
         <Grid item xs={12} sm={6} className={classes.column}>

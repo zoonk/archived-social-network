@@ -17,6 +17,7 @@ const profile = {
 };
 
 const data = {
+  chapters: [],
   comments: 0,
   createdAt: firebase.firestore.FieldValue.serverTimestamp(),
   createdBy: profile,
@@ -62,6 +63,20 @@ test('anonymous users cannot update', async (done) => {
   const app = initializeFbApp(undefined);
   const docRef = app.doc('topics/randomTopic');
   await firebase.assertFails(docRef.update({ ...edit, updatedById: null }));
+  done();
+});
+
+test('chapterData cannot be changed', async (done) => {
+  await firebase.assertFails(ref.update({ ...edit, chapterData: { 1: {} } }));
+  done();
+});
+
+test('chapters is an array', async (done) => {
+  await firebase.assertSucceeds(ref.update({ ...edit, chapters: ['test'] }));
+  await firebase.assertFails(ref.update({ ...edit, chapters: 123 }));
+  await firebase.assertFails(ref.update({ ...edit, chapters: true }));
+  await firebase.assertFails(ref.update({ ...edit, chapters: {} }));
+  await firebase.assertFails(ref.update({ ...edit, chapters: 'test' }));
   done();
 });
 

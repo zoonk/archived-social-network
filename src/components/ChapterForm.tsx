@@ -1,14 +1,13 @@
 import { useContext, useState } from 'react';
 import { Grid, TextField } from '@material-ui/core';
 import { Chapter } from '@zoonk/models';
-import { GlobalContext, imgSize } from '@zoonk/utils';
+import { GlobalContext } from '@zoonk/utils';
 import FormBase from './FormBase';
-import ImageUpload from './ImageUpload';
 
 interface ChapterFormProps {
   data?: Chapter.Get;
   saving: boolean;
-  onSubmit: (data: Omit<Chapter.EditableFields, 'order'>) => void;
+  onSubmit: (data: Chapter.EditableFields) => void;
   onDelete?: () => void;
 }
 
@@ -26,7 +25,6 @@ const ChapterForm = ({
   const [description, setDescription] = useState<string>(
     data?.description || '',
   );
-  const [photo, setPhoto] = useState<string | null>(data?.photo || null);
   const descriptionMax = 500;
   const valid =
     title.length > 0 &&
@@ -38,7 +36,9 @@ const ChapterForm = ({
       valid={valid}
       saving={saving}
       onDelete={onDelete}
-      onSubmit={() => onSubmit({ description, photo, title })}
+      onSubmit={() =>
+        onSubmit({ description, examples: [], lessons: [], title })
+      }
     >
       <Grid container spacing={2}>
         <Grid item xs={12}>
@@ -69,15 +69,6 @@ const ChapterForm = ({
             error={description.length > descriptionMax}
             required
             name="description"
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <ImageUpload
-            img={photo}
-            category="chapters"
-            size={imgSize}
-            onSave={setPhoto}
           />
         </Grid>
       </Grid>

@@ -18,7 +18,6 @@ const profile = {
 
 const add = {
   category: 'posts',
-  chapterId: null,
   comments: 0,
   content: 'content',
   createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -27,8 +26,6 @@ const add = {
   language: 'en',
   links: null,
   likes: 0,
-  order: null,
-  pathId: null,
   title: 'new name',
   topics: ['topicId'],
   updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -127,16 +124,6 @@ test('category cannot be changed', async (done) => {
   done();
 });
 
-test('chapter cannot be changed', async (done) => {
-  await firebase.assertFails(ref.update({ ...edit, chapter: 'new' }));
-  done();
-});
-
-test('chapterId cannot be changed', async (done) => {
-  await firebase.assertFails(ref.update({ ...edit, chapterId: 'new' }));
-  done();
-});
-
 test('comments cannot be changed', async (done) => {
   await firebase.assertFails(ref.update({ ...edit, comments: 1 }));
   done();
@@ -201,28 +188,6 @@ test('links is an array of strings', async (done) => {
 
 test('links can be null', async (done) => {
   await firebase.assertSucceeds(ref.update({ ...edit, links: null }));
-  done();
-});
-
-test('order is a number when the category is a lesson', async (done) => {
-  const lesson = db.doc('posts/order');
-  await admin.doc('posts/order').set({ ...add, category: 'lessons', order: 1 });
-  await firebase.assertSucceeds(lesson.update({ ...edit, order: 8 }));
-  await firebase.assertFails(lesson.update({ ...edit, order: '3' }));
-  await firebase.assertFails(lesson.update({ ...edit, order: true }));
-  await firebase.assertFails(lesson.update({ ...edit, order: { 1: true } }));
-  await firebase.assertFails(lesson.update({ ...edit, order: ['test'] }));
-  await firebase.assertFails(lesson.update({ ...edit, order: null }));
-  done();
-});
-
-test('path cannot be changed', async (done) => {
-  await firebase.assertFails(ref.update({ ...edit, path: { title: 'new' } }));
-  done();
-});
-
-test('pathId cannot be changed', async (done) => {
-  await firebase.assertFails(ref.update({ ...edit, pathId: 'new' }));
   done();
 });
 

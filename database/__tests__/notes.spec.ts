@@ -62,9 +62,6 @@ test('can create if the category is valid', async (done) => {
     collection.add({ ...valid, category: 'chapters' }),
   );
   await firebase.assertSucceeds(
-    collection.add({ ...valid, category: 'paths' }),
-  );
-  await firebase.assertSucceeds(
     collection.add({ ...valid, category: 'posts' }),
   );
   await firebase.assertSucceeds(
@@ -84,7 +81,7 @@ test('cannot create if the category is not valid', async (done) => {
   done();
 });
 
-test('cannot create the path is missing', async (done) => {
+test('cannot create the itemPath is missing', async (done) => {
   const newData = { ...valid };
   delete newData.itemPath;
   await firebase.assertFails(collection.add(newData));
@@ -122,7 +119,7 @@ test('cannot change the categoryId field', async (done) => {
 });
 
 test('cannot change the category field', async (done) => {
-  await firebase.assertFails(doc.update({ category: 'paths' }));
+  await firebase.assertFails(doc.update({ category: 'posts' }));
   done();
 });
 

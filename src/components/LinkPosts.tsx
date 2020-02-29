@@ -6,22 +6,18 @@ import { GlobalContext } from '@zoonk/utils';
 
 interface LinkPostsProps {
   category?: Post.Category;
-  chapterId?: string | null;
   topicId?: string;
 }
 
 /**
  * Default link to the posts page.
  */
-const LinkPosts = ({ category, chapterId, topicId }: LinkPostsProps) => {
+const LinkPosts = ({ category, topicId }: LinkPostsProps) => {
   const { translate } = useContext(GlobalContext);
   const title = translate(category || 'posts');
-  const listPath = category || 'posts';
-  const id = chapterId || topicId;
-  const prefix = chapterId ? 'chapters' : 'topics';
 
-  const href = id ? `/${prefix}/[id]/${listPath}` : `/${listPath}`;
-  const as = id ? `/${prefix}/${id}/${listPath}` : `/${listPath}`;
+  const href = topicId ? '/topics/[id]/posts' : '/posts';
+  const as = topicId ? `/topics/${topicId}/posts` : '/posts';
 
   return (
     <NextLink href={href} as={as} passHref>

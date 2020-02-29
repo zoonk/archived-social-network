@@ -120,11 +120,8 @@ test('likes is set to 0', async (done) => {
   done();
 });
 
-test('postId contains a valid category id', async (done) => {
-  await admin.doc('paths/realId').set({ topics });
-  await firebase.assertFails(
-    ref.add({ ...data, category: 'examples', postId: 'realId' }),
-  );
+test('postId contains a valid id', async (done) => {
+  await firebase.assertFails(ref.add({ ...data, postId: 'invalid' }));
   done();
 });
 

@@ -2,11 +2,12 @@ import { Activity } from './activity';
 import { Chapter } from './chapter';
 import { Comment } from './comments';
 import { Reply } from './replies';
-import { Path } from './path';
 import { Post } from './post';
 import { Profile } from './profile';
 import { Topic } from './topic';
 import { UILanguage } from './i18n';
+
+export type ExpertLevel = 'beginner' | 'advanced' | 'pro' | 'expert';
 
 /**
  * Metadata available for all items.
@@ -70,21 +71,10 @@ export type ContentTypes =
   | Chapter.Response
   | Comment.Response
   | Reply.Response
-  | Path.Response
   | Post.Response
   | Topic.Response;
 
 /**
  * Content with editable order.
  */
-export type EditableOrder = 'chapters' | 'lessons';
-
-/**
- * Summary for displaying some content.
- */
-export interface ContentSummary {
-  description: string;
-  id: string;
-  photo: string | null;
-  title: string;
-}
+export type EditableOrder = 'chapters' | 'examples' | 'lessons';

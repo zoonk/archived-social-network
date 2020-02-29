@@ -5,23 +5,29 @@ import {
   ListItemText,
 } from '@material-ui/core';
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 import { Chapter } from '@zoonk/models';
+import { theme } from '@zoonk/utils';
 
 interface ChapterListItemProps {
   divider?: boolean;
-  item: Chapter.Get;
+  index: number;
+  item: Chapter.Summary;
 }
 
 /**
  * Display a single chapter as a list item.
- * @property `divider` - enable a divider line between items.
- * @property `item` - item data.
  */
-const ChapterListItem = ({ divider, item }: ChapterListItemProps) => {
-  const { description, photo, title } = item;
+const ChapterListItem = ({ divider, index, item }: ChapterListItemProps) => {
+  const { query } = useRouter();
+  const { description, title } = item;
 
   return (
-    <NextLink href="/chapters/[id]" as={`/chapters/${item.id}`} passHref>
+    <NextLink
+      href="/topics/[id]/chapters/[chapterId]"
+      as={`/topics/${query.id}/chapters/${item.id}`}
+      passHref
+    >
       <ListItem
         alignItems="flex-start"
         button
@@ -30,7 +36,9 @@ const ChapterListItem = ({ divider, item }: ChapterListItemProps) => {
         disableGutters
       >
         <ListItemAvatar>
-          <Avatar src={photo || undefined} alt={title} />
+          <Avatar style={{ backgroundColor: theme.palette.primary.main }}>
+            {index + 1}
+          </Avatar>
         </ListItemAvatar>
         <ListItemText
           primary={title}

@@ -5,23 +5,29 @@ import {
   ListItemText,
 } from '@material-ui/core';
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 import { Post } from '@zoonk/models';
 import { theme } from '@zoonk/utils';
 
 interface LessonListItemProps {
   divider?: boolean;
   index: number;
-  item: Post.Get;
+  item: Post.Summary;
 }
 
 /**
  * Display a single lesson as a list item.
  */
 const LessonListItem = ({ divider, index, item }: LessonListItemProps) => {
-  const { content, title } = item;
+  const { query } = useRouter();
+  const { description, id, title } = item;
 
   return (
-    <NextLink href="/posts/[id]" as={`/posts/${item.id}`} passHref>
+    <NextLink
+      href="/topics/[id]/chapters/[chapterId]/[lessonId]"
+      as={`/topics/${query.id}/chapters/${query.chapterId}/${id}`}
+      passHref
+    >
       <ListItem
         alignItems="flex-start"
         button
@@ -36,7 +42,7 @@ const LessonListItem = ({ divider, index, item }: LessonListItemProps) => {
         </ListItemAvatar>
         <ListItemText
           primary={title}
-          secondary={content.slice(0, 200)}
+          secondary={description}
           secondaryTypographyProps={{
             gutterBottom: false,
             noWrap: true,

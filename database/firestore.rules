@@ -31,7 +31,7 @@ service cloud.firestore {
     }
 
     function isValidCategory() {
-      return isOneOf('category', 'chapters|paths|posts|topics');
+      return isOneOf('category', 'chapters|posts|topics');
     }
 
     function isValidPostCategory() {
@@ -64,7 +64,7 @@ service cloud.firestore {
       allow list: if request.query.limit <= 20;
     }
 
-    match /chapters/{pathId} {
+    match /chapters/{id} {
       allow get;
       allow list;
       allow create:
@@ -75,13 +75,11 @@ service cloud.firestore {
         && request.resource.data.createdById == request.auth.uid
         && request.resource.data.description is string
         && request.resource.data.description.size() <= 500
-        && request.resource.data.examples == 0
-        && request.resource.data.lessons == 0
+        && request.resource.data.examples is list
+        && request.resource.data.examples.size() <= 20
+        && request.resource.data.lessons is list
+        && request.resource.data.lessons.size() <= 20
         && request.resource.data.likes == 0
-        && request.resource.data.order is int
-        && exists(/databases/$(database)/documents/paths/$(request.resource.data.pathId))
-        && (request.resource.data.photo is string || request.resource.data.photo == null)
-        && request.resource.data.posts == 0
         && request.resource.data.title is string
         && request.resource.data.topics is list
         && request.resource.data.topics[0] is string
@@ -98,15 +96,14 @@ service cloud.firestore {
         && isReadOnly('createdById')
         && request.resource.data.description is string
         && request.resource.data.description.size() <= 500
-        && isReadOnly('examples')
+        && isReadOnly('exampleData')
+        && request.resource.data.examples is list
+        && request.resource.data.examples.size() <= 20
         && isReadOnly('language')
-        && isReadOnly('lessons')
+        && isReadOnly('lessonData')
+        && request.resource.data.lessons is list
+        && request.resource.data.lessons.size() <= 20
         && isReadOnly('likes')
-        && request.resource.data.order is int
-        && isReadOnly('path')
-        && isReadOnly('pathId')
-        && (request.resource.data.photo is string || request.resource.data.photo == null)
-        && isReadOnly('posts')
         && request.resource.data.title is string
         && request.resource.data.topics is list
         && request.resource.data.topics[0] is string
@@ -117,7 +114,7 @@ service cloud.firestore {
       allow delete: if isAdmin() || isModerator();
 
       match /progress/{userId} {
-        allow get: if request.auth.uid == userId;
+        allow get, create, update: if request.auth.uid == userId;
       }
     }
 
@@ -153,70 +150,12 @@ service cloud.firestore {
       allow list: if request.query.limit <= 20;
     }
 
-    match /paths/{pathId} {
-      allow get;
-      allow list: if request.query.limit <= 20;
-      allow create:
-        if request.auth.uid != null
-        && request.resource.data.chapters == 0
-        && request.resource.data.comments == 0
-        && request.resource.data.createdAt == request.time
-        && isValidProfile('createdBy')
-        && request.resource.data.createdById == request.auth.uid
-        && request.resource.data.description is string
-        && request.resource.data.description.size() <= 1000
-        && request.resource.data.examples == 0
-        && request.resource.data.lessons == 0
-        && request.resource.data.likes == 0
-        && (request.resource.data.photo is string || request.resource.data.photo == null)
-        && request.resource.data.posts == 0
-        && request.resource.data.title is string
-        && request.resource.data.topics is list
-        && request.resource.data.topics[0] is string
-        && request.resource.data.updatedAt == request.time
-        && isValidProfile('updatedBy')
-        && request.resource.data.updatedById == request.auth.uid
-        && hasValidLevel()
-        && isValidLanguage()
-      ;
-      allow update:
-        if request.auth.uid != null
-        && isReadOnly('chapters')
-        && isReadOnly('comments')
-        && isReadOnly('createdAt')
-        && isReadOnly('createdBy')
-        && isReadOnly('createdById')
-        && request.resource.data.description is string
-        && request.resource.data.description.size() <= 1000
-        && isReadOnly('examples')
-        && isReadOnly('language')
-        && isReadOnly('lessons')
-        && isReadOnly('likes')
-        && (request.resource.data.photo is string || request.resource.data.photo == null)
-        && isReadOnly('posts')
-        && request.resource.data.title is string
-        && request.resource.data.topics is list
-        && request.resource.data.topics[0] is string
-        && request.resource.data.updatedAt == request.time
-        && isValidProfile('updatedBy')
-        && request.resource.data.updatedById == request.auth.uid
-        && hasValidLevel()
-      ;
-      allow delete: if isAdmin() || isModerator();
-
-      match /progress/{userId} {
-        allow get: if request.auth.uid == userId;
-      }
-    }
-
     match /posts/{activityId} {
       allow get;
       allow list: if request.query.limit <= 50;
       allow create:
         if request.auth.uid != null
         && isValidPostCategory()
-        && (request.resource.data.category != 'lessons' || get(/databases/$(database)/documents/chapters/$(request.resource.data.chapterId)).data.lessons < 10)
-        && (request.resource.data.chapterId == null || exists(/databases/$(database)/documents/chapters/$(request.resource.data.chapterId)))
         && request.resource.data.comments == 0
         && request.resource.data.content is string
         && request.resource.data.createdAt == request.time
@@ -225,7 +164,6 @@ service cloud.firestore {
         && isValidLanguage()
         && request.resource.data.likes == 0
         && (request.resource.data.links == null || request.resource.data.links.size() == 0 || (request.resource.data.links is list && request.resource.data.links[0] is string))
-        && (request.resource.data.order is int || request.resource.data.category != 'lessons')
         && request.resource.data.title is string
         && request.resource.data.topics is list
         && request.resource.data.topics[0] is string
@@ -236,8 +174,6 @@ service cloud.firestore {
       allow update:
         if request.auth.uid != null
         && isReadOnly('category')
-        && isReadOnly('chapter')
-        && isReadOnly('chapterId')
         && isReadOnly('comments')
         && request.resource.data.content is string
         && isReadOnly('createdAt')
@@ -247,9 +183,6 @@ service cloud.firestore {
         && isReadOnly('language')
         && isReadOnly('likes')
         && (request.resource.data.links == null || request.resource.data.links.size() == 0 || (request.resource.data.links is list && request.resource.data.links[0] is string))
-        && (request.resource.data.order is int || request.resource.data.category != 'lessons')
-        && isReadOnly('path')
-        && isReadOnly('pathId')
         && request.resource.data.title is string
         && request.resource.data.topics is list
         && request.resource.data.topics[0] is string
@@ -262,14 +195,6 @@ service cloud.firestore {
         || isAdmin()
         || isModerator() 
       ;
-
-      match /progress/{userId} {
-        allow get: if request.auth.uid == userId;
-        allow create, update:
-          if request.auth.uid == userId
-          && request.resource.data.completed is bool
-        ;
-      }
     }
 
     match /profile/{createdById} {
@@ -312,6 +237,7 @@ service cloud.firestore {
       allow list: if request.query.limit <= 20;
       allow create:
         if request.auth.uid != null
+        && request.resource.data.chapters is list
         && request.resource.data.comments == 0
         && request.resource.data.createdAt == request.time
         && isValidProfile('createdBy')
@@ -330,6 +256,8 @@ service cloud.firestore {
       ;
       allow update:
         if request.auth.uid != null
+        && isReadOnly('chapterData')
+        && request.resource.data.chapters is list
         && isReadOnly('comments')
         && isReadOnly('createdAt')
         && isReadOnly('createdBy')
@@ -407,7 +335,7 @@ service cloud.firestore {
           && hasField('categoryId')
           && hasField('itemPath')
           && hasField('title')
-          && isOneOf('category', 'chapters|comments|paths|posts|replies|topics')
+          && isOneOf('category', 'chapters|comments|posts|replies|topics')
           && (
             hasSubscription()
             || get(/databases/$(database)/documents/users/$(request.auth.uid)).data.saved < 20

@@ -1,14 +1,17 @@
 import { pickBy } from 'lodash';
-import { Post, PostProgress, Profile } from '@zoonk/models';
+import { ChapterProgress, Post, Profile } from '@zoonk/models';
 import {
   analytics,
   appLanguage,
+  arrayRemove,
+  arrayUnion,
   db,
   generateSlug,
   timestamp,
 } from '@zoonk/utils';
 import { serializePost } from '../serializers';
-import { getChapter } from './chapters';
+import { getChapter, updateChapter } from './chapters';
+import { getTopic } from './topics';
 
 const postConverter: firebase.firestore.FirestoreDataConverter<Post.Get> = {
   toFirestore(data: Post.Get) {
@@ -24,10 +27,28 @@ const postConverter: firebase.firestore.FirestoreDataConverter<Post.Get> = {
 /**
  * Add a new post to the database.
  */
-export const createPost = async (data: Post.Create): Promise<string> => {
+export const createPost = async (
+  data: Post.Create,
+  chapterId?: string,
+): Promise<string> => {
+  const batch = db.batch();
   const slug = generateSlug(data.title);
+  batch.set(db.doc(`posts/${slug}`), data);
+
+  // Add this post to a chapter.
+  if (chapterId) {
+    const chapterRef = db.doc(`chapters/${chapterId}`);
+    const changes = {
+      [data.category]: arrayUnion(slug),
+      updatedAt: data.updatedAt,
+      updatedBy: data.updatedBy,
+      updatedById: data.updatedById,
+    };
+    batch.update(chapterRef, changes);
+  }
+
   analytics().logEvent('post_add', { language: data.language });
-  await db.doc(`posts/${slug}`).set(data);
+  await batch.commit();
   return slug;
 };
 
@@ -92,26 +113,14 @@ export const listPosts = async ({
   chapterId,
   lastVisible,
   limit = 10,
-  orderBy,
   topicId,
   userId,
 }: PostArgs): Promise<Post.Snapshot[]> => {
   let ref = db
     .collection('posts')
     .withConverter(postConverter)
+    .orderBy('updatedAt', 'desc')
     .limit(limit);
-
-  if (orderBy) {
-    orderBy.forEach((field) => {
-      const direction = field === 'likes' ? 'desc' : 'asc';
-      ref = ref.orderBy(field, direction);
-    });
-  }
-
-  // Also order by date when orderBy is not by oder.
-  if (!orderBy?.includes('order')) {
-    ref = ref.orderBy('updatedAt', 'desc');
-  }
 
   // Filter by category
   if (category) {
@@ -121,11 +130,6 @@ export const listPosts = async ({
   // Filter by topic
   if (topicId) {
     ref = ref.where('topics', 'array-contains', topicId);
-  }
-
-  // Filter by chapter
-  if (chapterId) {
-    ref = ref.where('chapterId', '==', chapterId);
   }
 
   // Filter by user
@@ -150,41 +154,39 @@ export const listPosts = async ({
  * Update order.
  */
 export const updatePostOrder = (
-  posts: Post.Get[],
+  lessons: string[],
+  category: 'examples' | 'lessons',
+  chapterId: string,
   profile: Profile.Response,
   editorId: string,
 ): Promise<void> => {
-  const batch = db.batch();
-  posts.forEach((post) => {
-    const ref = db.doc(`posts/${post.id}`);
-    batch.update(ref, {
-      order: post.order,
-      updatedAt: timestamp,
-      updatedBy: profile,
-      updatedById: editorId,
-    });
-  });
+  const changes = {
+    [category]: lessons,
+    updatedAt: timestamp,
+    updatedBy: profile,
+    updatedById: editorId,
+  };
 
-  return batch.commit();
+  return updateChapter(changes, chapterId);
 };
 
 /**
  * Toggle a post progress status.
  */
 export const togglePostProgress = (
-  id: string,
+  postId: string,
+  chapterId: string,
+  category: 'examples' | 'lessons',
   current: boolean,
   user: string,
 ): Promise<void> => {
-  const data: PostProgress = { completed: !current };
-  return db.doc(`posts/${id}/progress/${user}`).set(data, { merge: true });
-};
+  const data: ChapterProgress.Create = {
+    [category]: current ? arrayRemove(postId) : arrayUnion(postId),
+  };
 
-/**
- * Mark a post as read.
- */
-export const readPost = (id: string, user: string): Promise<void> => {
-  return togglePostProgress(id, false, user);
+  return db
+    .doc(`chapters/${chapterId}/progress/${user}`)
+    .set(data, { merge: true });
 };
 
 /**
@@ -192,41 +194,32 @@ export const readPost = (id: string, user: string): Promise<void> => {
  */
 export const getNextLesson = async (
   chapterId: string,
-  order: number,
+  postId: string | null,
+  topicId: string,
 ): Promise<string | null> => {
-  // Get the next lesson based on the current order.
-  const lessons = await db
-    .collection('posts')
-    .where('chapterId', '==', chapterId)
-    .where('category', '==', 'lessons')
-    .where('order', '>', order)
-    .orderBy('order', 'asc')
-    .limit(1)
-    .get();
+  // Get the next lesson from this chapter.
+  const { lessons } = await getChapter(chapterId);
+  const postOrder = lessons.findIndex((lesson) => lesson === postId);
+  const nextPost = postOrder + 1;
 
-  // If the query returns any lessons, then use its ID.
-  if (lessons.size > 0) return lessons.docs[0].id;
+  // If there's another lesson after the current one, then use its ID.
+  if (lessons[nextPost]) return lessons[nextPost];
 
   /**
-   * If the query doesn't return any lessons, then
-   * get the data from the current chapter to find the next one.
+   * If the current chapter doesn't have more lessons, then
+   * get the next chapter for this topic.
    */
-  const chapter = await getChapter(chapterId);
-  const chapters = await db
-    .collection('chapters')
-    .where('pathId', '==', chapter.pathId)
-    .where('order', '>', chapter.order)
-    .orderBy('order', 'asc')
-    .orderBy('createdAt', 'asc')
-    .limit(1)
-    .get();
+  const { chapters } = await getTopic(topicId);
 
-  // Return `null` when there are no more chapters.
-  if (chapters.empty) return null;
+  if (!chapters) return null;
 
-  // Get the next chapter ID.
-  const nextChapter = chapters.docs[0].id;
+  const chapterOrder = chapters.findIndex((chapter) => chapter === chapterId);
+  const nextChapter = chapterOrder + 1;
+  const nextChapterId = chapters[nextChapter];
+
+  // Return `null` when this is the last chapter.
+  if (!nextChapterId) return null;
 
   // Get the first lesson from the next chapter.
-  return getNextLesson(nextChapter, 0);
+  return getNextLesson(nextChapterId, null, topicId);
 };

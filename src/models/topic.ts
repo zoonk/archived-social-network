@@ -1,4 +1,6 @@
+import { Chapter } from './chapter';
 import { ContentMetadata } from './content';
+import { Dictionary } from './misc';
 import { SearchIndex } from './search';
 
 /**
@@ -6,6 +8,7 @@ import { SearchIndex } from './search';
  */
 export namespace Topic {
   interface EditableFields {
+    chapters: string[];
     description: string;
     photo: string | null;
   }
@@ -30,12 +33,15 @@ export namespace Topic {
   /**
    * Fields returned from the backend.
    */
-  export interface Response extends Fields, ContentMetadata.Response {}
+  export interface Response extends Fields, ContentMetadata.Response {
+    chapterData?: Dictionary<Chapter.Summary>;
+  }
 
   /**
    * Serialized fields.
    */
   export interface Get extends Fields, ContentMetadata.Get {
+    chapterData: Chapter.Summary[];
     id: string;
   }
 

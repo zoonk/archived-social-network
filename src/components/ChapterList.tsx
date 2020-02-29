@@ -2,21 +2,17 @@ import { Fragment } from 'react';
 import { List } from '@material-ui/core';
 import { Chapter } from '@zoonk/models';
 import ChapterListItem from './ChapterListItem';
-import ListSkeleton from './ListSkeleton';
 import NoItems from './NoItems';
 
 interface ChapterListProps {
-  loading: boolean;
-  items: Chapter.Get[];
+  items: Chapter.Summary[];
 }
 
 /**
  * Display a list of chapters.
- * @property `items` - list of items.
- * @property `loading` - loading state.
  */
-const ChapterList = ({ items, loading }: ChapterListProps) => {
-  if (items.length === 0 && !loading) {
+const ChapterList = ({ items }: ChapterListProps) => {
+  if (items.length === 0) {
     return <NoItems />;
   }
 
@@ -28,11 +24,10 @@ const ChapterList = ({ items, loading }: ChapterListProps) => {
             key={item.id}
             divider={index !== items.length - 1}
             item={item}
+            index={index}
           />
         ))}
       </List>
-
-      {loading && <ListSkeleton />}
     </Fragment>
   );
 };

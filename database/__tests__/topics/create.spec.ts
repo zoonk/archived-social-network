@@ -17,6 +17,7 @@ const profile = {
 };
 
 const data = {
+  chapters: [],
   comments: 0,
   createdAt: firebase.firestore.FieldValue.serverTimestamp(),
   createdBy: profile,
@@ -56,6 +57,15 @@ test('anonymous users cannot create', async (done) => {
   const app = initializeFbApp(undefined);
   const newRef = app.collection('topics');
   await firebase.assertFails(newRef.add(data));
+  done();
+});
+
+test('chapters is an array', async (done) => {
+  await firebase.assertFails(ref.add({ ...data, chapters: 'test' }));
+  await firebase.assertFails(ref.add({ ...data, chapters: 123 }));
+  await firebase.assertFails(ref.add({ ...data, chapters: true }));
+  await firebase.assertFails(ref.add({ ...data, chapters: { 1: true } }));
+  await firebase.assertFails(ref.add({ ...data, chapters: null }));
   done();
 });
 

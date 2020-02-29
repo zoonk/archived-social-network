@@ -1,27 +1,25 @@
-import { ContentMetadata, ContentSummary } from './content';
-import { SearchIndex } from './search';
+import { ContentMetadata } from './content';
+import { Dictionary } from './misc';
+import { Post } from './post';
 
 /**
  * Chapters model.
  */
 export namespace Chapter {
-  export interface EditableFields {
+  export interface Summary {
     description: string;
-    order: number;
-    photo: string | null;
+    id: string;
     title: string;
   }
 
-  interface Fields extends EditableFields {
-    examples: number;
-    lessons: number;
-    pathId: string;
-    posts: number;
+  export interface EditableFields {
+    description: string;
+    examples: string[];
+    lessons: string[];
+    title: string;
   }
 
-  interface Metadata {
-    path?: ContentSummary;
-  }
+  interface Fields extends EditableFields {}
 
   /**
    * Required fields for creating a chapter.
@@ -38,16 +36,19 @@ export namespace Chapter {
   /**
    * Fields returned from the backend.
    */
-  export interface Response
-    extends Fields,
-      Metadata,
-      ContentMetadata.Response {}
+  export interface Response extends Fields, ContentMetadata.Response {
+    exampleData?: Dictionary<Post.Summary>;
+    lessonData?: Dictionary<Post.Summary>;
+  }
 
   /**
    * Serialized fields.
    */
-  export interface Get extends Fields, Metadata, ContentMetadata.Get {
+  export interface Get extends Fields, ContentMetadata.Get {
+    exampleData: Post.Summary[];
+    lessonData: Post.Summary[];
     id: string;
+    posts: number;
   }
 
   /**
@@ -55,15 +56,5 @@ export namespace Chapter {
    */
   export interface Snapshot extends Get {
     snap: firebase.firestore.DocumentSnapshot;
-  }
-
-  /**
-   * Search index fields.
-   */
-  export interface Index extends SearchIndex {
-    description: string;
-    pathId: string;
-    photo: string | null;
-    title: string;
   }
 }

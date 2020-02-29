@@ -1,4 +1,4 @@
-import { ContentMetadata, ContentSummary } from './content';
+import { ContentMetadata } from './content';
 import { SearchIndex } from './search';
 
 /**
@@ -16,24 +16,22 @@ export namespace Post {
     | 'lessons'
     | 'posts'
     | 'questions';
-  export type OrderBy = 'likes' | 'order';
+  export type OrderBy = 'likes';
+
+  export interface Summary {
+    description: string;
+    id: string;
+    title: string;
+  }
 
   export interface EditableFields {
     content: string;
     links: string[] | null;
-    order: number | null;
     title: string;
   }
 
   export interface Fields extends EditableFields {
     category: Category;
-    chapterId: string | null;
-  }
-
-  interface Metadata {
-    chapter?: ContentSummary;
-    path?: ContentSummary;
-    pathId?: string | null;
   }
 
   /**
@@ -53,15 +51,12 @@ export namespace Post {
   /**
    * Fields returned from the backend.
    */
-  export interface Response
-    extends Fields,
-      Metadata,
-      ContentMetadata.Response {}
+  export interface Response extends Fields, ContentMetadata.Response {}
 
   /**
    * Serialized fields.
    */
-  export interface Get extends Fields, Metadata, ContentMetadata.Get {
+  export interface Get extends Fields, ContentMetadata.Get {
     id: string;
     sites: Link[];
   }

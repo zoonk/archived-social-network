@@ -3,7 +3,6 @@ import { NextPage, NextPageContext } from 'next';
 import { Container, Grid, makeStyles } from '@material-ui/core';
 import HomeBreadcrumb from '@zoonk/components/HomeBreadcrumb';
 import Meta from '@zoonk/components/Meta';
-import PathsCard from '@zoonk/components/PathsCard';
 import PostsCard from '@zoonk/components/PostsCard';
 import ProfileCard from '@zoonk/components/ProfileCard';
 import TopicsCard from '@zoonk/components/TopicsCard';
@@ -50,7 +49,6 @@ const ProfilePage: NextPage<ProfileProps> = ({ profile }: ProfileProps) => {
 
         <Grid item xs={12} sm={6} md={8} className={classes.column}>
           <TopicsCard createdById={id} />
-          <PathsCard createdById={id} />
           <PostsCard userId={id} limit={3} title={translate('posts')} />
         </Grid>
       </Grid>

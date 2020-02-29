@@ -3,7 +3,7 @@ import { Post } from '@zoonk/models';
 import LessonListItem from './LessonListItem';
 
 interface LessonListProps {
-  items: Post.Get[];
+  items: Post.Summary[];
 }
 
 /**

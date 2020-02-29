@@ -1,11 +1,11 @@
 import { useContext, useEffect } from 'react';
 import { NextPage } from 'next';
 import { Container, Grid, makeStyles } from '@material-ui/core';
+import ChaptersCard from '@zoonk/components/ChaptersCard';
 import ItemCredits from '@zoonk/components/ItemCredits';
 import LeaderboardCard from '@zoonk/components/LeaderboardCard';
 import Meta from '@zoonk/components/Meta';
 import NotesCard from '@zoonk/components/NotesCard';
-import PathsCard from '@zoonk/components/PathsCard';
 import PostsCard from '@zoonk/components/PostsCard';
 import TopicDetails from '@zoonk/components/TopicDetails';
 import TopicsBreadcrumb from '@zoonk/components/TopicsBreadcrumb';
@@ -29,6 +29,7 @@ const TopicPage: NextPage<TopicPageProps> = ({ topic }) => {
   const { translate } = useContext(GlobalContext);
   const classes = useStyles();
   const {
+    chapterData,
     createdAt,
     createdBy,
     id,
@@ -69,7 +70,7 @@ const TopicPage: NextPage<TopicPageProps> = ({ topic }) => {
         </Grid>
 
         <Grid item xs={12} sm={6} md={8} className={classes.column}>
-          <PathsCard topicId={id} />
+          <ChaptersCard chapters={chapterData} />
           <PostsCard
             category={['examples']}
             topicId={id}

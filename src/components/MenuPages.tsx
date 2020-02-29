@@ -10,7 +10,6 @@ import {
 import {
   Bookmarks,
   Description,
-  DeviceHub,
   EmojiEvents,
   History,
   Language,
@@ -66,15 +65,6 @@ const MenuPages = () => {
               <Subject />
             </ListItemIcon>
             <ListItemText primary={translate('topics')} />
-          </ListItem>
-        </NextLink>
-
-        <NextLink href="/paths" passHref>
-          <ListItem button component="a">
-            <ListItemIcon>
-              <DeviceHub />
-            </ListItemIcon>
-            <ListItemText primary={translate('learningPaths')} />
           </ListItem>
         </NextLink>
 

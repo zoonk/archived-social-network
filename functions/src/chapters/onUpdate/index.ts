@@ -1,3 +1,4 @@
 export * from './addToActivity';
-export * from './updateCount';
-export * from './updatePosts';
+export * from './updateExamples';
+export * from './updateLessons';
+export * from './updateTopics';

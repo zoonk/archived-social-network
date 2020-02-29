@@ -13,7 +13,7 @@ const client = algolia(ALGOLIA_APP_ID, ALGOLIA_SEARCH_KEY);
  * Full-text search across all collections.
  */
 export const search = async (query: string) => {
-  const indexes = ['topics', 'paths', 'chapters', 'posts'];
+  const indexes = ['topics', 'posts'];
   const queries = indexes.map((item) => ({
     indexName: `${item}_${appLanguage}`,
     query,

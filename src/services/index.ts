@@ -6,7 +6,6 @@ export * from './leaderboard';
 export * from './likes';
 export * from './notes';
 export * from './notifications';
-export * from './path';
 export * from './payments';
 export * from './posts';
 export * from './posts';

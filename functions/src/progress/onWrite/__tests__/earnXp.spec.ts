@@ -5,18 +5,18 @@ import { when } from 'jest-when';
 const testEnv = functions();
 const db = admin.firestore();
 
-import { onWritePostProgressUpdateXP } from '../earnXp';
+import { onWriteChapterProgressUpdateXP } from '../earnXp';
 
 beforeAll(() => {
   spyOn(db.batch(), 'commit').and.returnValue(true);
 });
 
-test('return if the data did not change', async (done) => {
+test('return if the number of posts did not change', async (done) => {
   const change = {
-    before: { data: () => ({ completed: false }) },
+    before: { data: () => ({ examples: [], lessons: [] }) },
     after: { data: () => undefined },
   };
-  const wrapped = testEnv.wrap(onWritePostProgressUpdateXP);
+  const wrapped = testEnv.wrap(onWriteChapterProgressUpdateXP);
   const req = await wrapped(change);
 
   expect(req).toBe(false);
@@ -26,7 +26,7 @@ test('return if the data did not change', async (done) => {
 
 test('return when users complete their own content', async (done) => {
   when(db.doc as any)
-    .calledWith('posts/postId')
+    .calledWith('chapters/chapterId')
     .mockReturnValue({
       get: jest.fn().mockReturnValue({
         data: () => ({
@@ -38,15 +38,15 @@ test('return when users complete their own content', async (done) => {
 
   const change = {
     before: { data: () => undefined },
-    after: { data: () => ({ completed: true }) },
+    after: { data: () => ({ examples: ['test1'] }) },
   };
   const context = {
     params: {
-      postId: 'postId',
+      chapterId: 'chapterId',
       userId: 'editorId',
     },
   };
-  const wrapped = testEnv.wrap(onWritePostProgressUpdateXP);
+  const wrapped = testEnv.wrap(onWriteChapterProgressUpdateXP);
   const req = await wrapped(change, context);
 
   expect(req).toBe(false);
@@ -57,7 +57,7 @@ test('return when users complete their own content', async (done) => {
   done();
 });
 
-test('increase XP when a post is completed', async (done) => {
+test('increase XP when a lesson is completed', async (done) => {
   const spy = spyOn(db.batch(), 'set');
 
   when(db.doc as any)
@@ -73,7 +73,7 @@ test('increase XP when a post is completed', async (done) => {
     .mockReturnValue('topic3Ref');
 
   when(db.doc as any)
-    .calledWith('posts/postId')
+    .calledWith('chapters/chapterId')
     .mockReturnValue({
       get: jest.fn().mockReturnValue({
         data: () => ({
@@ -85,15 +85,15 @@ test('increase XP when a post is completed', async (done) => {
 
   const change = {
     before: { data: () => undefined },
-    after: { data: () => ({ completed: true }) },
+    after: { data: () => ({ lessons: ['test1'] }) },
   };
-  const context = { params: { postId: 'postId', userId: 'editorId' } };
+  const context = { params: { chapterId: 'chapterId', userId: 'editorId' } };
   const expected = {
     createdById: 'editorId',
     xp: 1,
   };
   const merge = true;
-  const wrapped = testEnv.wrap(onWritePostProgressUpdateXP);
+  const wrapped = testEnv.wrap(onWriteChapterProgressUpdateXP);
   const req = await wrapped(change, context);
 
   expect(req).toBe(true);
@@ -104,7 +104,7 @@ test('increase XP when a post is completed', async (done) => {
   done();
 });
 
-test('decrease the XP when a completed field becomes falsy', async (done) => {
+test('increase XP when an example is completed', async (done) => {
   const spy = spyOn(db.batch(), 'set');
 
   when(db.doc as any)
@@ -120,7 +120,7 @@ test('decrease the XP when a completed field becomes falsy', async (done) => {
     .mockReturnValue('topic3Ref');
 
   when(db.doc as any)
-    .calledWith('posts/postId')
+    .calledWith('chapters/chapterId')
     .mockReturnValue({
       get: jest.fn().mockReturnValue({
         data: () => ({
@@ -131,16 +131,204 @@ test('decrease the XP when a completed field becomes falsy', async (done) => {
     });
 
   const change = {
-    before: { data: () => ({ completed: true }) },
-    after: { data: () => undefined },
+    before: { data: () => undefined },
+    after: { data: () => ({ examples: ['test1'] }) },
   };
-  const context = { params: { postId: 'postId', userId: 'editorId' } };
+  const context = { params: { chapterId: 'chapterId', userId: 'editorId' } };
+  const expected = {
+    createdById: 'editorId',
+    xp: 1,
+  };
+  const merge = true;
+  const wrapped = testEnv.wrap(onWriteChapterProgressUpdateXP);
+  const req = await wrapped(change, context);
+
+  expect(req).toBe(true);
+  expect(spy).toHaveBeenCalledWith('leaderboardRef', expected, { merge });
+  expect(spy).toHaveBeenCalledWith('topic1Ref', expected, { merge });
+  expect(spy).toHaveBeenCalledWith('topic2Ref', expected, { merge });
+  expect(spy).toHaveBeenCalledWith('topic3Ref', expected, { merge });
+  done();
+});
+
+test('increase XP when the posts count increases', async (done) => {
+  const spy = spyOn(db.batch(), 'set');
+
+  when(db.doc as any)
+    .calledWith('leaderboard/editorId')
+    .mockReturnValue('leaderboardRef');
+
+  when(db.doc as any)
+    .calledWith('topics/topic1/leaderboard/editorId')
+    .mockReturnValue('topic1Ref')
+    .calledWith('topics/topic2/leaderboard/editorId')
+    .mockReturnValue('topic2Ref')
+    .calledWith('topics/topic3/leaderboard/editorId')
+    .mockReturnValue('topic3Ref');
+
+  when(db.doc as any)
+    .calledWith('chapters/chapterId')
+    .mockReturnValue({
+      get: jest.fn().mockReturnValue({
+        data: () => ({
+          topics: ['topic1', 'topic2', 'topic3'],
+          createdById: 'otherEditor',
+        }),
+      }),
+    });
+
+  const change = {
+    before: { data: () => ({ lessons: ['1'], examples: ['1'] }) },
+    after: { data: () => ({ lessons: ['1', '2'], examples: ['1', '2'] }) },
+  };
+  const context = { params: { chapterId: 'chapterId', userId: 'editorId' } };
+  const expected = {
+    createdById: 'editorId',
+    xp: 2,
+  };
+  const merge = true;
+  const wrapped = testEnv.wrap(onWriteChapterProgressUpdateXP);
+  const req = await wrapped(change, context);
+
+  expect(req).toBe(true);
+  expect(spy).toHaveBeenCalledWith('leaderboardRef', expected, { merge });
+  expect(spy).toHaveBeenCalledWith('topic1Ref', expected, { merge });
+  expect(spy).toHaveBeenCalledWith('topic2Ref', expected, { merge });
+  expect(spy).toHaveBeenCalledWith('topic3Ref', expected, { merge });
+  done();
+});
+
+test('decrease XP when a lesson is removed from the list', async (done) => {
+  const spy = spyOn(db.batch(), 'set');
+
+  when(db.doc as any)
+    .calledWith('leaderboard/editorId')
+    .mockReturnValue('leaderboardRef');
+
+  when(db.doc as any)
+    .calledWith('topics/topic1/leaderboard/editorId')
+    .mockReturnValue('topic1Ref')
+    .calledWith('topics/topic2/leaderboard/editorId')
+    .mockReturnValue('topic2Ref')
+    .calledWith('topics/topic3/leaderboard/editorId')
+    .mockReturnValue('topic3Ref');
+
+  when(db.doc as any)
+    .calledWith('chapters/chapterId')
+    .mockReturnValue({
+      get: jest.fn().mockReturnValue({
+        data: () => ({
+          topics: ['topic1', 'topic2', 'topic3'],
+          createdById: 'otherEditor',
+        }),
+      }),
+    });
+
+  const change = {
+    before: { data: () => ({ lessons: ['1'] }) },
+    after: { data: () => ({ lessons: [] }) },
+  };
+  const context = { params: { chapterId: 'chapterId', userId: 'editorId' } };
   const expected = {
     createdById: 'editorId',
     xp: -1,
   };
   const merge = true;
-  const wrapped = testEnv.wrap(onWritePostProgressUpdateXP);
+  const wrapped = testEnv.wrap(onWriteChapterProgressUpdateXP);
+  const req = await wrapped(change, context);
+
+  expect(req).toBe(true);
+  expect(spy).toHaveBeenCalledWith('leaderboardRef', expected, { merge });
+  expect(spy).toHaveBeenCalledWith('topic1Ref', expected, { merge });
+  expect(spy).toHaveBeenCalledWith('topic2Ref', expected, { merge });
+  expect(spy).toHaveBeenCalledWith('topic3Ref', expected, { merge });
+  done();
+});
+
+test('decrease XP when an example is removed from the list', async (done) => {
+  const spy = spyOn(db.batch(), 'set');
+
+  when(db.doc as any)
+    .calledWith('leaderboard/editorId')
+    .mockReturnValue('leaderboardRef');
+
+  when(db.doc as any)
+    .calledWith('topics/topic1/leaderboard/editorId')
+    .mockReturnValue('topic1Ref')
+    .calledWith('topics/topic2/leaderboard/editorId')
+    .mockReturnValue('topic2Ref')
+    .calledWith('topics/topic3/leaderboard/editorId')
+    .mockReturnValue('topic3Ref');
+
+  when(db.doc as any)
+    .calledWith('chapters/chapterId')
+    .mockReturnValue({
+      get: jest.fn().mockReturnValue({
+        data: () => ({
+          topics: ['topic1', 'topic2', 'topic3'],
+          createdById: 'otherEditor',
+        }),
+      }),
+    });
+
+  const change = {
+    before: { data: () => ({ examples: ['1'] }) },
+    after: { data: () => ({ examples: [] }) },
+  };
+  const context = { params: { chapterId: 'chapterId', userId: 'editorId' } };
+  const expected = {
+    createdById: 'editorId',
+    xp: -1,
+  };
+  const merge = true;
+  const wrapped = testEnv.wrap(onWriteChapterProgressUpdateXP);
+  const req = await wrapped(change, context);
+
+  expect(req).toBe(true);
+  expect(spy).toHaveBeenCalledWith('leaderboardRef', expected, { merge });
+  expect(spy).toHaveBeenCalledWith('topic1Ref', expected, { merge });
+  expect(spy).toHaveBeenCalledWith('topic2Ref', expected, { merge });
+  expect(spy).toHaveBeenCalledWith('topic3Ref', expected, { merge });
+  done();
+});
+
+test('decrease XP when the posts count decreases', async (done) => {
+  const spy = spyOn(db.batch(), 'set');
+
+  when(db.doc as any)
+    .calledWith('leaderboard/editorId')
+    .mockReturnValue('leaderboardRef');
+
+  when(db.doc as any)
+    .calledWith('topics/topic1/leaderboard/editorId')
+    .mockReturnValue('topic1Ref')
+    .calledWith('topics/topic2/leaderboard/editorId')
+    .mockReturnValue('topic2Ref')
+    .calledWith('topics/topic3/leaderboard/editorId')
+    .mockReturnValue('topic3Ref');
+
+  when(db.doc as any)
+    .calledWith('chapters/chapterId')
+    .mockReturnValue({
+      get: jest.fn().mockReturnValue({
+        data: () => ({
+          topics: ['topic1', 'topic2', 'topic3'],
+          createdById: 'otherEditor',
+        }),
+      }),
+    });
+
+  const change = {
+    before: { data: () => ({ lessons: ['1', '2'], examples: ['1', '2'] }) },
+    after: { data: () => ({ lessons: ['1'], examples: ['1'] }) },
+  };
+  const context = { params: { chapterId: 'chapterId', userId: 'editorId' } };
+  const expected = {
+    createdById: 'editorId',
+    xp: -2,
+  };
+  const merge = true;
+  const wrapped = testEnv.wrap(onWriteChapterProgressUpdateXP);
   const req = await wrapped(change, context);
 
   expect(req).toBe(true);

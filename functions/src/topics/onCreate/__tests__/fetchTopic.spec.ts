@@ -44,6 +44,7 @@ test('fetch the topic data and update it', async (done) => {
   const wrapped = testEnv.wrap(onCreateTopicFetchData);
   const req = await wrapped(snap);
   const expected = {
+    chapters: [],
     comments: 0,
     createdAt: 'timestamp',
     createdBy: data,

@@ -1,5 +1,3 @@
-import { Chapter } from './chapter';
-import { Path } from './path';
 import { Post } from './post';
 import { Topic } from './topic';
 
@@ -11,8 +9,4 @@ export interface SearchIndex {
   objectID: string;
 }
 
-export type SearchResult =
-  | Chapter.Index
-  | Path.Index
-  | Post.Index
-  | Topic.Index;
+export type SearchResult = Post.Index | Topic.Index;

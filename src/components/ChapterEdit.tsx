@@ -31,13 +31,13 @@ const ChapterEdit = ({ data }: ChapterEditProps) => {
       deleteChapter(data.id, profile, user.uid)
         .then(() => {
           setSnackbar(null);
-          push('/paths/[id]', `/paths/${data.pathId}`);
+          push('/topics/[id]', `/topics/${data.topics[0]}`);
         })
         .catch((e) => setSnackbar(firebaseError(e, 'chapter_delete')));
     }
   };
 
-  const handleSubmit = (changes: Omit<Chapter.EditableFields, 'order'>) => {
+  const handleSubmit = (changes: Chapter.EditableFields) => {
     setSnackbar({ type: 'progress', msg: translate('saving') });
 
     updateChapter(

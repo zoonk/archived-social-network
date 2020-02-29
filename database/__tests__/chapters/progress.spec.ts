@@ -25,35 +25,42 @@ afterAll(async (done) => {
   done();
 });
 
-test('cannot create', async (done) => {
-  await firebase.assertFails(collection.add({ posts: 10 }));
-  await firebase.assertFails(doc.set({ posts: 10 }));
+test('can create', async (done) => {
+  await firebase.assertSucceeds(doc.set({ examples: ['1'] }));
   done();
 });
 
-test('cannot update', async (done) => {
-  await admin.doc('chapters/newItem/progress/currentUser').set({ posts: 0 });
-  await firebase.assertFails(doc.update({ posts: 10 }));
-  done();
-});
-
-test('cannot delete', async (done) => {
-  await firebase.assertFails(doc.delete());
-  done();
-});
-
-test('users can read their data', async (done) => {
+test('users can read their own data', async (done) => {
   await firebase.assertSucceeds(doc.get());
   done();
 });
 
-test('users cannot read data from others', async (done) => {
+test('cannot read data from other users', async (done) => {
   const ref = db.doc('chapters/newItem/progress/otherUser');
   await firebase.assertFails(ref.get());
   done();
 });
 
-test('cannot list', async (done) => {
+test('users can update their own data', async (done) => {
+  await firebase.assertSucceeds(doc.update({ completed: false }));
+  done();
+});
+
+test('cannot update data from other users', async (done) => {
+  const ref = db.doc('chapters/newItem/progress/other');
+  await firebase.assertFails(ref.set({ lessons: ['1'] }));
+  await admin.doc('chapters/newItem/progress/other').set({ lessons: ['1'] });
+  await firebase.assertFails(ref.update({ lessons: ['3'] }));
+  done();
+});
+
+test('cannot delete data', async (done) => {
+  const ref = db.doc('chapters/newItem/progress/currentUser');
+  await firebase.assertFails(ref.delete());
+  done();
+});
+
+test('cannot list data', async (done) => {
   await firebase.assertFails(collection.get());
   done();
 });

@@ -12,7 +12,6 @@ export * from './likes';
 export * from './misc';
 export * from './note';
 export * from './notification';
-export * from './path';
 export * from './post';
 export * from './profile';
 export * from './progress';

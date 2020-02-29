@@ -1,6 +1,13 @@
 import { pickBy } from 'lodash';
 import { Chapter, Profile } from '@zoonk/models';
-import { analytics, db, generateSlug, timestamp } from '@zoonk/utils';
+import {
+  analytics,
+  arrayUnion,
+  db,
+  generateSlug,
+  timestamp,
+} from '@zoonk/utils';
+import { updateTopic } from './topics';
 import { serializeChapter } from '../serializers';
 
 const chapterConverter: firebase.firestore.FirestoreDataConverter<Chapter.Get> = {
@@ -18,9 +25,26 @@ const chapterConverter: firebase.firestore.FirestoreDataConverter<Chapter.Get> =
  * Add a new chapter to the database.
  */
 export const createChapter = async (data: Chapter.Create): Promise<string> => {
-  const slug = generateSlug(data.title);
-  await db.doc(`chapters/${slug}`).set(data);
-  analytics().logEvent('chapter_add', { language: data.language });
+  const { language, title, topics, updatedAt, updatedBy, updatedById } = data;
+  const batch = db.batch();
+  const slug = generateSlug(title);
+
+  batch.set(db.doc(`chapters/${slug}`), data);
+
+  // Add this chapter to all topics.
+  topics.forEach((topic) => {
+    const ref = db.doc(`topics/${topic}`);
+    const changes = {
+      chapters: arrayUnion(slug),
+      updatedAt,
+      updatedBy,
+      updatedById,
+    };
+    batch.update(ref, changes);
+  });
+
+  await batch.commit();
+  analytics().logEvent('chapter_add', { language });
   return slug;
 };
 
@@ -39,22 +63,19 @@ export const updateChapter = (
  * Update chapter order.
  */
 export const updateChapterOrder = (
-  chapters: Chapter.Get[],
+  chapters: string[],
+  topicId: string,
   profile: Profile.Response,
   editorId: string,
 ): Promise<void> => {
-  const batch = db.batch();
-  chapters.forEach((chapter) => {
-    const ref = db.doc(`chapters/${chapter.id}`);
-    batch.update(ref, {
-      order: chapter.order,
-      updatedAt: timestamp,
-      updatedBy: profile,
-      updatedById: editorId,
-    });
-  });
+  const changes = {
+    chapters,
+    updatedAt: timestamp,
+    updatedBy: profile,
+    updatedById: editorId,
+  };
 
-  return batch.commit();
+  return updateTopic(changes, topicId);
 };
 
 /**
@@ -86,31 +107,4 @@ export const deleteChapter = async (
   };
   await updateChapter(update, id);
   return db.doc(`chapters/${id}`).delete();
-};
-
-/**
- * Get a list of chapters from the database.
- */
-export const listChapters = async (
-  pathId?: string,
-  startAfter?: firebase.firestore.DocumentSnapshot,
-): Promise<Chapter.Snapshot[]> => {
-  let ref = db
-    .collection('chapters')
-    .withConverter(chapterConverter)
-    .orderBy('order', 'asc')
-    .orderBy('createdAt', 'asc');
-
-  if (startAfter) {
-    ref = ref.startAfter(startAfter);
-  }
-
-  if (pathId) {
-    ref = ref.where('pathId', '==', pathId);
-  }
-
-  const snap = await ref.get();
-  return snap.docs.map((item) => {
-    return { ...item.data(), snap: item };
-  });
 };

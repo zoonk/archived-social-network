@@ -23,14 +23,10 @@ const data = {
   createdBy: profile,
   createdById: 'currentUser',
   description: 'description',
-  examples: 0,
+  examples: ['example1'],
   language: 'en',
-  lessons: 0,
+  lessons: ['lesson1'],
   likes: 0,
-  order: 1,
-  pathId: 'pathId',
-  photo: null,
-  posts: 0,
   title: 'name',
   topics: ['topicId'],
   updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -111,8 +107,30 @@ test('description cannot have more than 500 characters', async (done) => {
   done();
 });
 
-test('examples cannot be changed', async (done) => {
-  await firebase.assertFails(ref.update({ ...edit, examples: 1 }));
+test('exampleData cannot be changed', async (done) => {
+  await firebase.assertFails(ref.update({ ...edit, exampleData: { 1: true } }));
+  done();
+});
+
+test('examples is an array', async (done) => {
+  await firebase.assertSucceeds(ref.update({ ...edit, examples: ['2'] }));
+  await firebase.assertFails(ref.update({ ...edit, examples: 'test' }));
+  await firebase.assertFails(ref.update({ ...edit, examples: 123 }));
+  await firebase.assertFails(ref.update({ ...edit, examples: true }));
+  await firebase.assertFails(ref.update({ ...edit, examples: { 1: true } }));
+  await firebase.assertFails(ref.update({ ...edit, examples: null }));
+  done();
+});
+
+test('cannot have more than 20 examples', async (done) => {
+  const add = (n: number) => ({ ...data, examples: new Array(n).fill('post') });
+  const doc = (id: string) => db.doc(`chapters/${id}`);
+  const { arrayUnion } = firebase.firestore.FieldValue;
+  const examples = arrayUnion('new');
+  await admin.doc('chapters/1').set(add(19));
+  await admin.doc('chapters/2').set(add(20));
+  await firebase.assertSucceeds(doc('1').update({ ...edit, examples }));
+  await firebase.assertFails(doc('2').update({ ...edit, examples }));
   done();
 });
 
@@ -121,48 +139,35 @@ test('language cannot be changed', async (done) => {
   done();
 });
 
-test('lessons cannot be changed', async (done) => {
-  await firebase.assertFails(ref.update({ ...edit, lessons: 1 }));
+test('lessonData cannot be changed', async (done) => {
+  await firebase.assertFails(ref.update({ ...edit, lessonData: { 1: true } }));
+  done();
+});
+
+test('lessons is an array', async (done) => {
+  await firebase.assertSucceeds(ref.update({ ...edit, lessons: ['2'] }));
+  await firebase.assertFails(ref.update({ ...edit, lessons: 'test' }));
+  await firebase.assertFails(ref.update({ ...edit, lessons: 123 }));
+  await firebase.assertFails(ref.update({ ...edit, lessons: true }));
+  await firebase.assertFails(ref.update({ ...edit, lessons: { 1: true } }));
+  await firebase.assertFails(ref.update({ ...edit, lessons: null }));
+  done();
+});
+
+test('cannot have more than 20 lessons', async (done) => {
+  const add = (n: number) => ({ ...data, lessons: new Array(n).fill('post') });
+  const doc = (id: string) => db.doc(`chapters/${id}`);
+  const { arrayUnion } = firebase.firestore.FieldValue;
+  const lessons = arrayUnion('new');
+  await admin.doc('chapters/1').set(add(19));
+  await admin.doc('chapters/2').set(add(20));
+  await firebase.assertSucceeds(doc('1').update({ ...edit, lessons }));
+  await firebase.assertFails(doc('2').update({ ...edit, lessons }));
   done();
 });
 
 test('likes cannot be changed', async (done) => {
   await firebase.assertFails(ref.update({ ...edit, likes: 1 }));
-  done();
-});
-
-test('order is an integer', async (done) => {
-  await firebase.assertFails(ref.update({ ...edit, order: 'test' }));
-  await firebase.assertFails(ref.update({ ...edit, order: 1.1 }));
-  await firebase.assertFails(ref.update({ ...edit, order: true }));
-  await firebase.assertFails(ref.update({ ...edit, order: { 1: true } }));
-  await firebase.assertFails(ref.update({ ...edit, order: ['test'] }));
-  await firebase.assertFails(ref.update({ ...edit, order: null }));
-  done();
-});
-
-test('path cannot be changed', async (done) => {
-  await firebase.assertFails(ref.update({ ...edit, path: 'new' }));
-  done();
-});
-
-test('pathId cannot be changed', async (done) => {
-  await firebase.assertFails(ref.update({ ...edit, pathId: 'other' }));
-  done();
-});
-
-test('photo is a string or null', async (done) => {
-  await firebase.assertFails(ref.update({ ...edit, photo: 123 }));
-  await firebase.assertFails(ref.update({ ...edit, photo: true }));
-  await firebase.assertFails(ref.update({ ...edit, photo: { 1: true } }));
-  await firebase.assertFails(ref.update({ ...edit, photo: ['test'] }));
-  await firebase.assertSucceeds(ref.update({ ...edit, photo: 'test.png' }));
-  await firebase.assertSucceeds(ref.update({ ...edit, photo: null }));
-  done();
-});
-
-test('posts cannot be changed', async (done) => {
-  await firebase.assertFails(ref.update({ ...edit, posts: 1 }));
   done();
 });
 

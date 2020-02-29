@@ -101,9 +101,6 @@ const translate: TranslationFn = (key, args) => {
     items_empty: 'Nenhum item encontrado.',
     leaderboard: 'Ranking',
     learn_about: `Aprenda sobre ${args?.title}`,
-    learningPaths: 'Trilhas de aprendizado',
-    lessons_limit:
-      'Você não pode criar mais de 10 lições em um capítulo. Por favore, divida as lições em mais capítulos.',
     lessons: 'Lições',
     let_us_know: 'Por favor, nos avise.',
     level: 'Nível',
@@ -139,10 +136,6 @@ const translate: TranslationFn = (key, args) => {
     password_change: 'Alterar senha',
     password_new: 'Nova senha',
     password_old: 'Senha atual',
-    path_add: 'Criar trilha de aprendizado',
-    path_edit: 'Editar trilha',
-    path: 'Trilha',
-    paths: 'Trilhas',
     photo_suggested_size: `Tamanho sugerido: ${args?.size}`,
     photo_update: 'Mudar foto',
     photo_uploaded: 'Foto enviada',
@@ -208,16 +201,12 @@ const translate: TranslationFn = (key, args) => {
     seo_home_desc:
       'Aprenda sobre qualquer assunto online. Como aprender de graça online. Zoonk é uma rede social para estudar, uma rede social para estudantes e professores.',
     seo_home_title: 'Zoonk: A rede social da educação',
-    seo_learningPaths_desc:
-      'Trilhas de aprendizagem sobre qualquer assunto. Ensino guiado para aprender sobre qualquer assunto com trilhas de aprendizado colaborativas.',
     seo_login_desc: 'Como fazer login na minha conta do Zoonk.',
     seo_notes_desc:
       'Como salvar anotações sobre os assuntos que estou estudando.',
     seo_posts_desc:
       'Encontre publicações e artigos sobre qualquer assunto. Aprenda lendo artigos online de graça.',
     seo_profile_desc: `${args?.name} está ensinando e aprendendo coisas no Zoonk. Veja o que ${args?.name} está criando.`,
-    seo_profile_paths_desc: `Trilhas de aprendizagem criadas por ${args?.name}. Curadoria de conteúdo de ${args?.name} no Zoonk.`,
-    seo_profile_paths_title: `Trilhas de aprendizagem de ${args?.name}`,
     seo_profile_posts_desc: `Publicações feitas por ${args?.name}. Todos os artigos publicados online por ${args?.name}.`,
     seo_profile_posts_title: `Postagens de ${args?.name}`,
     seo_profile_topics_desc: `${args?.name} está escrevendo sobre muitos assuntos interessantes. Veja os assuntos criados por ${args?.name} no Zoonk.`,
@@ -239,8 +228,6 @@ const translate: TranslationFn = (key, args) => {
     seo_topic_courses_title: `Cursos e livros de ${args?.title}`,
     seo_topic_examples_desc: `${args?.title} na prática. Exemplos de ${args?.title} na vida real. Como usar ${args?.title} no dia-a-dia.`,
     seo_topic_examples_title: `${args?.title} na prática`,
-    seo_topic_paths_desc: `Trilhas de aprendizagem sobre ${args?.title}. Aprenda ${args?.title} de forma colaborativa online.`,
-    seo_topic_paths_title: `Trilhas de aprendizagem sobre ${args?.title}`,
     seo_topic_posts_desc: `Encontre postagens sobre ${args?.title}. Os melhores artigos sobre ${args?.title} online.`,
     seo_topic_posts_title: `Fórum sobre ${args?.title}`,
     seo_topic_questions_desc: `Tire todas as dúvidas ${args?.title}. Faça perguntas e encontre respostas sobre ${args?.title} online.`,

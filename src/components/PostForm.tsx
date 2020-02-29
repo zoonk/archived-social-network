@@ -28,10 +28,7 @@ interface PostFormProps {
   saving: boolean;
   topicIds?: string[];
   onDelete?: () => void;
-  onSubmit: (
-    data: Omit<Post.EditableFields, 'chapters' | 'order'>,
-    topics: string[],
-  ) => void;
+  onSubmit: (data: Post.EditableFields, topics: string[]) => void;
 }
 
 /**

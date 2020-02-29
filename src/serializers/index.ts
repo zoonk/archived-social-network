@@ -7,7 +7,6 @@ export * from './leaderboard';
 export * from './link';
 export * from './notes';
 export * from './notifications';
-export * from './paths';
 export * from './posts';
 export * from './profile';
 export * from './replies';

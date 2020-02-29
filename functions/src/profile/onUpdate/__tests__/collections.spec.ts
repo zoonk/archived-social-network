@@ -66,7 +66,6 @@ test('should update the profile for all collections', async (done) => {
   expect(req).toBe('updated');
   expect(db.collection).toHaveBeenCalledWith('chapters');
   expect(db.collection).toHaveBeenCalledWith('comments');
-  expect(db.collection).toHaveBeenCalledWith('paths');
   expect(db.collection).toHaveBeenCalledWith('posts');
   expect(db.collection).toHaveBeenCalledWith('replies');
   expect(db.collection).toHaveBeenCalledWith('topics');
@@ -82,8 +81,8 @@ test('should update the profile for all collections', async (done) => {
   );
   expect(spy1).toHaveBeenCalledWith({ createdBy: data });
   expect(spy2).toHaveBeenCalledWith({ updatedBy: data });
-  expect(spy1).toHaveBeenCalledTimes(12);
-  expect(spy2).toHaveBeenCalledTimes(12);
+  expect(spy1).toHaveBeenCalledTimes(10);
+  expect(spy2).toHaveBeenCalledTimes(10);
   expect(Promise.all).toHaveBeenCalledWith(['doc1', 'doc2']);
   done();
 });

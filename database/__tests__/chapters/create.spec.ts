@@ -37,14 +37,10 @@ describe('/chapters - create', () => {
     createdBy: profile,
     createdById: 'currentUser',
     description: 'description',
-    examples: 0,
+    examples: [],
     language: 'en',
-    lessons: 0,
+    lessons: [],
     likes: 0,
-    order: 1,
-    pathId: 'pathId',
-    photo: null,
-    posts: 0,
     title: 'name',
     topics: ['topicId'],
     updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -54,7 +50,6 @@ describe('/chapters - create', () => {
 
   beforeAll(async (done) => {
     await admin.doc('profile/currentUser').set(profile);
-    await admin.doc('paths/pathId').set({ title: 'valid path' });
     done();
   });
 
@@ -125,8 +120,22 @@ describe('/chapters - create', () => {
     done();
   });
 
-  test('examples is set to 0', async (done) => {
-    await firebase.assertFails(ref.add({ ...data, examples: 1 }));
+  test('examples is an array', async (done) => {
+    await firebase.assertFails(ref.add({ ...data, examples: 'test' }));
+    await firebase.assertFails(ref.add({ ...data, examples: 123 }));
+    await firebase.assertFails(ref.add({ ...data, examples: true }));
+    await firebase.assertFails(ref.add({ ...data, examples: { 1: true } }));
+    await firebase.assertFails(ref.add({ ...data, examples: null }));
+    done();
+  });
+
+  test('cannot have more than 20 examples', async (done) => {
+    await firebase.assertSucceeds(
+      ref.add({ ...data, examples: new Array(20).fill('post') }),
+    );
+    await firebase.assertFails(
+      ref.add({ ...data, examples: new Array(21).fill('post') }),
+    );
     done();
   });
 
@@ -136,43 +145,27 @@ describe('/chapters - create', () => {
     done();
   });
 
-  test('lessons is set to 0', async (done) => {
-    await firebase.assertFails(ref.add({ ...data, lessons: 1 }));
+  test('lessons is an array', async (done) => {
+    await firebase.assertFails(ref.add({ ...data, lessons: 'test' }));
+    await firebase.assertFails(ref.add({ ...data, lessons: 123 }));
+    await firebase.assertFails(ref.add({ ...data, lessons: true }));
+    await firebase.assertFails(ref.add({ ...data, lessons: { 1: true } }));
+    await firebase.assertFails(ref.add({ ...data, lessons: null }));
+    done();
+  });
+
+  test('cannot have more than 20 lessons', async (done) => {
+    await firebase.assertSucceeds(
+      ref.add({ ...data, lessons: new Array(20).fill('post') }),
+    );
+    await firebase.assertFails(
+      ref.add({ ...data, lessons: new Array(21).fill('post') }),
+    );
     done();
   });
 
   test('likes is set to 0', async (done) => {
     await firebase.assertFails(ref.add({ ...data, likes: 1 }));
-    done();
-  });
-
-  test('order is an integer', async (done) => {
-    await firebase.assertFails(ref.add({ ...data, order: 'test' }));
-    await firebase.assertFails(ref.add({ ...data, order: 1.1 }));
-    await firebase.assertFails(ref.add({ ...data, order: true }));
-    await firebase.assertFails(ref.add({ ...data, order: { 1: true } }));
-    await firebase.assertFails(ref.add({ ...data, order: ['test'] }));
-    await firebase.assertFails(ref.add({ ...data, order: null }));
-    done();
-  });
-
-  test('pathId has a valid id', async (done) => {
-    await firebase.assertFails(ref.add({ ...data, pathId: 'invalid' }));
-    done();
-  });
-
-  test('photo is a string or null', async (done) => {
-    await firebase.assertFails(ref.add({ ...data, photo: 123 }));
-    await firebase.assertFails(ref.add({ ...data, photo: true }));
-    await firebase.assertFails(ref.add({ ...data, photo: { 1: true } }));
-    await firebase.assertFails(ref.add({ ...data, photo: ['test'] }));
-    await firebase.assertSucceeds(ref.add({ ...data, photo: 'test.png' }));
-    await firebase.assertSucceeds(ref.add({ ...data, photo: null }));
-    done();
-  });
-
-  test('posts is set to 0', async (done) => {
-    await firebase.assertFails(ref.add({ ...data, posts: 1 }));
     done();
   });
 

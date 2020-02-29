@@ -56,6 +56,7 @@ const CreateTopic: NextPage = () => {
     }
 
     const topic: Topic.Create = {
+      chapters: [],
       comments: 0,
       createdAt: timestamp,
       createdBy: profile,

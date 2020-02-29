@@ -29,38 +29,6 @@
       ]
     },
     {
-      "collectionGroup": "chapters",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "pathId",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "order",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "createdAt",
-          "order": "ASCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "chapters",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "createdById",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "createdAt",
-          "order": "ASCENDING"
-        }
-      ]
-    },
-    {
       "collectionGroup": "comments",
       "queryScope": "COLLECTION",
       "fields": [
@@ -187,42 +155,6 @@
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "chapterId",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "category",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "updatedAt",
-          "order": "DESCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "posts",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "category",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "chapterId",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "order",
-          "order": "ASCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "posts",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
           "fieldPath": "category",
           "order": "ASCENDING"
         },
@@ -279,28 +211,6 @@
         {
           "fieldPath": "language",
           "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "updatedAt",
-          "order": "DESCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "posts",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "chapterId",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "category",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "likes",
-          "order": "DESCENDING"
         },
         {
           "fieldPath": "updatedAt",

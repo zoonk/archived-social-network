@@ -1,7 +1,6 @@
 import { Chapter } from './chapter';
 import { RawFirebaseTimestamp } from './firebase';
 import { UILanguage } from './i18n';
-import { Path } from './path';
 import { Post } from './post';
 import { Profile } from './profile';
 import { Topic } from './topic';
@@ -14,7 +13,7 @@ export type UserAction = 'created' | 'updated' | 'deleted';
 /**
  * Public content which everyone is allowed to update.
  */
-type EditableContent = 'chapters' | 'paths' | 'posts' | 'topics';
+type EditableContent = 'chapters' | 'posts' | 'topics';
 
 type EditableContentType = {
   [key in EditableContent]: any;
@@ -81,28 +80,17 @@ export namespace Activity {
   export type CreateChapter = Create<Chapter.Response, 'chapters'>;
   export type UpdateChapter = Update<Chapter.Response, 'chapters'>;
   export type DeleteChapter = Delete<Chapter.Response, 'chapters'>;
-  export type CreatePath = Create<Path.Response, 'paths'>;
-  export type UpdatePath = Update<Path.Response, 'paths'>;
-  export type DeletePath = Delete<Path.Response, 'paths'>;
   export type CreatePost = Create<Post.Response, 'posts'>;
   export type UpdatePost = Update<Post.Response, 'posts'>;
   export type DeletePost = Delete<Post.Response, 'posts'>;
   export type CreateTopic = Create<Topic.Response, 'topics'>;
   export type UpdateTopic = Update<Topic.Response, 'topics'>;
 
-  export type CreateActions =
-    | CreateChapter
-    | CreatePath
-    | CreatePost
-    | CreateTopic;
+  export type CreateActions = CreateChapter | CreatePost | CreateTopic;
 
-  export type UpdateActions =
-    | UpdateChapter
-    | UpdatePath
-    | UpdatePost
-    | UpdateTopic;
+  export type UpdateActions = UpdateChapter | UpdatePost | UpdateTopic;
 
-  export type DeleteActions = DeleteChapter | DeletePath | DeletePost;
+  export type DeleteActions = DeleteChapter | DeletePost;
 
   /**
    * Fields returned from the backend when querying the /edits collection.

@@ -1,34 +1,30 @@
 import { Breadcrumbs, Paper, Typography } from '@material-ui/core';
-import { ContentSummary } from '@zoonk/models';
+import { useRouter } from 'next/router';
 import { theme } from '@zoonk/utils';
+import LinkChapter from './LinkChapter';
 import LinkHome from './LinkHome';
-import LinkPath from './LinkPath';
 import LinkTopic from './LinkTopic';
 
 interface ChaptersBreadcrumbProps {
-  children?: React.ReactNode;
+  page: string;
   title: string;
-  path?: ContentSummary;
-  topicId?: string;
 }
 
 /**
  * Breadcrumb for chapters.
  */
-const ChaptersBreadcrumb = ({
-  children,
-  path,
-  title,
-  topicId,
-}: ChaptersBreadcrumbProps) => {
+const ChaptersBreadcrumb = ({ page, title }: ChaptersBreadcrumbProps) => {
+  const { query } = useRouter();
+  const topicId = String(query.id);
+  const chapterId = String(query.chapterId);
+
   return (
     <Paper elevation={0} style={{ padding: theme.spacing(2, 0) }}>
       <Breadcrumbs>
         <LinkHome />
-        {topicId && <LinkTopic id={topicId} />}
-        {path && <LinkPath id={path.id} title={path.title} />}
-        {children}
-        <Typography color="textPrimary">{title}</Typography>
+        <LinkTopic id={topicId} />
+        <LinkChapter id={chapterId} title={title} topicId={topicId} />
+        <Typography color="textPrimary">{page}</Typography>
       </Breadcrumbs>
     </Paper>
   );

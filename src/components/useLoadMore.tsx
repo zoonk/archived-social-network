@@ -52,7 +52,6 @@ function useLoadMore<T>(limit: number = 10) {
           }
         })
         .catch((err) => {
-          console.log(err);
           if (active) {
             setLoading(false);
             setError(err);

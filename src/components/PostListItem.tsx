@@ -21,8 +21,8 @@ interface PostListItemProps {
  * Display a single post as a list item.
  */
 const PostListItem = ({ divider, item }: PostListItemProps) => {
-  const { chapter, content, path, title } = item;
-  const image = getPostImage(content) || chapter?.photo || path?.photo;
+  const { content, title } = item;
+  const image = getPostImage(content);
 
   return (
     <ListItem alignItems="flex-start" divider={divider} disableGutters>

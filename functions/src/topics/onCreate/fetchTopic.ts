@@ -28,6 +28,7 @@ export const onCreateTopicFetchData = functions.firestore
     const page = await getWikipediaPage(wikipediaSlug, data.language);
 
     const topic: CreateFetchTopic = {
+      chapters: [],
       comments: 0,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
       createdBy: userProfile,

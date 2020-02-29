@@ -37,10 +37,7 @@ const PostEdit = ({ data }: PostEditProps) => {
     }
   };
 
-  const handleSubmit = (
-    newData: Omit<Post.EditableFields, 'chapters' | 'order'>,
-    topics: string[],
-  ) => {
+  const handleSubmit = (newData: Post.EditableFields, topics: string[]) => {
     setSnackbar({ type: 'progress', msg: translate('saving') });
 
     const changes: Post.Update = {

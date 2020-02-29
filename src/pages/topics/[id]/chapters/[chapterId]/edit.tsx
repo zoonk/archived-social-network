@@ -1,0 +1,48 @@
+import { useContext, useEffect, useState } from 'react';
+import { NextPage } from 'next';
+import { useRouter } from 'next/router';
+import { CircularProgress, Container } from '@material-ui/core';
+import ChapterEdit from '@zoonk/components/ChapterEdit';
+import ChapterFormContainer from '@zoonk/components/ChapterFormContainer';
+import ChaptersBreadcrumb from '@zoonk/components/ChaptersBreadcrumb';
+import Meta from '@zoonk/components/Meta';
+import Snackbar from '@zoonk/components/Snackbar';
+import { Chapter, SnackbarAction } from '@zoonk/models';
+import { getChapter } from '@zoonk/services';
+import { analytics, firebaseError, GlobalContext } from '@zoonk/utils';
+
+const EditChapter: NextPage = () => {
+  const { translate } = useContext(GlobalContext);
+  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
+  const [data, setData] = useState<Chapter.Get>();
+  const { query } = useRouter();
+
+  useEffect(() => {
+    analytics().setCurrentScreen('chapter_edit');
+  }, []);
+
+  useEffect(() => {
+    if (query.chapterId) {
+      getChapter(String(query.chapterId))
+        .then(setData)
+        .catch((e) => setSnackbar(firebaseError(e, 'chapter_get')));
+    }
+  }, [query.chapterId]);
+
+  if (!data) {
+    return <CircularProgress />;
+  }
+
+  return (
+    <Container component="main" maxWidth="xs">
+      <Meta title={translate('edit')} />
+      <ChaptersBreadcrumb title={data.title} page={translate('edit')} />
+      <ChapterFormContainer>
+        <ChapterEdit data={data} />
+      </ChapterFormContainer>
+      <Snackbar action={snackbar} />
+    </Container>
+  );
+};
+
+export default EditChapter;

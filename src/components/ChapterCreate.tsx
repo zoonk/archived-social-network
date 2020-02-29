@@ -1,7 +1,7 @@
 import { Fragment, useContext, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Chapter, SnackbarAction } from '@zoonk/models';
-import { createChapter, getPath } from '@zoonk/services';
+import { createChapter } from '@zoonk/services';
 import {
   appLanguage,
   firebaseError,
@@ -12,26 +12,23 @@ import ChapterForm from './ChapterForm';
 import Snackbar from './Snackbar';
 
 interface ChapterCreateProps {
-  pathId: string;
+  topicId: string;
 }
 
 /**
  * Component for creating a chapter.
  */
-const ChapterCreate = ({ pathId }: ChapterCreateProps) => {
+const ChapterCreate = ({ topicId }: ChapterCreateProps) => {
   const { profile, translate, user } = useContext(GlobalContext);
-  const { query, push } = useRouter();
+  const { push } = useRouter();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
 
   if (!user || !profile) {
     return null;
   }
 
-  const handleSubmit = async (data: Omit<Chapter.EditableFields, 'order'>) => {
+  const handleSubmit = async (data: Chapter.EditableFields) => {
     setSnackbar({ type: 'progress', msg: translate('saving') });
-
-    // Get the current path data the topics list.
-    const path = await getPath(pathId);
 
     createChapter({
       ...data,
@@ -39,23 +36,21 @@ const ChapterCreate = ({ pathId }: ChapterCreateProps) => {
       createdAt: timestamp,
       createdBy: profile,
       createdById: user.uid,
-      examples: 0,
       language: appLanguage,
-      lessons: 0,
       likes: 0,
-      order: query.order ? Number(query.order) : 1,
-      pathId,
-      posts: 0,
-      topics: path.topics,
+      topics: [topicId],
       updatedAt: timestamp,
       updatedBy: profile,
       updatedById: user.uid,
     })
       .then((id) => {
         setSnackbar({ type: 'success', msg: translate('saved') });
-        push('/chapters/[id]', `/chapters/${id}`);
+        push(
+          '/topics/[id]/chapters/[chapterId]',
+          `/topics/${topicId}/chapters/${id}`,
+        );
       })
-      .catch((e) => setSnackbar(firebaseError(e, 'path_add')));
+      .catch((e) => setSnackbar(firebaseError(e, 'chapter_add')));
   };
 
   return (

@@ -20,6 +20,7 @@ import EditsRevert from './EditsRevert';
 interface EditsItemProps {
   displayTitle?: boolean;
   edits: Activity.Get;
+  editLink?: { href: string; as: string };
 }
 
 /**
@@ -29,7 +30,7 @@ interface EditsItemProps {
  * @property `displayTitle` - set to `true` if the item's title should be displayed.
  * @property `edits` - serialized data returned from the backend.
  */
-const EditsItem = ({ displayTitle, edits }: EditsItemProps) => {
+const EditsItem = ({ displayTitle, editLink, edits }: EditsItemProps) => {
   const { translate } = useContext(GlobalContext);
   const [added, setAdded] = useState<FieldDiff[]>([]);
   const [removed, setRemoved] = useState<FieldDiff[]>([]);
@@ -63,8 +64,8 @@ const EditsItem = ({ displayTitle, edits }: EditsItemProps) => {
 
       <ExpansionPanelActions style={{ justifyContent: 'space-between' }}>
         <NextLink
-          href={`/${edits.category}/[id]/edit`}
-          as={`/${edits.itemPath}/edit`}
+          href={editLink?.href || `/${edits.category}/[id]/edit`}
+          as={editLink?.as || `/${edits.itemPath}/edit`}
           passHref
         >
           <Button component="a" color="primary">

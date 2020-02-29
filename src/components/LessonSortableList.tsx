@@ -1,42 +1,39 @@
 import { Fragment, useCallback, useContext, useEffect, useState } from 'react';
+import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import { differenceWith, isEqual } from 'lodash';
-import { CircularProgress } from '@material-ui/core';
+import { Button, CircularProgress } from '@material-ui/core';
+import { Add } from '@material-ui/icons';
 import { Post, SnackbarAction } from '@zoonk/models';
-import { listPosts, updatePostOrder } from '@zoonk/services';
-import { firebaseError, GlobalContext } from '@zoonk/utils';
-import AddButton from './AddButton';
+import { getChapter, updatePostOrder } from '@zoonk/services';
+import { firebaseError, GlobalContext, theme } from '@zoonk/utils';
 import Snackbar from './Snackbar';
 import SortableList from './SortableList';
 
 interface LessonSortableListProps {
+  category: 'examples' | 'lessons';
   chapterId: string;
 }
 
 /**
  * Sortable list of lessons.
  */
-const LessonSortableList = ({ chapterId }: LessonSortableListProps) => {
+const LessonSortableList = ({
+  category,
+  chapterId,
+}: LessonSortableListProps) => {
   const { profile, translate, user } = useContext(GlobalContext);
-  const { push } = useRouter();
+  const { push, query } = useRouter();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [items, setItems] = useState<Post.Get[]>([]);
-  const [original, setOriginal] = useState<Post.Get[]>([]);
+  const [items, setItems] = useState<Post.Summary[]>([]);
 
   useEffect(() => {
     let active = true;
     setLoading(true);
 
-    listPosts({
-      category: ['lessons'],
-      chapterId,
-      limit: 20,
-      orderBy: ['order'],
-    }).then((res) => {
+    getChapter(chapterId).then((res) => {
       if (active) {
-        setItems(res);
-        setOriginal(res);
+        setItems(category === 'lessons' ? res.lessonData : res.exampleData);
         setLoading(false);
       }
     });
@@ -44,18 +41,14 @@ const LessonSortableList = ({ chapterId }: LessonSortableListProps) => {
     return () => {
       active = false;
     };
-  }, [chapterId]);
+  }, [category, chapterId]);
 
   const handleMove = useCallback(
     (drag: number, hover: number) => {
       const dragValue = items[drag];
-      let newOrder = [...items];
+      const newOrder = [...items];
       newOrder.splice(drag, 1);
       newOrder.splice(hover, 0, dragValue);
-      newOrder = newOrder.map((item, index) => ({
-        ...item,
-        order: index + 1,
-      }));
       setItems(newOrder);
     },
     [items],
@@ -70,9 +63,9 @@ const LessonSortableList = ({ chapterId }: LessonSortableListProps) => {
   }
 
   const save = () => {
-    const changes = differenceWith(items, original, isEqual);
     setSnackbar({ type: 'progress', msg: translate('saving') });
-    updatePostOrder(changes, profile, user.uid)
+    const changes = items.map((item) => item.id);
+    updatePostOrder(changes, category, chapterId, profile, user.uid)
       .then(() => setSnackbar({ type: 'success', msg: translate('saved') }))
       .catch((e) => setSnackbar(firebaseError(e, 'update_order')));
   };
@@ -80,16 +73,30 @@ const LessonSortableList = ({ chapterId }: LessonSortableListProps) => {
   return (
     <Fragment>
       <div style={{ display: 'flex' }}>
-        <AddButton
-          category="posts"
-          query={{ chapterId, category: 'lessons', order: items.length + 1 }}
-        />
+        <NextLink
+          href="/topics/[id]/chapters/[chapterId]/add"
+          as={`/topics/${query.id}/chapters/${query.chapterId}/add?category=${category}`}
+          passHref
+        >
+          <Button component="a" size="small" color="primary">
+            <Add
+              aria-label={translate('create')}
+              style={{ marginRight: theme.spacing(0.5) }}
+            />
+            {translate('create')}
+          </Button>
+        </NextLink>
       </div>
       <SortableList
         category="posts"
         items={items}
         saving={snackbar?.type === 'progress'}
-        onCancel={() => push('/chapters/[id]', `/chapters/${chapterId}`)}
+        onCancel={() =>
+          push(
+            '/topics/[id]/chapters/[chapterId]',
+            `/topics/${query.id}/chapters/${chapterId}`,
+          )
+        }
         onMove={handleMove}
         onSave={save}
       />
