@@ -40,7 +40,7 @@ const TopicPosts: NextPage<TopicPostsProps> = ({ id, title }) => {
         hideLink
         allowAdd
         allowLoadMore
-        title={translate('posts')}
+        title={translate('posts_links')}
       />
     </Container>
   );

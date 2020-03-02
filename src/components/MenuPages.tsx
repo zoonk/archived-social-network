@@ -63,7 +63,7 @@ const MenuPages = () => {
             <ListItemIcon>
               <Description />
             </ListItemIcon>
-            <ListItemText primary={translate('posts')} />
+            <ListItemText primary={translate('posts_links')} />
           </ListItem>
         </NextLink>
 

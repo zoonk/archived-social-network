@@ -135,6 +135,7 @@ const translate: TranslationFn = (key, args) => {
     photo: 'Photo',
     post_add: 'Create a post',
     post_edit: 'Edit post',
+    posts_links: 'Posts & Links',
     posts: 'Posts',
     preview: 'Preview',
     preview_quit: 'Back to the editor',

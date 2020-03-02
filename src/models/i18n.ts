@@ -128,6 +128,7 @@ export type TranslationKeys =
   | 'photo'
   | 'post_add'
   | 'post_edit'
+  | 'posts_links'
   | 'posts'
   | 'preview'
   | 'preview_quit'

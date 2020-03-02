@@ -45,6 +45,7 @@ beforeAll(async (done) => {
   db = initializeFbApp({ uid: 'currentUser' });
   ref = db.doc('topics/itemId');
   await loadFirestoreRules();
+  await admin.doc('profile/currentUser').set(profile);
   await admin.doc('topics/itemId').set(data);
   done();
 });

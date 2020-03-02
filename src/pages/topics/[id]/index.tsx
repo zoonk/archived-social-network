@@ -82,7 +82,7 @@ const TopicPage: NextPage<TopicPageProps> = ({ topic }) => {
             limit={3}
             list="posts"
             allowAdd
-            title={translate('posts')}
+            title={translate('posts_links')}
           />
           <PostsCard
             category={['questions']}
