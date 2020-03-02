@@ -22,16 +22,18 @@ const TopicCard = ({ topic }: TopicCardProps) => {
 
   return (
     <Card variant="outlined" style={{ height: '100%' }}>
-      <CardActionArea>
-        {photo && (
-          <CardMedia style={{ height: 140 }} image={photo} title={title} />
-        )}
-        <CardContent>
-          <Typography variant="h5" component="h2">
-            {title}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
+      <NextLink href="/topics/[id]" as={`/topics/${id}`} passHref>
+        <CardActionArea component="a">
+          {photo && (
+            <CardMedia style={{ height: 140 }} image={photo} title={title} />
+          )}
+          <CardContent>
+            <Typography variant="h5" component="h2">
+              {title}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+      </NextLink>
       <CardActions>
         <NextLink href="/topics/[id]" as={`/topics/${id}`} passHref>
           <Button component="a" size="small" color="primary">
