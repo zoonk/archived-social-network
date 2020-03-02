@@ -26,7 +26,6 @@ test('add the user info to their settings', async (done) => {
   const userInfo = {
     bio: null,
     name: 'test',
-    notes: 0,
     notifications: 0,
     photo: null,
     role: 'viewer',

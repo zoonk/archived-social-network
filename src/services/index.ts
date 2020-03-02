@@ -4,7 +4,6 @@ export * from './comments';
 export * from './feedback';
 export * from './leaderboard';
 export * from './likes';
-export * from './notes';
 export * from './notifications';
 export * from './payments';
 export * from './posts';

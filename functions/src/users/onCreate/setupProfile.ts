@@ -24,7 +24,6 @@ export const onCreateUserSetupProfile = functions.auth
 
     const userData: User.Response = {
       ...userInfo,
-      notes: 0,
       notifications: 0,
       role: 'viewer',
       saved: 0,

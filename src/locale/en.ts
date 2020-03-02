@@ -118,16 +118,10 @@ const translate: TranslationFn = (key, args) => {
     logout: 'Log out',
     menu: 'Menu',
     message: 'Message',
-    my_notes: 'My notes',
     my_studies: 'My studies',
     name: 'Name',
     need_to_be_loggedin: 'You need to be logged in to perform this action.',
     next_lesson: 'Next lesson',
-    notes_first:
-      'Write your first note. Your notes are private. They will only be visible to you.',
-    notes_new: 'Create a note',
-    notes_required_fields:
-      'Please, fill in the title or the description field.',
     notifications: 'Notifications',
     order: 'Order',
     page_edits: 'Page changes',
@@ -204,7 +198,6 @@ const translate: TranslationFn = (key, args) => {
       'Learn anything online for free. Zoonk is a social network for learning (for students and teachers). A social network to study online.',
     seo_home_title: 'Zoonk: The social network for learning',
     seo_login_desc: 'How to sign in to my Zoonk account.',
-    seo_notes_desc: 'How to save notes about subjects I am studying.',
     seo_posts_desc:
       'Find posts and articles about any subject. Learn by reading free posts online.',
     seo_profile_desc: `${args?.name} is learning and teaching on Zoonk. See what ${args?.name} is creating.`,
@@ -242,12 +235,12 @@ const translate: TranslationFn = (key, args) => {
     signup_notice_and: 'and the',
     social_description:
       'Zoonk is a social network where you can learn anything for free.',
-    subscribe_free_desc: '20 saved items\n20 notes',
+    subscribe_free_desc: '20 saved items',
     subscribe_free_price: '€0',
     subscribe_free_title: 'Free',
     subscribe_premium_btn: 'Upgrade',
     subscribe_premium_desc:
-      'Unlimited saved items\nUnlimited notes\nNo ads\nSupport free learning\nIt costs less than €0.06 per day!',
+      'Unlimited saved items\nNo ads\nSupport free learning\nIt costs less than €0.06 per day!',
     subscribe_premium_price: '€19.90',
     subscribe_premium_title: 'Premium',
     subscribe_success_desc:

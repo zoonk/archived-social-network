@@ -5,7 +5,6 @@ import ChaptersCard from '@zoonk/components/ChaptersCard';
 import ItemCredits from '@zoonk/components/ItemCredits';
 import LeaderboardCard from '@zoonk/components/LeaderboardCard';
 import Meta from '@zoonk/components/Meta';
-import NotesCard from '@zoonk/components/NotesCard';
 import PostsCard from '@zoonk/components/PostsCard';
 import TopicDetails from '@zoonk/components/TopicDetails';
 import TopicsBreadcrumb from '@zoonk/components/TopicsBreadcrumb';
@@ -39,7 +38,6 @@ const TopicPage: NextPage<TopicPageProps> = ({ topic }) => {
     updatedAt,
     updatedBy,
   } = topic;
-  const itemPath = `topics/${id}`;
 
   useEffect(() => {
     analytics().setCurrentScreen('topic');
@@ -60,7 +58,6 @@ const TopicPage: NextPage<TopicPageProps> = ({ topic }) => {
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6} md={4} className={classes.column}>
           <TopicDetails topic={topic} />
-          <NotesCard category="topics" id={id} itemPath={itemPath} />
           <ItemCredits
             createdAt={createdAt}
             createdBy={createdBy}

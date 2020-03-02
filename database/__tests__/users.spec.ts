@@ -67,11 +67,6 @@ test('cannot change the name field', async (done) => {
   done();
 });
 
-test('cannot change the notes field', async (done) => {
-  await firebase.assertFails(doc.update({ notes: 1000 }));
-  done();
-});
-
 test('cannot change the photo field', async (done) => {
   await firebase.assertFails(doc.update({ photo: 'my photo' }));
   done();

@@ -3,7 +3,6 @@ import { NextPage } from 'next';
 import { Container, Grid } from '@material-ui/core';
 import ItemCredits from '@zoonk/components/ItemCredits';
 import Meta from '@zoonk/components/Meta';
-import NotesCard from '@zoonk/components/NotesCard';
 import PostComments from '@zoonk/components/PostComments';
 import PostsBreadcrumb from '@zoonk/components/PostsBreadcrumb';
 import PostView from '@zoonk/components/PostView';
@@ -61,8 +60,6 @@ const PostPage: NextPage<PostPageProps> = ({ data }) => {
             updatedBy={updatedBy}
             updatedById={updatedById}
           />
-          <div style={{ padding: theme.spacing(1) }} />
-          <NotesCard category="posts" id={id} itemPath={`posts/${id}`} />
         </Grid>
       </Grid>
 

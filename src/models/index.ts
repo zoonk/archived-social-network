@@ -10,7 +10,6 @@ export * from './i18n';
 export * from './leaderboard';
 export * from './likes';
 export * from './misc';
-export * from './note';
 export * from './notification';
 export * from './post';
 export * from './profile';

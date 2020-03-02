@@ -14,7 +14,6 @@ import {
   History,
   Language,
   MenuBook,
-  Note,
   QuestionAnswer,
   Subject,
   SupervisorAccount,
@@ -47,15 +46,6 @@ const MenuPages = () => {
               <Bookmarks />
             </ListItemIcon>
             <ListItemText primary={translate('my_studies')} />
-          </ListItem>
-        </NextLink>
-
-        <NextLink href="/notes" passHref>
-          <ListItem button component="a">
-            <ListItemIcon>
-              <Note />
-            </ListItemIcon>
-            <ListItemText primary={translate('my_notes')} />
           </ListItem>
         </NextLink>
 

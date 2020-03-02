@@ -291,7 +291,6 @@ service cloud.firestore {
         request.auth.uid == userId
         && isReadOnly('bio')
         && isReadOnly('name')
-        && isReadOnly('notes')
         && isReadOnly('photo')
         && isReadOnly('role')
         && isReadOnly('saved')
@@ -300,28 +299,6 @@ service cloud.firestore {
         && isReadOnly('subscriptionStart')
         && isReadOnly('username')
       ;
-
-      match /notes/{noteId} {
-        allow read, delete: if request.auth.uid == userId;
-        allow create: if
-          request.auth.uid == userId
-          && request.resource.data.updatedAt == request.time
-          && hasField('categoryId')
-          && hasField('itemPath')
-          && isValidCategory()
-          && (
-            hasSubscription()
-            || get(/databases/$(database)/documents/users/$(request.auth.uid)).data.notes < 20
-          )
-        ;
-        allow update: if
-          request.auth.uid == userId
-          && request.resource.data.updatedAt == request.time
-          && isReadOnly('category')
-          && isReadOnly('id')
-          && isReadOnly('itemPath')
-        ;
-      }
 
       match /notifications/{notificationId} {
         allow read: if request.auth.uid == userId;

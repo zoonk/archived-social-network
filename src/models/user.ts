@@ -10,7 +10,6 @@ export namespace User {
    * Fields returned from the backend.
    */
   export interface Response extends Profile.Response {
-    notes: number;
     notifications: number;
     role: 'admin' | 'moderator' | 'viewer';
     saved: number;

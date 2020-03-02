@@ -5,7 +5,6 @@ export * from './date';
 export * from './feedback';
 export * from './leaderboard';
 export * from './link';
-export * from './notes';
 export * from './notifications';
 export * from './posts';
 export * from './profile';

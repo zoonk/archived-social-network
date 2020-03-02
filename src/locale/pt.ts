@@ -119,15 +119,10 @@ const translate: TranslationFn = (key, args) => {
     logout: 'Sair',
     menu: 'menu',
     message: 'Mensagem',
-    my_notes: 'Minhas anotações',
     my_studies: 'Meus estudos',
     name: 'Nome',
     need_to_be_loggedin: 'Você precisa estar logado para fazer isso.',
     next_lesson: 'Próxima lição',
-    notes_first:
-      'Escreva a sua primeira anotação. Elas são privadas. Portanto, apenas você pode visualizá-las.',
-    notes_new: 'Nova anotação',
-    notes_required_fields: 'Por favor, preencha um título ou descrição.',
     notifications: 'Notificações',
     order: 'Ordem',
     page_edits: 'Alterações na página',
@@ -203,8 +198,6 @@ const translate: TranslationFn = (key, args) => {
       'Aprenda sobre qualquer assunto online. Como aprender de graça online. Zoonk é uma rede social para estudar, uma rede social para estudantes e professores.',
     seo_home_title: 'Zoonk: A rede social da educação',
     seo_login_desc: 'Como fazer login na minha conta do Zoonk.',
-    seo_notes_desc:
-      'Como salvar anotações sobre os assuntos que estou estudando.',
     seo_posts_desc:
       'Encontre publicações e artigos sobre qualquer assunto. Aprenda lendo artigos online de graça.',
     seo_profile_desc: `${args?.name} está ensinando e aprendendo coisas no Zoonk. Veja o que ${args?.name} está criando.`,
@@ -244,12 +237,12 @@ const translate: TranslationFn = (key, args) => {
     signup_notice_and: 'e a',
     social_description:
       'Zoonk é uma rede social onde você pode aprender qualquer coisa de graça online.',
-    subscribe_free_desc: '20 items salvos\n20 anotações',
+    subscribe_free_desc: '20 items salvos',
     subscribe_free_price: 'R$0',
     subscribe_free_title: 'Grátis',
     subscribe_premium_btn: 'Assine',
     subscribe_premium_desc:
-      'Salve items ilimitados\nAnotações ilimitadas\nSem anúncios\nApoie o ensino gratuito\nCusta menos de R$0.22 por dia!',
+      'Salve items ilimitados\nSem anúncios\nApoie o ensino gratuito\nCusta menos de R$0.22 por dia!',
     subscribe_premium_price: 'R$79.90',
     subscribe_premium_title: 'Premium',
     subscribe_success_desc:
