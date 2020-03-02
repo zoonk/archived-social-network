@@ -21,11 +21,19 @@ const TopicCard = ({ topic }: TopicCardProps) => {
   const { title, id, photo } = topic;
 
   return (
-    <Card variant="outlined" style={{ height: '100%' }}>
+    <Card
+      variant="outlined"
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        height: '100%',
+      }}
+    >
       <NextLink href="/topics/[id]" as={`/topics/${id}`} passHref>
         <CardActionArea component="a">
           {photo && (
-            <CardMedia style={{ height: 140 }} image={photo} title={title} />
+            <CardMedia style={{ height: 200 }} image={photo} title={title} />
           )}
           <CardContent>
             <Typography variant="h5" component="h2">
