@@ -8,6 +8,7 @@ interface TopicsCardProps {
   allowAdd?: boolean;
   allowLoadMore?: boolean;
   createdById?: string;
+  hideHeader?: boolean;
   hideLink?: boolean;
   limit?: number;
 }
@@ -19,6 +20,7 @@ const TopicsCard = ({
   allowAdd,
   allowLoadMore,
   createdById,
+  hideHeader,
   hideLink,
   limit = 3,
 }: TopicsCardProps) => {
@@ -27,12 +29,14 @@ const TopicsCard = ({
   return (
     <Card variant="outlined">
       <CardContent style={{ paddingBottom: 0 }}>
-        <CategoryCardHeader
-          canAdd={allowAdd}
-          category="topics"
-          hideLink={hideLink}
-          title={translate('topics')}
-        />
+        {!hideHeader && (
+          <CategoryCardHeader
+            canAdd={allowAdd}
+            category="topics"
+            hideLink={hideLink}
+            title={translate('topics')}
+          />
+        )}
         <TopicList
           allowLoadMore={allowLoadMore}
           createdById={createdById}

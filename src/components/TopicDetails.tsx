@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import NextLink from 'next/link';
 import {
   Button,
   Card,
@@ -59,6 +60,11 @@ const TopicDetails = ({ topic }: TopicDetailsProps) => {
         >
           {translate('read_wikipedia')}
         </Button>
+        <NextLink href="/topics/[id]/teach" as={`/topics/${id}/teach`} passHref>
+          <Button component="a" size="small" color="primary">
+            {translate('teach')}
+          </Button>
+        </NextLink>
       </CardActions>
     </Card>
   );

@@ -8,6 +8,7 @@ import { Topic } from './topic';
 import { UILanguage } from './i18n';
 
 export type ExpertLevel = 'beginner' | 'advanced' | 'pro' | 'expert';
+export type ViewType = 'grid' | 'list';
 
 /**
  * Metadata available for all items.

@@ -1,11 +1,15 @@
-import { useEffect, useContext } from 'react';
+import { useEffect, useContext, useState } from 'react';
 import { NextPage } from 'next';
-import { Container, Grid, makeStyles } from '@material-ui/core';
-import LeaderboardCard from '@zoonk/components/LeaderboardCard';
+import dynamic from 'next/dynamic';
+import { Button, Container, Grid, makeStyles } from '@material-ui/core';
+import CategoryTabs from '@zoonk/components/CategoryTabs';
+import FilterView from '@zoonk/components/FilterView';
 import Meta from '@zoonk/components/Meta';
-import PostsCard from '@zoonk/components/PostsCard';
-import TopicsCard from '@zoonk/components/TopicsCard';
+import { ViewType } from '@zoonk/models';
 import { analytics, GlobalContext, rootUrl } from '@zoonk/utils';
+
+const TopicsCard = dynamic(() => import('../components/TopicsCard'));
+const TopicGrid = dynamic(() => import('../components/TopicGrid'));
 
 const useStyles = makeStyles((theme) => ({
   container: { padding: theme.spacing(2, 0) },
@@ -18,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Home: NextPage = () => {
   const { translate } = useContext(GlobalContext);
+  const [view, setView] = useState<ViewType>('grid');
   const classes = useStyles();
 
   useEffect(() => {
@@ -32,38 +37,17 @@ const Home: NextPage = () => {
         canonicalUrl={rootUrl}
         noAppName
       />
-
       <Grid container spacing={2} className={classes.container}>
-        <Grid item xs={12} sm={6} className={classes.column}>
-          <TopicsCard limit={10} allowAdd />
-          <LeaderboardCard limit={3} />
-        </Grid>
-        <Grid item xs={12} sm={6} className={classes.column}>
-          <PostsCard
-            category={['posts', 'lessons']}
-            limit={3}
-            allowAdd
-            list="posts"
-            title={translate('posts')}
-          />
-          <PostsCard
-            category={['questions']}
-            limit={3}
-            allowAdd
-            title={translate('questions')}
-          />
-          <PostsCard
-            category={['courses']}
-            limit={3}
-            allowAdd
-            title={translate('courses_books')}
-          />
-          <PostsCard
-            category={['examples']}
-            limit={3}
-            allowAdd
-            title={translate('examples')}
-          />
+        <Grid item xs={12} className={classes.column}>
+          <CategoryTabs active="topics" />
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Button variant="contained" color="primary">
+              {translate('topic_create')}
+            </Button>
+            <FilterView view={view} onChange={setView} />
+          </div>
+          {view === 'grid' && <TopicGrid />}
+          {view === 'list' && <TopicsCard hideHeader limit={10} allowAdd />}
         </Grid>
       </Grid>
     </Container>

@@ -1,10 +1,11 @@
 import { useContext, useEffect } from 'react';
 import { NextPage } from 'next';
 import { Container } from '@material-ui/core';
+import CategoryTabs from '@zoonk/components/CategoryTabs';
 import Meta from '@zoonk/components/Meta';
 import TopicsCard from '@zoonk/components/TopicsCard';
 import TopicsBreadcrumb from '@zoonk/components/TopicsBreadcrumb';
-import { analytics, GlobalContext, rootUrl } from '@zoonk/utils';
+import { analytics, GlobalContext, rootUrl, theme } from '@zoonk/utils';
 
 const Topics: NextPage = () => {
   const { translate } = useContext(GlobalContext);
@@ -21,6 +22,8 @@ const Topics: NextPage = () => {
         canonicalUrl={`${rootUrl}/topics`}
       />
       <TopicsBreadcrumb />
+      <CategoryTabs active="topics" />
+      <div style={{ margin: theme.spacing(1) }} />
       <TopicsCard allowLoadMore allowAdd hideLink limit={10} />
     </Container>
   );
