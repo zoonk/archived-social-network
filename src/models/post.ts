@@ -11,6 +11,7 @@ export namespace Post {
   }
 
   export type Category =
+    | 'books'
     | 'courses'
     | 'examples'
     | 'lessons'

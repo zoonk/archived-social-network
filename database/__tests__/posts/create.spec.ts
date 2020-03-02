@@ -63,6 +63,7 @@ test('anonymous cannot create an item', async (done) => {
 });
 
 test('category has a valid string', async (done) => {
+  await firebase.assertSucceeds(ref.add({ ...data, category: 'books' }));
   await firebase.assertSucceeds(ref.add({ ...data, category: 'courses' }));
   await firebase.assertSucceeds(ref.add({ ...data, category: 'examples' }));
   await firebase.assertSucceeds(

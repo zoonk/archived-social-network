@@ -14,7 +14,7 @@ import { ExpandMore } from '@material-ui/icons';
 import { getPageTitle, GlobalContext } from '@zoonk/utils';
 import EditorView from './EditorView';
 
-type Section = 'lesson' | 'example' | 'article' | 'ref' | 'course';
+type Section = 'lesson' | 'example' | 'article' | 'ref' | 'course' | 'book';
 
 interface CustomPanelProps {
   children: React.ReactNode;
@@ -121,6 +121,11 @@ const TeachGuide = () => {
         <CustomDetails
           content={translate('teach_course_desc', { title, id })}
         />
+      </CustomPanel>
+
+      <CustomPanel>
+        <CustomSummary section="book" />
+        <CustomDetails content={translate('teach_book_desc', { title, id })} />
       </CustomPanel>
     </div>
   );

@@ -7,34 +7,34 @@ import Meta from '@zoonk/components/Meta';
 import PostsCard from '@zoonk/components/PostsCard';
 import { analytics, GlobalContext, rootUrl, theme } from '@zoonk/utils';
 
-const Courses: NextPage = () => {
+const Books: NextPage = () => {
   const { translate } = useContext(GlobalContext);
 
   useEffect(() => {
-    analytics().setCurrentScreen('courses');
+    analytics().setCurrentScreen('books');
   }, []);
 
   return (
     <Container component="main">
       <Meta
-        title={translate('courses')}
-        description={translate('seo_courses_desc')}
-        canonicalUrl={`${rootUrl}/courses`}
+        title={translate('books')}
+        description={translate('seo_books_desc')}
+        canonicalUrl={`${rootUrl}/books`}
       />
-      <HomeBreadcrumb title={translate('courses')} />
-      <CategoryTabs active="courses" />
+      <HomeBreadcrumb title={translate('books')} />
+      <CategoryTabs active="books" />
       <div style={{ margin: theme.spacing(1) }} />
       <PostsCard
-        category={['courses']}
+        category={['books']}
         limit={10}
         hideLink
         allowAdd
         allowLoadMore
         orderBy={['likes']}
-        title={translate('courses')}
+        title={translate('books')}
       />
     </Container>
   );
 };
 
-export default Courses;
+export default Books;

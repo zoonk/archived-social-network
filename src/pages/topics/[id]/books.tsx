@@ -12,41 +12,41 @@ import {
   rootUrl,
 } from '@zoonk/utils';
 
-interface TopicCoursesProps {
+interface TopicBooksProps {
   topicId: string;
   title: string;
 }
 
-const TopicCourses: NextPage<TopicCoursesProps> = ({ title, topicId }) => {
+const TopicBooks: NextPage<TopicBooksProps> = ({ title, topicId }) => {
   const { translate } = useContext(GlobalContext);
 
   useEffect(() => {
-    analytics().setCurrentScreen('topic_courses');
+    analytics().setCurrentScreen('topic_books');
   }, []);
 
   return (
     <Container component="main">
       <Meta
-        title={translate('seo_topic_courses_title', { title })}
-        description={translate('seo_topic_courses_desc', { title })}
-        canonicalUrl={`${rootUrl}/topics/${topicId}/courses`}
+        title={translate('seo_topic_books_title', { title })}
+        description={translate('seo_topic_books_desc', { title })}
+        canonicalUrl={`${rootUrl}/topics/${topicId}/books`}
       />
-      <TopicsBreadcrumb topicId={topicId} title={translate('courses')} />
+      <TopicsBreadcrumb topicId={topicId} title={translate('books')} />
       <PostsCard
-        category={['courses']}
+        category={['books']}
         topicId={topicId}
         limit={10}
         hideLink
         allowAdd
         allowLoadMore
         orderBy={['likes']}
-        title={translate('courses')}
+        title={translate('books')}
       />
     </Container>
   );
 };
 
-TopicCourses.getInitialProps = ({ query }) => {
+TopicBooks.getInitialProps = ({ query }) => {
   const topicId = String(query.id);
   const title = getPageTitle(topicId);
   preRender();
@@ -54,4 +54,4 @@ TopicCourses.getInitialProps = ({ query }) => {
   return { title, topicId };
 };
 
-export default TopicCourses;
+export default TopicBooks;

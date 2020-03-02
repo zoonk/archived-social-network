@@ -18,20 +18,8 @@ service cloud.firestore {
     	return !(field in request.resource.data) || request.resource.data[field] == resource.data[field];
     }
 
-    function hasField(field) {
-      return field in request.resource.data && request.resource.data[field] != null;
-    }
-
-    function hasValidLevel() {
-      return isOneOf('level', 'beginner|advanced|pro|expert');
-    }
-
-    function isValidCategory() {
-      return isOneOf('category', 'chapters|posts|topics');
-    }
-
     function isValidPostCategory() {
-      return isOneOf('category', 'courses|examples|lessons|posts|questions');
+      return isOneOf('category', 'books|courses|examples|lessons|posts|questions');
     }
 
     function isValidLanguage() {

@@ -82,6 +82,30 @@ test('cannot update posts from other users', async (done) => {
   done();
 });
 
+test('can update books', async (done) => {
+  const docRef = db.doc('posts/otherUser');
+  const changes = {
+    ...add,
+    category: 'books',
+    createdById: 'otherUser',
+  };
+  await admin.doc('posts/otherUser').set(changes);
+  await firebase.assertSucceeds(docRef.update({ ...edit, title: 'new' }));
+  done();
+});
+
+test('can update courses', async (done) => {
+  const docRef = db.doc('posts/otherUser');
+  const changes = {
+    ...add,
+    category: 'courses',
+    createdById: 'otherUser',
+  };
+  await admin.doc('posts/otherUser').set(changes);
+  await firebase.assertSucceeds(docRef.update({ ...edit, title: 'new' }));
+  done();
+});
+
 test('can update examples', async (done) => {
   const docRef = db.doc('posts/otherUser');
   const changes = {

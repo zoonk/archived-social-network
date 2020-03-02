@@ -14,6 +14,7 @@ const translate: TranslationFn = (key, args) => {
     back_to_login: 'Voltar para a página de acesso',
     before: 'Antes',
     beginner: 'Iniciante',
+    books: 'Livros',
     by: 'por',
     cancel: 'Cancelar',
     chapter_add: 'Crie um novo capítulo',
@@ -35,7 +36,6 @@ const translate: TranslationFn = (key, args) => {
     confirm: 'Confirmar',
     contact_us: 'Fale conosco',
     content: 'Conteúdo',
-    courses_books: 'Cursos & livros',
     courses: 'Cursos',
     create: 'Criar',
     created: 'criado',
@@ -180,9 +180,11 @@ const translate: TranslationFn = (key, args) => {
     send: 'Enviar',
     sending: 'Enviando...',
     sent: 'Enviado!',
+    seo_books_desc:
+      'Os melhores livros online. Saiba como encontrar e compartilhar livros sobre qualquer assunto.',
     seo_contact_desc: 'Como entrar em contato com a equipe do Zoonk.',
     seo_courses_desc:
-      'Como encontrar cursos e livros sobre qualquer assunto. Os melhores cursos e livros online.',
+      'Como encontrar cursos sobre qualquer assunto. Os melhores cursos online.',
     seo_edits_desc:
       'Veja todo o histórico de alterações feitas no Zoonk. Saiba como reverter ou relatar problemas no Zoonk.',
     seo_examples_desc:
@@ -207,9 +209,11 @@ const translate: TranslationFn = (key, args) => {
     seo_settings_desc: 'Como configurar e editar o meu perfil no Zoonk.',
     seo_signup_desc:
       'Crie uma conta no Zoonk para aprender qualquer coisa de graça.',
+    seo_topic_books_desc: `Livros sobre ${args?.title}. Onde encontrar os melhores livros sobre ${args?.title} online.`,
+    seo_topic_books_title: `Livros sobre ${args?.title}`,
+    seo_topic_courses_desc: `Cursos sobre ${args?.title}. Os melhores cursos de ${args?.title} online.`,
+    seo_topic_courses_title: `Cursos de ${args?.title}`,
     seo_topic_desc: `Aprenda sobre ${args?.title}. Como aprender sobre ${args?.title} de graça online.`,
-    seo_topic_courses_desc: `Cursos e livros sobre ${args?.title}. Os melhores cursos de ${args?.title} online.`,
-    seo_topic_courses_title: `Cursos e livros de ${args?.title}`,
     seo_topic_examples_desc: `${args?.title} na prática. Exemplos de ${args?.title} na vida real. Como usar ${args?.title} no dia-a-dia.`,
     seo_topic_examples_title: `${args?.title} na prática`,
     seo_topic_posts_desc: `Encontre postagens sobre ${args?.title}. Os melhores artigos sobre ${args?.title} online.`,
@@ -229,6 +233,8 @@ const translate: TranslationFn = (key, args) => {
       'Zoonk é uma rede social onde você pode aprender qualquer coisa de graça online.',
     teach_article_desc: `Uma boa maneira de ensinar é compartilhando histórias e experiências pessoais. Você tem algum ponto de vista interessante sobre ${args?.title}? Então [compartilhe com outras pessoas](/posts/add?category=posts&topicId=${args?.id})! :)`,
     teach_article_title: 'Escrever um artigo',
+    teach_book_desc: `Você leu algum livro interessante sobre ${args?.title}? Não guarde esse achado apenas com você, outras pessoas podem se beneficiar dessa leitura. [Compartilhe um pequeno resumo do livro](/posts/add?category=books&topicId=${args?.id}) e fale por que ele é interessante para quem quiser aprender sobre ${args?.title}.`,
+    teach_book_title: 'Compartilhe o resumo de um livro',
     teach_course_desc: `Você fez algum curso interessante que te ajudou a aprender algo? Então, ajude outras pessoas a aprender também. [Compartilhe um curso sobre ${args?.title}](/posts/add?category=courses&topicId=${args?.id}).`,
     teach_course_title: 'Compartilhar um curso',
     teach_example_desc: `Na escola, normalmente memorizamos informações para passar em provas. Mas a gente aprende melhor quando vê exemplos de como a teoria funciona na prática.\n\nO Zoonk tem uma sessão de “exemplos da vida real”, onde você pode mostrar como as coisas funcionam no cotidiano. Por exemplo, qual a importância de ${args?.title} na vida das pessoas? Ajude-as a entender por que esse assunto é relevante para elas.\n-[Crie um exemplo prático sobre ${args?.title}](/posts/add?category=examples&topicId=${args?.id})`,

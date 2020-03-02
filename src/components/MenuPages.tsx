@@ -14,6 +14,7 @@ import {
   Language,
   MenuBook,
   QuestionAnswer,
+  School,
   Subject,
   SupervisorAccount,
 } from '@material-ui/icons';
@@ -66,21 +67,30 @@ const MenuPages = () => {
           </ListItem>
         </NextLink>
 
-        <NextLink href="/courses" passHref>
-          <ListItem button component="a">
-            <ListItemIcon>
-              <MenuBook />
-            </ListItemIcon>
-            <ListItemText primary={translate('courses_books')} />
-          </ListItem>
-        </NextLink>
-
         <NextLink href="/questions" passHref>
           <ListItem button component="a">
             <ListItemIcon>
               <QuestionAnswer />
             </ListItemIcon>
             <ListItemText primary={translate('questions')} />
+          </ListItem>
+        </NextLink>
+
+        <NextLink href="/courses" passHref>
+          <ListItem button component="a">
+            <ListItemIcon>
+              <School />
+            </ListItemIcon>
+            <ListItemText primary={translate('courses')} />
+          </ListItem>
+        </NextLink>
+
+        <NextLink href="/books" passHref>
+          <ListItem button component="a">
+            <ListItemIcon>
+              <MenuBook />
+            </ListItemIcon>
+            <ListItemText primary={translate('books')} />
           </ListItem>
         </NextLink>
 

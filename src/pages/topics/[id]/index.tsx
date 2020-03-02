@@ -98,7 +98,15 @@ const TopicPage: NextPage<TopicPageProps> = ({ topic }) => {
             limit={3}
             allowAdd
             orderBy={['likes']}
-            title={translate('courses_books')}
+            title={translate('courses')}
+          />
+          <PostsCard
+            category={['books']}
+            topicId={id}
+            limit={3}
+            allowAdd
+            orderBy={['likes']}
+            title={translate('books')}
           />
           <LeaderboardCard topicId={id} />
         </Grid>

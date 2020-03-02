@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { Paper, Tab, Tabs } from '@material-ui/core';
 import { GlobalContext } from '@zoonk/utils';
 
-type Menu = 'topics' | 'posts' | 'courses' | 'leaderboard';
+type Menu = 'topics' | 'posts' | 'courses' | 'books' | 'leaderboard';
 
 interface CategoryTabsProps {
   active: Menu;
@@ -12,7 +12,7 @@ interface CategoryTabsProps {
 const CategoryTabs = ({ active }: CategoryTabsProps) => {
   const { translate } = useContext(GlobalContext);
   const { push } = useRouter();
-  const menu: Menu[] = ['topics', 'posts', 'courses', 'leaderboard'];
+  const menu: Menu[] = ['topics', 'posts', 'courses', 'books', 'leaderboard'];
 
   return (
     <Paper square variant="outlined">
