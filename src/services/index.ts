@@ -11,7 +11,6 @@ export * from './posts';
 export * from './profile';
 export * from './replies';
 export * from './reports';
-export * from './saved';
 export * from './search';
 export * from './topics';
 export * from './upload';

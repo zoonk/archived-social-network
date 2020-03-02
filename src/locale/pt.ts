@@ -119,7 +119,6 @@ const translate: TranslationFn = (key, args) => {
     logout: 'Sair',
     menu: 'menu',
     message: 'Mensagem',
-    my_studies: 'Meus estudos',
     name: 'Nome',
     need_to_be_loggedin: 'Você precisa estar logado para fazer isso.',
     next_lesson: 'Próxima lição',
@@ -170,10 +169,6 @@ const translate: TranslationFn = (key, args) => {
     save: 'Salvar',
     save_changes: 'Salvar alterações',
     saved: 'Salvo!',
-    saved_limit_reached:
-      'Você não pode salvar mais de 20 itens no plano gratuito. Por favor, assine o plano premium para salvar mais itens.',
-    saved_no_items:
-      'Você não salvou nenhum item ainda. Use a opção de salvar para acompanhar os assuntos que você está estudando.',
     saving: 'Salvando...',
     search: 'Busca',
     search_ph: 'Pressione Enter para pesquisar',
@@ -214,9 +209,6 @@ const translate: TranslationFn = (key, args) => {
     seo_settings_desc: 'Como configurar e editar o meu perfil no Zoonk.',
     seo_signup_desc:
       'Crie uma conta no Zoonk para aprender qualquer coisa de graça.',
-    seo_studies_desc:
-      'Como monitorar os meus estudos online usando o Zoonk. Salvar referências de assuntos para aprender depois.',
-    seo_studies_title: 'Acompanhar meus estudos',
     seo_topic_desc: `Aprenda sobre ${args?.title}. Como aprender sobre ${args?.title} de graça online.`,
     seo_topic_courses_desc: `Cursos e livros sobre ${args?.title}. Os melhores cursos de ${args?.title} online.`,
     seo_topic_courses_title: `Cursos e livros de ${args?.title}`,
@@ -237,12 +229,12 @@ const translate: TranslationFn = (key, args) => {
     signup_notice_and: 'e a',
     social_description:
       'Zoonk é uma rede social onde você pode aprender qualquer coisa de graça online.',
-    subscribe_free_desc: '20 items salvos',
+    subscribe_free_desc: '',
     subscribe_free_price: 'R$0',
     subscribe_free_title: 'Grátis',
     subscribe_premium_btn: 'Assine',
     subscribe_premium_desc:
-      'Salve items ilimitados\nSem anúncios\nApoie o ensino gratuito\nCusta menos de R$0.22 por dia!',
+      'Sem anúncios\nApoie o ensino gratuito\nCusta menos de R$0.22 por dia!',
     subscribe_premium_price: 'R$79.90',
     subscribe_premium_title: 'Premium',
     subscribe_success_desc:

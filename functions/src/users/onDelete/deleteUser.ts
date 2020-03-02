@@ -14,12 +14,6 @@ export const onDeleteUser = functions.auth.user().onDelete(async (user) => {
   const profile = db.doc(`profile/${user.uid}`);
   const userData = db.doc(`users/${user.uid}`);
 
-  // Remove all saved items.
-  const saved = await db.collection(`users/${user.uid}/saved`).listDocuments();
-  saved.forEach((item) => {
-    batch.push(item.delete());
-  });
-
   batch.push(actions.delete());
   batch.push(leaderboard.delete());
   batch.push(profile.delete());

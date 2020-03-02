@@ -10,5 +10,4 @@ export * from './posts';
 export * from './profile';
 export * from './replies';
 export * from './reports';
-export * from './saved';
 export * from './topics';

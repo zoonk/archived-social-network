@@ -4,7 +4,7 @@ import * as admin from 'firebase-admin';
 const db = admin.firestore();
 
 export const onCreateNotificationUpdateCount = functions.firestore
-  .document('users/{createdById}/notifications/{savedId}')
+  .document('users/{createdById}/notifications/{notId}')
   .onCreate((_, context) => {
     const { createdById } = context.params;
 

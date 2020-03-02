@@ -8,7 +8,6 @@ import {
   ListItemText,
 } from '@material-ui/core';
 import {
-  Bookmarks,
   Description,
   EmojiEvents,
   History,
@@ -39,15 +38,6 @@ const MenuPages = () => {
             </ListItem>
           </NextLink>
         )}
-
-        <NextLink href="/my-studies" passHref>
-          <ListItem button component="a">
-            <ListItemIcon>
-              <Bookmarks />
-            </ListItemIcon>
-            <ListItemText primary={translate('my_studies')} />
-          </ListItem>
-        </NextLink>
 
         <NextLink href="/topics" passHref>
           <ListItem button component="a">

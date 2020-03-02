@@ -59,7 +59,6 @@ const PostView = ({ chapterId, item, preview, topicId }: PostViewProps) => {
             linkAs={`/posts/${id}`}
             id={id}
             likes={likes}
-            title={title}
           />
         )}
         <EditorView content={content} />

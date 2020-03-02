@@ -16,7 +16,6 @@ export * from './profile';
 export * from './progress';
 export * from './replies';
 export * from './report';
-export * from './saved';
 export * from './search';
 export * from './services';
 export * from './snackbar';

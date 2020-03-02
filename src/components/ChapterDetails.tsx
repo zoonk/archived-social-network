@@ -27,7 +27,6 @@ const ChapterDetails = ({ data, topicId }: ChapterDetailsProps) => {
           likes={likes}
           href="/topics/[id]/chapters/[chapterId]"
           linkAs={`/topics/${topicId}/chapters/${data.id}`}
-          title={title}
         />
 
         {descriptionWithLineBreak.map((text, index) => (

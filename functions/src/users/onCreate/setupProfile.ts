@@ -26,7 +26,6 @@ export const onCreateUserSetupProfile = functions.auth
       ...userInfo,
       notifications: 0,
       role: 'viewer',
-      saved: 0,
       subscription: 'free',
     };
 

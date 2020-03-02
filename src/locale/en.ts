@@ -118,7 +118,6 @@ const translate: TranslationFn = (key, args) => {
     logout: 'Log out',
     menu: 'Menu',
     message: 'Message',
-    my_studies: 'My studies',
     name: 'Name',
     need_to_be_loggedin: 'You need to be logged in to perform this action.',
     next_lesson: 'Next lesson',
@@ -170,10 +169,6 @@ const translate: TranslationFn = (key, args) => {
     save: 'Save',
     save_changes: 'Save changes',
     saved: 'Saved!',
-    saved_limit_reached:
-      'You cannot save more than 20 items on a free acount. Please, upgrade your plan to save new items.',
-    saved_no_items:
-      'You did not save any items yet. Use the save option to track items you would like to study.',
     saving: 'Saving...',
     search: 'Search',
     search_ph: 'Press Enter to search',
@@ -212,9 +207,6 @@ const translate: TranslationFn = (key, args) => {
     seo_search_title: `Learn about ${args?.searchTerm} on Zoonk`,
     seo_settings_desc: 'How to configure and edit my Zoonk profile.',
     seo_signup_desc: 'Create a Zoonk account to learn anything for free.',
-    seo_studies_desc:
-      'How to track my studies online using Zoonk. How to save for later things I want to learn.',
-    seo_studies_title: 'Track my studies',
     seo_topic_desc: `Learn about ${args?.title}. How to learn about ${args?.title} for free online.`,
     seo_topic_courses_desc: `Courses and books about ${args?.title}. The best ${args?.title} courses online.`,
     seo_topic_courses_title: `${args?.title} courses and books`,
@@ -235,12 +227,12 @@ const translate: TranslationFn = (key, args) => {
     signup_notice_and: 'and the',
     social_description:
       'Zoonk is a social network where you can learn anything for free.',
-    subscribe_free_desc: '20 saved items',
+    subscribe_free_desc: '',
     subscribe_free_price: '€0',
     subscribe_free_title: 'Free',
     subscribe_premium_btn: 'Upgrade',
     subscribe_premium_desc:
-      'Unlimited saved items\nNo ads\nSupport free learning\nIt costs less than €0.06 per day!',
+      'No ads\nSupport free learning\nIt costs less than €0.06 per day!',
     subscribe_premium_price: '€19.90',
     subscribe_premium_title: 'Premium',
     subscribe_success_desc:

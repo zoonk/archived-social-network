@@ -293,7 +293,6 @@ service cloud.firestore {
         && isReadOnly('name')
         && isReadOnly('photo')
         && isReadOnly('role')
-        && isReadOnly('saved')
         && isReadOnly('stripe')
         && isReadOnly('subscription')
         && isReadOnly('subscriptionStart')
@@ -302,22 +301,6 @@ service cloud.firestore {
 
       match /notifications/{notificationId} {
         allow read: if request.auth.uid == userId;
-      }
-
-      match /saved/{savedId} {
-        allow read, delete: if request.auth.uid == userId;
-        allow create: if
-          request.auth.uid == userId
-          && request.resource.data.updatedAt == request.time
-          && hasField('categoryId')
-          && hasField('itemPath')
-          && hasField('title')
-          && isOneOf('category', 'chapters|comments|posts|replies|topics')
-          && (
-            hasSubscription()
-            || get(/databases/$(database)/documents/users/$(request.auth.uid)).data.saved < 20
-          )
-        ;
       }
     }
   }

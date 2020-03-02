@@ -12,7 +12,6 @@ export namespace User {
   export interface Response extends Profile.Response {
     notifications: number;
     role: 'admin' | 'moderator' | 'viewer';
-    saved: number;
     subscription: SubscriptionPlan;
   }
 

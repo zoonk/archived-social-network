@@ -36,7 +36,7 @@ const TopicDetails = ({ topic }: TopicDetailsProps) => {
           {title}
         </Typography>
 
-        <ItemActions category="topics" id={id} likes={likes} title={title} />
+        <ItemActions category="topics" id={id} likes={likes} />
 
         {descriptionWithLineBreak.map((text, index) => (
           <Typography

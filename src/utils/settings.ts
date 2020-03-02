@@ -4,8 +4,6 @@ const envLang = process.env.APP_LANG as UILanguage | undefined;
 export const isProduction = process.env.BUILD_ENV === 'production';
 export const appLanguage: UILanguage = envLang || 'en';
 export const maxFileSize = 2097152;
-export const maxLessons = 10;
-export const maxSavedItems = 20;
 export const imgSize = '390x250px';
 
 export const rootUrl = `https://${appLanguage}.zoonk.org`;
