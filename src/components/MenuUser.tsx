@@ -2,7 +2,6 @@ import { Fragment, useContext } from 'react';
 import NextLink from 'next/link';
 import {
   Avatar,
-  Button,
   CircularProgress,
   Link,
   List,
@@ -62,21 +61,6 @@ const MenuUser = () => {
           </Link>
         </Typography>
       </List>
-
-      <NextLink
-        href={user.subscription === 'free' ? '/upgrade' : '/subscription'}
-        passHref
-      >
-        <Button
-          color={user.subscription === 'free' ? 'primary' : 'secondary'}
-          variant="contained"
-          style={{ margin: theme.spacing(0, 2, 2) }}
-        >
-          {user.subscription === 'free'
-            ? translate('upgrade_premium')
-            : translate('premium')}
-        </Button>
-      </NextLink>
     </Fragment>
   );
 };

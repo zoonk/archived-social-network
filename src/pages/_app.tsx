@@ -58,7 +58,6 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
           analytics().setAnalyticsCollectionEnabled(fbUser.role !== 'admin');
           analytics().setUserProperties({
             emailVerified: user.emailVerified,
-            plan: fbUser.subscription,
             role: fbUser.role,
             appLanguage,
           });

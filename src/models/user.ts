@@ -4,15 +4,12 @@ import { Profile } from './profile';
  * User model
  */
 export namespace User {
-  export type SubscriptionPlan = 'free' | 'premium';
-
   /**
    * Fields returned from the backend.
    */
   export interface Response extends Profile.Response {
     notifications: number;
     role: 'admin' | 'moderator' | 'viewer';
-    subscription: SubscriptionPlan;
   }
 
   /**

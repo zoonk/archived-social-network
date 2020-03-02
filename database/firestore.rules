@@ -22,10 +22,6 @@ service cloud.firestore {
       return field in request.resource.data && request.resource.data[field] != null;
     }
 
-    function hasSubscription() {
-      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.subscription == 'premium';
-    }
-
     function hasValidLevel() {
       return isOneOf('level', 'beginner|advanced|pro|expert');
     }
@@ -293,9 +289,6 @@ service cloud.firestore {
         && isReadOnly('name')
         && isReadOnly('photo')
         && isReadOnly('role')
-        && isReadOnly('stripe')
-        && isReadOnly('subscription')
-        && isReadOnly('subscriptionStart')
         && isReadOnly('username')
       ;
 

@@ -78,22 +78,6 @@ test('cannot change the role field', async (done) => {
   done();
 });
 
-test('cannot change the stripe field', async (done) => {
-  await firebase.assertFails(doc.update({ stripe: {} }));
-  done();
-});
-
-test('cannot change the subscription field', async (done) => {
-  await firebase.assertFails(doc.update({ subscription: 'premium' }));
-  done();
-});
-
-test('cannot change the subscriptionStart field', async (done) => {
-  const subscriptionStart = firebase.firestore.FieldValue.serverTimestamp();
-  await firebase.assertFails(doc.update({ subscriptionStart }));
-  done();
-});
-
 test('cannot change the username field', async (done) => {
   await firebase.assertFails(doc.update({ username: 'new' }));
   done();

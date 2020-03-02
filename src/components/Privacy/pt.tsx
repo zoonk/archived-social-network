@@ -88,16 +88,6 @@ const PrivacyEn = () => {
       </ul>
 
       <Typography component="h3" variant="h6" gutterBottom>
-        Pagamentos
-      </Typography>
-
-      <ul>
-        <Typography component="li" variant="body1">
-          <Link href="https://stripe.com">Stripe</Link>
-        </Typography>
-      </ul>
-
-      <Typography component="h3" variant="h6" gutterBottom>
         Armazenamento
       </Typography>
 

@@ -29,7 +29,6 @@ test('add the user info to their settings', async (done) => {
     notifications: 0,
     photo: null,
     role: 'viewer',
-    subscription: 'free',
     username: 'testUID',
   };
 

@@ -7,7 +7,6 @@ export * from './chapters';
 export * from './comments';
 export * from './leaderboard';
 export * from './likes';
-export * from './payments';
 export * from './posts';
 export * from './profile';
 export * from './progress';

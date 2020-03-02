@@ -31,7 +31,6 @@ const translate: TranslationFn = (key, args) => {
         ? `${args?.comments} comment`
         : `${args?.comments} comments`,
     confirm: 'Confirm',
-    confirmation: 'Confirmation',
     contact_us: 'Contact us',
     content: 'Content',
     courses_books: 'Courses & books',
@@ -137,7 +136,6 @@ const translate: TranslationFn = (key, args) => {
     post_add: 'Create a post',
     post_edit: 'Edit post',
     posts: 'Posts',
-    premium: 'Premium',
     preview: 'Preview',
     preview_quit: 'Back to the editor',
     privacy_policy: 'Privacy policy',
@@ -227,18 +225,6 @@ const translate: TranslationFn = (key, args) => {
     signup_notice_and: 'and the',
     social_description:
       'Zoonk is a social network where you can learn anything for free.',
-    subscribe_free_desc: '',
-    subscribe_free_price: '€0',
-    subscribe_free_title: 'Free',
-    subscribe_premium_btn: 'Upgrade',
-    subscribe_premium_desc:
-      'No ads\nSupport free learning\nIt costs less than €0.06 per day!',
-    subscribe_premium_price: '€19.90',
-    subscribe_premium_title: 'Premium',
-    subscribe_success_desc:
-      'Your support is very important. If you have any questions or suggestions, please let us know.',
-    subscribe_success_title: 'Thank you! =)',
-    subscription: 'Subscription',
     teach_article_desc: `A good way to teach something is by sharing personal stories and experiences. Do you have an interesting point of view about ${args?.title}? Then, [share it with other people](/posts/add?category=posts&topicId=${args?.id})! :)`,
     teach_article_title: 'Write an article',
     teach_course_desc: `Have you completed a course that helped you learn something? Then, help other people to learn it too! [Share a course about ${args?.title}](/posts/add?category=courses&topicId=${args?.id}).`,
@@ -263,10 +249,6 @@ const translate: TranslationFn = (key, args) => {
       'What subjects are you teaching? (e.g. Chemistry, Star Trek, History, etc.).',
     topics: 'Topics',
     updated: 'edited',
-    upgrade_desc:
-      'Zoonk is free and open-source because we believe knowledge should be accessible to everyone. By upgrading to premium, you help us keep Zoonk free.',
-    upgrade_premium: 'Upgrade to premium',
-    upgrade_title: 'Support free education',
     uploading: 'Uploading...',
     url: 'URL',
     username: 'Username',
@@ -274,7 +256,6 @@ const translate: TranslationFn = (key, args) => {
     video: 'Video',
     video_link: 'Video URL',
     view: 'View',
-    year: 'Year',
   };
 
   return data[key] || key;

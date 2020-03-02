@@ -33,7 +33,6 @@ const translate: TranslationFn = (key, args) => {
         ? `${args?.comments} comentário`
         : `${args?.comments} comentários`,
     confirm: 'Confirmar',
-    confirmation: 'Confirmação',
     contact_us: 'Fale conosco',
     content: 'Conteúdo',
     courses_books: 'Cursos & livros',
@@ -138,7 +137,6 @@ const translate: TranslationFn = (key, args) => {
     post_add: 'Criar postagem',
     post_edit: 'Editar postagem',
     posts: 'Postagens',
-    premium: 'Premium',
     preview: 'Visualizar',
     preview_quit: 'Voltar ao editor',
     privacy_policy: 'Política de privacidade',
@@ -229,18 +227,6 @@ const translate: TranslationFn = (key, args) => {
     signup_notice_and: 'e a',
     social_description:
       'Zoonk é uma rede social onde você pode aprender qualquer coisa de graça online.',
-    subscribe_free_desc: '',
-    subscribe_free_price: 'R$0',
-    subscribe_free_title: 'Grátis',
-    subscribe_premium_btn: 'Assine',
-    subscribe_premium_desc:
-      'Sem anúncios\nApoie o ensino gratuito\nCusta menos de R$0.22 por dia!',
-    subscribe_premium_price: 'R$79.90',
-    subscribe_premium_title: 'Premium',
-    subscribe_success_desc:
-      'O seu apoio é muito importante. Se tiver qualquer dúvida ou sugestão, por favor entre em contato.',
-    subscribe_success_title: 'Muito obrigado! :)',
-    subscription: 'Assinatura',
     teach_article_desc: `Uma boa maneira de ensinar é compartilhando histórias e experiências pessoais. Você tem algum ponto de vista interessante sobre ${args?.title}? Então [compartilhe com outras pessoas](/posts/add?category=posts&topicId=${args?.id})! :)`,
     teach_article_title: 'Escrever um artigo',
     teach_course_desc: `Você fez algum curso interessante que te ajudou a aprender algo? Então, ajude outras pessoas a aprender também. [Compartilhe um curso sobre ${args?.title}](/posts/add?category=courses&topicId=${args?.id}).`,
@@ -265,10 +251,6 @@ const translate: TranslationFn = (key, args) => {
       'Quais assuntos você está ensinando? (Ex. Física, Futebol, Geografia, etc.).',
     topics: 'Assuntos',
     updated: 'editado',
-    upgrade_desc:
-      'O Zoonk é gratuito e tem o código aberto porque nós acreditamos que o conhecimento deve ser acessível a todos. Ao assinar um plano premium, você nos ajuda a manter o Zoonk gratuito.',
-    upgrade_premium: 'Assinar premium',
-    upgrade_title: 'Apoie o ensino gratuito',
     uploading: 'Enviando...',
     url: 'URL',
     username: 'Nome de usuário',
@@ -276,7 +258,6 @@ const translate: TranslationFn = (key, args) => {
     video: 'Vídeo',
     video_link: 'Link do vídeo',
     view: 'Ver',
-    year: 'Ano',
   };
 
   return data[key] || key;
