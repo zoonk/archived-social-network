@@ -247,7 +247,7 @@ const translate: TranslationFn = (key, args) => {
     teach_ref_desc: `Lembra de algum link ou referência legal que compartilharam no grupo do Zap ou que você viu por aí? Então, [compartilhe com outras pessoas](/posts/add?category=posts&topicId=${args?.id}) e ajude a galera a encontrar as melhores fontes de informação sobre ${args?.title}.`,
     teach_ref_title: 'Compartilhar uma referência ou link',
     teach_title: 'Compartilhe o seu conhecimento',
-    teach: 'Teach',
+    teach: 'Ensinar',
     terms_service: 'Termos de uso',
     text: 'Texto',
     title: 'Título',
