@@ -2,7 +2,6 @@ import { useContext, useEffect } from 'react';
 import { NextPage } from 'next';
 import { Container, Grid, makeStyles } from '@material-ui/core';
 import ChaptersCard from '@zoonk/components/ChaptersCard';
-import ItemCredits from '@zoonk/components/ItemCredits';
 import LeaderboardCard from '@zoonk/components/LeaderboardCard';
 import Meta from '@zoonk/components/Meta';
 import PostsCard from '@zoonk/components/PostsCard';
@@ -27,17 +26,7 @@ interface TopicPageProps {
 const TopicPage: NextPage<TopicPageProps> = ({ topic }) => {
   const { translate } = useContext(GlobalContext);
   const classes = useStyles();
-  const {
-    chapterData,
-    createdAt,
-    createdBy,
-    id,
-    language,
-    photo,
-    title,
-    updatedAt,
-    updatedBy,
-  } = topic;
+  const { chapterData, id, language, photo, title } = topic;
 
   useEffect(() => {
     analytics().setCurrentScreen('topic');
@@ -58,12 +47,6 @@ const TopicPage: NextPage<TopicPageProps> = ({ topic }) => {
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6} md={4} className={classes.column}>
           <TopicDetails topic={topic} />
-          <ItemCredits
-            createdAt={createdAt}
-            createdBy={createdBy}
-            updatedAt={updatedAt}
-            updatedBy={updatedBy}
-          />
         </Grid>
 
         <Grid item xs={12} sm={6} md={8} className={classes.column}>
