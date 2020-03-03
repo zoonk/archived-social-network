@@ -28,6 +28,11 @@ const firebaseCollectionRef = jest.fn().mockReturnValue({
 
 const initializeApp = jest.fn();
 
+const auth = jest.fn().mockReturnValue({
+  setCustomUserClaims: jest.fn(),
+  updateUser: jest.fn(),
+});
+
 const firestore: any = jest.fn().mockReturnValue({
   batch: jest.fn().mockReturnValue({
     commit: jest.fn(),
@@ -57,4 +62,4 @@ firestore.Timestamp = {
   fromDate: jest.fn((value) => value),
 };
 
-export { initializeApp, firestore };
+export { auth, initializeApp, firestore };
