@@ -92,6 +92,7 @@ export type TranslationKeys =
   | 'go_home'
   | 'having_issues'
   | 'home'
+  | 'improve_page'
   | 'items_empty'
   | 'leaderboard'
   | 'learn_about'

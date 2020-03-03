@@ -96,6 +96,7 @@ const translate: TranslationFn = (key, args) => {
     having_issues:
       'Are you finding this confusing or are you having any issues?',
     home: 'Home',
+    improve_page: 'Improve this page',
     items_empty: 'No items found.',
     leaderboard: 'Leaderboard',
     learn_about: `Learn about ${args?.title}`,

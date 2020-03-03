@@ -84,14 +84,20 @@ const PostView = ({ chapterId, item, preview, topicId }: PostViewProps) => {
 
       {links && youtube && <YoutubePlayer id={youtube} />}
 
-      {next && (
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            margin: theme.spacing(2),
-          }}
-        >
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          margin: theme.spacing(2),
+        }}
+      >
+        <NextLink href="/posts/[id]/edit" as={`/posts/${id}/edit`} passHref>
+          <Button component="a" color="primary">
+            {translate('improve_page')}
+          </Button>
+        </NextLink>
+
+        {next && (
           <NextLink
             href="/topics/[id]/chapters/[chapterId]/[lessonId]"
             as={`/topics/${topicId}/chapters/${next.chapterId}/${next.lessonId}`}
@@ -101,8 +107,8 @@ const PostView = ({ chapterId, item, preview, topicId }: PostViewProps) => {
               {translate('next_lesson')}
             </Button>
           </NextLink>
-        </div>
-      )}
+        )}
+      </div>
     </Card>
   );
 };
