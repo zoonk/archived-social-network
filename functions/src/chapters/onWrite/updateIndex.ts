@@ -34,5 +34,5 @@ export const onWriteChapterUpdateIndex = functions.firestore
       topics: after.topics,
     };
 
-    return index.partialUpdateObject(indexData, true);
+    return index.partialUpdateObject(indexData, { createIfNotExists: true });
   });

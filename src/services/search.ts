@@ -1,4 +1,5 @@
 import algolia from 'algoliasearch';
+import { SearchResponse } from '@algolia/client-search';
 import { SearchResult } from '@zoonk/models';
 import { analytics, appLanguage, isProduction } from '@zoonk/utils';
 
@@ -12,7 +13,9 @@ const client = algolia(ALGOLIA_APP_ID, ALGOLIA_SEARCH_KEY);
 /**
  * Full-text search across all collections.
  */
-export const search = async (query: string) => {
+export const search = async (
+  query: string,
+): Promise<SearchResponse<SearchResult>[]> => {
   const indexes = ['topics', 'posts'];
   const queries = indexes.map((item) => ({
     indexName: `${item}_${appLanguage}`,
@@ -20,7 +23,7 @@ export const search = async (query: string) => {
     params: { hitsPerPage: 5 },
   }));
   analytics().logEvent('search', { search_term: query });
-  const res = await client.search<SearchResult>(queries);
+  const res = await client.multipleQueries<SearchResult>(queries);
   return res.results.map((item) => ({
     ...item,
     // Remove the language suffix from the index name.

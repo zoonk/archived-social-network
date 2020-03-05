@@ -101,9 +101,8 @@ test('update the index when a topic changes', async (done) => {
   expect(algoliaClient.initIndex('').deleteObject).not.toHaveBeenCalledWith(
     'topicId',
   );
-  expect(algoliaClient.initIndex('').partialUpdateObject).toHaveBeenCalledWith(
-    expected,
-    true,
-  );
+  expect(
+    algoliaClient.initIndex('').partialUpdateObject,
+  ).toHaveBeenCalledWith(expected, { createIfNotExists: true });
   done();
 });

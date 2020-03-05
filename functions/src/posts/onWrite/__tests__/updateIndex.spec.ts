@@ -100,10 +100,9 @@ test('update the index when the content changes', async (done) => {
   expect(algoliaClient.initIndex('').deleteObject).not.toHaveBeenCalledWith(
     'itemId',
   );
-  expect(algoliaClient.initIndex('').partialUpdateObject).toHaveBeenCalledWith(
-    expected,
-    true,
-  );
+  expect(
+    algoliaClient.initIndex('').partialUpdateObject,
+  ).toHaveBeenCalledWith(expected, { createIfNotExists: true });
   done();
 });
 
@@ -146,9 +145,8 @@ test('update the index when the title changes', async (done) => {
   expect(algoliaClient.initIndex('').deleteObject).not.toHaveBeenCalledWith(
     'itemId',
   );
-  expect(algoliaClient.initIndex('').partialUpdateObject).toHaveBeenCalledWith(
-    expected,
-    true,
-  );
+  expect(
+    algoliaClient.initIndex('').partialUpdateObject,
+  ).toHaveBeenCalledWith(expected, { createIfNotExists: true });
   done();
 });

@@ -14,7 +14,7 @@
   },
   "main": "lib/functions/src/index.js",
   "dependencies": {
-    "algoliasearch": "^3.35.1",
+    "algoliasearch": "^4.0.3",
     "firebase-admin": "^8.9.0",
     "firebase-functions": "^3.3.0",
     "isomorphic-unfetch": "^3.0.0",
@@ -23,7 +23,6 @@
     "react-dom": "^16.12.0"
   },
   "devDependencies": {
-    "@types/algoliasearch": "^3.34.5",
     "@types/jest-when": "^2.7.0",
     "@types/lodash": "^4.14.144",
     "firebase-functions-test": "^0.1.7",

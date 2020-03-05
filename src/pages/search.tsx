@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
+import { SearchResponse } from '@algolia/client-search';
 import { Container, Grid } from '@material-ui/core';
 import AlgoliaLogo from '@zoonk/components/AlgoliaLogo';
 import HomeBreadcrumb from '@zoonk/components/HomeBreadcrumb';
@@ -13,9 +14,7 @@ import { analytics, GlobalContext, rootUrl } from '@zoonk/utils';
 const Search: NextPage = () => {
   const { translate } = useContext(GlobalContext);
   const { query } = useRouter();
-  const [results, setResults] = useState<
-    algoliasearch.Response<SearchResult>[]
-  >([]);
+  const [results, setResults] = useState<SearchResponse<SearchResult>[]>([]);
   const searchTerm = String(query.q);
 
   useEffect(() => {

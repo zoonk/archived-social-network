@@ -35,5 +35,5 @@ export const onWritePostUpdateIndex = functions.firestore
       photo: null,
     };
 
-    return index.partialUpdateObject(indexData, true);
+    return index.partialUpdateObject(indexData, { createIfNotExists: true });
   });

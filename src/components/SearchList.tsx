@@ -6,7 +6,7 @@ import SearchListItem from './SearchListItem';
 
 interface SearchListProps {
   category: ContentCategory;
-  items: SearchResult[];
+  items: ReadonlyArray<SearchResult>;
 }
 
 /**
