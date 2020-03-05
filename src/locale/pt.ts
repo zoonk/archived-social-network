@@ -6,6 +6,7 @@ const translate: TranslationFn = (key, args) => {
     about_list: 'Lista de páginas sobre como o Zoonk funciona',
     about_me: 'Sobre mim',
     add_image: 'Inserir imagem',
+    add: 'Add',
     admin: 'Admin',
     advanced: 'Avançado',
     after: 'Depois',
@@ -18,9 +19,13 @@ const translate: TranslationFn = (key, args) => {
     by: 'por',
     cancel: 'Cancelar',
     chapter_add: 'Crie um novo capítulo',
+    chapter_adding: 'Adicionando capítulo na página deste assunto...',
     chapter_edit: 'Editar capítulo',
     chapter_invalid_id:
       'Você não pode criar um capítulo sem uma ID válida para a trilha de aprendizagem.',
+    chapter_select_desc:
+      'Você pode adicionar um capítulo existente neste tópico clicando no botão "add":',
+    chapter_select_title: 'Escolher capítulo',
     chapter: 'Capítulo',
     chapters: 'Capítulos',
     choose_language: 'Escolha um idioma',

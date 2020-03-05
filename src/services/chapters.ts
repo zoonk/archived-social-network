@@ -1,5 +1,5 @@
 import { pickBy } from 'lodash';
-import { Chapter, Profile } from '@zoonk/models';
+import { Chapter, ContentMetadata, Profile } from '@zoonk/models';
 import {
   analytics,
   arrayUnion,
@@ -46,6 +46,21 @@ export const createChapter = async (data: Chapter.Create): Promise<string> => {
   await batch.commit();
   analytics().logEvent('chapter_add', { language });
   return slug;
+};
+
+/**
+ * Add an existing chapter to a topic.
+ */
+export const addChapterToTopic = (
+  chapterId: string,
+  topicId: string,
+  user: ContentMetadata.Update,
+): Promise<void> => {
+  const changes = {
+    ...user,
+    chapters: arrayUnion(chapterId),
+  };
+  return db.doc(`topics/${topicId}`).update(changes);
 };
 
 /**
