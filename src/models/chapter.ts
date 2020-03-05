@@ -1,6 +1,7 @@
 import { ContentMetadata } from './content';
 import { Dictionary } from './misc';
 import { Post } from './post';
+import { SearchIndex } from './search';
 
 /**
  * Chapters model.
@@ -56,5 +57,14 @@ export namespace Chapter {
    */
   export interface Snapshot extends Get {
     snap: firebase.firestore.DocumentSnapshot;
+  }
+
+  /**
+   * Search index fields.
+   */
+  export interface Index extends SearchIndex {
+    description: string;
+    title: string;
+    topics: string[];
   }
 }
