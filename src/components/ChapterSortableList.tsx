@@ -1,8 +1,12 @@
 import { Fragment, useCallback, useContext, useEffect, useState } from 'react';
 import { CircularProgress } from '@material-ui/core';
 import { Chapter, SnackbarAction } from '@zoonk/models';
-import { getTopic, updateChapterOrder } from '@zoonk/services';
-import { firebaseError, GlobalContext } from '@zoonk/utils';
+import {
+  getTopicLive,
+  removeChapterFromTopic,
+  updateChapterOrder,
+} from '@zoonk/services';
+import { firebaseError, GlobalContext, timestamp } from '@zoonk/utils';
 import Snackbar from './Snackbar';
 import SortableList from './SortableList';
 
@@ -20,19 +24,14 @@ const ChapterSortableList = ({ topicId }: ChapterSortableListProps) => {
   const [items, setItems] = useState<Chapter.Summary[]>([]);
 
   useEffect(() => {
-    let active = true;
     setLoading(true);
 
-    getTopic(topicId).then((res) => {
-      if (active) {
-        setItems(res.chapterData);
-        setLoading(false);
-      }
+    const unsubscribe = getTopicLive(topicId, (snap) => {
+      setItems(snap.chapterData);
+      setLoading(false);
     });
 
-    return () => {
-      active = false;
-    };
+    return () => unsubscribe();
   }, [topicId]);
 
   const handleMove = useCallback(
@@ -62,6 +61,22 @@ const ChapterSortableList = ({ topicId }: ChapterSortableListProps) => {
       .catch((e) => setSnackbar(firebaseError(e, 'update_order')));
   };
 
+  const remove = (id: string) => {
+    setSnackbar({ type: 'progress', msg: translate('chapter_removing') });
+
+    const metadata = {
+      updatedAt: timestamp,
+      updatedBy: profile,
+      updatedById: user.uid,
+    };
+
+    removeChapterFromTopic(id, topicId, metadata)
+      .then(() =>
+        setSnackbar({ type: 'success', msg: translate('chapter_removed') }),
+      )
+      .catch((e) => setSnackbar(firebaseError(e, 'chapter_remove')));
+  };
+
   return (
     <Fragment>
       <SortableList
@@ -70,6 +85,7 @@ const ChapterSortableList = ({ topicId }: ChapterSortableListProps) => {
         saving={snackbar?.type === 'progress'}
         onMove={handleMove}
         onSave={save}
+        onDelete={remove}
       />
       <Snackbar action={snackbar} />
     </Fragment>

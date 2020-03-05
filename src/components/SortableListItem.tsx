@@ -7,7 +7,7 @@ import {
   ListItemSecondaryAction,
   ListItemText,
 } from '@material-ui/core';
-import { Edit, Reorder } from '@material-ui/icons';
+import { Delete, Edit, Reorder } from '@material-ui/icons';
 import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd';
 import { ContentCategory } from '@zoonk/models';
 import { GlobalContext } from '@zoonk/utils';
@@ -19,6 +19,7 @@ interface SortableListItemProps {
   index: number;
   title: string;
   moveItem: (drag: number, hover: number) => void;
+  onDelete?: () => void;
 }
 
 interface DragItem {
@@ -36,6 +37,7 @@ const SortableListItem = ({
   id,
   index,
   moveItem,
+  onDelete,
   title,
 }: SortableListItemProps) => {
   const { translate } = useContext(GlobalContext);
@@ -117,6 +119,18 @@ const SortableListItem = ({
       </ListItemIcon>
       <ListItemText primary={title} />
       <ListItemSecondaryAction>
+        {onDelete && (
+          <IconButton
+            component="a"
+            edge="end"
+            aria-label={translate('delete')}
+            color="secondary"
+            onClick={onDelete}
+          >
+            <Delete />
+          </IconButton>
+        )}
+
         <NextLink
           href={`/${category}/[id]/edit`}
           as={`/${category}/${id}/edit`}

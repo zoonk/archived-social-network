@@ -22,6 +22,8 @@ export type TranslationKeys =
   | 'chapter_adding'
   | 'chapter_edit'
   | 'chapter_invalid_id'
+  | 'chapter_removed'
+  | 'chapter_removing'
   | 'chapter_select_desc'
   | 'chapter_select_title'
   | 'chapter'

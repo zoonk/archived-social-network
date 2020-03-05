@@ -17,6 +17,7 @@ interface SortableListProps {
   saving: boolean;
   onMove: (drag: number, hover: number) => void;
   onCancel?: () => void;
+  onDelete?: (id: string) => void;
   onSave: () => void;
 }
 
@@ -28,6 +29,7 @@ const SortableList = ({
   items,
   saving,
   onCancel,
+  onDelete,
   onMove,
   onSave,
 }: SortableListProps) => {
@@ -46,6 +48,7 @@ const SortableList = ({
             id={item.id}
             title={item.title}
             moveItem={onMove}
+            onDelete={onDelete ? () => onDelete(item.id) : undefined}
           />
         ))}
       </List>

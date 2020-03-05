@@ -23,6 +23,8 @@ const translate: TranslationFn = (key, args) => {
     chapter_edit: 'Editar capítulo',
     chapter_invalid_id:
       'Você não pode criar um capítulo sem uma ID válida para a trilha de aprendizagem.',
+    chapter_removed: 'Capítulo removido!',
+    chapter_removing: 'Removendo capítulo...',
     chapter_select_desc:
       'Você pode adicionar um capítulo existente neste tópico clicando no botão "add":',
     chapter_select_title: 'Escolher capítulo',

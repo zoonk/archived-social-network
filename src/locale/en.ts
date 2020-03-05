@@ -22,6 +22,8 @@ const translate: TranslationFn = (key, args) => {
     chapter_adding: 'Adding a chapter to this topic...',
     chapter_edit: 'Edit chapter',
     chapter_invalid_id: 'You cannot create a chapter without a topicId.',
+    chapter_removed: 'Chapter removed!',
+    chapter_removing: 'Removing chapter...',
     chapter_select_desc: 'You can add an existing chapter to this topic:',
     chapter_select_title: 'Select a chapter',
     chapter: 'Chapter',

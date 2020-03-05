@@ -49,6 +49,22 @@ export const getTopic = async (id: string): Promise<Topic.Get> => {
 };
 
 /**
+ * Get real-time data from a topic
+ */
+export const getTopicLive = (
+  id: string,
+  onSnapshot: (snap: Topic.Get) => void,
+): firebase.Unsubscribe => {
+  return db
+    .doc(`topics/${id}`)
+    .withConverter(topicConverter)
+    .onSnapshot((snap) => {
+      if (!snap.data()) throw new Error('topic_not_found');
+      onSnapshot(snap.data()!);
+    });
+};
+
+/**
  * Get a list of topics from the database.
  */
 export const listTopics = async (

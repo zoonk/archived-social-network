@@ -2,6 +2,7 @@ import { pickBy } from 'lodash';
 import { Chapter, ContentMetadata, Profile } from '@zoonk/models';
 import {
   analytics,
+  arrayRemove,
   arrayUnion,
   db,
   generateSlug,
@@ -59,6 +60,21 @@ export const addChapterToTopic = (
   const changes = {
     ...user,
     chapters: arrayUnion(chapterId),
+  };
+  return db.doc(`topics/${topicId}`).update(changes);
+};
+
+/**
+ * Remove a chapter from a topic.
+ */
+export const removeChapterFromTopic = (
+  chapterId: string,
+  topicId: string,
+  user: ContentMetadata.Update,
+): Promise<void> => {
+  const changes = {
+    ...user,
+    chapters: arrayRemove(chapterId),
   };
   return db.doc(`topics/${topicId}`).update(changes);
 };
