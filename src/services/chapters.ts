@@ -123,6 +123,22 @@ export const getChapter = async (id: string): Promise<Chapter.Get> => {
 };
 
 /**
+ * Get real-time data from a chapter
+ */
+export const getChapterLive = (
+  id: string,
+  onSnapshot: (snap: Chapter.Get) => void,
+): firebase.Unsubscribe => {
+  return db
+    .doc(`chapters/${id}`)
+    .withConverter(chapterConverter)
+    .onSnapshot((snap) => {
+      if (!snap.data()) throw new Error('chapter_not_found');
+      onSnapshot(snap.data()!);
+    });
+};
+
+/**
  * Delete a chapter from the database.
  */
 export const deleteChapter = async (

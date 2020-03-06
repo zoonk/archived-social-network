@@ -145,6 +145,8 @@ const translate: TranslationFn = (key, args) => {
     post_add: 'Criar postagem',
     post_adding: 'Adicionando postagem ao capítulo...',
     post_edit: 'Editar postagem',
+    post_removed: 'Postagem removida!',
+    post_removing: 'Removendo postagem...',
     post_select_desc:
       'Você pode adicionar uma postagem existente ao capítulo clicando no botão "add":',
     post_select_title: 'Escolher postagem',

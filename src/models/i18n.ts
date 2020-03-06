@@ -136,6 +136,8 @@ export type TranslationKeys =
   | 'post_add'
   | 'post_adding'
   | 'post_edit'
+  | 'post_removed'
+  | 'post_removing'
   | 'post_select_desc'
   | 'post_select_title'
   | 'posts_links'

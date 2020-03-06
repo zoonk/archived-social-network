@@ -69,6 +69,22 @@ export const addPostToChapter = (
 };
 
 /**
+ * Remove a post from a chapter.
+ */
+export const removePostFromChapter = (
+  postId: string,
+  chapterId: string,
+  category: Post.Category,
+  user: ContentMetadata.Update,
+): Promise<void> => {
+  const changes = {
+    ...user,
+    [category]: arrayRemove(postId),
+  };
+  return db.doc(`chapters/${chapterId}`).update(changes);
+};
+
+/**
  * Update an existing post.
  */
 export const updatePost = (data: Post.Update, id: string): Promise<void> => {

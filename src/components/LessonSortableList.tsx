@@ -4,8 +4,12 @@ import { useRouter } from 'next/router';
 import { Button, CircularProgress } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 import { Post, SnackbarAction } from '@zoonk/models';
-import { getChapter, updatePostOrder } from '@zoonk/services';
-import { firebaseError, GlobalContext, theme } from '@zoonk/utils';
+import {
+  getChapterLive,
+  removePostFromChapter,
+  updatePostOrder,
+} from '@zoonk/services';
+import { firebaseError, GlobalContext, timestamp, theme } from '@zoonk/utils';
 import Snackbar from './Snackbar';
 import SortableList from './SortableList';
 
@@ -28,19 +32,14 @@ const LessonSortableList = ({
   const [items, setItems] = useState<Post.Summary[]>([]);
 
   useEffect(() => {
-    let active = true;
     setLoading(true);
 
-    getChapter(chapterId).then((res) => {
-      if (active) {
-        setItems(category === 'lessons' ? res.lessonData : res.exampleData);
-        setLoading(false);
-      }
+    const unsubscribe = getChapterLive(chapterId, (snap) => {
+      setItems(category === 'lessons' ? snap.lessonData : snap.exampleData);
+      setLoading(false);
     });
 
-    return () => {
-      active = false;
-    };
+    return () => unsubscribe();
   }, [category, chapterId]);
 
   const handleMove = useCallback(
@@ -70,6 +69,22 @@ const LessonSortableList = ({
       .catch((e) => setSnackbar(firebaseError(e, 'update_order')));
   };
 
+  const remove = (id: string) => {
+    setSnackbar({ type: 'progress', msg: translate('post_removing') });
+
+    const metadata = {
+      updatedAt: timestamp,
+      updatedBy: profile,
+      updatedById: user.uid,
+    };
+
+    removePostFromChapter(id, chapterId, category, metadata)
+      .then(() =>
+        setSnackbar({ type: 'success', msg: translate('post_removed') }),
+      )
+      .catch((e) => setSnackbar(firebaseError(e, 'post_remove')));
+  };
+
   return (
     <Fragment>
       <div style={{ display: 'flex' }}>
@@ -97,6 +112,7 @@ const LessonSortableList = ({
             `/topics/${query.id}/chapters/${chapterId}`,
           )
         }
+        onDelete={remove}
         onMove={handleMove}
         onSave={save}
       />
