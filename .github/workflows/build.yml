@@ -49,14 +49,14 @@ jobs:
       - name: Install functions deps
         run: cd functions && yarn
 
-      - name: Lint
-        run: yarn lint
-
-      - name: Test
-        run: yarn test
-
       - name: Type-check frontend
         run: yarn tsc
 
       - name: Build functions
         run: cd functions && yarn build
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Test
+        run: yarn test

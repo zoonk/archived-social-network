@@ -23,7 +23,7 @@ type DocWithSnapshot<T> = T & {
 function useLoadMore<T>(limit: number = 10) {
   const [getFn, get] = useState<Promise<DocWithSnapshot<T>[]>>();
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState();
+  const [error, setError] = useState<firebase.FirebaseError>();
   const [state, setState] = useState<T[]>([]);
   const lastVisible = useRef<firebase.firestore.DocumentSnapshot>();
 
