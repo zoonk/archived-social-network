@@ -21,7 +21,7 @@ const ChapterAdd: NextPage = () => {
     <Container component="main" maxWidth="xs">
       <Meta title={translate('chapter_add')} noIndex />
       <TopicsBreadcrumb topicId={topicId} title={translate('chapter_add')} />
-      <ChapterFormContainer>
+      <ChapterFormContainer type="add">
         <ChapterCreate topicId={topicId} />
       </ChapterFormContainer>
     </Container>
