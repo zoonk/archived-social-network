@@ -5,7 +5,7 @@ import { listPosts } from '@zoonk/services';
 import { firebaseError, GlobalContext, theme } from '@zoonk/utils';
 import CategoryCardHeader from './CategoryCardHeader';
 import ListSkeleton from './ListSkeleton';
-import NoItems from './NoItems';
+import NoPosts from './NoPosts';
 import PostList from './PostList';
 import Snackbar from './Snackbar';
 import useLoadMore from './useLoadMore';
@@ -101,7 +101,9 @@ const PostsCard = ({
           title={title}
         />
 
-        {items.length === 0 && loading === false && <NoItems />}
+        {items.length === 0 && loading === false && (
+          <NoPosts category={category?.[0]} />
+        )}
         {items.length > 0 && <PostList items={items} />}
         {loading && <ListSkeleton items={limit} />}
 

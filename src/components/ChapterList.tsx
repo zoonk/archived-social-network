@@ -1,8 +1,10 @@
 import { Fragment } from 'react';
+import dynamic from 'next/dynamic';
 import { List } from '@material-ui/core';
 import { Chapter } from '@zoonk/models';
 import ChapterListItem from './ChapterListItem';
-import NoItems from './NoItems';
+
+const NoChapters = dynamic(() => import('./NoChapters'));
 
 interface ChapterListProps {
   items: Chapter.Summary[];
@@ -13,7 +15,7 @@ interface ChapterListProps {
  */
 const ChapterList = ({ items }: ChapterListProps) => {
   if (items.length === 0) {
-    return <NoItems />;
+    return <NoChapters />;
   }
 
   return (
