@@ -1,12 +1,14 @@
 import { Fragment, useCallback, useContext, useEffect, useState } from 'react';
-import { CircularProgress } from '@material-ui/core';
+import NextLink from 'next/link';
+import { Button, CircularProgress } from '@material-ui/core';
+import { Add } from '@material-ui/icons';
 import { Chapter, SnackbarAction } from '@zoonk/models';
 import {
   getTopicLive,
   removeChapterFromTopic,
   updateChapterOrder,
 } from '@zoonk/services';
-import { firebaseError, GlobalContext, timestamp } from '@zoonk/utils';
+import { firebaseError, GlobalContext, theme, timestamp } from '@zoonk/utils';
 import Snackbar from './Snackbar';
 import SortableList from './SortableList';
 
@@ -79,6 +81,21 @@ const ChapterSortableList = ({ topicId }: ChapterSortableListProps) => {
 
   return (
     <Fragment>
+      <div style={{ display: 'flex' }}>
+        <NextLink
+          href="/topics/[id]/chapters/add"
+          as={`/topics/${topicId}/chapters/add`}
+          passHref
+        >
+          <Button component="a" size="small" color="primary">
+            <Add
+              aria-label={translate('create')}
+              style={{ marginRight: theme.spacing(0.5) }}
+            />
+            {translate('create')}
+          </Button>
+        </NextLink>
+      </div>
       <SortableList
         category="chapters"
         items={items}
