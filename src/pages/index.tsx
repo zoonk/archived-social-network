@@ -1,6 +1,7 @@
 import { useEffect, useContext, useState } from 'react';
 import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
+import NextLink from 'next/link';
 import { Button, Container, Grid, makeStyles } from '@material-ui/core';
 import CategoryTabs from '@zoonk/components/CategoryTabs';
 import FilterView from '@zoonk/components/FilterView';
@@ -41,9 +42,11 @@ const Home: NextPage = () => {
         <Grid item xs={12} className={classes.column}>
           <CategoryTabs active="topics" />
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Button variant="contained" color="primary">
-              {translate('topic_create')}
-            </Button>
+            <NextLink href="/topics/add" passHref>
+              <Button component="a" variant="contained" color="primary">
+                {translate('topic_create')}
+              </Button>
+            </NextLink>
             <FilterView view={view} onChange={setView} />
           </div>
           {view === 'grid' && <TopicGrid />}
