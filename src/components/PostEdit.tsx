@@ -23,7 +23,7 @@ const PostEdit = ({ data }: PostEditProps) => {
   }
 
   const handleDelete = () => {
-    if (window.confirm(translate('delete_confirmation'))) {
+    if (window.confirm(translate('post_delete_confirmation'))) {
       setSnackbar({ type: 'progress', msg: translate('deleting') });
 
       const { id, topics } = data;

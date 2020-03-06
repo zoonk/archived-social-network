@@ -20,6 +20,8 @@ const translate: TranslationFn = (key, args) => {
     cancel: 'Cancelar',
     chapter_add: 'Crie um novo capítulo',
     chapter_adding: 'Adicionando capítulo na página deste assunto...',
+    chapter_delete_confirmation:
+      'Este capítulo será removido de todos os assuntos.',
     chapter_edit: 'Editar capítulo',
     chapter_invalid_id:
       'Você não pode criar um capítulo sem uma ID válida para a trilha de aprendizagem.',
@@ -144,6 +146,8 @@ const translate: TranslationFn = (key, args) => {
     photo: 'Foto',
     post_add: 'Criar postagem',
     post_adding: 'Adicionando postagem ao capítulo...',
+    post_delete_confirmation:
+      'Esta postagem será removida de todos os capítulos.',
     post_edit: 'Editar postagem',
     post_removed: 'Postagem removida!',
     post_removing: 'Removendo postagem...',

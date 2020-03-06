@@ -25,7 +25,7 @@ const ChapterEdit = ({ data }: ChapterEditProps) => {
   }
 
   const handleDelete = () => {
-    if (window.confirm(translate('delete_confirmation'))) {
+    if (window.confirm(translate('chapter_delete_confirmation'))) {
       setSnackbar({ type: 'progress', msg: translate('deleting') });
 
       deleteChapter(data.id, profile, user.uid)
