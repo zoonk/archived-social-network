@@ -89,7 +89,7 @@ const LessonSortableList = ({
     <Fragment>
       <div style={{ display: 'flex' }}>
         <NextLink
-          href="/topics/[id]/chapters/[chapterId]/add"
+          href={`/topics/[id]/chapters/[chapterId]/add?category=${category}`}
           as={`/topics/${query.id}/chapters/${query.chapterId}/add?category=${category}`}
           passHref
         >
