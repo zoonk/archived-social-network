@@ -34,6 +34,13 @@ const EditsItem = ({ displayTitle, editLink, edits }: EditsItemProps) => {
   const { translate } = useContext(GlobalContext);
   const [added, setAdded] = useState<FieldDiff[]>([]);
   const [removed, setRemoved] = useState<FieldDiff[]>([]);
+  let hrefLink = editLink?.href || `/${edits.category}/[id]/edit`;
+  let asLink = editLink?.as || `/${edits.itemPath}/edit`;
+
+  if (edits.category === 'chapters') {
+    hrefLink = '/topics/[id]/chapters/[chapterId]/edit';
+    asLink = `/topics/${edits.topics[0]}/chapters/${edits.categoryId}/edit`;
+  }
 
   useEffect(() => {
     const beforeData = edits.action !== 'created' ? edits.before : {};
@@ -63,11 +70,7 @@ const EditsItem = ({ displayTitle, editLink, edits }: EditsItemProps) => {
       <Divider />
 
       <ExpansionPanelActions style={{ justifyContent: 'space-between' }}>
-        <NextLink
-          href={editLink?.href || `/${edits.category}/[id]/edit`}
-          as={editLink?.as || `/${edits.itemPath}/edit`}
-          passHref
-        >
+        <NextLink href={hrefLink} as={asLink} passHref>
           <Button component="a" color="primary">
             {translate('edit')}
           </Button>
