@@ -8,12 +8,12 @@ import { SearchIndex } from './search';
  */
 export namespace Topic {
   interface EditableFields {
-    chapters: string[];
     description: string;
     photo: string | null;
   }
 
   interface Fields extends EditableFields {
+    chapters: string[];
     posts: number;
     title: string;
   }

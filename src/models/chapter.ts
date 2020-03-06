@@ -15,12 +15,13 @@ export namespace Chapter {
 
   export interface EditableFields {
     description: string;
-    examples: string[];
-    lessons: string[];
     title: string;
   }
 
-  interface Fields extends EditableFields {}
+  interface Fields extends EditableFields {
+    examples: string[];
+    lessons: string[];
+  }
 
   /**
    * Required fields for creating a chapter.
