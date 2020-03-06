@@ -1,6 +1,6 @@
 import algolia from 'algoliasearch';
 import { SearchResponse } from '@algolia/client-search';
-import { Chapter, SearchResult } from '@zoonk/models';
+import { Chapter, Post, SearchResult } from '@zoonk/models';
 import { analytics, appLanguage, isProduction } from '@zoonk/utils';
 
 const ALGOLIA_APP_ID = isProduction ? 'CEHDTPZ5VM' : 'J75DV0NKA3';
@@ -39,5 +39,20 @@ export const searchChapter = async (
 ): Promise<ReadonlyArray<Chapter.Index>> => {
   const index = client.initIndex(`chapters_${appLanguage}`);
   const req = await index.search<Chapter.Index>(query, { hitsPerPage: 5 });
+  return req.hits;
+};
+
+/**
+ * Search for an existing post.
+ */
+export const searchPost = async (
+  query: string,
+  category?: Post.Category,
+): Promise<ReadonlyArray<Post.Index>> => {
+  const index = client.initIndex(`posts_${appLanguage}`);
+  const req = await index.search<Post.Index>(query, {
+    hitsPerPage: 5,
+    filters: category ? `category:${category}` : undefined,
+  });
   return req.hits;
 };

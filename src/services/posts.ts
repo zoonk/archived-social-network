@@ -1,5 +1,5 @@
 import { pickBy } from 'lodash';
-import { ChapterProgress, Post, Profile } from '@zoonk/models';
+import { ChapterProgress, ContentMetadata, Post, Profile } from '@zoonk/models';
 import {
   analytics,
   appLanguage,
@@ -50,6 +50,22 @@ export const createPost = async (
   analytics().logEvent('post_add', { language: data.language });
   await batch.commit();
   return slug;
+};
+
+/**
+ * Add an existing post to a chapter.
+ */
+export const addPostToChapter = (
+  postId: string,
+  chapterId: string,
+  category: Post.Category,
+  user: ContentMetadata.Update,
+): Promise<void> => {
+  const changes = {
+    ...user,
+    [category]: arrayUnion(postId),
+  };
+  return db.doc(`chapters/${chapterId}`).update(changes);
 };
 
 /**

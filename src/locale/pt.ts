@@ -143,7 +143,11 @@ const translate: TranslationFn = (key, args) => {
     photo_uploaded: 'Foto enviada',
     photo: 'Foto',
     post_add: 'Criar postagem',
+    post_adding: 'Adicionando postagem ao capítulo...',
     post_edit: 'Editar postagem',
+    post_select_desc:
+      'Você pode adicionar uma postagem existente ao capítulo clicando no botão "add":',
+    post_select_title: 'Escolher postagem',
     posts_links: 'Postagens & Links',
     posts: 'Postagens',
     preview: 'Visualizar',

@@ -1,6 +1,10 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { throttle } from 'lodash';
+import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 import { Button, Grid, makeStyles, TextField } from '@material-ui/core';
 import { Post } from '@zoonk/models';
+import { searchPost } from '@zoonk/services';
 import { appLanguage, GlobalContext } from '@zoonk/utils';
 import FormattingTips from './FormattingTips';
 import FormBase from './FormBase';
@@ -8,6 +12,8 @@ import ImageUpload from './ImageUpload';
 import LinkFormField from './LinkFormField';
 import PostPreview from './PostPreview';
 import TopicSelector from './TopicSelector';
+
+const PostSelector = dynamic(() => import('./PostSelector'));
 
 const useStyles = makeStyles((theme) => ({
   column: {
@@ -42,6 +48,8 @@ const PostForm = ({
   onSubmit,
 }: PostFormProps) => {
   const { translate } = useContext(GlobalContext);
+  const { query } = useRouter();
+  const category = String(query.category) as Post.Category;
   const classes = useStyles();
   const [preview, setPreview] = useState<boolean>(false);
   const [content, setContent] = useState<string>(data?.content || '');
@@ -50,7 +58,23 @@ const PostForm = ({
   const [links, setLinks] = useState<string[]>(
     data && data.links && data.links.length > 0 ? data.links : [''],
   );
+  const [search, setSearch] = useState<ReadonlyArray<Post.Index>>([]);
   const valid = content.length > 0 && title.length > 0 && topics.length > 0;
+  const lessonCategories = ['examples', 'lessons'];
+  const isLesson = lessonCategories.includes(category);
+
+  const throttled = useRef(
+    throttle((searchTerm: string) => {
+      searchPost(searchTerm, category).then(setSearch);
+    }, 1000),
+  );
+
+  // Search existing posts when creating a new one.
+  useEffect(() => {
+    if (!data && isLesson && title.length > 3) {
+      throttled.current(title);
+    }
+  }, [data, isLesson, title]);
 
   // Add the current topicId when adding a new item.
   useEffect(() => {
@@ -121,6 +145,8 @@ const PostForm = ({
             required
             type="text"
           />
+
+          {isLesson && <PostSelector posts={search} />}
 
           <TextField
             required
