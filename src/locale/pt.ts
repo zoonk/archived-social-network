@@ -280,6 +280,8 @@ const translate: TranslationFn = (key, args) => {
     title_required: 'Por favor, preencha o título.',
     topic_create: 'Criar assunto',
     topic_create_desc: 'Selecione um assunto:',
+    topic_desc_helper:
+      'Tente responder brevemente às seguintes questões: Do se trata esse assunto? Como ele funciona? Por que é importante?',
     topic_selector_helper:
       'Quais assuntos você está ensinando? (Ex. Física, Futebol, Geografia, etc.).',
     topics: 'Assuntos',

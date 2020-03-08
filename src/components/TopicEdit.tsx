@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { Grid, TextField } from '@material-ui/core';
+import { Grid, TextField, Typography } from '@material-ui/core';
 import { SnackbarAction, Topic } from '@zoonk/models';
 import { updateTopic } from '@zoonk/services';
 import { firebaseError, GlobalContext, imgSize, timestamp } from '@zoonk/utils';
@@ -50,6 +50,11 @@ const TopicEdit = ({ topic }: TopicEditProps) => {
       onSubmit={handleSubmit}
     >
       <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Typography variant="body1" gutterBottom>
+            {translate('topic_desc_helper')}
+          </Typography>
+        </Grid>
         <Grid item xs={12}>
           <TextField
             multiline

@@ -254,6 +254,7 @@ export type TranslationKeys =
   | 'title'
   | 'topic_create_desc'
   | 'topic_create'
+  | 'topic_desc_helper'
   | 'topic_selector_helper'
   | 'topics'
   | 'updated'
