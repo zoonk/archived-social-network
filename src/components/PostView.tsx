@@ -18,14 +18,13 @@ import YoutubePlayer from './YoutubePlayer';
 interface PostViewProps {
   chapterId?: string;
   item: Post.Get;
-  preview?: boolean;
   topicId?: string;
 }
 
 /**
  * Display a post view.
  */
-const PostView = ({ chapterId, item, preview, topicId }: PostViewProps) => {
+const PostView = ({ chapterId, item, topicId }: PostViewProps) => {
   const { translate } = useContext(GlobalContext);
   const { category, content, id, likes, links, sites, title, topics } = item;
   const youtube = links?.find((link) => containsYoutubeUrl(link));
@@ -52,15 +51,13 @@ const PostView = ({ chapterId, item, preview, topicId }: PostViewProps) => {
           {title}
         </Typography>
         <TopicChips items={topics} />
-        {!preview && (
-          <ItemActions
-            category="posts"
-            href="/posts/[id]"
-            linkAs={`/posts/${id}`}
-            id={id}
-            likes={likes}
-          />
-        )}
+        <ItemActions
+          category="posts"
+          href="/posts/[id]"
+          linkAs={`/posts/${id}`}
+          id={id}
+          likes={likes}
+        />
         <EditorView content={content} />
       </CardContent>
 
