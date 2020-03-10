@@ -28,16 +28,11 @@ const LessonPage: NextPage<PostPageProps> = ({ chapterId, data, topicId }) => {
     category,
     comments,
     content,
-    createdAt,
-    createdBy,
-    createdById,
+    editors,
     id,
     language,
     title,
     topics,
-    updatedAt,
-    updatedBy,
-    updatedById,
   } = data;
 
   useEffect(() => {
@@ -72,14 +67,7 @@ const LessonPage: NextPage<PostPageProps> = ({ chapterId, data, topicId }) => {
         </Grid>
 
         <Grid item xs={12} sm={3} md={4}>
-          <ItemCredits
-            createdAt={createdAt}
-            createdBy={createdBy}
-            createdById={createdById}
-            updatedAt={updatedAt}
-            updatedBy={updatedBy}
-            updatedById={updatedById}
-          />
+          <ItemCredits editors={editors} />
         </Grid>
       </Grid>
 

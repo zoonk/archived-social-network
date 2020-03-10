@@ -6,79 +6,49 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
+  ListSubheader,
   Paper,
 } from '@material-ui/core';
 import { Profile } from '@zoonk/models';
 import { GlobalContext } from '@zoonk/utils';
 
 interface ItemCreditsProps {
-  createdAt: string;
-  createdBy?: Profile.Response;
-  createdById?: string;
-  updatedAt?: string;
-  updatedBy?: Profile.Response;
-  updatedById?: string;
+  editors: Profile.Get[];
 }
 
 /**
- * Display credits for an item (who created and updated it).
- * @property `createdAt` - when this item was created.
- * @property `createdBy` - who created this item.
- * @property `createdById` - the author's UID.
- * @property `updatedAt` - when this item was updated.
- * @property `updatedBy` - who updated this item.
- * @property `updatedById` - the editor's UID.
+ * Display credits for an item (all editors).
  */
-const ItemCredits = ({
-  createdAt,
-  createdBy,
-  updatedAt,
-  updatedBy,
-}: ItemCreditsProps) => {
+const ItemCredits = ({ editors }: ItemCreditsProps) => {
   const { translate } = useContext(GlobalContext);
+
+  if (editors.length === 0) {
+    return null;
+  }
 
   return (
     <Paper variant="outlined">
-      <List disablePadding>
-        <NextLink
-          href="/profile/[id]"
-          as={`/profile/${createdBy?.username}`}
-          passHref
-        >
-          <ListItem alignItems="flex-start" button component="a">
-            <ListItemAvatar>
-              <Avatar
-                src={createdBy?.photo || undefined}
-                alt={createdBy?.name}
-              />
-            </ListItemAvatar>
-            <ListItemText
-              primary={createdBy?.name}
-              secondary={translate('created_on', { date: createdAt })}
-            />
-          </ListItem>
-        </NextLink>
-
-        {updatedAt && (
+      <List
+        disablePadding
+        subheader={
+          <ListSubheader component="div">{translate('editors')}</ListSubheader>
+        }
+      >
+        {editors.map((editor) => (
           <NextLink
             href="/profile/[id]"
-            as={`/profile/${updatedBy?.username}`}
+            as={`/profile/${editor.username}`}
             passHref
+            key={editor.id}
           >
-            <ListItem button component="a">
+            <ListItem alignItems="flex-start" button component="a">
               <ListItemAvatar>
-                <Avatar
-                  src={updatedBy?.photo || undefined}
-                  alt={updatedBy?.name}
-                />
+                <Avatar src={editor.photo || undefined} alt={editor.name} />
               </ListItemAvatar>
-              <ListItemText
-                primary={updatedBy?.name}
-                secondary={translate('edited_on', { date: updatedAt })}
-              />
+              <ListItemText primary={editor.name} secondary={editor.bio} />
             </ListItem>
           </NextLink>
-        )}
+        ))}
       </List>
     </Paper>
   );

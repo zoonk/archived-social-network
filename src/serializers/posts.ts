@@ -9,10 +9,17 @@ export const serializePost = (
   snap: firebase.firestore.DocumentSnapshot<Post.Response>,
 ): Post.Get => {
   const data = snap.data()!;
+  const editors = data.editors || [];
+  const editorsData = data.editorsData || {};
 
   return {
     ...data,
     createdAt: serializeFirebaseDate(data.createdAt),
+    editors: editors.map((editor) => ({
+      ...editorsData[editor],
+      id: editor,
+    })),
+    editorsData,
     id: snap.id,
     links: data.links ? data.links.filter(Boolean) : null,
     sites: serializeLinkCollection(data.links),

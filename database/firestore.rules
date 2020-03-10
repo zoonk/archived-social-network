@@ -133,6 +133,8 @@ service cloud.firestore {
         && request.resource.data.createdAt == request.time
         && isValidProfile('createdBy')
         && request.resource.data.createdById == request.auth.uid
+        && !('editors' in request.resource.data)
+        && !('editorsData' in request.resource.data)
         && isValidLanguage()
         && request.resource.data.likes == 0
         && (request.resource.data.links == null || request.resource.data.links.size() == 0 || (request.resource.data.links is list && request.resource.data.links[0] is string))

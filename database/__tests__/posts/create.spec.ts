@@ -124,6 +124,16 @@ test('createdById has the current user UID', async (done) => {
   done();
 });
 
+test('editors are not included', async (done) => {
+  await firebase.assertFails(ref.add({ ...data, editors: [] }));
+  done();
+});
+
+test('editorsData is not included', async (done) => {
+  await firebase.assertFails(ref.add({ ...data, editorsData: {} }));
+  done();
+});
+
 test('language has a valid string', async (done) => {
   await firebase.assertSucceeds(ref.add({ ...data, language: 'pt' }));
   await firebase.assertFails(ref.add({ ...data, language: 'other' }));

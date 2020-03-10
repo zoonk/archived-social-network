@@ -23,6 +23,8 @@ const add = {
   createdAt: firebase.firestore.FieldValue.serverTimestamp(),
   createdBy: profile,
   createdById: 'currentUser',
+  editors: ['otherUser'],
+  editorsData: { otherUser: profile },
   language: 'en',
   links: null,
   likes: 0,
@@ -179,6 +181,26 @@ test('createdBy cannot be changed', async (done) => {
 
 test('createdById cannot be changed', async (done) => {
   await firebase.assertFails(ref.update({ ...edit, createdById: 'other' }));
+  done();
+});
+
+test('editors cannot be changed', async (done) => {
+  await firebase.assertFails(
+    ref.update({
+      ...edit,
+      editors: firebase.firestore.FieldValue.arrayUnion('currentUser'),
+    }),
+  );
+  done();
+});
+
+test('editorsData cannot be changed', async (done) => {
+  await firebase.assertFails(
+    ref.update({
+      ...edit,
+      'editorsData.currentUser': profile,
+    }),
+  );
   done();
 });
 

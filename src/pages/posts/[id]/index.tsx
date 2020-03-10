@@ -19,16 +19,11 @@ const PostPage: NextPage<PostPageProps> = ({ data }) => {
     category,
     comments,
     content,
-    createdAt,
-    createdBy,
-    createdById,
+    editors,
     id,
     language,
     title,
     topics,
-    updatedAt,
-    updatedBy,
-    updatedById,
   } = data;
 
   useEffect(() => {
@@ -52,14 +47,7 @@ const PostPage: NextPage<PostPageProps> = ({ data }) => {
         </Grid>
 
         <Grid item xs={12} sm={3} md={4}>
-          <ItemCredits
-            createdAt={createdAt}
-            createdBy={createdBy}
-            createdById={createdById}
-            updatedAt={updatedAt}
-            updatedBy={updatedBy}
-            updatedById={updatedById}
-          />
+          <ItemCredits editors={editors} />
         </Grid>
       </Grid>
 

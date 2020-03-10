@@ -1,4 +1,6 @@
 import { ContentMetadata } from './content';
+import { Dictionary } from './misc';
+import { Profile } from './profile';
 import { SearchIndex } from './search';
 
 /**
@@ -57,12 +59,17 @@ export namespace Post {
   /**
    * Fields returned from the backend.
    */
-  export interface Response extends Fields, ContentMetadata.Response {}
+  export interface Response extends Fields, ContentMetadata.Response {
+    editors?: string[];
+    editorsData?: Dictionary<Profile.Response>;
+  }
 
   /**
    * Serialized fields.
    */
   export interface Get extends Fields, ContentMetadata.Get {
+    editors: Profile.Get[];
+    editorsData: Dictionary<Profile.Response>;
     id: string;
     sites: Link[];
   }
