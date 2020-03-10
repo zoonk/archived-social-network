@@ -13,11 +13,6 @@ service cloud.firestore {
       return request.resource.data[field].matches(values);
     }
 
-    // Check if a field did not change.
-    function isReadOnly(field) {
-    	return !(field in request.resource.data) || request.resource.data[field] == resource.data[field];
-    }
-
     function isValidPostCategory() {
       return isOneOf('category', 'books|courses|examples|lessons|posts|questions');
     }
@@ -74,20 +69,13 @@ service cloud.firestore {
       ;
       allow update:
         if request.auth.uid != null
-        && isReadOnly('comments')
-        && isReadOnly('createdAt')
-        && isReadOnly('createdBy')
-        && isReadOnly('createdById')
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['description', 'examples', 'lessons', 'title', 'topics', 'updatedAt', 'updatedBy', 'updatedById'])
         && request.resource.data.description is string
         && request.resource.data.description.size() <= 500
-        && isReadOnly('exampleData')
         && request.resource.data.examples is list
         && request.resource.data.examples.size() <= 20
-        && isReadOnly('language')
-        && isReadOnly('lessonData')
         && request.resource.data.lessons is list
         && request.resource.data.lessons.size() <= 20
-        && isReadOnly('likes')
         && request.resource.data.title is string
         && request.resource.data.topics is list
         && request.resource.data.topics[0] is string
@@ -157,15 +145,9 @@ service cloud.firestore {
       ;
       allow update:
         if request.auth.uid != null
-        && isReadOnly('category')
-        && isReadOnly('comments')
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['content', 'links', 'title', 'topics', 'updatedAt', 'updatedBy', 'updatedById'])
         && request.resource.data.content is string
-        && isReadOnly('createdAt')
-        && isReadOnly('createdBy')
-        && isReadOnly('createdById')
         && (!isOneOf('category', 'posts|questions') || resource.data.createdById == request.auth.uid)
-        && isReadOnly('language')
-        && isReadOnly('likes')
         && (request.resource.data.links == null || request.resource.data.links.size() == 0 || (request.resource.data.links is list && request.resource.data.links[0] is string))
         && request.resource.data.title is string
         && request.resource.data.topics is list
@@ -186,7 +168,7 @@ service cloud.firestore {
       allow list: if request.query.limit == 1;
       allow update:
         if request.auth.uid == createdById
-        && isReadOnly('username')
+        && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['username'])
       ;
     }
 
@@ -240,20 +222,11 @@ service cloud.firestore {
       ;
       allow update:
         if request.auth.uid != null
-        && isReadOnly('chapterData')
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['chapters', 'description', 'photo', 'updatedAt', 'updatedBy', 'updatedById'])
         && request.resource.data.chapters is list
-        && isReadOnly('comments')
-        && isReadOnly('createdAt')
-        && isReadOnly('createdBy')
-        && isReadOnly('createdById')
         && request.resource.data.description is string
         && request.resource.data.description.size() <= 1000
-        && isReadOnly('language')
-        && isReadOnly('likes')
         && (request.resource.data.photo == null || request.resource.data.photo is string)
-        && isReadOnly('posts')
-        && isReadOnly('title')
-        && isReadOnly('topics')
         && request.resource.data.updatedAt == request.time
         && isValidProfile('updatedBy')
         && request.resource.data.updatedById == request.auth.uid
@@ -273,11 +246,7 @@ service cloud.firestore {
       allow read: if request.auth.uid == userId;
       allow create, update: if
         request.auth.uid == userId
-        && isReadOnly('bio')
-        && isReadOnly('name')
-        && isReadOnly('photo')
-        && isReadOnly('role')
-        && isReadOnly('username')
+        && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['bio', 'name', 'photo', 'role', 'username'])
       ;
 
       match /notifications/{notificationId} {
