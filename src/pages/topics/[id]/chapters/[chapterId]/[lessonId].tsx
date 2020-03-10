@@ -1,13 +1,14 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import { Container, Grid } from '@material-ui/core';
 import ChaptersBreadcrumb from '@zoonk/components/ChaptersBreadcrumb';
 import ItemCredits from '@zoonk/components/ItemCredits';
+import LessonsCard from '@zoonk/components/LessonsCard';
 import Meta from '@zoonk/components/Meta';
 import PostComments from '@zoonk/components/PostComments';
 import PostView from '@zoonk/components/PostView';
 import { Post } from '@zoonk/models';
-import { getPost, togglePostProgress } from '@zoonk/services';
+import { getChapter, getPost, togglePostProgress } from '@zoonk/services';
 import {
   analytics,
   appLanguage,
@@ -24,6 +25,7 @@ interface PostPageProps {
 
 const LessonPage: NextPage<PostPageProps> = ({ chapterId, data, topicId }) => {
   const { translate, user } = useContext(GlobalContext);
+  const [lessons, setLessons] = useState<Post.Summary[]>([]);
   const {
     category,
     comments,
@@ -50,6 +52,16 @@ const LessonPage: NextPage<PostPageProps> = ({ chapterId, data, topicId }) => {
     }
   }, [category, chapterId, id, user]);
 
+  useEffect(() => {
+    if (category === 'examples' || category === 'lessons') {
+      getChapter(chapterId).then((chapter) => {
+        const items =
+          category === 'examples' ? chapter.exampleData : chapter.lessonData;
+        setLessons(items);
+      });
+    }
+  }, [category, chapterId]);
+
   return (
     <Container component="main">
       <Meta
@@ -64,16 +76,16 @@ const LessonPage: NextPage<PostPageProps> = ({ chapterId, data, topicId }) => {
       <Grid container spacing={2}>
         <Grid item xs={12} sm={9} md={8}>
           <PostView chapterId={chapterId} topicId={topicId} item={data} />
+          <div style={{ margin: theme.spacing(1, 0) }} />
+          <PostComments comments={comments} postId={id} topics={topics} />
         </Grid>
 
         <Grid item xs={12} sm={3} md={4}>
           <ItemCredits editors={editors} />
-        </Grid>
-      </Grid>
-
-      <Grid container spacing={2} style={{ marginTop: theme.spacing(1) }}>
-        <Grid item xs={12} sm={9} md={8}>
-          <PostComments comments={comments} postId={id} topics={topics} />
+          <div style={{ margin: theme.spacing(1, 0) }} />
+          {lessons.length > 0 && (
+            <LessonsCard category={category as any} lessons={lessons} />
+          )}
         </Grid>
       </Grid>
     </Container>

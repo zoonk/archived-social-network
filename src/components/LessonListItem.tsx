@@ -21,6 +21,7 @@ interface LessonListItemProps {
 const LessonListItem = ({ divider, index, item }: LessonListItemProps) => {
   const { query } = useRouter();
   const { description, id, title } = item;
+  const lessonId = String(query.lessonId);
 
   return (
     <NextLink
@@ -34,6 +35,7 @@ const LessonListItem = ({ divider, index, item }: LessonListItemProps) => {
         component="a"
         divider={divider}
         disableGutters
+        selected={lessonId === id}
       >
         <ListItemAvatar>
           <Avatar style={{ backgroundColor: theme.palette.primary.main }}>
