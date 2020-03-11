@@ -18,5 +18,5 @@ export const serializeLinkCollection = (
   links?: string[] | null,
 ): Post.Link[] => {
   if (!links) return [];
-  return links.map(serializeLink);
+  return links.filter(Boolean).map(serializeLink);
 };
