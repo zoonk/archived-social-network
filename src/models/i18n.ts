@@ -128,6 +128,7 @@ export type TranslationKeys =
   | 'no_lessons'
   | 'no_posts'
   | 'no_questions'
+  | 'no_user_posts'
   | 'notifications'
   | 'order'
   | 'page_edits_title'

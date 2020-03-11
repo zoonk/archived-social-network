@@ -136,6 +136,7 @@ const translate: TranslationFn = (key, args) => {
     no_lessons: `Be the first to [create a lesson](/topics/${args?.topicId}/chapters/${args?.chapterId}/add?category=lessons) and help others learn about **${args?.title}**.`,
     no_posts: `Did you find an interesting link about **${args?.title}** or do you have any interesting thoughts about it? Then, [share it](/posts/add?topicId=${args?.topicId})!`,
     no_questions: `Do you have any questions about **${args?.title}**? [Just ask](/posts?category=questions&topicId=${args?.topicId}) and let other people will help you.`,
+    no_user_posts: "This user didn't share any posts yet.",
     notifications: 'Notifications',
     order: 'Order',
     page_edits: 'Page changes',

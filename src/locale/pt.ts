@@ -138,6 +138,7 @@ const translate: TranslationFn = (key, args) => {
     no_lessons: `Seja o primeiro a [criar uma lição](/topics/${args?.topicId}/chapters/${args?.chapterId}/add?category=lessons) e ajude outras pessoas a aprenderem sobre **${args?.title}**.`,
     no_posts: `Viu um link legal sobre **${args?.title}** ou tem uma opinião sobre o assunto? Não guarde para você, [compartilhe](/posts/add?topicId=${args?.topicId})!`,
     no_questions: `Tem alguma dúvida sobre **${args?.title}**? [Pergunte aqui](/posts/add?category=questions&topicId=${args?.topicId}), que a galera te ajuda!`,
+    no_user_posts: 'Este usuário ainda não compartilhou nenhuma postagem.',
     notifications: 'Notificações',
     order: 'Ordem',
     page_edits_title: 'Alterações na página:',
