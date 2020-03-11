@@ -8,7 +8,7 @@ import Meta from '@zoonk/components/Meta';
 import PostComments from '@zoonk/components/PostComments';
 import PostView from '@zoonk/components/PostView';
 import { Post } from '@zoonk/models';
-import { getChapter, getPost, togglePostProgress } from '@zoonk/services';
+import { getChapterLive, getPost, togglePostProgress } from '@zoonk/services';
 import {
   analytics,
   appLanguage,
@@ -53,13 +53,13 @@ const LessonPage: NextPage<PostPageProps> = ({ chapterId, data, topicId }) => {
   }, [category, chapterId, id, user]);
 
   useEffect(() => {
-    if (category === 'examples' || category === 'lessons') {
-      getChapter(chapterId).then((chapter) => {
-        const items =
-          category === 'examples' ? chapter.exampleData : chapter.lessonData;
-        setLessons(items);
-      });
-    }
+    const unsubscribe = getChapterLive(chapterId, (chapter) => {
+      const items =
+        category === 'examples' ? chapter.exampleData : chapter.lessonData;
+      setLessons(items);
+    });
+
+    return () => unsubscribe();
   }, [category, chapterId]);
 
   return (
