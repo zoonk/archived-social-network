@@ -2,7 +2,7 @@ import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { throttle } from 'lodash';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { Button, Grid, makeStyles, TextField } from '@material-ui/core';
+import { Grid, makeStyles, TextField, Typography } from '@material-ui/core';
 import { Post } from '@zoonk/models';
 import { searchPost } from '@zoonk/services';
 import { appLanguage, GlobalContext } from '@zoonk/utils';
@@ -23,7 +23,8 @@ const useStyles = makeStyles((theme) => ({
   },
   header: {
     display: 'flex',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
     marginBottom: theme.spacing(2),
   },
   previewBtn: { textAlign: 'right', marginLeft: theme.spacing(1) },
@@ -51,7 +52,6 @@ const PostForm = ({
   const { query } = useRouter();
   const category = String(query.category) as Post.Category;
   const classes = useStyles();
-  const [preview, setPreview] = useState<boolean>(false);
   const [content, setContent] = useState<string>(data?.content || '');
   const [title, setTitle] = useState<string>(data?.title || '');
   const [topics, setTopics] = useState<string[]>(data?.topics || []);
@@ -93,103 +93,88 @@ const PostForm = ({
     [content],
   );
 
-  if (preview) {
-    return (
-      <PostPreview
-        data={{
-          content,
-          links,
-          title,
-          topics,
-        }}
-        onReturn={() => setPreview(false)}
-      />
-    );
-  }
-
   return (
-    <FormBase
-      valid={valid}
-      saving={saving}
-      onDelete={onDelete}
-      onSubmit={() => {
-        onSubmit({ content, links, title }, topics);
-      }}
-    >
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
-          <div className={classes.header}>
-            <FormattingTips />
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => setPreview(true)}
-              className={classes.previewBtn}
-            >
-              {translate('preview')}
-            </Button>
-          </div>
-        </Grid>
+    <Grid container spacing={2}>
+      <Grid item xs={12} sm={6} className={classes.column}>
+        <FormBase
+          valid={valid}
+          saving={saving}
+          onDelete={onDelete}
+          onSubmit={() => {
+            onSubmit({ content, links, title }, topics);
+          }}
+        >
+          <Grid item xs={12} className={classes.column}>
+            <TextField
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              variant="outlined"
+              fullWidth
+              id="post-title"
+              label={translate('title')}
+              name="title"
+              required
+              type="text"
+            />
+
+            {isLesson && <PostSelector posts={search} />}
+
+            <TextField
+              required
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              multiline
+              rows={20}
+              variant="outlined"
+              fullWidth
+              id="post-description"
+              label={translate('content')}
+              name="post-description"
+            />
+
+            <ImageUpload
+              category="posts"
+              hideImg
+              img={null}
+              label={translate('add_image')}
+              onSave={insertImage}
+            />
+
+            <TopicSelector
+              active={topicIds ? topicIds[0] : undefined}
+              items={topics}
+              language={data ? data.language : appLanguage}
+              onChange={setTopics}
+            />
+
+            <LinkFormField
+              links={links}
+              onChange={(index, value) => {
+                let newLinks: Array<string | null> = [...links];
+                newLinks[index] = value;
+                newLinks = newLinks.filter((item) => item !== null);
+                setLinks(newLinks as string[]);
+              }}
+            />
+          </Grid>
+        </FormBase>
       </Grid>
 
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6} className={classes.column}>
-          <TextField
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            variant="outlined"
-            fullWidth
-            id="post-title"
-            label={translate('title')}
-            name="title"
-            required
-            type="text"
-          />
-
-          {isLesson && <PostSelector posts={search} />}
-
-          <TextField
-            required
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            multiline
-            rows={10}
-            variant="outlined"
-            fullWidth
-            id="post-description"
-            label={translate('content')}
-            name="post-description"
-          />
-
-          <ImageUpload
-            category="posts"
-            hideImg
-            img={null}
-            label={translate('add_image')}
-            onSave={insertImage}
-          />
-        </Grid>
-
-        <Grid item xs={12} sm={6} className={classes.column}>
-          <TopicSelector
-            active={topicIds ? topicIds[0] : undefined}
-            items={topics}
-            language={data ? data.language : appLanguage}
-            onChange={setTopics}
-          />
-
-          <LinkFormField
-            links={links}
-            onChange={(index, value) => {
-              let newLinks: Array<string | null> = [...links];
-              newLinks[index] = value;
-              newLinks = newLinks.filter((item) => item !== null);
-              setLinks(newLinks as string[]);
-            }}
-          />
-        </Grid>
+      <Grid item xs={12} sm={6} className={classes.column}>
+        <div className={classes.header}>
+          <Typography variant="h5">{translate('preview')}</Typography>
+          <FormattingTips />
+        </div>
+        <PostPreview
+          data={{
+            content,
+            links,
+            title,
+            topics,
+          }}
+        />
       </Grid>
-    </FormBase>
+    </Grid>
   );
 };
 
