@@ -148,6 +148,7 @@ export type TranslationKeys =
   | 'photo'
   | 'post_add'
   | 'post_adding'
+  | 'post_category'
   | 'post_delete_confirmation'
   | 'post_edit'
   | 'post_removed'

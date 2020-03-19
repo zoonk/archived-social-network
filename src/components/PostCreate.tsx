@@ -8,6 +8,7 @@ import {
   GlobalContext,
   timestamp,
 } from '@zoonk/utils';
+import CategorySelector from './CategorySelector';
 import PostForm from './PostForm';
 import Snackbar from './Snackbar';
 
@@ -25,6 +26,9 @@ const PostCreate = ({ category, chapterId, topicId }: PostCreateProps) => {
   const { push } = useRouter();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const [topicIds, setTopics] = useState<string[]>(topicId ? [topicId] : []);
+  const [postCategory, setCategory] = useState<Post.Category | 'none'>(
+    category || 'none',
+  );
 
   useEffect(() => {
     if (chapterId) {
@@ -55,10 +59,18 @@ const PostCreate = ({ category, chapterId, topicId }: PostCreateProps) => {
     setSnackbar({ type: 'progress', msg: translate('saving') });
     const links = data.links ? data.links.filter(Boolean) : [];
 
+    // Use the post category. Otherwise, set as `references` if there are links.
+    let itemCategory: Post.Category =
+      postCategory === 'none' ? 'posts' : postCategory;
+
+    if (postCategory === 'none' && links.length > 0) {
+      itemCategory = 'references';
+    }
+
     createPost(
       {
         ...data,
-        category: category || 'posts',
+        category: itemCategory,
         comments: 0,
         createdAt: timestamp,
         createdBy: profile,
@@ -79,6 +91,9 @@ const PostCreate = ({ category, chapterId, topicId }: PostCreateProps) => {
 
   return (
     <Fragment>
+      {!category && (
+        <CategorySelector active={postCategory} onSelect={setCategory} />
+      )}
       <PostForm
         topicIds={topicIds}
         saving={snackbar?.type === 'progress' || snackbar?.type === 'success'}

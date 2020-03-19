@@ -156,6 +156,7 @@ const translate: TranslationFn = (key, args) => {
     photo: 'Photo',
     post_add: 'Create a post',
     post_adding: 'Adding post to chapter...',
+    post_category: 'Select a post category',
     post_delete_confirmation: 'This post will be removed from all chapters.',
     post_edit: 'Edit post',
     post_removed: 'Post removed!',
