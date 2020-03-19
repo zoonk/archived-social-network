@@ -52,28 +52,11 @@ const TopicPage: NextPage<TopicPageProps> = ({ topic }) => {
         <Grid item xs={12} sm={6} md={8} className={classes.column}>
           <ChaptersCard chapters={chapterData} />
           <PostsCard
-            category={['examples']}
+            category={['references']}
             topicId={id}
             limit={3}
             allowAdd
-            orderBy={['likes']}
-            title={translate('examples')}
-          />
-          <PostsCard
-            category={['lessons', 'posts']}
-            topicId={id}
-            limit={3}
-            list="posts"
-            allowAdd
-            title={translate('posts_links')}
-          />
-          <PostsCard
-            category={['questions']}
-            topicId={id}
-            limit={3}
-            allowAdd
-            orderBy={['likes']}
-            title={translate('questions')}
+            title={translate('references_links')}
           />
           <PostsCard
             category={['courses']}
@@ -90,6 +73,29 @@ const TopicPage: NextPage<TopicPageProps> = ({ topic }) => {
             allowAdd
             orderBy={['likes']}
             title={translate('books')}
+          />
+          <PostsCard
+            category={['posts']}
+            topicId={id}
+            limit={3}
+            allowAdd
+            title={translate('posts')}
+          />
+          <PostsCard
+            category={['examples']}
+            topicId={id}
+            limit={3}
+            allowAdd
+            orderBy={['likes']}
+            title={translate('examples')}
+          />
+          <PostsCard
+            category={['questions']}
+            topicId={id}
+            limit={3}
+            allowAdd
+            orderBy={['likes']}
+            title={translate('questions')}
           />
           <LeaderboardCard topicId={id} />
         </Grid>

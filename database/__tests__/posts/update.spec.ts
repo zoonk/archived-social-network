@@ -145,6 +145,18 @@ test('cannot update questions from other users', async (done) => {
   done();
 });
 
+test('can update references', async (done) => {
+  const docRef = db.doc('posts/otherUser');
+  const changes = {
+    ...add,
+    category: 'references',
+    createdById: 'otherUser',
+  };
+  await admin.doc('posts/otherUser').set(changes);
+  await firebase.assertSucceeds(docRef.update({ ...edit, title: 'new' }));
+  done();
+});
+
 test('category cannot be changed', async (done) => {
   await firebase.assertFails(ref.update({ ...edit, category: 'examples' }));
   done();

@@ -33,14 +33,14 @@ const TopicPosts: NextPage<TopicPostsProps> = ({ id, title }) => {
       />
       <TopicsBreadcrumb topicId={id} title={translate('posts')} />
       <PostsCard
-        category={['lessons', 'posts']}
+        category={['posts']}
         list="posts"
         topicId={id}
         limit={10}
         hideLink
         allowAdd
         allowLoadMore
-        title={translate('posts_links')}
+        title={translate('posts')}
       />
     </Container>
   );

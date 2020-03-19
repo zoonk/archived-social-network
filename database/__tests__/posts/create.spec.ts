@@ -71,6 +71,7 @@ test('category has a valid string', async (done) => {
   );
   await firebase.assertSucceeds(ref.add({ ...data, category: 'posts' }));
   await firebase.assertSucceeds(ref.add({ ...data, category: 'questions' }));
+  await firebase.assertSucceeds(ref.add({ ...data, category: 'references' }));
   await firebase.assertFails(ref.add({ ...data, category: 'other' }));
   done();
 });

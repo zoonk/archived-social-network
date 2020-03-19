@@ -14,7 +14,7 @@ service cloud.firestore {
     }
 
     function isValidPostCategory() {
-      return isOneOf('category', 'books|courses|examples|lessons|posts|questions');
+      return isOneOf('category', 'books|courses|examples|lessons|posts|questions|references');
     }
 
     function isValidLanguage() {

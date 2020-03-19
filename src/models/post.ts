@@ -18,7 +18,8 @@ export namespace Post {
     | 'examples'
     | 'lessons'
     | 'posts'
-    | 'questions';
+    | 'questions'
+    | 'references';
   export type OrderBy = 'likes';
 
   export interface Summary {

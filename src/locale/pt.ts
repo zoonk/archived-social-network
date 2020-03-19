@@ -138,8 +138,9 @@ const translate: TranslationFn = (key, args) => {
     no_courses: `Conhece algum curso bom sobre **${args?.title}**? Ajude outras pessoas a encontrá-lo, [compartilhe](/posts/add?category=courses&topicId=${args?.topicId})!`,
     no_examples: `Por que é importante aprender sobre **${args?.title}**? [Compartilhe um exemplo prático](/posts/add?category=examples&topicId=${args?.topicId}).`,
     no_lessons: `Seja o primeiro a [criar uma lição](/topics/${args?.topicId}/chapters/${args?.chapterId}/add?category=lessons) e ajude outras pessoas a aprenderem sobre **${args?.title}**.`,
-    no_posts: `Viu um link legal sobre **${args?.title}** ou tem uma opinião sobre o assunto? Não guarde para você, [compartilhe](/posts/add?topicId=${args?.topicId})!`,
+    no_posts: `Tem alguma opinião ou experiência sobre **${args?.title}**? Não guarde para você, [compartilhe](/posts/add?topicId=${args?.topicId})!`,
     no_questions: `Tem alguma dúvida sobre **${args?.title}**? [Pergunte aqui](/posts/add?category=questions&topicId=${args?.topicId}), que a galera te ajuda!`,
+    no_references: `Achou um link ou referência legal sobre **${args?.title}**? Não guarde para você, [compartilhe](/posts/add?topicId=${args?.topicId}&category=references)!`,
     no_user_posts: 'Este usuário ainda não compartilhou nenhuma postagem.',
     notifications: 'Notificações',
     order: 'Ordem',
@@ -164,7 +165,6 @@ const translate: TranslationFn = (key, args) => {
     post_select_desc:
       'Você pode adicionar uma postagem existente ao capítulo clicando no botão "add":',
     post_select_title: 'Escolher postagem',
-    posts_links: 'Postagens & Links',
     posts: 'Postagens',
     preview: 'Visualizar',
     preview_quit: 'Voltar ao editor',
@@ -174,6 +174,8 @@ const translate: TranslationFn = (key, args) => {
     questions: 'Perguntas',
     read_wikipedia: 'Ler na Wikipédia',
     real_life_examples: 'Exemplos na vida Real',
+    references_links: 'Referências & Links',
+    references: 'Referências',
     replies: 'Respostas',
     report: 'Reportar',
     reports: 'Reportes',
@@ -231,6 +233,8 @@ const translate: TranslationFn = (key, args) => {
     seo_profile_topics_title: `Assuntos de ${args?.name}`,
     seo_questions_desc:
       'Como tirar dúvidas sobre qualquer assunto online. Perguntas e respostas sobre todos os temas.',
+    seo_refs_desc:
+      'Encontre referências e links sobre qualquer assunto. Como encontrar boas referências online.',
     seo_reset_password_desc:
       'Como posso recuperar ou restaurar minha senha do Zoonk?',
     seo_search_desc: `Aprenda mais sobre ${args?.searchTerm} no Zoonk. Saiba como ${args?.searchTerm} funciona.`,
@@ -249,6 +253,8 @@ const translate: TranslationFn = (key, args) => {
     seo_topic_posts_title: `Fórum sobre ${args?.title}`,
     seo_topic_questions_desc: `Tire todas as dúvidas ${args?.title}. Faça perguntas e encontre respostas sobre ${args?.title} online.`,
     seo_topic_questions_title: `Tire dúvidas sobre ${args?.title}`,
+    seo_topic_ref_desc: `Referências e links sobre ${args?.title}. Como encontrar referências e links de ${args?.title} online.`,
+    seo_topic_ref_title: `Referências sobre ${args?.title}`,
     seo_topics_desc: 'Aprenda qualquer assunto de graça no Zoonk.',
     seo_topics_create_desc: 'Como criar um assunto novo no Zoonk.',
     settings: 'Configurações',

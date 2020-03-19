@@ -12,6 +12,7 @@ import {
   EmojiEvents,
   History,
   Language,
+  Link,
   MenuBook,
   QuestionAnswer,
   School,
@@ -49,30 +50,12 @@ const MenuPages = () => {
           </ListItem>
         </NextLink>
 
-        <NextLink href="/examples" passHref>
+        <NextLink href="/references" passHref>
           <ListItem button component="a">
             <ListItemIcon>
-              <Language />
+              <Link />
             </ListItemIcon>
-            <ListItemText primary={translate('real_life_examples')} />
-          </ListItem>
-        </NextLink>
-
-        <NextLink href="/posts" passHref>
-          <ListItem button component="a">
-            <ListItemIcon>
-              <Description />
-            </ListItemIcon>
-            <ListItemText primary={translate('posts_links')} />
-          </ListItem>
-        </NextLink>
-
-        <NextLink href="/questions" passHref>
-          <ListItem button component="a">
-            <ListItemIcon>
-              <QuestionAnswer />
-            </ListItemIcon>
-            <ListItemText primary={translate('questions')} />
+            <ListItemText primary={translate('references')} />
           </ListItem>
         </NextLink>
 
@@ -91,6 +74,33 @@ const MenuPages = () => {
               <MenuBook />
             </ListItemIcon>
             <ListItemText primary={translate('books')} />
+          </ListItem>
+        </NextLink>
+
+        <NextLink href="/posts" passHref>
+          <ListItem button component="a">
+            <ListItemIcon>
+              <Description />
+            </ListItemIcon>
+            <ListItemText primary={translate('posts')} />
+          </ListItem>
+        </NextLink>
+
+        <NextLink href="/examples" passHref>
+          <ListItem button component="a">
+            <ListItemIcon>
+              <Language />
+            </ListItemIcon>
+            <ListItemText primary={translate('real_life_examples')} />
+          </ListItem>
+        </NextLink>
+
+        <NextLink href="/questions" passHref>
+          <ListItem button component="a">
+            <ListItemIcon>
+              <QuestionAnswer />
+            </ListItemIcon>
+            <ListItemText primary={translate('questions')} />
           </ListItem>
         </NextLink>
 
