@@ -25,10 +25,22 @@ interface PostViewProps {
  * Display a post view.
  */
 const PostView = ({ chapterId, item, topicId }: PostViewProps) => {
-  const { translate } = useContext(GlobalContext);
-  const { category, content, id, likes, links, sites, title, topics } = item;
+  const { translate, user } = useContext(GlobalContext);
+  const {
+    category,
+    createdById,
+    content,
+    id,
+    likes,
+    links,
+    sites,
+    title,
+    topics,
+  } = item;
   const youtube = links?.find((link) => containsYoutubeUrl(link));
   const [next, setNext] = useState<Post.NextLesson | null>(null);
+  const isAuthoral = category === 'posts' || category === 'questions';
+  const isEditable = !isAuthoral || createdById === user?.uid;
 
   useEffect(() => {
     let active = true;
@@ -88,11 +100,13 @@ const PostView = ({ chapterId, item, topicId }: PostViewProps) => {
           margin: theme.spacing(2),
         }}
       >
-        <NextLink href="/posts/[id]/edit" as={`/posts/${id}/edit`} passHref>
-          <Button component="a" color="primary">
-            {translate('improve_page')}
-          </Button>
-        </NextLink>
+        {isEditable && (
+          <NextLink href="/posts/[id]/edit" as={`/posts/${id}/edit`} passHref>
+            <Button component="a" color="primary">
+              {translate('improve_page')}
+            </Button>
+          </NextLink>
+        )}
 
         {next && (
           <NextLink
