@@ -57,7 +57,7 @@ const PostsCard = ({
   const canAdd = allowAdd || Boolean(chapterId);
   const href = removeTrailingSlash(pathname) || '';
   const as = removeTrailingSlash(asPath) || '';
-  const listSlug = list || category;
+  const listSlug = list || category?.[0] || 'posts';
 
   /**
    * React runs a shallow comparison only, so we're converting
