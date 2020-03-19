@@ -27,6 +27,7 @@ const TopicPage: NextPage<TopicPageProps> = ({ topic }) => {
   const { translate } = useContext(GlobalContext);
   const classes = useStyles();
   const { chapterData, id, language, photo, title } = topic;
+  const limit = 2;
 
   useEffect(() => {
     analytics().setCurrentScreen('topic');
@@ -54,14 +55,14 @@ const TopicPage: NextPage<TopicPageProps> = ({ topic }) => {
           <PostsCard
             category={['references']}
             topicId={id}
-            limit={3}
+            limit={limit}
             allowAdd
             title={translate('references_links')}
           />
           <PostsCard
             category={['courses']}
             topicId={id}
-            limit={3}
+            limit={limit}
             allowAdd
             orderBy={['likes']}
             title={translate('courses')}
@@ -69,7 +70,7 @@ const TopicPage: NextPage<TopicPageProps> = ({ topic }) => {
           <PostsCard
             category={['books']}
             topicId={id}
-            limit={3}
+            limit={limit}
             allowAdd
             orderBy={['likes']}
             title={translate('books')}
@@ -77,14 +78,14 @@ const TopicPage: NextPage<TopicPageProps> = ({ topic }) => {
           <PostsCard
             category={['posts']}
             topicId={id}
-            limit={3}
+            limit={limit}
             allowAdd
             title={translate('posts')}
           />
           <PostsCard
             category={['examples']}
             topicId={id}
-            limit={3}
+            limit={limit}
             allowAdd
             orderBy={['likes']}
             title={translate('examples')}
@@ -92,7 +93,7 @@ const TopicPage: NextPage<TopicPageProps> = ({ topic }) => {
           <PostsCard
             category={['questions']}
             topicId={id}
-            limit={3}
+            limit={limit}
             allowAdd
             orderBy={['likes']}
             title={translate('questions')}
