@@ -107,7 +107,7 @@ const translate: TranslationFn = (key, args) => {
     go_home: 'Ir para a página inicial.',
     having_issues: 'Está achando complicado ou encontrando alguma dificuldade?',
     home: 'Início',
-    improve_page: 'Melhore esta página',
+    improve_page: 'Melhorar/editar esta página',
     items_empty: 'Nenhum item encontrado.',
     leaderboard: 'Ranking',
     learn_about: `Aprenda sobre ${args?.title}`,
