@@ -1,10 +1,10 @@
 import { useEffect, useContext, useState } from 'react';
 import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
-import NextLink from 'next/link';
-import { Button, Container, Grid, makeStyles } from '@material-ui/core';
+import { Container, Grid, makeStyles } from '@material-ui/core';
 import CategoryTabs from '@zoonk/components/CategoryTabs';
 import FilterView from '@zoonk/components/FilterView';
+import HomeShare from '@zoonk/components/HomeShare';
 import Meta from '@zoonk/components/Meta';
 import { ViewType } from '@zoonk/models';
 import { analytics, GlobalContext, rootUrl } from '@zoonk/utils';
@@ -41,12 +41,14 @@ const Home: NextPage = () => {
       <Grid container spacing={2} className={classes.container}>
         <Grid item xs={12} className={classes.column}>
           <CategoryTabs active="topics" />
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <NextLink href="/topics/add" passHref>
-              <Button component="a" variant="contained" color="primary">
-                {translate('topic_create')}
-              </Button>
-            </NextLink>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <HomeShare />
             <FilterView view={view} onChange={setView} />
           </div>
           {view === 'grid' && <TopicGrid />}
