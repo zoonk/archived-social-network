@@ -22,7 +22,7 @@ const PostComments = ({ comments, postId, topics }: PostCommentsProps) => {
   return (
     <Card variant="outlined">
       <CardContent>
-        <Typography gutterBottom component="h3" variant="h4">
+        <Typography gutterBottom component="h3" variant="h6">
           {translate('comments_count', { comments })}
         </Typography>
 
