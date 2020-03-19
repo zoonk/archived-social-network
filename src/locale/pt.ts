@@ -165,7 +165,7 @@ const translate: TranslationFn = (key, args) => {
     post_select_desc:
       'Você pode adicionar uma postagem existente ao capítulo clicando no botão "add":',
     post_select_title: 'Escolher postagem',
-    posts: 'Postagens',
+    posts: 'Posts',
     preview: 'Visualizar',
     preview_quit: 'Voltar ao editor',
     privacy_policy: 'Política de privacidade',
@@ -228,7 +228,7 @@ const translate: TranslationFn = (key, args) => {
       'Encontre publicações e artigos sobre qualquer assunto. Aprenda lendo artigos online de graça.',
     seo_profile_desc: `${args?.name} está ensinando e aprendendo coisas no Zoonk. Veja o que ${args?.name} está criando.`,
     seo_profile_posts_desc: `Publicações feitas por ${args?.name}. Todos os artigos publicados online por ${args?.name}.`,
-    seo_profile_posts_title: `Postagens de ${args?.name}`,
+    seo_profile_posts_title: `Posts de ${args?.name}`,
     seo_profile_topics_desc: `${args?.name} está escrevendo sobre muitos assuntos interessantes. Veja os assuntos criados por ${args?.name} no Zoonk.`,
     seo_profile_topics_title: `Assuntos de ${args?.name}`,
     seo_questions_desc:
@@ -249,7 +249,7 @@ const translate: TranslationFn = (key, args) => {
     seo_topic_desc: `Aprenda sobre ${args?.title}. Como aprender sobre ${args?.title} de graça online.`,
     seo_topic_examples_desc: `${args?.title} na prática. Exemplos de ${args?.title} na vida real. Como usar ${args?.title} no dia-a-dia.`,
     seo_topic_examples_title: `${args?.title} na prática`,
-    seo_topic_posts_desc: `Encontre postagens sobre ${args?.title}. Os melhores artigos sobre ${args?.title} online.`,
+    seo_topic_posts_desc: `Encontre posts sobre ${args?.title}. Os melhores artigos sobre ${args?.title} online.`,
     seo_topic_posts_title: `Fórum sobre ${args?.title}`,
     seo_topic_questions_desc: `Tire todas as dúvidas ${args?.title}. Faça perguntas e encontre respostas sobre ${args?.title} online.`,
     seo_topic_questions_title: `Tire dúvidas sobre ${args?.title}`,
