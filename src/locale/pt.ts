@@ -34,6 +34,7 @@ const translate: TranslationFn = (key, args) => {
     chapters: 'Capítulos',
     choose_language: 'Escolha um idioma',
     close: 'Fechar',
+    collapse: 'Recolher',
     comment_leave: 'Deixe um comentário',
     comment_login_required:
       'Você precisa estar logado para deixar um comentário.',
@@ -67,6 +68,7 @@ const translate: TranslationFn = (key, args) => {
     email: 'E-mail',
     error_action: 'Ocorreu um erro. Por favor, tente novamente.',
     examples: 'Exemplos',
+    expand: 'Expandir',
     expert: 'Especialista',
     feedback: 'Feedback',
     field_required: 'Campo obrigatório',

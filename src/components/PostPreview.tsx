@@ -14,18 +14,25 @@ import YoutubePlayer from './YoutubePlayer';
 
 interface PostPreviewProps {
   data: Partial<Post.Get>;
+  expand?: boolean;
 }
 
 /**
  * Display a post preview.
  */
-const PostPreview = ({ data }: PostPreviewProps) => {
+const PostPreview = ({ data, expand }: PostPreviewProps) => {
   const { content, links, title, topics } = data;
   const sites = serializeLinkCollection(links);
   const youtube = links?.find((link) => containsYoutubeUrl(link));
 
   return (
-    <Card variant="outlined">
+    <Card
+      variant="outlined"
+      style={{
+        height: expand ? 'auto' : '500px',
+        overflow: expand ? 'hidden' : 'auto',
+      }}
+    >
       <CardContent>
         <Typography variant="h4" component="h1">
           {title}

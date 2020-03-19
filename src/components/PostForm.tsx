@@ -2,7 +2,7 @@ import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { throttle } from 'lodash';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { Grid, makeStyles, TextField, Typography } from '@material-ui/core';
+import { Button, Grid, makeStyles, TextField } from '@material-ui/core';
 import { Post } from '@zoonk/models';
 import { searchPost } from '@zoonk/services';
 import { appLanguage, GlobalContext } from '@zoonk/utils';
@@ -21,13 +21,16 @@ const useStyles = makeStyles((theme) => ({
       marginBottom: theme.spacing(2),
     },
   },
-  header: {
+  tips: {
     display: 'flex',
-    justifyContent: 'flex-start',
+    justifyContent: 'flex-end',
     alignItems: 'center',
-    marginBottom: theme.spacing(2),
   },
-  previewBtn: { textAlign: 'right', marginLeft: theme.spacing(1) },
+  expand: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
+  preview: { marginTop: theme.spacing(2) },
 }));
 
 interface PostFormProps {
@@ -52,6 +55,7 @@ const PostForm = ({
   const { query } = useRouter();
   const category = String(query.category) as Post.Category;
   const classes = useStyles();
+  const [expand, setExpand] = useState<boolean>(false);
   const [content, setContent] = useState<string>(data?.content || '');
   const [title, setTitle] = useState<string>(data?.title || '');
   const [topics, setTopics] = useState<string[]>(data?.topics || []);
@@ -105,17 +109,25 @@ const PostForm = ({
           }}
         >
           <Grid item xs={12} className={classes.column}>
-            <TextField
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              variant="outlined"
-              fullWidth
-              id="post-title"
-              label={translate('title')}
-              name="title"
-              required
-              type="text"
-            />
+            <Grid container spacing={1}>
+              <Grid item xs={11}>
+                <TextField
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  variant="outlined"
+                  fullWidth
+                  id="post-title"
+                  label={translate('title')}
+                  name="title"
+                  required
+                  type="text"
+                />
+              </Grid>
+
+              <Grid item xs={1}>
+                <FormattingTips />
+              </Grid>
+            </Grid>
 
             {isLesson && <PostSelector posts={search} />}
 
@@ -124,7 +136,7 @@ const PostForm = ({
               value={content}
               onChange={(e) => setContent(e.target.value)}
               multiline
-              rows={20}
+              rows={expand ? undefined : 20}
               variant="outlined"
               fullWidth
               id="post-description"
@@ -160,12 +172,9 @@ const PostForm = ({
         </FormBase>
       </Grid>
 
-      <Grid item xs={12} sm={6} className={classes.column}>
-        <div className={classes.header}>
-          <Typography variant="h5">{translate('preview')}</Typography>
-          <FormattingTips />
-        </div>
+      <Grid item xs={12} sm={6} className={classes.preview}>
         <PostPreview
+          expand={expand}
           data={{
             content,
             links,
@@ -173,6 +182,11 @@ const PostForm = ({
             topics,
           }}
         />
+        <div className={classes.expand}>
+          <Button color="primary" onClick={() => setExpand(!expand)}>
+            {expand ? translate('collapse') : translate('expand')}
+          </Button>
+        </div>
       </Grid>
     </Grid>
   );
