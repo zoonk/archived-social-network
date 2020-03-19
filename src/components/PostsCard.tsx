@@ -1,8 +1,15 @@
 import { useContext, useEffect, useState } from 'react';
+import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 import { Button, Card, CardContent } from '@material-ui/core';
 import { Post, SnackbarAction } from '@zoonk/models';
 import { listPosts } from '@zoonk/services';
-import { firebaseError, GlobalContext, theme } from '@zoonk/utils';
+import {
+  firebaseError,
+  GlobalContext,
+  removeTrailingSlash,
+  theme,
+} from '@zoonk/utils';
 import CategoryCardHeader from './CategoryCardHeader';
 import ListSkeleton from './ListSkeleton';
 import NoPosts from './NoPosts';
@@ -41,12 +48,16 @@ const PostsCard = ({
   userId,
 }: PostsCardProps) => {
   const { translate } = useContext(GlobalContext);
+  const { asPath, pathname } = useRouter();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const { error, get, items, lastVisible, loading } = useLoadMore<
     Post.Snapshot
   >(limit);
   const query = { category: list || category?.[0], chapterId, topicId };
   const canAdd = allowAdd || Boolean(chapterId);
+  const href = removeTrailingSlash(pathname) || '';
+  const as = removeTrailingSlash(asPath) || '';
+  const listSlug = list || category;
 
   /**
    * React runs a shallow comparison only, so we're converting
@@ -106,6 +117,22 @@ const PostsCard = ({
         )}
         {items.length > 0 && <PostList items={items} />}
         {loading && <ListSkeleton items={limit} />}
+
+        {!hideLink && !allowLoadMore && (
+          <NextLink
+            href={`${href}/${listSlug}`}
+            as={`${as}/${listSlug}`}
+            passHref
+          >
+            <Button
+              color="primary"
+              component="a"
+              style={{ margin: theme.spacing(2, 0) }}
+            >
+              {translate('see_all')}
+            </Button>
+          </NextLink>
+        )}
 
         {allowLoadMore && lastVisible && (
           <Button
