@@ -110,7 +110,7 @@ const PostForm = ({
         >
           <Grid item xs={12} className={classes.column}>
             <Grid container spacing={1}>
-              <Grid item xs={11}>
+              <Grid item xs={10} sm={11}>
                 <TextField
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
@@ -124,7 +124,7 @@ const PostForm = ({
                 />
               </Grid>
 
-              <Grid item xs={1}>
+              <Grid item xs={2} sm={1}>
                 <FormattingTips />
               </Grid>
             </Grid>
