@@ -54,7 +54,7 @@ const ItemActionsMenu = ({
       >
         {(isAuthor || !hideEdits) && (
           <MenuItem button onClick={() => handleClick('edit')}>
-            {translate('improve_page')}
+            {translate('edit_page')}
           </MenuItem>
         )}
 

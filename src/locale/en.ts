@@ -105,7 +105,7 @@ const translate: TranslationFn = (key, args) => {
     having_issues:
       'Are you finding this confusing or are you having any issues?',
     home: 'Home',
-    improve_page: 'Improve/edit this page',
+    improve_page: 'Improve this page',
     items_empty: 'No items found.',
     leaderboard: 'Leaderboard',
     learn_about: `Learn about ${args?.title}`,
@@ -172,6 +172,7 @@ const translate: TranslationFn = (key, args) => {
     real_life_examples: 'Real-life examples',
     references_links: 'References & Links',
     references: 'References',
+    reorder: 'Reorder',
     replies: 'Replies',
     report: 'Report',
     reports: 'Reports',

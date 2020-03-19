@@ -38,7 +38,7 @@ const LessonsHeader = ({ category }: CategoryCardHeaderProps) => {
         passHref
       >
         <Button component="a" size="small" color="secondary">
-          {translate('edit')}
+          {translate('reorder')}
         </Button>
       </NextLink>
     </div>

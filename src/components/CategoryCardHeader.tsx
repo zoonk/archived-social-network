@@ -58,7 +58,7 @@ const CategoryCardHeader = ({
       {edit && (
         <NextLink href={`${href}/${edit}`} as={`${as}/${edit}`} passHref>
           <Button component="a" size="small" color="secondary">
-            {translate('edit')}
+            {translate('reorder')}
           </Button>
         </NextLink>
       )}

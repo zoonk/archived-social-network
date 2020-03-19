@@ -164,6 +164,7 @@ export type TranslationKeys =
   | 'real_life_examples'
   | 'references_links'
   | 'references'
+  | 'reorder'
   | 'replies'
   | 'report_confirmation'
   | 'report_issue'
