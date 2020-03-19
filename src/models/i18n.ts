@@ -10,6 +10,7 @@ export type TranslationKeys =
   | 'admin'
   | 'advanced'
   | 'after'
+  | 'all'
   | 'already_have_account'
   | 'already_logged_in'
   | 'back_to_login'

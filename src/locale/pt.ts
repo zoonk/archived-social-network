@@ -10,6 +10,7 @@ const translate: TranslationFn = (key, args) => {
     admin: 'Admin',
     advanced: 'Avançado',
     after: 'Depois',
+    all: 'Todos',
     already_have_account: 'Já tem uma conta? Entre agora',
     already_logged_in: 'Você já está logado.',
     back_to_login: 'Voltar para a página de acesso',
