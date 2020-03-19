@@ -61,7 +61,7 @@ const PostSelector = ({ posts }: PostSelectorProps) => {
       <List>
         {posts.map((post, index) => (
           <ListItem key={post.objectID} divider={posts.length > index + 1}>
-            <ListItemText primary={post.title} />
+            <ListItemText primary={post.title} style={{ maxWidth: '75%' }} />
             <ListItemSecondaryAction>
               <NextLink
                 href="/posts/[id]"
