@@ -6,10 +6,10 @@ import {
   ListItemText,
   Typography,
 } from '@material-ui/core';
-import { Description } from '@material-ui/icons';
 import NextLink from 'next/link';
 import { Post } from '@zoonk/models';
 import { getPostImage, theme } from '@zoonk/utils';
+import PostIcon from './PostIcon';
 import PostListMeta from './PostListMeta';
 
 interface PostListItemProps {
@@ -21,7 +21,7 @@ interface PostListItemProps {
  * Display a single post as a list item.
  */
 const PostListItem = ({ divider, item }: PostListItemProps) => {
-  const { content, title } = item;
+  const { category, content, title } = item;
   const image = getPostImage(content);
 
   return (
@@ -31,7 +31,7 @@ const PostListItem = ({ divider, item }: PostListItemProps) => {
           src={image || undefined}
           style={{ backgroundColor: theme.palette.primary.main }}
         >
-          <Description />
+          <PostIcon category={category} />
         </Avatar>
       </ListItemAvatar>
       <ListItemText

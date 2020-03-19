@@ -2,8 +2,8 @@ import { useContext, useEffect } from 'react';
 import { NextPage } from 'next';
 import { Container, Grid, makeStyles } from '@material-ui/core';
 import ChaptersCard from '@zoonk/components/ChaptersCard';
-import LeaderboardCard from '@zoonk/components/LeaderboardCard';
 import Meta from '@zoonk/components/Meta';
+import MenuTopics from '@zoonk/components/MenuTopics';
 import PostsCard from '@zoonk/components/PostsCard';
 import TopicDetails from '@zoonk/components/TopicDetails';
 import TopicsBreadcrumb from '@zoonk/components/TopicsBreadcrumb';
@@ -27,7 +27,6 @@ const TopicPage: NextPage<TopicPageProps> = ({ topic }) => {
   const { translate } = useContext(GlobalContext);
   const classes = useStyles();
   const { chapterData, id, language, photo, title } = topic;
-  const limit = 2;
 
   useEffect(() => {
     analytics().setCurrentScreen('topic');
@@ -48,57 +47,18 @@ const TopicPage: NextPage<TopicPageProps> = ({ topic }) => {
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6} md={4} className={classes.column}>
           <TopicDetails topic={topic} />
+          <MenuTopics topicId={id} />
         </Grid>
 
         <Grid item xs={12} sm={6} md={8} className={classes.column}>
           <ChaptersCard chapters={chapterData} />
           <PostsCard
-            category={['references']}
             topicId={id}
-            limit={limit}
+            limit={10}
             allowAdd
-            title={translate('references_links')}
+            allowLoadMore
+            title={translate('timeline')}
           />
-          <PostsCard
-            category={['courses']}
-            topicId={id}
-            limit={limit}
-            allowAdd
-            orderBy={['likes']}
-            title={translate('courses')}
-          />
-          <PostsCard
-            category={['books']}
-            topicId={id}
-            limit={limit}
-            allowAdd
-            orderBy={['likes']}
-            title={translate('books')}
-          />
-          <PostsCard
-            category={['posts']}
-            topicId={id}
-            limit={limit}
-            allowAdd
-            title={translate('posts')}
-          />
-          <PostsCard
-            category={['examples']}
-            topicId={id}
-            limit={limit}
-            allowAdd
-            orderBy={['likes']}
-            title={translate('examples')}
-          />
-          <PostsCard
-            category={['questions']}
-            topicId={id}
-            limit={limit}
-            allowAdd
-            orderBy={['likes']}
-            title={translate('questions')}
-          />
-          <LeaderboardCard topicId={id} />
         </Grid>
       </Grid>
     </Container>

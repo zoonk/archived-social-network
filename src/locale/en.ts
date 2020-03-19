@@ -282,6 +282,7 @@ const translate: TranslationFn = (key, args) => {
     teach: 'Teach',
     terms_service: 'Terms of service',
     text: 'Text',
+    timeline: 'Timeline',
     title: 'Title',
     title_required: 'Please, fill in the title.',
     topic_create: 'Create topic',

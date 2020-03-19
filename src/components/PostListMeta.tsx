@@ -1,6 +1,8 @@
-import { Fragment } from 'react';
+import { useContext } from 'react';
 import { Post } from '@zoonk/models';
+import { GlobalContext, theme } from '@zoonk/utils';
 import TopicLabel from './TopicLabel';
+import PostIcon from './PostIcon';
 
 interface PostListMetaProps {
   post: Post.Get;
@@ -10,14 +12,24 @@ interface PostListMetaProps {
  * Metadata for a post list item.
  */
 const PostListMeta = ({ post }: PostListMetaProps) => {
-  const { topics } = post;
+  const { translate } = useContext(GlobalContext);
+  const { category, topics } = post;
 
   return (
-    <Fragment>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <PostIcon
+        category={category}
+        iconProps={{
+          fontSize: 'small',
+          color: 'primary',
+          title: translate(category),
+        }}
+      />
+      <div style={{ margin: theme.spacing(0, 0.25) }} />
       {topics.slice(0, 3).map((id) => (
         <TopicLabel key={id} id={id} />
       ))}
-    </Fragment>
+    </div>
   );
 };
 

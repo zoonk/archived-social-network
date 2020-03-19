@@ -260,6 +260,7 @@ export type TranslationKeys =
   | 'teach'
   | 'terms_service'
   | 'text'
+  | 'timeline'
   | 'title_required'
   | 'title'
   | 'topic_create_desc'
