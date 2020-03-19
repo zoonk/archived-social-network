@@ -1,5 +1,5 @@
 import NextLink from 'next/link';
-import { Chip } from '@material-ui/core';
+import { Link, Typography } from '@material-ui/core';
 import { getPageTitle, theme } from '@zoonk/utils';
 
 interface TopicLabelProps {
@@ -12,17 +12,14 @@ interface TopicLabelProps {
 const TopicLabel = ({ id }: TopicLabelProps) => {
   return (
     <NextLink key={id} href="/topics/[id]" as={`/topics/${id}`} passHref>
-      <Chip
-        component="a"
-        size="small"
-        variant="outlined"
-        color="primary"
-        label={getPageTitle(id)}
-        style={{
-          marginRight: theme.spacing(0.5),
-          marginBottom: theme.spacing(0.5),
-        }}
-      />
+      <Link>
+        <Typography
+          variant="caption"
+          style={{ marginRight: theme.spacing(0.5) }}
+        >
+          #{getPageTitle(id)}
+        </Typography>
+      </Link>
     </NextLink>
   );
 };

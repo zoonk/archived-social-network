@@ -39,7 +39,7 @@ const PostListItem = ({ divider, item }: PostListItemProps) => {
         primary={
           <NextLink href="/posts/[id]" as={`/posts/${item.id}`} passHref>
             <Link color="textPrimary">
-              <Typography>{title}</Typography>
+              <Typography style={{ fontSize: '1.15rem' }}>{title}</Typography>
             </Link>
           </NextLink>
         }
