@@ -17,9 +17,7 @@ export const containsYoutubeUrl = (text?: string | null): string | null => {
 export const getDomainFromUrl = (url: string): string => {
   try {
     const { host } = new URL(url);
-    let domain = host.split('.');
-    domain = domain.slice(domain.length - 2);
-    return domain.join('.');
+    return host;
   } catch (e) {
     return 'unknown';
   }
