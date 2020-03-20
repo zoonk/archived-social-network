@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import { makeStyles } from '@material-ui/core';
 import {
   AllInclusive,
@@ -10,6 +11,7 @@ import {
 } from '@material-ui/icons';
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
 import { Post } from '@zoonk/models';
+import { GlobalContext } from '@zoonk/utils';
 
 const useStyles = makeStyles((theme) => ({
   toggleContainer: {
@@ -25,6 +27,7 @@ interface CategoryFilterProps {
 }
 
 const CategoryFilter = ({ filterBy, onSelect }: CategoryFilterProps) => {
+  const { translate } = useContext(GlobalContext);
   const classes = useStyles();
 
   return (
@@ -33,27 +36,55 @@ const CategoryFilter = ({ filterBy, onSelect }: CategoryFilterProps) => {
         size="small"
         value={filterBy}
         onChange={onSelect}
-        aria-label="text formatting"
+        aria-label={translate('post_filter')}
       >
-        <ToggleButton value="all" aria-label="all">
+        <ToggleButton
+          value="all"
+          title={translate('all')}
+          aria-label={translate('all')}
+        >
           <AllInclusive />
         </ToggleButton>
-        <ToggleButton value="references" aria-label="link">
+        <ToggleButton
+          value="references"
+          title={translate('references')}
+          aria-label={translate('references')}
+        >
           <Link />
         </ToggleButton>
-        <ToggleButton value="courses" aria-label="italic">
+        <ToggleButton
+          value="courses"
+          title={translate('courses')}
+          aria-label={translate('courses')}
+        >
           <School />
         </ToggleButton>
-        <ToggleButton value="books" aria-label="underlined">
+        <ToggleButton
+          value="books"
+          title={translate('books')}
+          aria-label={translate('books')}
+        >
           <MenuBook />
         </ToggleButton>
-        <ToggleButton value="posts" aria-label="color">
+        <ToggleButton
+          value="posts"
+          title={translate('posts')}
+          aria-label={translate('posts')}
+        >
           <Description />
         </ToggleButton>
-        <ToggleButton value="examples" aria-label="color">
+        <ToggleButton
+          value="examples"
+          title={translate('real_life_examples')}
+          aria-label={translate('real_life_examples')}
+        >
           <Language />
         </ToggleButton>
-        <ToggleButton value="questions" aria-label="color">
+        <ToggleButton
+          value="questions"
+          title={translate('questions')}
+          aria-label={translate('questions')}
+        >
           <QuestionAnswer />
         </ToggleButton>
       </ToggleButtonGroup>

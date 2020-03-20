@@ -152,6 +152,7 @@ export type TranslationKeys =
   | 'post_category'
   | 'post_delete_confirmation'
   | 'post_edit'
+  | 'post_filter'
   | 'post_removed'
   | 'post_removing'
   | 'post_select_desc'

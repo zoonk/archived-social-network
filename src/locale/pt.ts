@@ -164,6 +164,7 @@ const translate: TranslationFn = (key, args) => {
     post_delete_confirmation:
       'Esta postagem será removida de todos os capítulos.',
     post_edit: 'Editar postagem',
+    post_filter: 'Filtrar posts por categoria',
     post_removed: 'Postagem removida!',
     post_removing: 'Removendo postagem...',
     post_select_desc:

@@ -161,6 +161,7 @@ const translate: TranslationFn = (key, args) => {
     post_category: 'Select a post category',
     post_delete_confirmation: 'This post will be removed from all chapters.',
     post_edit: 'Edit post',
+    post_filter: 'Filter posts by category',
     post_removed: 'Post removed!',
     post_removing: 'Removing post...',
     post_select_desc: 'You can add an existing post to this chapter:',
