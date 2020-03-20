@@ -9,7 +9,6 @@ import {
 } from '@material-ui/core';
 import {
   Description,
-  EmojiEvents,
   History,
   Language,
   Link,
@@ -101,15 +100,6 @@ const MenuPages = () => {
               <QuestionAnswer />
             </ListItemIcon>
             <ListItemText primary={translate('questions')} />
-          </ListItem>
-        </NextLink>
-
-        <NextLink href="/leaderboard" passHref>
-          <ListItem button component="a">
-            <ListItemIcon>
-              <EmojiEvents />
-            </ListItemIcon>
-            <ListItemText primary={translate('leaderboard')} />
           </ListItem>
         </NextLink>
 
