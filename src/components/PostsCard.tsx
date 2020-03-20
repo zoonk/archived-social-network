@@ -128,7 +128,10 @@ const PostsCard = ({
         )}
 
         {items.length === 0 && loading === false && (
-          <NoPosts category={category?.[0]} isUser={Boolean(userId)} />
+          <NoPosts
+            category={filter === 'all' ? 'references' : filter}
+            isUser={Boolean(userId)}
+          />
         )}
         {items.length > 0 && <PostList items={items} />}
         {loading && <ListSkeleton items={limit} />}

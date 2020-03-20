@@ -31,7 +31,7 @@ const NoPosts = ({ category, isUser }: NoPostsProps) => {
       case 'references':
         return 'no_references';
       default:
-        return 'no_posts';
+        return 'no_references';
     }
   };
 
