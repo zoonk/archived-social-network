@@ -41,6 +41,7 @@ export type TranslationKeys =
   | 'contact_us'
   | 'content'
   | 'courses'
+  | 'cover'
   | 'create'
   | 'created'
   | 'creating_account'

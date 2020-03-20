@@ -20,6 +20,7 @@ const data = {
   category: 'posts',
   comments: 0,
   content: 'content',
+  cover: null,
   createdAt: firebase.firestore.FieldValue.serverTimestamp(),
   createdBy: profile,
   createdById: 'currentUser',

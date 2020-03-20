@@ -48,6 +48,7 @@ const translate: TranslationFn = (key, args) => {
     contact_us: 'Fale conosco',
     content: 'Conteúdo',
     courses: 'Cursos',
+    cover: 'Imagem de capa',
     create: 'Criar',
     created: 'criado',
     creating_account: 'Criando conta...',

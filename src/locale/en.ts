@@ -45,6 +45,7 @@ const translate: TranslationFn = (key, args) => {
     contact_us: 'Contact us',
     content: 'Content',
     courses: 'Courses',
+    cover: 'Cover image',
     create: 'Create',
     created: 'created',
     creating_account: 'Creating account...',

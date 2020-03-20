@@ -2,7 +2,13 @@ import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { throttle } from 'lodash';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { Button, Grid, makeStyles, TextField } from '@material-ui/core';
+import {
+  Button,
+  Grid,
+  makeStyles,
+  TextField,
+  Typography,
+} from '@material-ui/core';
 import { Post } from '@zoonk/models';
 import { searchPost } from '@zoonk/services';
 import { appLanguage, GlobalContext } from '@zoonk/utils';
@@ -57,6 +63,7 @@ const PostForm = ({
   const classes = useStyles();
   const [expand, setExpand] = useState<boolean>(false);
   const [content, setContent] = useState<string>(data?.content || '');
+  const [cover, setCover] = useState<string | null>(data?.cover || null);
   const [title, setTitle] = useState<string>(data?.title || '');
   const [topics, setTopics] = useState<string[]>(data?.topics || []);
   const [links, setLinks] = useState<string[]>(
@@ -105,7 +112,7 @@ const PostForm = ({
           saving={saving}
           onDelete={onDelete}
           onSubmit={() => {
-            onSubmit({ content, links, title }, topics);
+            onSubmit({ content, cover, links, title }, topics);
           }}
         >
           <Grid item xs={12} className={classes.column}>
@@ -146,11 +153,24 @@ const PostForm = ({
 
             <ImageUpload
               category="posts"
+              id="add-post-img"
               hideImg
               img={null}
               label={translate('add_image')}
               onSave={insertImage}
             />
+
+            <div>
+              <Typography variant="body2" color="textSecondary" gutterBottom>
+                {translate('cover')}
+              </Typography>
+              <ImageUpload
+                id="add-cover-img"
+                img={cover}
+                category="posts"
+                onSave={setCover}
+              />
+            </div>
 
             <TopicSelector
               active={topicIds ? topicIds[0] : undefined}

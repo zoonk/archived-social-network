@@ -35,6 +35,7 @@ export namespace Post {
 
   export interface EditableFields {
     content: string;
+    cover: string | null;
     links: string[] | null;
     title: string;
   }

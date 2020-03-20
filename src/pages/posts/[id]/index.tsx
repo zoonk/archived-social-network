@@ -8,7 +8,13 @@ import PostsBreadcrumb from '@zoonk/components/PostsBreadcrumb';
 import PostView from '@zoonk/components/PostView';
 import { Post } from '@zoonk/models';
 import { getPost } from '@zoonk/services';
-import { analytics, appLanguage, preRender, theme } from '@zoonk/utils';
+import {
+  analytics,
+  appLanguage,
+  getPostImage,
+  preRender,
+  theme,
+} from '@zoonk/utils';
 
 interface PostPageProps {
   data: Post.Get;
@@ -19,12 +25,14 @@ const PostPage: NextPage<PostPageProps> = ({ data }) => {
     category,
     comments,
     content,
+    cover,
     editors,
     id,
     language,
     title,
     topics,
   } = data;
+  const image = cover || getPostImage(content);
 
   useEffect(() => {
     analytics().setCurrentScreen('posts_view');
@@ -36,6 +44,7 @@ const PostPage: NextPage<PostPageProps> = ({ data }) => {
         title={title}
         description={content.slice(0, 200)}
         canonicalUrl={`https://${language}.zoonk.org/posts/${id}`}
+        image={image}
         noIndex={language !== appLanguage}
       />
 

@@ -9,7 +9,8 @@ import Snackbar from './Snackbar';
 interface ImageUploadProps {
   category: ContentCategory | 'users';
   hideImg?: boolean;
-  img: string | null;
+  id?: string;
+  img?: string | null;
   label?: string;
   size?: string;
   onSave: (url: string) => void;
@@ -21,6 +22,7 @@ interface ImageUploadProps {
 const ImageUpload = ({
   category,
   hideImg,
+  id,
   img,
   label,
   size,
@@ -78,12 +80,12 @@ const ImageUpload = ({
       <input
         accept="image/*"
         style={{ display: 'none' }}
-        id="update-topic-photo"
+        id={id || 'update-photo'}
         type="file"
         onChange={(e) => uploadPhoto(e.target.files)}
       />
       <label
-        htmlFor="update-topic-photo"
+        htmlFor={id || 'update-photo'}
         style={{ margin: theme.spacing(0, 2) }}
       >
         <Button color="primary" component="span">

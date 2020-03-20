@@ -20,6 +20,7 @@ const add = {
   category: 'posts',
   comments: 0,
   content: 'content',
+  cover: 'test.png',
   createdAt: firebase.firestore.FieldValue.serverTimestamp(),
   createdBy: profile,
   createdById: 'currentUser',

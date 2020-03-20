@@ -147,7 +147,7 @@ service cloud.firestore {
       ;
       allow update:
         if request.auth.uid != null
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['content', 'links', 'title', 'topics', 'updatedAt', 'updatedBy', 'updatedById'])
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['content', 'cover', 'links', 'title', 'topics', 'updatedAt', 'updatedBy', 'updatedById'])
         && request.resource.data.content is string
         && (!isOneOf('category', 'posts|questions') || resource.data.createdById == request.auth.uid)
         && (request.resource.data.links == null || request.resource.data.links.size() == 0 || (request.resource.data.links is list && request.resource.data.links[0] is string))
