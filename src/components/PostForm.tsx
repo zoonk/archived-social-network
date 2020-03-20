@@ -90,7 +90,7 @@ const PostForm = ({
   // Append an image to the current content.
   const insertImage = useCallback(
     (url: string) => {
-      const img = `![post](${url} "")`;
+      const img = `[[ img src="${url}" align="center" alt="post" title="" ]]`;
       const newContent = `${content}\n${img}`;
       setContent(newContent);
     },

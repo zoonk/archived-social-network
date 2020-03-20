@@ -85,7 +85,8 @@ const translate: TranslationFn = (key, args) => {
     formatting_drive: 'Google Drive',
     formatting_header_example: '# Título',
     formatting_header: 'Cabeçalho',
-    formatting_image_example: '![descrição](foto.png "título")',
+    formatting_image_example:
+      '[[ img src="foto.png" width="200px" align="right" alt="texto" title="título" ]]',
     formatting_image: 'Imagem',
     formatting_italic_example: '_texto em itálico_',
     formatting_italic: 'Itálico',
