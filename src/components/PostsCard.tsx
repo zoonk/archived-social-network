@@ -57,7 +57,7 @@ const PostsCard = ({
   const { translate } = useContext(GlobalContext);
   const { asPath, pathname } = useRouter();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
-  const [filter, setFilter] = useState<Filter[]>(category || ['all']);
+  const [filter, setFilter] = useState<Filter>(category?.[0] || 'all');
   const { error, get, items, lastVisible, loading } = useLoadMore<
     Post.Snapshot
   >(limit);
@@ -66,34 +66,18 @@ const PostsCard = ({
   const href = removeTrailingSlash(pathname) || '';
   const as = removeTrailingSlash(asPath) || '';
   const listSlug = list || category?.[0] || 'posts';
-  const categoryFilter = filter.includes('all') ? undefined : filter;
 
   /**
    * React runs a shallow comparison only, so we're converting
    * these arrays into strings to make sure our effect isn't called
    * multiple times.
    */
-  const rawCategory = JSON.stringify(categoryFilter) as string | undefined;
   const rawOrderBy = JSON.stringify(orderBy) as string | undefined;
-
-  const handleFilter = (_: any, filters: Filter[]) => {
-    let newFilters = filters;
-
-    if (filters[filters.length - 1] === 'all' || filters.length === 0) {
-      newFilters = ['all'];
-    }
-
-    if (newFilters.length > 1) {
-      newFilters = newFilters.filter((item) => item !== 'all');
-    }
-
-    setFilter(newFilters);
-  };
 
   const loadMore = () => {
     get({
       data: listPosts({
-        category: categoryFilter as Post.Category[],
+        category: filter === 'all' ? undefined : [filter],
         chapterId,
         lastVisible,
         limit,
@@ -107,7 +91,7 @@ const PostsCard = ({
   useEffect(() => {
     get({
       data: listPosts({
-        category: rawCategory ? JSON.parse(rawCategory) : undefined,
+        category: filter === 'all' ? undefined : [filter],
         chapterId,
         limit,
         orderBy: rawOrderBy ? JSON.parse(rawOrderBy) : undefined,
@@ -116,7 +100,7 @@ const PostsCard = ({
       }),
       replace: true,
     });
-  }, [rawCategory, chapterId, get, limit, rawOrderBy, topicId, userId]);
+  }, [filter, chapterId, get, limit, rawOrderBy, topicId, userId]);
 
   useEffect(() => {
     if (error) {
@@ -137,7 +121,10 @@ const PostsCard = ({
         />
 
         {displayFilter && (
-          <CategoryFilter filterBy={filter} onSelect={handleFilter} />
+          <CategoryFilter
+            filterBy={filter}
+            onSelect={(_, newFilter) => setFilter(newFilter)}
+          />
         )}
 
         {items.length === 0 && loading === false && (

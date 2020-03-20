@@ -22,8 +22,8 @@ const useStyles = makeStyles((theme) => ({
 type Filter = Post.Category | 'all';
 
 interface CategoryFilterProps {
-  filterBy: Filter[];
-  onSelect: (e: any, changes: Filter[]) => void;
+  filterBy: Filter;
+  onSelect: (e: any, changes: Filter) => void;
 }
 
 const CategoryFilter = ({ filterBy, onSelect }: CategoryFilterProps) => {
@@ -34,6 +34,7 @@ const CategoryFilter = ({ filterBy, onSelect }: CategoryFilterProps) => {
     <div className={classes.toggleContainer}>
       <ToggleButtonGroup
         size="small"
+        exclusive
         value={filterBy}
         onChange={onSelect}
         aria-label={translate('post_filter')}
