@@ -30,7 +30,6 @@ const Books: NextPage = () => {
         hideLink
         allowAdd
         allowLoadMore
-        orderBy={['likes']}
         title={translate('books')}
       />
     </Container>
