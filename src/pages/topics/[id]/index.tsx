@@ -57,6 +57,7 @@ const TopicPage: NextPage<TopicPageProps> = ({ topic }) => {
             limit={10}
             allowAdd
             allowLoadMore
+            displayFilter
             title={translate('timeline')}
           />
         </Grid>

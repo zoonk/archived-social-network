@@ -30,7 +30,7 @@ const FeedbackList = ({ allowLoadMore, limit }: FeedbackListProps) => {
   >(limit);
 
   useEffect(() => {
-    get(listFeedback(limit));
+    get({ data: listFeedback(limit) });
   }, [get, limit]);
 
   useEffect(() => {
@@ -38,7 +38,7 @@ const FeedbackList = ({ allowLoadMore, limit }: FeedbackListProps) => {
   }, [error]);
 
   const loadMore = () => {
-    get(listFeedback(limit, lastVisible));
+    get({ data: listFeedback(limit, lastVisible) });
   };
 
   return (

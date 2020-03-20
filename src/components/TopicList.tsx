@@ -33,11 +33,11 @@ const TopicList = ({
   >(limit);
 
   const loadMore = () => {
-    get(listTopics(lastVisible, createdById, limit));
+    get({ data: listTopics(lastVisible, createdById, limit) });
   };
 
   useEffect(() => {
-    get(listTopics(undefined, createdById, limit));
+    get({ data: listTopics(undefined, createdById, limit) });
   }, [get, createdById, limit]);
 
   useEffect(() => {

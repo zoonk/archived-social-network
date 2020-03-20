@@ -30,11 +30,11 @@ const NotificationList = ({
   >(limit);
 
   const loadMore = () => {
-    get(listNotifications(uid, lastVisible, limit));
+    get({ data: listNotifications(uid, lastVisible, limit) });
   };
 
   useEffect(() => {
-    get(listNotifications(uid, undefined, limit));
+    get({ data: listNotifications(uid, undefined, limit) });
   }, [get, limit, uid]);
 
   useEffect(() => {

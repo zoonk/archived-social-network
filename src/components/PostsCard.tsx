@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { Button, Card, CardContent } from '@material-ui/core';
@@ -17,11 +18,16 @@ import PostList from './PostList';
 import Snackbar from './Snackbar';
 import useLoadMore from './useLoadMore';
 
+const CategoryFilter = dynamic(() => import('./CategoryFilter'));
+
+type Filter = Post.Category | 'all';
+
 interface PostsCardProps {
   allowAdd?: boolean;
   allowLoadMore?: boolean;
   category?: Post.Category[];
   chapterId?: string;
+  displayFilter?: boolean;
   hideLink?: boolean;
   limit?: number;
   list?: Post.Category;
@@ -39,6 +45,7 @@ const PostsCard = ({
   allowLoadMore,
   category,
   chapterId,
+  displayFilter,
   hideLink,
   limit,
   list,
@@ -50,6 +57,7 @@ const PostsCard = ({
   const { translate } = useContext(GlobalContext);
   const { asPath, pathname } = useRouter();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
+  const [filter, setFilter] = useState<Filter[]>(category || ['all']);
   const { error, get, items, lastVisible, loading } = useLoadMore<
     Post.Snapshot
   >(limit);
@@ -58,19 +66,34 @@ const PostsCard = ({
   const href = removeTrailingSlash(pathname) || '';
   const as = removeTrailingSlash(asPath) || '';
   const listSlug = list || category?.[0] || 'posts';
+  const categoryFilter = filter.includes('all') ? undefined : filter;
 
   /**
    * React runs a shallow comparison only, so we're converting
    * these arrays into strings to make sure our effect isn't called
    * multiple times.
    */
-  const rawCategory = JSON.stringify(category) as string | undefined;
+  const rawCategory = JSON.stringify(categoryFilter) as string | undefined;
   const rawOrderBy = JSON.stringify(orderBy) as string | undefined;
 
+  const handleFilter = (_: any, filters: Filter[]) => {
+    let newFilters = filters;
+
+    if (filters[filters.length - 1] === 'all' || filters.length === 0) {
+      newFilters = ['all'];
+    }
+
+    if (newFilters.length > 1) {
+      newFilters = newFilters.filter((item) => item !== 'all');
+    }
+
+    setFilter(newFilters);
+  };
+
   const loadMore = () => {
-    get(
-      listPosts({
-        category,
+    get({
+      data: listPosts({
+        category: categoryFilter as Post.Category[],
         chapterId,
         lastVisible,
         limit,
@@ -78,12 +101,12 @@ const PostsCard = ({
         topicId,
         userId,
       }),
-    );
+    });
   };
 
   useEffect(() => {
-    get(
-      listPosts({
+    get({
+      data: listPosts({
         category: rawCategory ? JSON.parse(rawCategory) : undefined,
         chapterId,
         limit,
@@ -91,7 +114,8 @@ const PostsCard = ({
         topicId,
         userId,
       }),
-    );
+      replace: true,
+    });
   }, [rawCategory, chapterId, get, limit, rawOrderBy, topicId, userId]);
 
   useEffect(() => {
@@ -111,6 +135,10 @@ const PostsCard = ({
           list={list || category?.[0]}
           title={title}
         />
+
+        {displayFilter && (
+          <CategoryFilter filterBy={filter} onSelect={handleFilter} />
+        )}
 
         {items.length === 0 && loading === false && (
           <NoPosts category={category?.[0]} isUser={Boolean(userId)} />

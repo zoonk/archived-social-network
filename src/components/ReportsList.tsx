@@ -32,7 +32,7 @@ const ReportsList = ({ allowLoadMore, limit }: ReportsListProps) => {
   >(limit);
 
   useEffect(() => {
-    get(listReports(limit));
+    get({ data: listReports(limit) });
   }, [get, limit]);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const ReportsList = ({ allowLoadMore, limit }: ReportsListProps) => {
   }, [error]);
 
   const loadMore = () => {
-    get(listReports(limit, lastVisible));
+    get({ data: listReports(limit, lastVisible) });
   };
 
   return (

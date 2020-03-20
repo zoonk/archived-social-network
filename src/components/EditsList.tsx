@@ -33,11 +33,11 @@ const EditsList = ({
   >(limit);
 
   const loadMore = () => {
-    get(listActivities(itemPath, lastVisible, limit));
+    get({ data: listActivities(itemPath, lastVisible, limit) });
   };
 
   useEffect(() => {
-    get(listActivities(itemPath, undefined, limit));
+    get({ data: listActivities(itemPath, undefined, limit) });
   }, [get, itemPath, limit]);
 
   useEffect(() => {

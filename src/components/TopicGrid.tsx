@@ -16,11 +16,11 @@ const TopicGrid = () => {
   );
 
   const loadMore = () => {
-    get(listTopics(lastVisible, undefined, limit));
+    get({ data: listTopics(lastVisible, undefined, limit) });
   };
 
   useEffect(() => {
-    get(listTopics(undefined, undefined, limit));
+    get({ data: listTopics(undefined, undefined, limit) });
   }, [get]);
 
   return (

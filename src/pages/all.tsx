@@ -25,6 +25,7 @@ const Examples: NextPage = () => {
         hideLink
         allowAdd
         allowLoadMore
+        displayFilter
         title={translate('all')}
       />
     </Container>

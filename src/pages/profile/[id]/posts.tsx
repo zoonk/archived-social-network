@@ -34,6 +34,7 @@ const Posts: NextPage<PostsProps> = ({ profile }) => {
         hideLink
         limit={10}
         title={translate('posts')}
+        displayFilter
         userId={id}
       />
     </Container>

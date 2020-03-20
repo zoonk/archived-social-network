@@ -33,11 +33,11 @@ const LeaderboardList = ({
   >(limit);
 
   const loadMore = () => {
-    get(getLeaderboard(topicId, lastVisible, limit));
+    get({ data: getLeaderboard(topicId, lastVisible, limit) });
   };
 
   useEffect(() => {
-    get(getLeaderboard(topicId, undefined, limit));
+    get({ data: getLeaderboard(topicId, undefined, limit) });
   }, [get, limit, topicId]);
 
   useEffect(() => {

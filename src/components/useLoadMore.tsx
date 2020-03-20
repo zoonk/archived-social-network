@@ -7,6 +7,11 @@ type DocWithSnapshot<T> = T & {
   snap: firebase.firestore.DocumentSnapshot;
 };
 
+interface GetAction<T> {
+  data: Promise<DocWithSnapshot<T>[]>;
+  replace?: boolean;
+}
+
 /**
  * Hook for creating a "load more" style pagination.
  * When a user clicks on "load more", it shows the next items
@@ -21,7 +26,7 @@ type DocWithSnapshot<T> = T & {
  * - `lastVisible` - snapshot from the last item displayed in the list.
  */
 function useLoadMore<T>(limit: number = 10) {
-  const [getFn, get] = useState<Promise<DocWithSnapshot<T>[]>>();
+  const [getFn, get] = useState<GetAction<T>>();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<firebase.FirebaseError>();
   const [state, setState] = useState<T[]>([]);
@@ -30,11 +35,19 @@ function useLoadMore<T>(limit: number = 10) {
   useEffect(() => {
     let active = true;
 
+    /**
+     * When we set the `replace` property to `true`, we need to reload all items.
+     * Hence, we set the state to an empty array to have a better loading effect.
+     */
+    if (getFn && getFn.replace) {
+      setState([]);
+    }
+
     // Only run this effect when the `getFn()` is called from the component.
-    if (getFn) {
+    if (getFn && getFn.data) {
       setLoading(true);
 
-      getFn
+      getFn.data
         .then((docs) => {
           if (active) {
             // If the length is lower than the limit, then there are no more items to show.
@@ -46,8 +59,14 @@ function useLoadMore<T>(limit: number = 10) {
             // when trying to retrieve more items from the backend.
             lastVisible.current = hasMoreItems ? lastDoc.snap : undefined;
 
-            // Merge the previous data with the newest one.
-            setState((previous) => [...previous, ...docs]);
+            /**
+             * When the `getFn.replace` property is set to `true`, then replace all data.
+             * Otherwise, merge with the previous data (for pagination).
+             */
+            setState((previous) => {
+              const data = getFn.replace ? docs : [...previous, ...docs];
+              return data;
+            });
             setLoading(false);
           }
         })
