@@ -1,10 +1,10 @@
 import ReactMarkdown from 'react-markdown';
 import shortcodes from 'remark-shortcodes';
-import { Link } from '@material-ui/core';
 import DividerView from './DividerView';
 import EditorHeading from './EditorHeading';
 import EditorText from './EditorText';
 import Image from './Image';
+import LinkView from './LinkView';
 import ShortcodeRenderer from './ShortcodeRenderer';
 import TableBodyView from './TableBodyView';
 import TableCellView from './TableCellView';
@@ -27,7 +27,7 @@ const EditorView = ({ content }: EditorViewProps) => {
       renderers={{
         heading: EditorHeading,
         image: Image,
-        link: Link,
+        link: LinkView,
         paragraph: EditorText,
         shortcode: ShortcodeRenderer,
         table: TableView,
