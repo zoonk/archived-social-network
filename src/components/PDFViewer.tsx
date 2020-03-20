@@ -6,7 +6,7 @@ interface PDFViewerProps {
  * Display a PDF file.
  */
 const PDFViewer = ({ url }: PDFViewerProps) => {
-  return <iframe src={url} width="100%" height="500px" title="PDF" />;
+  return <iframe src={url} width="100%" height="700px" title="PDF" />;
 };
 
 export default PDFViewer;
