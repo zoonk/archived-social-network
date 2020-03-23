@@ -2,7 +2,6 @@ export * from './chapter';
 export * from './comments';
 export * from './content';
 export * from './context';
-export * from './diff';
 export * from './activity';
 export * from './feedback';
 export * from './firebase';

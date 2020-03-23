@@ -6,13 +6,12 @@ import {
   ExpansionPanel,
   ExpansionPanelActions,
   ExpansionPanelDetails,
-  Grid,
 } from '@material-ui/core';
-import { pick } from 'lodash';
-import { Activity, FieldDiff } from '@zoonk/models';
-import { editableFields, getObjDiff, GlobalContext } from '@zoonk/utils';
-import EditsAfter from './EditsAfter';
-import EditsBefore from './EditsBefore';
+import * as Diff from 'diff';
+import { isEqual } from 'lodash';
+import { Activity } from '@zoonk/models';
+import { editableFields, getFieldDiff, GlobalContext } from '@zoonk/utils';
+import EditsDiffBox from './EditsDiffBox';
 import EditsHeader from './EditsHeader';
 import EditsReport from './EditsReport';
 import EditsRevert from './EditsRevert';
@@ -32,8 +31,7 @@ interface EditsItemProps {
  */
 const EditsItem = ({ displayTitle, editLink, edits }: EditsItemProps) => {
   const { translate } = useContext(GlobalContext);
-  const [added, setAdded] = useState<FieldDiff[]>([]);
-  const [removed, setRemoved] = useState<FieldDiff[]>([]);
+  const [changes, setChanges] = useState<Diff.Change[][]>([[]]);
   let hrefLink = editLink?.href || `/${edits.category}/[id]/edit`;
   let asLink = editLink?.as || `/${edits.itemPath}/edit`;
 
@@ -43,28 +41,29 @@ const EditsItem = ({ displayTitle, editLink, edits }: EditsItemProps) => {
   }
 
   useEffect(() => {
-    const beforeData = edits.action !== 'created' ? edits.before : {};
-    const afterData = edits.action !== 'deleted' ? edits.after : {};
-    const beforeFields = pick(beforeData, editableFields[edits.category]);
-    const afterFields = pick(afterData, editableFields[edits.category]);
-    const diff = getObjDiff(beforeFields, afterFields);
+    const changedFields = editableFields[edits.category].filter((field) => {
+      const before = (edits.before as any)?.[field];
+      const after = (edits.after as any)?.[field];
+      return !isEqual(before, after);
+    });
 
-    setAdded(diff.after);
-    setRemoved(diff.before);
+    const fields = changedFields.map((field) => {
+      const before = (edits.before as any)?.[field];
+      const after = (edits.after as any)?.[field];
+      return getFieldDiff(before, after);
+    });
+
+    setChanges(fields);
   }, [edits]);
 
   return (
     <ExpansionPanel>
       <EditsHeader displayTitle={displayTitle} item={edits} />
-      <ExpansionPanelDetails>
-        <Grid container spacing={0}>
-          <Grid item xs={12} sm={6}>
-            <EditsBefore edits={edits} items={removed} />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <EditsAfter edits={edits} items={added} />
-          </Grid>
-        </Grid>
+      <ExpansionPanelDetails style={{ display: 'block' }}>
+        {changes.map((change, index) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <EditsDiffBox changes={change} key={index} />
+        ))}
       </ExpansionPanelDetails>
 
       <Divider />
@@ -77,7 +76,7 @@ const EditsItem = ({ displayTitle, editLink, edits }: EditsItemProps) => {
         </NextLink>
 
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <EditsReport added={added} id={edits.id} removed={removed} />
+          <EditsReport id={edits.id} />
           <EditsRevert edits={edits} />
         </div>
       </ExpansionPanelActions>

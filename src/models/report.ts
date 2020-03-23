@@ -1,4 +1,3 @@
-import { FieldDiff } from './diff';
 import { User } from './user';
 
 /**
@@ -10,10 +9,8 @@ export namespace Report {
    */
   export interface Create {
     createdAt: firebase.firestore.FieldValue;
-    added: FieldDiff[];
     comments: string;
     editId: string;
-    removed: FieldDiff[];
     uid: string | null;
     user: User.Get | null;
   }

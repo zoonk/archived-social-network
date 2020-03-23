@@ -1,4 +1,4 @@
-import { FieldDiff, Report, User } from '@zoonk/models';
+import { Report, User } from '@zoonk/models';
 import { serializeReport } from '@zoonk/serializers';
 import { db, timestamp } from '@zoonk/utils';
 
@@ -38,17 +38,13 @@ export const listReports = async (
  */
 export const reportEdit = (
   id: string,
-  added: FieldDiff[],
-  removed: FieldDiff[],
   comments: string,
   user: User.Get | null,
 ): Promise<firebase.firestore.DocumentReference> => {
   const data: Report.Create = {
-    added,
     comments,
     createdAt: timestamp,
     editId: id,
-    removed,
     user,
     uid: user ? user.uid : null,
   };

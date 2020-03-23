@@ -5,7 +5,6 @@ import {
   db,
   editableFields,
   functions,
-  getChangedFields,
   timestamp,
 } from '@zoonk/utils';
 import { serializeActivity } from '../serializers';
@@ -82,30 +81,19 @@ export const revertChanges = (
   uid: string,
 ): Promise<void> => {
   const before: any = activity.action !== 'created' ? activity.before : {};
-  const after: any = activity.action !== 'deleted' ? activity.after : {};
 
   // Get only editable fields.
   const beforeFields = pick(before, editableFields[activity.category]);
-  const afterFields = pick(after, editableFields[activity.category]);
 
-  /**
-   * We don't want to overwrite all fields but revert only the fields
-   * changed by this activity.
-   */
-  const changedFields = getChangedFields(beforeFields, afterFields);
   const metadata: ContentMetadata.Update = {
     updatedAt: timestamp,
     updatedBy: profile,
     updatedById: uid,
   };
   const changes: any = {
+    ...beforeFields,
     ...metadata,
   };
-
-  // Add only changed fields to the update action.
-  changedFields.forEach((field) => {
-    changes[field] = before[field];
-  });
 
   return db.doc(activity.itemPath).set(changes, { merge: true });
 };

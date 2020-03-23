@@ -1,30 +1,42 @@
-import { useContext } from 'react';
-import { Box, Typography } from '@material-ui/core';
-import { grey } from '@material-ui/core/colors';
-import { GlobalContext, theme } from '@zoonk/utils';
+import * as Diff from 'diff';
+import { Box } from '@material-ui/core';
+import { theme } from '@zoonk/utils';
 
 interface EditsDiffBoxProps {
-  children: React.ReactNode;
-  type: 'after' | 'before';
+  changes: Diff.Change[];
 }
 
 /**
  * Display a box for showing changes to some content.
  */
-const EditsDiffBox = ({ children, type }: EditsDiffBoxProps) => {
-  const { translate } = useContext(GlobalContext);
-  const bgColor = type === 'before' ? grey[50] : 'white';
-
+const EditsDiffBox = ({ changes }: EditsDiffBoxProps) => {
   return (
-    <Box
-      style={{
-        backgroundColor: bgColor,
-        padding: theme.spacing(1),
-      }}
-    >
-      <Typography gutterBottom>{translate(type)}</Typography>
+    <Box style={{ padding: theme.spacing(1) }}>
+      {changes.map((word, index) => {
+        let backgroundColor = 'transparent';
 
-      {children}
+        if (word.removed) {
+          backgroundColor = '#fdb8c0';
+        }
+
+        if (word.added) {
+          backgroundColor = '#acf2bd';
+        }
+
+        return (
+          <span
+            // eslint-disable-next-line react/no-array-index-key
+            key={`${index}-${word.value}`}
+            style={{
+              backgroundColor,
+              padding: '0 4px',
+              textDecoration: word.removed ? 'line-through' : 'none',
+            }}
+          >
+            {word.value}
+          </span>
+        );
+      })}
     </Box>
   );
 };

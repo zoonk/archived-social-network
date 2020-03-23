@@ -8,7 +8,7 @@ import {
   TextField,
   Tooltip,
 } from '@material-ui/core';
-import { FieldDiff, RequestStatus } from '@zoonk/models';
+import { RequestStatus } from '@zoonk/models';
 import { reportEdit } from '@zoonk/services';
 import { GlobalContext } from '@zoonk/utils';
 import ModalConfirmation from './ModalConfirmation';
@@ -16,15 +16,13 @@ import ModalError from './ModalError';
 import ModalProgress from './ModalProgress';
 
 interface EditsReportProps {
-  added: FieldDiff[];
   id: string;
-  removed: FieldDiff[];
 }
 
 /**
  * Report a page change violating our terms of service.
  */
-const EditsReport = ({ added, id, removed }: EditsReportProps) => {
+const EditsReport = ({ id }: EditsReportProps) => {
   const { translate, user } = useContext(GlobalContext);
   const [open, setOpen] = useState<boolean>(false);
   const [comments, setComments] = useState<string>('');
@@ -37,7 +35,7 @@ const EditsReport = ({ added, id, removed }: EditsReportProps) => {
 
   const report = () => {
     setStatus('loading');
-    reportEdit(id, added, removed, comments, user || null)
+    reportEdit(id, comments, user || null)
       .then(() => setStatus('success'))
       .catch((e) => setError(e.message));
   };
