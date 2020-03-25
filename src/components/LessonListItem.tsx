@@ -7,7 +7,7 @@ import {
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { Post } from '@zoonk/models';
-import { theme } from '@zoonk/utils';
+import { markdownToText, theme } from '@zoonk/utils';
 
 interface LessonListItemProps {
   divider?: boolean;
@@ -44,7 +44,7 @@ const LessonListItem = ({ divider, index, item }: LessonListItemProps) => {
         </ListItemAvatar>
         <ListItemText
           primary={title}
-          secondary={description}
+          secondary={markdownToText(description)}
           secondaryTypographyProps={{
             gutterBottom: false,
             noWrap: true,

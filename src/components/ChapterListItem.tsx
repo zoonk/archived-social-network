@@ -7,7 +7,7 @@ import {
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { Chapter } from '@zoonk/models';
-import { theme } from '@zoonk/utils';
+import { markdownToText, theme } from '@zoonk/utils';
 
 interface ChapterListItemProps {
   divider?: boolean;
@@ -42,7 +42,7 @@ const ChapterListItem = ({ divider, index, item }: ChapterListItemProps) => {
         </ListItemAvatar>
         <ListItemText
           primary={title}
-          secondary={description}
+          secondary={markdownToText(description)}
           secondaryTypographyProps={{
             gutterBottom: false,
             noWrap: true,

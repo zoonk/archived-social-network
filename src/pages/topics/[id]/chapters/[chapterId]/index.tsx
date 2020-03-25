@@ -7,7 +7,7 @@ import Meta from '@zoonk/components/Meta';
 import TopicsBreadcrumb from '@zoonk/components/TopicsBreadcrumb';
 import { Chapter } from '@zoonk/models';
 import { getChapter } from '@zoonk/services';
-import { analytics, preRender } from '@zoonk/utils';
+import { analytics, markdownToText, preRender } from '@zoonk/utils';
 
 interface ChapterProps {
   data: Chapter.Get;
@@ -33,7 +33,7 @@ const ChapterPage: NextPage<ChapterProps> = ({ data, topicId }) => {
     <Container component="main">
       <Meta
         title={title}
-        description={description.slice(0, 200)}
+        description={markdownToText(description.slice(0, 200))}
         canonicalUrl={`https://${language}.zoonk.org/topics/${topics[0]}/chapters/${id}`}
       />
 

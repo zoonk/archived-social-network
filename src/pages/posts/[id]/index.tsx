@@ -12,6 +12,7 @@ import {
   analytics,
   appLanguage,
   getPostImage,
+  markdownToText,
   preRender,
   theme,
 } from '@zoonk/utils';
@@ -42,7 +43,7 @@ const PostPage: NextPage<PostPageProps> = ({ data }) => {
     <Container component="main">
       <Meta
         title={title}
-        description={content.slice(0, 200)}
+        description={markdownToText(content.slice(0, 200))}
         canonicalUrl={`https://${language}.zoonk.org/posts/${id}`}
         image={image}
         noIndex={language !== appLanguage}
