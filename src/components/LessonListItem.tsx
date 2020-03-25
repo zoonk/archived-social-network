@@ -1,5 +1,6 @@
 import {
   Avatar,
+  CircularProgress,
   ListItem,
   ListItemAvatar,
   ListItemText,
@@ -22,6 +23,15 @@ const LessonListItem = ({ divider, index, item }: LessonListItemProps) => {
   const { query } = useRouter();
   const { description, id, title } = item;
   const lessonId = String(query.lessonId);
+
+  /**
+   * We fetch a lesson's data in the backend after it's assigned to a chapter.
+   * This means it might take a couple of seconds to fetch its data.
+   * If the data isn't ready, then display a loading component.
+   */
+  if (!title) {
+    return <CircularProgress />;
+  }
 
   return (
     <NextLink
