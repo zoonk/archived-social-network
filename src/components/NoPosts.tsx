@@ -28,6 +28,8 @@ const NoPosts = ({ category, isUser }: NoPostsProps) => {
         return 'no_examples';
       case 'questions':
         return 'no_questions';
+      case 'posts':
+        return 'no_posts';
       case 'references':
         return 'no_references';
       default:
