@@ -20,7 +20,7 @@ import useLoadMore from './useLoadMore';
 
 const CategoryFilter = dynamic(() => import('./CategoryFilter'));
 
-type Filter = Post.Category | 'all';
+type Filter = Post.Category | 'timeline';
 
 interface PostsCardProps {
   allowAdd?: boolean;
@@ -57,7 +57,7 @@ const PostsCard = ({
   const { translate } = useContext(GlobalContext);
   const { asPath, pathname } = useRouter();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
-  const [filter, setFilter] = useState<Filter>(category?.[0] || 'all');
+  const [filter, setFilter] = useState<Filter>(category?.[0] || 'timeline');
   const { error, get, items, lastVisible, loading } = useLoadMore<
     Post.Snapshot
   >(limit);
@@ -77,7 +77,7 @@ const PostsCard = ({
   const loadMore = () => {
     get({
       data: listPosts({
-        category: filter === 'all' ? undefined : [filter],
+        category: filter === 'timeline' ? undefined : [filter],
         chapterId,
         lastVisible,
         limit,
@@ -91,7 +91,7 @@ const PostsCard = ({
   useEffect(() => {
     get({
       data: listPosts({
-        category: filter === 'all' ? undefined : [filter],
+        category: filter === 'timeline' ? undefined : [filter],
         chapterId,
         limit,
         orderBy: rawOrderBy ? JSON.parse(rawOrderBy) : undefined,
@@ -117,7 +117,7 @@ const PostsCard = ({
           query={query}
           category="posts"
           list={list || category?.[0]}
-          title={title}
+          title={displayFilter ? translate(filter) : title}
         />
 
         {displayFilter && (
@@ -129,7 +129,7 @@ const PostsCard = ({
 
         {items.length === 0 && loading === false && (
           <NoPosts
-            category={filter === 'all' ? 'references' : filter}
+            category={filter === 'timeline' ? 'references' : filter}
             isUser={Boolean(userId)}
           />
         )}

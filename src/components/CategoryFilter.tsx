@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-type Filter = Post.Category | 'all';
+type Filter = Post.Category | 'timeline';
 
 interface CategoryFilterProps {
   filterBy: Filter;
@@ -40,7 +40,7 @@ const CategoryFilter = ({ filterBy, onSelect }: CategoryFilterProps) => {
         aria-label={translate('post_filter')}
       >
         <ToggleButton
-          value="all"
+          value="timeline"
           title={translate('all')}
           aria-label={translate('all')}
         >
