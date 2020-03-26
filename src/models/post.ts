@@ -8,6 +8,8 @@ import { SearchIndex } from './search';
  */
 export namespace Post {
   export interface Link {
+    description: string | null;
+    image: string | null;
     title: string;
     url: string;
   }
@@ -64,6 +66,7 @@ export namespace Post {
   export interface Response extends Fields, ContentMetadata.Response {
     editors?: string[];
     editorsData?: Dictionary<Profile.Response>;
+    sites?: Link[];
   }
 
   /**

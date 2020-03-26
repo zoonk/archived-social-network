@@ -6,6 +6,8 @@ import { getDomainFromUrl } from '@zoonk/utils';
  */
 export const serializeLink = (url: string): Post.Link => {
   return {
+    description: null,
+    image: null,
     title: getDomainFromUrl(url),
     url,
   };

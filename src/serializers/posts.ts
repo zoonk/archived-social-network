@@ -22,7 +22,7 @@ export const serializePost = (
     editorsData,
     id: snap.id,
     links: data.links ? data.links.filter(Boolean) : null,
-    sites: serializeLinkCollection(data.links),
+    sites: data.sites || serializeLinkCollection(data.links),
     updatedAt: serializeFirebaseDate(data.updatedAt),
   };
 };

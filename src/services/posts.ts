@@ -6,6 +6,7 @@ import {
   arrayRemove,
   arrayUnion,
   db,
+  functions,
   generateSlug,
   timestamp,
 } from '@zoonk/utils';
@@ -254,4 +255,12 @@ export const getNextLesson = async (
 
   // Get the first lesson from the next chapter.
   return getNextLesson(nextChapterId, null, topicId);
+};
+
+/**
+ * Get a website's metadata.
+ */
+export const getLinkMetadata = async (url: string): Promise<Post.Link> => {
+  const fn = await functions.httpsCallable('generateMetadata')({ url });
+  return fn.data;
 };
