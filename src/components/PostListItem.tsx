@@ -54,7 +54,7 @@ const PostListItem = ({ item }: PostListItemProps) => {
         <div style={{ minWidth: 0 }}>
           <NextLink href="/posts/[id]" as={`/posts/${id}`} passHref>
             <Link color="textPrimary">
-              <Typography gutterBottom={sites.length > 0} variant="h6" noWrap>
+              <Typography gutterBottom={sites.length === 0} variant="h6" noWrap>
                 {title}
               </Typography>
             </Link>
