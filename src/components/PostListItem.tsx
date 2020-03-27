@@ -32,7 +32,8 @@ interface PostListItemProps {
 const PostListItem = ({ item }: PostListItemProps) => {
   const classes = useStyles();
   const { content, cover, id, sites, title } = item;
-  const image = cover || getPostImage(content);
+  const siteImg = sites.find((site) => Boolean(site.image));
+  const image = cover || getPostImage(content) || siteImg?.image;
 
   return (
     <Card variant="outlined">
