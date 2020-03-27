@@ -116,7 +116,7 @@ const PostsCard = ({
           hideLink={hideLink}
           query={query}
           category="posts"
-          list={list || category?.[0]}
+          list={filter === 'timeline' ? undefined : filter}
           title={displayFilter ? translate(filter) : title}
         />
 
