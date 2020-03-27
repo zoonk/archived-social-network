@@ -74,7 +74,7 @@ const PostListItem = ({ item }: PostListItemProps) => {
           ))}
 
           <Typography variant="body2" gutterBottom>
-            {markdownToText(content?.slice(0, 200) || '')}
+            {markdownToText(content).slice(0, 200)}
           </Typography>
 
           <PostListMeta post={item} />
