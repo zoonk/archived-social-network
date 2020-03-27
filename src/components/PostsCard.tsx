@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import { Button, Card, CardContent } from '@material-ui/core';
+import { Button, Card, CardContent, CircularProgress } from '@material-ui/core';
 import { Post, SnackbarAction } from '@zoonk/models';
 import { listPosts } from '@zoonk/services';
 import {
@@ -12,7 +12,6 @@ import {
   theme,
 } from '@zoonk/utils';
 import CategoryCardHeader from './CategoryCardHeader';
-import ListSkeleton from './ListSkeleton';
 import NoPosts from './NoPosts';
 import PostList from './PostList';
 import Snackbar from './Snackbar';
@@ -132,7 +131,7 @@ const PostsCard = ({
           />
         )}
         {items.length > 0 && <PostList items={items} />}
-        {loading && <ListSkeleton items={limit} />}
+        {loading && <CircularProgress />}
 
         {!hideLink && !allowLoadMore && (
           <NextLink
