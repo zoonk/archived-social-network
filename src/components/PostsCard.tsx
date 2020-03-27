@@ -30,7 +30,6 @@ interface PostsCardProps {
   displayFilter?: boolean;
   hideLink?: boolean;
   limit?: number;
-  list?: Post.Category;
   orderBy?: Post.OrderBy[];
   title: string;
   topicId?: string;
@@ -48,7 +47,6 @@ const PostsCard = ({
   displayFilter,
   hideLink,
   limit,
-  list,
   orderBy,
   title,
   topicId,
@@ -61,11 +59,11 @@ const PostsCard = ({
   const { error, get, items, lastVisible, loading } = useLoadMore<
     Post.Snapshot
   >(limit);
-  const query = { category: list || category?.[0], chapterId, topicId };
+  const listSlug = filter === 'timeline' ? undefined : filter;
+  const query = { category: listSlug, chapterId, topicId };
   const canAdd = allowAdd || Boolean(chapterId);
   const href = removeTrailingSlash(pathname) || '';
   const as = removeTrailingSlash(asPath) || '';
-  const listSlug = list || category?.[0] || 'posts';
 
   /**
    * React runs a shallow comparison only, so we're converting
@@ -77,7 +75,7 @@ const PostsCard = ({
   const loadMore = () => {
     get({
       data: listPosts({
-        category: filter === 'timeline' ? undefined : [filter],
+        category: listSlug ? [listSlug] : undefined,
         chapterId,
         lastVisible,
         limit,
@@ -91,7 +89,7 @@ const PostsCard = ({
   useEffect(() => {
     get({
       data: listPosts({
-        category: filter === 'timeline' ? undefined : [filter],
+        category: listSlug ? [listSlug] : undefined,
         chapterId,
         limit,
         orderBy: rawOrderBy ? JSON.parse(rawOrderBy) : undefined,
@@ -100,7 +98,7 @@ const PostsCard = ({
       }),
       replace: true,
     });
-  }, [filter, chapterId, get, limit, rawOrderBy, topicId, userId]);
+  }, [chapterId, get, limit, listSlug, rawOrderBy, topicId, userId]);
 
   useEffect(() => {
     if (error) {
@@ -116,7 +114,7 @@ const PostsCard = ({
           hideLink={hideLink}
           query={query}
           category="posts"
-          list={filter === 'timeline' ? undefined : filter}
+          list={listSlug}
           title={displayFilter ? translate(filter) : title}
         />
 
