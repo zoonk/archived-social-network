@@ -95,6 +95,7 @@ const PostCreate = ({ category, chapterId, topicId }: PostCreateProps) => {
         <CategorySelector active={postCategory} onSelect={setCategory} />
       )}
       <PostForm
+        category={postCategory}
         topicIds={topicIds}
         saving={snackbar?.type === 'progress' || snackbar?.type === 'success'}
         onSubmit={handleSubmit}

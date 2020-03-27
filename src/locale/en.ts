@@ -123,6 +123,7 @@ const translate: TranslationFn = (key, args) => {
         ? `${args?.likes} like`
         : `${args?.likes} likes`,
     link_helper: 'Add a link to a reference',
+    link_invalid: 'Link invalid',
     link: 'Link',
     load_more: 'Load more',
     login: 'Login',

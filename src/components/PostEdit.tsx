@@ -56,6 +56,7 @@ const PostEdit = ({ data }: PostEditProps) => {
   return (
     <Fragment>
       <PostForm
+        category={data.category}
         data={data}
         saving={snackbar?.type === 'progress'}
         onDelete={handleDelete}

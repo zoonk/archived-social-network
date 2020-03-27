@@ -114,6 +114,7 @@ export type TranslationKeys =
   | 'liked'
   | 'likes_count'
   | 'link_helper'
+  | 'link_invalid'
   | 'link'
   | 'load_more'
   | 'login_required'

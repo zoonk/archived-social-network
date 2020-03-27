@@ -22,7 +22,7 @@ const LinkFormField = ({ links, onChange }: LinkFormFieldProps) => {
 
         return (
           <Grid container spacing={2} key={`post-url-${index}`}>
-            <Grid item xs={12} sm={10} md={11}>
+            <Grid item xs={9} sm={10}>
               <TextField
                 value={value || ''}
                 onChange={(e) => onChange(index, e.target.value)}
@@ -36,7 +36,7 @@ const LinkFormField = ({ links, onChange }: LinkFormFieldProps) => {
               />
             </Grid>
 
-            <Grid item xs={3} sm={2} md={1}>
+            <Grid item xs={3} sm={2}>
               {isLast && value.length > 5 && (
                 <IconButton
                   color="primary"

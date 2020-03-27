@@ -125,6 +125,7 @@ const translate: TranslationFn = (key, args) => {
         ? `${args?.likes} curtida`
         : `${args?.likes} curtidas`,
     link_helper: 'Link para uma referência',
+    link_invalid: 'Link inválido',
     link: 'Link',
     load_more: 'Carregar mais',
     login: 'Entrar',
