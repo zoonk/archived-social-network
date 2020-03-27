@@ -1,17 +1,12 @@
 import { useContext, useEffect, useState } from 'react';
 import NextLink from 'next/link';
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Typography,
-} from '@material-ui/core';
+import { Button, Card, CardContent, Typography } from '@material-ui/core';
 import { Post } from '@zoonk/models';
 import { getNextLesson } from '@zoonk/services';
 import { containsYoutubeUrl, GlobalContext, theme } from '@zoonk/utils';
 import EditorView from './EditorView';
 import ItemActions from './ItemActions';
+import LinkList from './LinkList';
 import TopicChips from './TopicChips';
 import YoutubePlayer from './YoutubePlayer';
 
@@ -71,25 +66,8 @@ const PostView = ({ chapterId, item, topicId }: PostViewProps) => {
           likes={likes}
         />
         <EditorView content={content} />
+        <LinkList sites={sites} />
       </CardContent>
-
-      {links && links.length > 0 && (
-        <CardActions>
-          {sites.map((site) => (
-            <Button
-              key={site.url}
-              component="a"
-              size="small"
-              color="primary"
-              href={site.url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {site.title}
-            </Button>
-          ))}
-        </CardActions>
-      )}
 
       {links && youtube && <YoutubePlayer id={youtube} />}
 

@@ -1,15 +1,10 @@
 import { useContext, useEffect, useState } from 'react';
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Typography,
-} from '@material-ui/core';
+import { Button, Card, CardContent, Typography } from '@material-ui/core';
 import { Post } from '@zoonk/models';
-import { serializeLinkCollection } from '@zoonk/serializers';
+import { getLinkMetadata } from '@zoonk/services';
 import { containsYoutubeUrl, GlobalContext } from '@zoonk/utils';
 import EditorView from './EditorView';
+import LinkList from './LinkList';
 import TopicChips from './TopicChips';
 import YoutubePlayer from './YoutubePlayer';
 
@@ -24,13 +19,20 @@ interface PostPreviewProps {
 const PostPreview = ({ data, onToggleExpand }: PostPreviewProps) => {
   const { translate } = useContext(GlobalContext);
   const [expand, setExpand] = useState<boolean>(false);
+  const [sites, setSites] = useState<Post.Link[]>([]);
   const { content, links, title, topics } = data;
-  const sites = serializeLinkCollection(links);
   const youtube = links?.find((link) => containsYoutubeUrl(link));
 
   useEffect(() => {
     if (onToggleExpand) onToggleExpand(expand);
   }, [expand, onToggleExpand]);
+
+  useEffect(() => {
+    if (links && links.length > 0) {
+      const promises = links.map((link) => getLinkMetadata(link));
+      Promise.all(promises).then(setSites);
+    }
+  }, [links]);
 
   return (
     <div>
@@ -50,26 +52,8 @@ const PostPreview = ({ data, onToggleExpand }: PostPreviewProps) => {
           </Typography>
           <TopicChips items={topics || []} />
           <EditorView content={content || ''} />
+          <LinkList sites={sites} />
         </CardContent>
-
-        {links && links.length > 0 && (
-          <CardActions>
-            {sites.map((site) => (
-              <Button
-                key={site.url}
-                component="a"
-                size="small"
-                color="primary"
-                href={site.url}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {site.title}
-              </Button>
-            ))}
-          </CardActions>
-        )}
-
         {links && youtube && <YoutubePlayer id={youtube} />}
       </Card>
 
