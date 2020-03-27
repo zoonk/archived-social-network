@@ -9,6 +9,7 @@ export const getMetadataFromUrl = async (url: string): Promise<Post.Link> => {
 
   // Remove trailling slash (/) from URL
   const link = url.replace(/\/+$/, '');
+  let domain = link;
   const title = $('title').text();
   const description = $('meta[name="description"]').attr('content');
   const ogTitle = $('meta[property="og:title"]').attr('content');
@@ -19,16 +20,22 @@ export const getMetadataFromUrl = async (url: string): Promise<Post.Link> => {
   let icon = $('link[rel="icon"]').attr('href');
   let appleIcon = $('link[rel="apple-touch-icon"]').attr('href');
 
+  try {
+    domain = new URL(link).host;
+  } catch (e) {
+    domain = link;
+  }
+
   if (shortcut?.startsWith('/')) {
-    shortcut = link + shortcut;
+    shortcut = domain + shortcut;
   }
 
   if (icon?.startsWith('/')) {
-    icon = link + icon;
+    icon = domain + icon;
   }
 
   if (appleIcon?.startsWith('/')) {
-    appleIcon = link + appleIcon;
+    appleIcon = domain + appleIcon;
   }
 
   const image = ogImage || appleIcon || shortcut || icon;
