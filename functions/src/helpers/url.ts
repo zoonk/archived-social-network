@@ -6,6 +6,7 @@ export const getMetadataFromUrl = async (url: string): Promise<Post.Link> => {
   const response = await fetch(url);
   const html = await response.text();
   const $ = cheerio.load(html);
+
   // Remove trailling slash (/) from URL
   const link = url.replace(/\/+$/, '');
   const title = $('title').text();
@@ -30,9 +31,11 @@ export const getMetadataFromUrl = async (url: string): Promise<Post.Link> => {
     appleIcon = link + appleIcon;
   }
 
+  const image = ogImage || appleIcon || shortcut || icon;
+
   return {
     description: description || ogDesc || null,
-    image: ogImage || appleIcon || shortcut || icon || null,
+    image: image ? image.replace('http://', 'https://') : null,
     title: ogTitle || title || 'undefined',
     url: canonical || url,
   };
