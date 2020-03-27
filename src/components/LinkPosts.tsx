@@ -15,8 +15,13 @@ interface LinkPostsProps {
 const LinkPosts = ({ category, topicId }: LinkPostsProps) => {
   const { translate } = useContext(GlobalContext);
   const title = translate(category || 'posts');
-  const listPages = ['examples', 'posts', 'courses', 'books', 'questions'];
-  const page = listPages.includes(category || '') ? category : 'posts';
+
+  /**
+   * Page to list all posts. When there's no category or it's a lesson,
+   * then we go to a general "posts" page. Otherwise, navigate to a
+   * page containing all posts from the specified category.
+   */
+  const page = !category || category === 'lessons' ? 'posts' : category;
 
   const href = topicId ? `/topics/[id]/${page}` : `/${page}`;
   const as = topicId ? `/topics/${topicId}/${page}` : `/${page}`;
