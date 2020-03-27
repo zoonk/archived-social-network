@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { NextPage } from 'next';
-import { Container, Grid } from '@material-ui/core';
+import NextLink from 'next/link';
+import { Button, Container, Grid, Hidden } from '@material-ui/core';
 import ItemCredits from '@zoonk/components/ItemCredits';
 import Meta from '@zoonk/components/Meta';
 import PostComments from '@zoonk/components/PostComments';
@@ -12,6 +13,7 @@ import {
   analytics,
   appLanguage,
   getPostImage,
+  GlobalContext,
   markdownToText,
   preRender,
   theme,
@@ -22,6 +24,7 @@ interface PostPageProps {
 }
 
 const PostPage: NextPage<PostPageProps> = ({ data }) => {
+  const { translate } = useContext(GlobalContext);
   const {
     category,
     comments,
@@ -57,6 +60,19 @@ const PostPage: NextPage<PostPageProps> = ({ data }) => {
         </Grid>
 
         <Grid item xs={12} sm={3} md={4}>
+          <Hidden xsDown>
+            <NextLink href="/posts/add" passHref>
+              <Button
+                component="a"
+                fullWidth
+                variant="outlined"
+                color="primary"
+              >
+                {translate('post_add')}
+              </Button>
+            </NextLink>
+            <div style={{ margin: theme.spacing(1) }} />
+          </Hidden>
           <ItemCredits editors={editors} />
         </Grid>
       </Grid>
