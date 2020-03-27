@@ -13,16 +13,26 @@ import {
   getPostImage,
   isInternal,
   markdownToText,
-  theme,
 } from '@zoonk/utils';
 import PostListMeta from './PostListMeta';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   content: {
     '&:last-child': {
       paddingBottom: 16,
     },
   },
+  image: {
+    width: '100px',
+    minWidth: '100px',
+    marginRight: theme.spacing(1),
+    [theme.breakpoints.down('xs')]: {
+      width: '40px',
+      minWidth: '40px',
+      maxHeight: '40px',
+    },
+  },
+  link: { marginRight: theme.spacing(1) },
 }));
 
 interface PostListItemProps {
@@ -41,12 +51,10 @@ const PostListItem = ({ item }: PostListItemProps) => {
         {image && (
           <NextLink href="/posts/[id]" as={`/posts/${id}`} passHref>
             <a
+              className={classes.image}
               style={{
                 background: `url(${image}) no-repeat center center`,
                 backgroundSize: 'cover',
-                width: '100px',
-                minWidth: '100px',
-                marginRight: theme.spacing(1),
               }}
             />
           </NextLink>
@@ -67,7 +75,7 @@ const PostListItem = ({ item }: PostListItemProps) => {
               href={url}
               target={isInternal(url) ? '_self' : '_blank'}
               rel={isInternal(url) ? undefined : 'noopener noreferrer'}
-              style={{ marginRight: theme.spacing(1) }}
+              className={classes.link}
             >
               {getDomainFromUrl(url)}
             </Link>
