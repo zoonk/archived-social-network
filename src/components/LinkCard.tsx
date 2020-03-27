@@ -5,7 +5,7 @@ import {
   CardContent,
   Typography,
 } from '@material-ui/core';
-import { markdownToText, theme } from '@zoonk/utils';
+import { isInternal, markdownToText, theme } from '@zoonk/utils';
 
 interface LinkCardProps {
   site: Post.Link;
@@ -13,15 +13,14 @@ interface LinkCardProps {
 
 const LinkCard = ({ site }: LinkCardProps) => {
   const { description, image, title, url } = site;
-  const isInternal = url.includes('zoonk.org') || url.startsWith('/');
 
   return (
     <Card variant="outlined">
       <CardActionArea
         component="a"
         href={url}
-        target={isInternal ? '_self' : '_blank'}
-        rel={isInternal ? undefined : 'noopener noreferrer'}
+        target={isInternal(url) ? '_self' : '_blank'}
+        rel={isInternal(url) ? undefined : 'noopener noreferrer'}
       >
         <CardContent style={{ display: 'flex' }}>
           {image && (

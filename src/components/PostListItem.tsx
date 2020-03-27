@@ -1,51 +1,85 @@
+/* eslint-disable jsx-a11y/anchor-has-content */
+import { Post } from '@zoonk/models';
+import NextLink from 'next/link';
 import {
-  Avatar,
+  Card,
+  CardContent,
   Link,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
+  makeStyles,
   Typography,
 } from '@material-ui/core';
-import NextLink from 'next/link';
-import { Post } from '@zoonk/models';
-import { getPostImage, theme } from '@zoonk/utils';
-import PostIcon from './PostIcon';
+import {
+  getDomainFromUrl,
+  getPostImage,
+  isInternal,
+  markdownToText,
+  theme,
+} from '@zoonk/utils';
 import PostListMeta from './PostListMeta';
 
+const useStyles = makeStyles(() => ({
+  content: {
+    '&:last-child': {
+      paddingBottom: 16,
+    },
+  },
+}));
+
 interface PostListItemProps {
-  divider?: boolean;
   item: Post.Get;
 }
 
-/**
- * Display a single post as a list item.
- */
-const PostListItem = ({ divider, item }: PostListItemProps) => {
-  const { category, content, cover, title } = item;
+const PostListItem = ({ item }: PostListItemProps) => {
+  const classes = useStyles();
+  const { content, cover, id, sites, title } = item;
   const image = cover || getPostImage(content);
 
   return (
-    <ListItem alignItems="flex-start" divider={divider} disableGutters>
-      <ListItemAvatar>
-        <Avatar
-          src={image || undefined}
-          style={{ backgroundColor: theme.palette.primary.main }}
-        >
-          <PostIcon category={category} />
-        </Avatar>
-      </ListItemAvatar>
-      <ListItemText
-        disableTypography
-        primary={
-          <NextLink href="/posts/[id]" as={`/posts/${item.id}`} passHref>
+    <Card variant="outlined">
+      <CardContent style={{ display: 'flex' }} className={classes.content}>
+        {image && (
+          <NextLink href="/posts/[id]" as={`/posts/${id}`} passHref>
+            <a
+              style={{
+                background: `url(${image}) no-repeat center center`,
+                backgroundSize: 'cover',
+                width: '100px',
+                minWidth: '100px',
+                marginRight: theme.spacing(1),
+              }}
+            />
+          </NextLink>
+        )}
+
+        <div style={{ minWidth: 0 }}>
+          <NextLink href="/posts/[id]" as={`/posts/${id}`} passHref>
             <Link color="textPrimary">
-              <Typography style={{ fontSize: '1.15rem' }}>{title}</Typography>
+              <Typography gutterBottom={sites.length > 0} variant="h6" noWrap>
+                {title}
+              </Typography>
             </Link>
           </NextLink>
-        }
-        secondary={<PostListMeta post={item} />}
-      />
-    </ListItem>
+
+          {sites.slice(0, 3).map(({ url }) => (
+            <Link
+              key={url}
+              href={url}
+              target={isInternal(url) ? '_self' : '_blank'}
+              rel={isInternal(url) ? undefined : 'noopener noreferrer'}
+              style={{ marginRight: theme.spacing(1) }}
+            >
+              {getDomainFromUrl(url)}
+            </Link>
+          ))}
+
+          <Typography variant="body2" gutterBottom>
+            {markdownToText(content?.slice(0, 200) || '')}
+          </Typography>
+
+          <PostListMeta post={item} />
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 

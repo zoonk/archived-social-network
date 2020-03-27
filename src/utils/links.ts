@@ -22,3 +22,10 @@ export const getDomainFromUrl = (url: string): string => {
     return 'unknown';
   }
 };
+
+/**
+ * Check if an URL is internal or external.
+ */
+export const isInternal = (url: string): boolean => {
+  return url.includes('zoonk.org') || url.startsWith('/');
+};
