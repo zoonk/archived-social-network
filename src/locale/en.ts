@@ -170,6 +170,7 @@ const translate: TranslationFn = (key, args) => {
     posts: 'Posts',
     preview: 'Preview',
     preview_quit: 'Back to the editor',
+    previous_lesson: 'Previous lesson',
     privacy_policy: 'Privacy policy',
     pro: 'Pro',
     profile: 'Profile',

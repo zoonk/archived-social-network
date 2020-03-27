@@ -173,6 +173,7 @@ const translate: TranslationFn = (key, args) => {
     posts: 'Posts',
     preview: 'Visualizar',
     preview_quit: 'Voltar ao editor',
+    previous_lesson: 'Lição anterior',
     privacy_policy: 'Política de privacidade',
     pro: 'Profissional',
     profile: 'Perfil',

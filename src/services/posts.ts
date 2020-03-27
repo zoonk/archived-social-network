@@ -258,6 +258,43 @@ export const getNextLesson = async (
 };
 
 /**
+ * Get previous lesson from a chapter.
+ */
+export const getPreviousLesson = async (
+  chapterId: string,
+  postId: string | null,
+  topicId: string,
+): Promise<Post.NextLesson | null> => {
+  // Get the previous lesson from this chapter.
+  const { lessons } = await getChapter(chapterId);
+  const postOrder = lessons.findIndex((lesson) => lesson === postId);
+  const previousPost = postOrder - 1;
+
+  // If there's another lesson before the current one, then use its ID.
+  if (lessons[previousPost]) {
+    return { chapterId, lessonId: lessons[previousPost] };
+  }
+
+  /**
+   * If the current chapter doesn't have a previous lesson, then
+   * get the previous chapter for this topic.
+   */
+  const { chapters } = await getTopic(topicId);
+
+  if (!chapters) return null;
+
+  const chapterOrder = chapters.findIndex((chapter) => chapter === chapterId);
+  const previousChapter = chapterOrder - 1;
+  const previousChapterId = chapters[previousChapter];
+
+  // Return `null` when this is the last chapter.
+  if (!previousChapterId) return null;
+
+  // Get the first lesson from the next chapter.
+  return getPreviousLesson(previousChapterId, null, topicId);
+};
+
+/**
  * Get a website's metadata.
  */
 export const getLinkMetadata = async (url: string): Promise<Post.Link> => {

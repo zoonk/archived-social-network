@@ -161,6 +161,7 @@ export type TranslationKeys =
   | 'posts'
   | 'preview'
   | 'preview_quit'
+  | 'previous_lesson'
   | 'privacy_policy'
   | 'pro'
   | 'profile'

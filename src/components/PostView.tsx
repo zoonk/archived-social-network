@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import NextLink from 'next/link';
 import { Button, Card, CardContent, Typography } from '@material-ui/core';
 import { Post } from '@zoonk/models';
-import { getNextLesson } from '@zoonk/services';
+import { getNextLesson, getPreviousLesson } from '@zoonk/services';
 import { containsYoutubeUrl, GlobalContext, theme } from '@zoonk/utils';
 import EditorView from './EditorView';
 import ItemActions from './ItemActions';
@@ -33,6 +33,7 @@ const PostView = ({ chapterId, item, topicId }: PostViewProps) => {
     topics,
   } = item;
   const youtube = links?.find((link) => containsYoutubeUrl(link));
+  const [previous, setPrevious] = useState<Post.NextLesson | null>(null);
   const [next, setNext] = useState<Post.NextLesson | null>(null);
   const isAuthoral = category === 'posts' || category === 'questions';
   const isEditable = !isAuthoral || createdById === user?.uid;
@@ -43,6 +44,20 @@ const PostView = ({ chapterId, item, topicId }: PostViewProps) => {
     if (category === 'lessons' && chapterId && topicId) {
       getNextLesson(chapterId, id, topicId).then(
         (res) => active && setNext(res),
+      );
+    }
+
+    return () => {
+      active = false;
+    };
+  }, [category, chapterId, id, topicId]);
+
+  useEffect(() => {
+    let active = true;
+
+    if (category === 'lessons' && chapterId && topicId) {
+      getPreviousLesson(chapterId, id, topicId).then(
+        (res) => active && setPrevious(res),
       );
     }
 
@@ -67,17 +82,41 @@ const PostView = ({ chapterId, item, topicId }: PostViewProps) => {
         />
         <EditorView content={content} />
         <LinkList sites={sites} />
-      </CardContent>
 
-      {links && youtube && <YoutubePlayer id={youtube} />}
+        {links && youtube && <YoutubePlayer id={youtube} />}
 
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          margin: theme.spacing(2),
-        }}
-      >
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            margin: theme.spacing(2, 0),
+          }}
+        >
+          {previous && (
+            <NextLink
+              href="/topics/[id]/chapters/[chapterId]/[lessonId]"
+              as={`/topics/${topicId}/chapters/${previous.chapterId}/${previous.lessonId}`}
+              passHref
+            >
+              <Button component="a" color="primary" variant="contained">
+                {translate('previous_lesson')}
+              </Button>
+            </NextLink>
+          )}
+
+          {next && (
+            <NextLink
+              href="/topics/[id]/chapters/[chapterId]/[lessonId]"
+              as={`/topics/${topicId}/chapters/${next.chapterId}/${next.lessonId}`}
+              passHref
+            >
+              <Button component="a" color="primary" variant="contained">
+                {translate('next_lesson')}
+              </Button>
+            </NextLink>
+          )}
+        </div>
+
         {isEditable && (
           <NextLink href="/posts/[id]/edit" as={`/posts/${id}/edit`} passHref>
             <Button component="a" color="primary">
@@ -85,19 +124,7 @@ const PostView = ({ chapterId, item, topicId }: PostViewProps) => {
             </Button>
           </NextLink>
         )}
-
-        {next && (
-          <NextLink
-            href="/topics/[id]/chapters/[chapterId]/[lessonId]"
-            as={`/topics/${topicId}/chapters/${next.chapterId}/${next.lessonId}`}
-            passHref
-          >
-            <Button component="a" color="primary" variant="contained">
-              {translate('next_lesson')}
-            </Button>
-          </NextLink>
-        )}
-      </div>
+      </CardContent>
     </Card>
   );
 };
