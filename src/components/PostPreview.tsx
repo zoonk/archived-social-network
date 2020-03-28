@@ -29,7 +29,9 @@ const PostPreview = ({ data, onToggleExpand }: PostPreviewProps) => {
 
   useEffect(() => {
     if (links && links.length > 0) {
-      const promises = links.map((link) => getLinkMetadata(link));
+      const promises = links
+        .filter(Boolean)
+        .map((link) => getLinkMetadata(link));
       Promise.all(promises).then(setSites);
     }
   }, [links]);
