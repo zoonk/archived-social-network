@@ -1,6 +1,5 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { throttle } from 'lodash';
-import { useRouter } from 'next/router';
 import { Grid, makeStyles, TextField, Typography } from '@material-ui/core';
 import { Post } from '@zoonk/models';
 import { getLinkMetadata } from '@zoonk/services';
@@ -36,8 +35,6 @@ const ReferencesForm = ({
   onSubmit,
 }: ReferencesFormProps) => {
   const { translate } = useContext(GlobalContext);
-  const { query } = useRouter();
-  const category = String(query.category) as Post.Category;
   const classes = useStyles();
   const [content, setContent] = useState<string>(data?.content || '');
   const [cover, setCover] = useState<string | null>(data?.cover || null);
@@ -46,8 +43,6 @@ const ReferencesForm = ({
   const [link, setLink] = useState<string>(data?.links?.[0] || '');
   const [linkValid, setLinkValid] = useState<boolean>();
   const valid = content.length > 0 && title.length > 0 && topics.length > 0;
-  const lessonCategories = ['examples', 'lessons'];
-  const isLesson = lessonCategories.includes(category);
 
   const throttled = useRef(
     throttle((url: string) => {
@@ -58,13 +53,6 @@ const ReferencesForm = ({
       });
     }, 1000),
   );
-
-  // Search existing posts when creating a new one.
-  useEffect(() => {
-    if (!data && isLesson && title.length > 3) {
-      throttled.current(title);
-    }
-  }, [data, isLesson, title]);
 
   // Add the current topicId when adding a new item.
   useEffect(() => {
