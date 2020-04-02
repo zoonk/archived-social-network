@@ -1,49 +1,37 @@
 import cheerio from 'cheerio';
-import fetch from 'isomorphic-unfetch';
+import fetch from 'node-fetch';
+import url from 'url';
 import { Post } from '@zoonk/models';
 
-export const getMetadataFromUrl = async (url: string): Promise<Post.Link> => {
-  const response = await fetch(url);
+export const getMetadataFromUrl = async (link: string): Promise<Post.Link> => {
+  const response = await fetch(link);
   const html = await response.text();
   const $ = cheerio.load(html);
 
-  // Remove trailling slash (/) from URL
-  const link = url.replace(/\/+$/, '');
-  let domain = link;
+  // Convert http to https
+  const pageAddress = link.replace('http://', 'https://');
+
   const title = $('title').text();
   const description = $('meta[name="description"]').attr('content');
   const ogTitle = $('meta[property="og:title"]').attr('content');
   const ogDesc = $('meta[property="og:description"]').attr('content');
   const ogImage = $('meta[property="og:image"]').attr('content');
   const canonical = $('link[rel="canonical"]').attr('href');
-  let shortcut = $('link[rel="shortcut icon"]').attr('href');
-  let icon = $('link[rel="icon"]').attr('href');
-  let appleIcon = $('link[rel="apple-touch-icon"]').attr('href');
+  const shortcut = $('link[rel="shortcut icon"]').attr('href');
+  const icon = $('link[rel="icon"]').attr('href');
+  const appleIcon = $('link[rel="apple-touch-icon"]').attr('href');
 
-  try {
-    domain = new URL(link).host;
-  } catch (e) {
-    domain = link;
+  let image = ogImage || appleIcon || shortcut || icon || null;
+
+  if (image) {
+    image = image.replace('http://', 'https://');
+    image = url.resolve(pageAddress, image);
   }
-
-  if (shortcut?.startsWith('/')) {
-    shortcut = domain + shortcut;
-  }
-
-  if (icon?.startsWith('/')) {
-    icon = domain + icon;
-  }
-
-  if (appleIcon?.startsWith('/')) {
-    appleIcon = domain + appleIcon;
-  }
-
-  const image = ogImage || appleIcon || shortcut || icon;
 
   return {
-    description: description || ogDesc || null,
-    image: image ? image.replace('http://', 'https://') : null,
+    description: ogDesc || description || null,
+    image,
     title: ogTitle || title || 'undefined',
-    url: canonical || url,
+    url: canonical || pageAddress,
   };
 };

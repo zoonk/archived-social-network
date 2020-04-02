@@ -1,4 +1,4 @@
-import fetch from 'isomorphic-unfetch';
+import fetch from 'node-fetch';
 import { UILanguage, WikipediaPage, WikipediaSearch } from '@zoonk/models';
 
 export const getWikipediaPage = async (
