@@ -226,8 +226,8 @@ const translate: TranslationFn = (key, args) => {
     seo_examples_desc:
       'Find real-life examples about everything. See how things work in everyday life.',
     seo_home_desc:
-      'Learn anything online for free. Zoonk is a social network for learning (for students and teachers). A social network to study online.',
-    seo_home_title: 'Zoonk: The social network for learning',
+      'Share and find the best learning resources on Zoonk. Share your knowledge with others or learn anything for free online.',
+    seo_home_title: 'Zoonk: Learning resources online',
     seo_login_desc: 'How to sign in to my Zoonk account.',
     seo_posts_desc:
       'Find posts and articles about any subject. Learn by reading free posts online.',

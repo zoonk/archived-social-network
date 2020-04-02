@@ -228,8 +228,8 @@ const translate: TranslationFn = (key, args) => {
     seo_examples_desc:
       'Como a teoria funciona na prática. Exemplos de como as coisas funcionam no mundo real.',
     seo_home_desc:
-      'Aprenda sobre qualquer assunto online. Como aprender de graça online. Zoonk é uma rede social para estudar, uma rede social para estudantes e professores.',
-    seo_home_title: 'Zoonk: A rede social da educação',
+      'Compartilhe o seu conhecimento com outras pessoas no Zoonk. Encontre as melhores fontes de informação para aprender qualquer coisa de graça online.',
+    seo_home_title: 'Zoonk: Compartilhe o seu conhecimento',
     seo_login_desc: 'Como fazer login na minha conta do Zoonk.',
     seo_posts_desc:
       'Encontre publicações e artigos sobre qualquer assunto. Aprenda lendo artigos online de graça.',
