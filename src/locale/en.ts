@@ -281,7 +281,7 @@ const translate: TranslationFn = (key, args) => {
       'Zoonk is a free, open-source website because we believe knowledge should be free. When you share your knowledge, you’re improving other people’s lives.\n\nThere are many ways you can teach something on Zoonk: from creating lessons to explain a subject you know to sharing a course or article you found interesting.\n\nSee below how to get started:',
     teach_lesson_desc: `Many people don’t know how to start learning something. Help them by creating lessons. Here are some of the things you can do:\n- Check if other people have created [chapters for ${args?.title}](/topics/${args?.id}). If they haven’t, then start by creating the first chapter yourself. Create an introduction to start teaching your favorite subject.\n- Every chapter supports up to 20 lessons. You can create new lessons or improving the existing ones. Zoonk is collaborative: anyone can improve existing lessons.`,
     teach_lesson_title: 'Create a lesson',
-    teach_ref_desc: `Do you remember a cool link or reference someone shared with you? Then, [share it with other people](/posts/add?category=posts&topicId=${args?.id}) and help them find the best sources about ${args?.title}.`,
+    teach_ref_desc: `Do you remember a cool link or reference someone shared with you? Then, [share it with other people](/posts/add?category=references&topicId=${args?.id}) and help them find the best sources about ${args?.title}.`,
     teach_ref_title: 'Share a reference or link',
     teach_title: 'Share your knowledge',
     teach: 'Teach',
