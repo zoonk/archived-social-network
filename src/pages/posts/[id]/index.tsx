@@ -8,7 +8,7 @@ import PostComments from '@zoonk/components/PostComments';
 import PostsBreadcrumb from '@zoonk/components/PostsBreadcrumb';
 import PostView from '@zoonk/components/PostView';
 import { Post } from '@zoonk/models';
-import { getPost } from '@zoonk/services';
+import { getPost, markPostAsRead } from '@zoonk/services';
 import {
   analytics,
   appLanguage,
@@ -24,7 +24,7 @@ interface PostPageProps {
 }
 
 const PostPage: NextPage<PostPageProps> = ({ data }) => {
-  const { translate } = useContext(GlobalContext);
+  const { translate, user } = useContext(GlobalContext);
   const {
     category,
     comments,
@@ -41,6 +41,12 @@ const PostPage: NextPage<PostPageProps> = ({ data }) => {
   useEffect(() => {
     analytics().setCurrentScreen('posts_view');
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      markPostAsRead(id, user.uid);
+    }
+  }, [id, user]);
 
   return (
     <Container component="main">

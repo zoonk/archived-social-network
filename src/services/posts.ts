@@ -223,6 +223,16 @@ export const togglePostProgress = (
 };
 
 /**
+ * Mark a post as read.
+ */
+export const markPostAsRead = (
+  postId: string,
+  userId: string,
+): Promise<void> => {
+  return db.doc(`posts/${postId}/progress/${userId}`).update({ read: true });
+};
+
+/**
  * Get next lesson from a chapter.
  */
 export const getNextLesson = async (

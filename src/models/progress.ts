@@ -1,3 +1,7 @@
+export interface PostProgress {
+  read?: boolean;
+}
+
 export namespace ChapterProgress {
   export interface Create {
     examples?: firebase.firestore.FieldValue;

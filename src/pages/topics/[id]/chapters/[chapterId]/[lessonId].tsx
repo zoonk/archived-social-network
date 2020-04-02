@@ -8,7 +8,12 @@ import Meta from '@zoonk/components/Meta';
 import PostComments from '@zoonk/components/PostComments';
 import PostView from '@zoonk/components/PostView';
 import { Post } from '@zoonk/models';
-import { getChapterLive, getPost, togglePostProgress } from '@zoonk/services';
+import {
+  getChapterLive,
+  getPost,
+  markPostAsRead,
+  togglePostProgress,
+} from '@zoonk/services';
 import {
   analytics,
   appLanguage,
@@ -49,6 +54,7 @@ const LessonPage: NextPage<PostPageProps> = ({ chapterId, data, topicId }) => {
       (category === 'lessons' || category === 'examples')
     ) {
       togglePostProgress(id, chapterId, category, false, user.uid);
+      markPostAsRead(id, user.uid);
     }
   }, [category, chapterId, id, user]);
 
