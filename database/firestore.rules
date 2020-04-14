@@ -163,6 +163,9 @@ service cloud.firestore {
         || isAdmin()
         || isModerator() 
       ;
+      match /progress/{userId} {
+        allow get, create, update: if request.auth.uid == userId;
+      }
     }
 
     match /profile/{createdById} {

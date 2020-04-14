@@ -229,7 +229,9 @@ export const markPostAsRead = (
   postId: string,
   userId: string,
 ): Promise<void> => {
-  return db.doc(`posts/${postId}/progress/${userId}`).update({ read: true });
+  return db
+    .doc(`posts/${postId}/progress/${userId}`)
+    .set({ read: true }, { merge: true });
 };
 
 /**
