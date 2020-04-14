@@ -127,7 +127,7 @@ const PostsForm = ({
               </Grid>
             </Grid>
 
-            {isLesson && <PostSelector posts={search} />}
+            {isLesson && content.length < 3 && <PostSelector posts={search} />}
 
             <TextField
               required
