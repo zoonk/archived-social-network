@@ -7,31 +7,17 @@ import 'firebase/performance';
 import 'firebase/storage';
 
 import { FirebaseConfig } from '@zoonk/models';
-import { isProduction } from './settings';
 
-const staging: FirebaseConfig = {
-  apiKey: 'AIzaSyCNvzCjoKqNgUOkwwipciB4fHhfNf3jtRg',
-  authDomain: 'zoonk-dev.firebaseapp.com',
-  databaseURL: 'https://zoonk-dev.firebaseio.com',
-  projectId: 'zoonk-dev',
-  storageBucket: 'zoonk-dev.appspot.com',
-  measurementId: 'G-PHVLSLNNX4',
-  messagingSenderId: '473766783868',
-  appId: '1:473766783868:web:688ae11537e26105',
+const firebaseConfig: FirebaseConfig = {
+  apiKey: process.env.FIREBASE_API_KEY as string,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN as string,
+  databaseURL: process.env.FIREBASE_DB_URL as string,
+  projectId: process.env.FIREBASE_PROJECT_ID as string,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET as string,
+  messagingSenderId: process.env.FIREBASE_MESSAGING_ID as string,
+  appId: process.env.FIREBASE_APP_ID as string,
+  measurementId: process.env.FIREBASE_MEASUREMENT_ID as string,
 };
-
-const production: FirebaseConfig = {
-  apiKey: 'AIzaSyCR4btXSoqdEe1KYp7uQq6mayuFkrT3T_8',
-  authDomain: 'zoonk-production.firebaseapp.com',
-  databaseURL: 'https://zoonk-production.firebaseio.com',
-  projectId: 'zoonk-production',
-  storageBucket: 'zoonk-production.appspot.com',
-  messagingSenderId: '1051955499324',
-  appId: '1:1051955499324:web:3b06206a99682aab284e39',
-  measurementId: 'G-E2GV8BD0VX',
-};
-
-const firebaseConfig: FirebaseConfig = isProduction ? production : staging;
 
 // Check if the Firebase SDK has been initialized.
 if (!firebase.apps.length) {

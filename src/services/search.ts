@@ -1,12 +1,10 @@
 import algolia from 'algoliasearch';
 import { SearchResponse } from '@algolia/client-search';
 import { Chapter, Post, SearchResult } from '@zoonk/models';
-import { analytics, appLanguage, isProduction } from '@zoonk/utils';
+import { analytics, appLanguage } from '@zoonk/utils';
 
-const ALGOLIA_APP_ID = isProduction ? 'CEHDTPZ5VM' : 'J75DV0NKA3';
-const ALGOLIA_SEARCH_KEY = isProduction
-  ? '2c40ec50e48b4dce56529dcab5ee2b62'
-  : '3d7f98ebda2a8a9276ce7755dd403556';
+const ALGOLIA_APP_ID = process.env.ALGOLIA_APP_ID as string;
+const ALGOLIA_SEARCH_KEY = process.env.ALGOLIA_SEARCH_KEY as string;
 
 const client = algolia(ALGOLIA_APP_ID, ALGOLIA_SEARCH_KEY);
 
