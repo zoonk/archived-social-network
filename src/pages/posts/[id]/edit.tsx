@@ -21,6 +21,7 @@ const EditPost: NextPage = () => {
   const isPost = data?.category === 'posts';
   const isQuestion = data?.category === 'questions';
   const isEditable = !isPost && !isQuestion;
+  const isModerator = user?.role === 'admin' || user?.role === 'moderator';
 
   useEffect(() => {
     analytics().setCurrentScreen('post_edit');
@@ -42,7 +43,7 @@ const EditPost: NextPage = () => {
     return <CircularProgress />;
   }
 
-  if (!isAuthor && !isEditable) {
+  if (!isAuthor && !isEditable && !isModerator) {
     return <EditNotAllowed />;
   }
 

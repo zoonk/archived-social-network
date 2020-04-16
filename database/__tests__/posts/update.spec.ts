@@ -85,6 +85,30 @@ test('cannot update posts from other users', async (done) => {
   done();
 });
 
+test('admin can update posts from other users', async (done) => {
+  const newApp = initializeFbApp({ uid: 'adminUser' });
+  const docRef = newApp.doc('posts/adminPost');
+  const post = { ...add, category: 'posts' };
+  const changes = { ...edit, updatedById: 'adminUser', title: 'new' };
+  await admin.doc('users/adminUser').set({ role: 'admin' });
+  await admin.doc('profile/adminUser').set(profile);
+  await admin.doc('posts/adminPost').set(post);
+  await firebase.assertSucceeds(docRef.update(changes));
+  done();
+});
+
+test('moderators can update posts from other users', async (done) => {
+  const newApp = initializeFbApp({ uid: 'modUser' });
+  const docRef = newApp.doc('posts/modPost');
+  const post = { ...add, category: 'posts' };
+  const changes = { ...edit, updatedById: 'modUser', title: 'new' };
+  await admin.doc('users/modUser').set({ role: 'moderator' });
+  await admin.doc('profile/modUser').set(profile);
+  await admin.doc('posts/modPost').set(post);
+  await firebase.assertSucceeds(docRef.update(changes));
+  done();
+});
+
 test('can update books', async (done) => {
   const docRef = db.doc('posts/otherUser');
   const changes = {
@@ -143,6 +167,30 @@ test('cannot update questions from other users', async (done) => {
   };
   await admin.doc('posts/otherUser').set(changes);
   await firebase.assertFails(docRef.update({ ...edit, title: 'new' }));
+  done();
+});
+
+test('admin can update questions from other users', async (done) => {
+  const newApp = initializeFbApp({ uid: 'adminUser' });
+  const docRef = newApp.doc('posts/adminQuestion');
+  const post = { ...add, category: 'questions' };
+  const changes = { ...edit, updatedById: 'adminUser', title: 'new' };
+  await admin.doc('users/adminUser').set({ role: 'admin' });
+  await admin.doc('profile/adminUser').set(profile);
+  await admin.doc('posts/adminQuestion').set(post);
+  await firebase.assertSucceeds(docRef.update(changes));
+  done();
+});
+
+test('moderators can update questions from other users', async (done) => {
+  const newApp = initializeFbApp({ uid: 'modUser' });
+  const docRef = newApp.doc('posts/modQuestion');
+  const post = { ...add, category: 'questions' };
+  const changes = { ...edit, updatedById: 'modUser', title: 'new' };
+  await admin.doc('users/modUser').set({ role: 'moderator' });
+  await admin.doc('profile/modUser').set(profile);
+  await admin.doc('posts/modQuestion').set(post);
+  await firebase.assertSucceeds(docRef.update(changes));
   done();
 });
 

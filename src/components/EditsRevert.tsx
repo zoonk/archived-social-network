@@ -1,5 +1,4 @@
 import { Fragment, useContext, useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 import {
   Button,
   Dialog,
@@ -24,7 +23,6 @@ interface EditsRevertProps {
  */
 const EditsRevert = ({ edits }: EditsRevertProps) => {
   const { profile, translate, user } = useContext(GlobalContext);
-  const { back } = useRouter();
   const [status, setStatus] = useState<RequestStatus>('idle');
   const [open, setOpen] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -40,7 +38,7 @@ const EditsRevert = ({ edits }: EditsRevertProps) => {
   // Remove a recently created item.
   const remove = () => {
     deleteActivity(edits, profile, user.uid)
-      .then(back)
+      .then(() => setStatus('success'))
       .catch((e) => setError(e.message));
   };
 
