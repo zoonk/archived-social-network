@@ -6,8 +6,8 @@
   "scripts": {
     "analyze": "ANALYZE=true next build",
     "build": "next build",
-    "deploy:en": "yarn now --prod --scope=zoonk --name=en",
-    "deploy:pt": "yarn now --prod --scope=zoonk --name=pt",
+    "deploy:en": "yarn now --prod --scope=zoonk --name=en --confirm && rm -rf .now",
+    "deploy:pt": "yarn now --prod --scope=zoonk --name=pt --confirm && rm -rf .now",
     "deploy:firebase": "yarn firebase deploy",
     "deploy:firestore": "yarn firebase deploy --only firestore",
     "deploy:functions": "yarn firebase deploy --only functions",
