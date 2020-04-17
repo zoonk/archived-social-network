@@ -5,10 +5,11 @@ interface EditorTextProps {
   children: React.ReactNode;
 }
 
-const EditorText = ({ children }: EditorTextProps) => {
+const EditorList = ({ children }: EditorTextProps) => {
   return (
     <Typography
       variant="body1"
+      component="li"
       style={{
         marginBottom: theme.spacing(2),
         fontSize: '1.25rem',
@@ -20,4 +21,4 @@ const EditorText = ({ children }: EditorTextProps) => {
   );
 };
 
-export default EditorText;
+export default EditorList;

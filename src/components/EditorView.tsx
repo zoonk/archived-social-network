@@ -2,6 +2,7 @@ import ReactMarkdown from 'react-markdown';
 import shortcodes from 'remark-shortcodes';
 import DividerView from './DividerView';
 import EditorHeading from './EditorHeading';
+import EditorList from './EditorList';
 import EditorText from './EditorText';
 import Image from './Image';
 import LinkView from './LinkView';
@@ -28,6 +29,7 @@ const EditorView = ({ content }: EditorViewProps) => {
         heading: EditorHeading,
         image: Image,
         link: LinkView,
+        listItem: EditorList,
         paragraph: EditorText,
         shortcode: ShortcodeRenderer,
         table: TableView,
