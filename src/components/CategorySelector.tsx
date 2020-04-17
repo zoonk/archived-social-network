@@ -28,20 +28,28 @@ const CategorySelector = ({ onSelect }: CategorySelectorProps) => {
   const { translate } = useContext(GlobalContext);
   const categories: CategoryList[] = [
     {
-      name: translate('references_links'),
+      name: translate('teach_ref_title'),
       value: 'references',
       icon: <Link />,
     },
-    { name: translate('posts'), value: 'posts', icon: <Description /> },
-    { name: translate('courses'), value: 'courses', icon: <School /> },
-    { name: translate('books'), value: 'books', icon: <MenuBook /> },
     {
-      name: translate('real_life_examples'),
+      name: translate('teach_article_title'),
+      value: 'posts',
+      icon: <Description />,
+    },
+    {
+      name: translate('teach_course_title'),
+      value: 'courses',
+      icon: <School />,
+    },
+    { name: translate('teach_book_title'), value: 'books', icon: <MenuBook /> },
+    {
+      name: translate('teach_example_title'),
       value: 'examples',
       icon: <Language />,
     },
     {
-      name: translate('questions'),
+      name: translate('ask_question'),
       value: 'questions',
       icon: <QuestionAnswer />,
     },
