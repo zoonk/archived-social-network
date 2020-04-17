@@ -22,6 +22,7 @@ const PostPreview = ({ data, onToggleExpand }: PostPreviewProps) => {
   const [sites, setSites] = useState<Post.Link[]>([]);
   const { content, links, title, topics } = data;
   const youtube = links?.find((link) => containsYoutubeUrl(link));
+  const youtubeId = containsYoutubeUrl(youtube);
 
   useEffect(() => {
     if (onToggleExpand) onToggleExpand(expand);
@@ -56,7 +57,7 @@ const PostPreview = ({ data, onToggleExpand }: PostPreviewProps) => {
           <EditorView content={content || ''} />
           <LinkList sites={sites} />
         </CardContent>
-        {links && youtube && <YoutubePlayer id={youtube} />}
+        {links && youtubeId && <YoutubePlayer id={youtubeId} />}
       </Card>
 
       {onToggleExpand && (

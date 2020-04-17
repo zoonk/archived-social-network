@@ -33,6 +33,7 @@ const PostView = ({ chapterId, item, topicId }: PostViewProps) => {
     topics,
   } = item;
   const youtube = links?.find((link) => containsYoutubeUrl(link));
+  const youtubeId = containsYoutubeUrl(youtube);
   const [previous, setPrevious] = useState<Post.NextLesson | null>(null);
   const [next, setNext] = useState<Post.NextLesson | null>(null);
   const isAuthoral = category === 'posts' || category === 'questions';
@@ -83,7 +84,7 @@ const PostView = ({ chapterId, item, topicId }: PostViewProps) => {
         <EditorView content={content} />
         <LinkList sites={sites} />
 
-        {links && youtube && <YoutubePlayer id={youtube} />}
+        {links && youtubeId && <YoutubePlayer id={youtubeId} />}
 
         <div
           style={{
