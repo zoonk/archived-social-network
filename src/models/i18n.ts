@@ -20,6 +20,7 @@ export type TranslationKeys =
   | 'books'
   | 'by'
   | 'cancel'
+  | 'category_change'
   | 'chapter_add'
   | 'chapter_adding'
   | 'chapter_delete_confirmation'

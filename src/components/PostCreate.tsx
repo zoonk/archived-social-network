@@ -1,5 +1,6 @@
 import { Fragment, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { Button } from '@material-ui/core';
 import { Post, SnackbarAction } from '@zoonk/models';
 import { createPost, getChapter } from '@zoonk/services';
 import {
@@ -94,6 +95,13 @@ const PostCreate = ({ category, chapterId, topicId }: PostCreateProps) => {
 
   return (
     <Fragment>
+      <Button
+        color="primary"
+        variant="outlined"
+        onClick={() => setCategory(undefined)}
+      >
+        {translate('category_change')}
+      </Button>
       <PostForm
         category={postCategory}
         topicIds={topicIds}

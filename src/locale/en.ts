@@ -20,6 +20,7 @@ const translate: TranslationFn = (key, args) => {
     books: 'Books',
     by: 'by',
     cancel: 'Cancel',
+    category_change: 'Change category',
     chapter_add: 'Add a new chapter',
     chapter_adding: 'Adding a chapter to this topic...',
     chapter_delete_confirmation:
