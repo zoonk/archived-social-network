@@ -17,6 +17,7 @@ import {
 import {
   analytics,
   appLanguage,
+  getPostImage,
   GlobalContext,
   markdownToText,
   preRender,
@@ -36,12 +37,16 @@ const LessonPage: NextPage<PostPageProps> = ({ chapterId, data, topicId }) => {
     category,
     comments,
     content,
+    cover,
     editors,
     id,
     language,
+    sites,
     title,
     topics,
   } = data;
+  const siteImg = sites.find((site) => Boolean(site.image));
+  const image = cover || getPostImage(content) || siteImg?.image;
 
   useEffect(() => {
     analytics().setCurrentScreen('lesson_page');
@@ -75,6 +80,7 @@ const LessonPage: NextPage<PostPageProps> = ({ chapterId, data, topicId }) => {
         title={title}
         description={markdownToText(content).slice(0, 200)}
         canonicalUrl={`https://${language}.zoonk.org/posts/${id}`}
+        image={image}
         noIndex={language !== appLanguage}
       />
 

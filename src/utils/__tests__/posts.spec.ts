@@ -40,4 +40,9 @@ describe('getPostImage()', () => {
     const content = 'test: [test](test.html).';
     expect(getPostImage(content)).toEqual(null);
   });
+
+  test('return URL for custom image tags', () => {
+    const content = 'test: [[ img src="photo.png?size=400" ]].';
+    expect(getPostImage(content)).toEqual('photo.png?size=400');
+  });
 });

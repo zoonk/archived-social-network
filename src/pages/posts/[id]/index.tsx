@@ -33,10 +33,12 @@ const PostPage: NextPage<PostPageProps> = ({ data }) => {
     editors,
     id,
     language,
+    sites,
     title,
     topics,
   } = data;
-  const image = cover || getPostImage(content);
+  const siteImg = sites.find((site) => Boolean(site.image));
+  const image = cover || getPostImage(content) || siteImg?.image;
 
   useEffect(() => {
     analytics().setCurrentScreen('posts_view');
