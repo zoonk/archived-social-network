@@ -111,7 +111,11 @@ service cloud.firestore {
         && request.resource.data.updatedById == request.auth.uid
         && isValidLanguage()
       ;
-      allow delete: if request.auth.uid == resource.data.createdById;
+      allow delete:
+        if request.auth.uid == resource.data.createdById
+        || isModerator()
+        || isAdmin()
+      ;
     }
 
     match /feedback/{id} {

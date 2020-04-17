@@ -41,3 +41,19 @@ test('cannot delete comments from other users', async (done) => {
   await firebase.assertFails(ref.delete());
   done();
 });
+
+test('moderators can delete comments from other users', async (done) => {
+  const app = initializeFbApp({ uid: 'modUser' });
+  const ref = app.doc('comments/itemId');
+  await admin.doc('users/modUser').set({ role: 'moderator' });
+  await firebase.assertSucceeds(ref.delete());
+  done();
+});
+
+test('admins can delete comments from other users', async (done) => {
+  const app = initializeFbApp({ uid: 'adminUser' });
+  const ref = app.doc('comments/itemId');
+  await admin.doc('users/adminUser').set({ role: 'admin' });
+  await firebase.assertSucceeds(ref.delete());
+  done();
+});

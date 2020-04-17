@@ -46,6 +46,8 @@ const CommentListItem = ({
   const classes = useStyles();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const [liked, setLiked] = useState<boolean>(false);
+  const isAuthor = item.createdById === user?.uid;
+  const isModerator = user?.role === 'moderator' || user?.role === 'admin';
 
   /**
    * Toggle a comment like.
@@ -180,7 +182,7 @@ const CommentListItem = ({
               </Fragment>
             )}
 
-            {user?.uid === item.createdById && (
+            {(isAuthor || isModerator) && (
               <IconButton edge="end" aria-label="delete" onClick={remove}>
                 <Delete />
               </IconButton>
