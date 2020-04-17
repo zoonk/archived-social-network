@@ -56,6 +56,26 @@ export const liveComments = (
     .collection('comments')
     .withConverter(commentConverter)
     .where('postId', '==', postId)
+    .where('category', 'in', ['comments'])
+    .orderBy('likes', 'desc')
+    .orderBy('createdAt', 'desc')
+    .onSnapshot((snap) => {
+      const data = snap.docs.map((doc) => doc.data());
+      onSnapshot(data);
+    });
+};
+
+/**
+ * Get real-time updates for replies.
+ */
+export const liveReplies = (
+  commentId: string,
+  onSnapshot: (snap: Comment.Get[]) => void,
+): firebase.Unsubscribe => {
+  return db
+    .collection('comments')
+    .withConverter(commentConverter)
+    .where('commentId', '==', commentId)
     .orderBy('likes', 'desc')
     .orderBy('createdAt', 'desc')
     .onSnapshot((snap) => {

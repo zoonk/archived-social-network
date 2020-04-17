@@ -19,6 +19,8 @@ const profile = {
 const topics = ['topicId'];
 
 const data = {
+  category: 'comments',
+  commentId: null,
   content: 'comment content',
   createdAt: firebase.firestore.FieldValue.serverTimestamp(),
   createdBy: profile,
@@ -57,6 +59,30 @@ test('anonymous users cannot create items', async (done) => {
   const app = initializeFbApp(undefined);
   const appRef = app.collection('comments');
   await firebase.assertFails(appRef.add(data));
+  done();
+});
+
+test('category field is a valid string', async (done) => {
+  await firebase.assertSucceeds(ref.add({ ...data, category: 'comments' }));
+  await firebase.assertSucceeds(
+    ref.add({ ...data, category: 'replies', commentId: 'valid' }),
+  );
+  await firebase.assertFails(ref.add({ ...data, category: 'other' }));
+  await firebase.assertFails(ref.add({ ...data, category: 123 }));
+  await firebase.assertFails(ref.add({ ...data, category: true }));
+  await firebase.assertFails(ref.add({ ...data, category: { test: true } }));
+  await firebase.assertFails(ref.add({ ...data, category: ['comments'] }));
+  await firebase.assertFails(ref.add({ ...data, category: null }));
+  done();
+});
+
+test('reply has a commentId', async (done) => {
+  await firebase.assertFails(
+    ref.add({ ...data, category: 'replies', commentId: null }),
+  );
+  await firebase.assertSucceeds(
+    ref.add({ ...data, category: 'replies', commentId: 'valid' }),
+  );
   done();
 });
 

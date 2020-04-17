@@ -11,13 +11,8 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Delete, Favorite, Reply as ReplyIcon } from '@material-ui/icons';
-import { Comment, Reply, SnackbarAction } from '@zoonk/models';
-import {
-  deleteComment,
-  deleteReply,
-  getLikedStatus,
-  toggleLike,
-} from '@zoonk/services';
+import { Comment, SnackbarAction } from '@zoonk/models';
+import { deleteComment, getLikedStatus, toggleLike } from '@zoonk/services';
 import { firebaseError, GlobalContext, theme } from '@zoonk/utils';
 import Snackbar from './Snackbar';
 
@@ -30,29 +25,16 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-interface CommentProps {
+interface CommentListItemProps {
   divider?: boolean;
   item: Comment.Get;
-  type: 'comments';
-  onReply: (id: string) => void;
+  type: 'comments' | 'replies';
+  onReply?: (id: string) => void;
 }
-
-interface ReplyProps {
-  divider?: boolean;
-  item: Reply.Get;
-  type: 'replies';
-  onReply: undefined;
-}
-
-type CommentListItemProps = CommentProps | ReplyProps;
 
 /**
  * Display a single comment. This is intended to be used
  * with inside a list component.
- * @property `divider` - enable or disable a divider line between items.
- * @property `item` - comment data.
- * @property `type` - it can be set as `comments` or `replies`.
- * @property `onReply()` - event fired when a user clicks on the reply button.
  */
 const CommentListItem = ({
   divider,
@@ -88,9 +70,7 @@ const CommentListItem = ({
 
     if (window.confirm(translate('delete_confirmation'))) {
       setSnackbar({ type: 'progress', msg: translate('deleting') });
-      const deleteFn = type === 'comments' ? deleteComment : deleteReply;
-
-      deleteFn(item.id)
+      deleteComment(item.id)
         .then(() => setSnackbar({ type: 'success', msg: translate('deleted') }))
         .catch((err) => setSnackbar(firebaseError(err, 'comment_delete')));
     }

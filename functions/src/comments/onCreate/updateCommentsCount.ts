@@ -7,8 +7,20 @@ const db = admin.firestore();
 export const onCreateCommentUpdateCount = functions.firestore
   .document('comments/{id}')
   .onCreate((snap) => {
+    const batch = db.batch();
     const data = snap.data() as Comment.Create;
-    return db.doc(`posts/${data.postId}`).update({
+    const postRef = db.doc(`posts/${data.postId}`);
+    batch.update(postRef, {
       comments: admin.firestore.FieldValue.increment(1),
     });
+
+    // Update replies count.
+    if (data.commentId) {
+      const commentRef = db.doc(`comments/${data.commentId}`);
+      batch.update(commentRef, {
+        replies: admin.firestore.FieldValue.increment(1),
+      });
+    }
+
+    return batch.commit();
   });

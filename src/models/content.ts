@@ -1,7 +1,6 @@
 import { Activity } from './activity';
 import { Chapter } from './chapter';
 import { Comment } from './comments';
-import { Reply } from './replies';
 import { Post } from './post';
 import { Profile } from './profile';
 import { Topic } from './topic';
@@ -70,7 +69,6 @@ export type ContentTypes =
   | Activity.Response
   | Chapter.Response
   | Comment.Response
-  | Reply.Response
   | Post.Response
   | Topic.Response;
 

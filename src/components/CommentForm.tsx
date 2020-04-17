@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import { Button, TextField } from '@material-ui/core';
-import { ContentCategory, SnackbarAction } from '@zoonk/models';
-import { createComment, createReply } from '@zoonk/services';
+import { SnackbarAction } from '@zoonk/models';
+import { createComment } from '@zoonk/services';
 import {
   appLanguage,
   firebaseError,
@@ -13,7 +13,6 @@ import Snackbar from './Snackbar';
 import LoginRequired from './LoginRequired';
 
 interface CommentFormProps {
-  category: ContentCategory;
   commentId?: string;
   postId: string;
   topics: string[];
@@ -23,15 +22,8 @@ interface CommentFormProps {
 
 /**
  * Form for adding a new comment or reply.
- * @property `category` - where this comment was posted.
- * @property `commentId` - use it for replies.
- * @property `postId` - which post this comment belongs to.
- * @property `topics` - list which topics this post has.
- * @property `onCancel()` - event fired when the user cancels editing the form.
- * @property `onSave()` - event fired when the user saves their comment.
  */
 const CommentForm = ({
-  category,
   commentId,
   postId,
   topics,
@@ -47,7 +39,6 @@ const CommentForm = ({
   }
 
   const data = {
-    category,
     content,
     createdAt: timestamp,
     createdBy: profile,
@@ -62,21 +53,15 @@ const CommentForm = ({
     updatedById: user.uid,
   };
 
-  const addComment = (): Promise<firebase.firestore.DocumentReference> => {
-    return createComment({ ...data, replies: 0 });
-  };
-
-  const addReply = (): Promise<firebase.firestore.DocumentReference> => {
-    return createReply({ ...data, commentId: commentId! });
-  };
-
   const handleSubmit = () => {
     setSnackbar({ type: 'progress', msg: translate('saving') });
 
-    // If there's a commentId, then it's a reply.
-    const saveItem = commentId ? addReply : addComment;
-
-    saveItem()
+    createComment({
+      ...data,
+      category: commentId ? 'replies' : 'comments',
+      commentId: commentId || null,
+      replies: 0,
+    })
       .then(() => {
         // Reset the form after saving it.
         setContent('');

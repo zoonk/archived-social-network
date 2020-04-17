@@ -26,8 +26,8 @@ const PostComments = ({ comments, postId, topics }: PostCommentsProps) => {
           {translate('comments_count', { comments })}
         </Typography>
 
-        <CommentForm category="posts" postId={postId} topics={topics} />
-        <CommentList category="posts" postId={postId} topics={topics} />
+        <CommentForm postId={postId} topics={topics} />
+        <CommentList postId={postId} topics={topics} />
       </CardContent>
     </Card>
   );

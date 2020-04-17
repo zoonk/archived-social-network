@@ -95,6 +95,8 @@ service cloud.firestore {
       allow get;
       allow create:
         if request.auth.uid != null
+        && isOneOf('category', 'comments|replies')
+        && (request.resource.data.commentId is string || request.resource.data.category == 'comments')
         && request.resource.data.content is string
         && request.resource.data.content.size() > 0
         && request.resource.data.createdAt == request.time
@@ -175,27 +177,6 @@ service cloud.firestore {
         if request.auth.uid == createdById
         && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['username'])
       ;
-    }
-
-    match /replies/{replyId} {
-      allow list;
-      allow get;
-      allow create:
-        if request.auth.uid != null
-        && exists(/databases/$(database)/documents/comments/$(request.resource.data.commentId))
-        && request.resource.data.content is string
-        && request.resource.data.createdAt == request.time
-        && isValidProfile('createdBy')
-        && request.resource.data.createdById == request.auth.uid
-        && request.resource.data.likes == 0
-        && exists(/databases/$(database)/documents/posts/$(request.resource.data.postId))
-        && request.resource.data.topics == get(/databases/$(database)/documents/comments/$(request.resource.data.commentId)).data.topics
-        && request.resource.data.updatedAt == request.time
-        && isValidProfile('updatedBy')
-        && request.resource.data.updatedById == request.auth.uid
-        && isValidLanguage()
-      ;
-      allow delete: if request.auth.uid == resource.data.createdById;
     }
 
     match /reports/{id} {

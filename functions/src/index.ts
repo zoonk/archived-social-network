@@ -10,7 +10,6 @@ export * from './likes';
 export * from './posts';
 export * from './profile';
 export * from './progress';
-export * from './replies';
 export * from './topics';
 export * from './usernames';
 export * from './users';

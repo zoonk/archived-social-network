@@ -8,6 +8,8 @@ export namespace Comment {
    * Comment-specific fields.
    */
   interface Fields {
+    category: 'comments' | 'replies';
+    commentId: string | null;
     content: string;
     postId: string;
     replies: number;

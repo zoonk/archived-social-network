@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { CircularProgress, List } from '@material-ui/core';
-import { Reply } from '@zoonk/models';
+import { Comment } from '@zoonk/models';
 import { liveReplies } from '@zoonk/services';
 import CommentListItem from './CommentListItem';
 
@@ -16,7 +16,7 @@ interface ReplyListProps {
  */
 const ReplyList = ({ commentId, divider }: ReplyListProps) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [replies, setReplies] = useState<Reply.Get[]>([]);
+  const [replies, setReplies] = useState<Comment.Get[]>([]);
 
   // Fetch a list of comment replies.
   useEffect(() => {

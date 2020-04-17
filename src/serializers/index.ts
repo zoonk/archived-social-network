@@ -8,6 +8,5 @@ export * from './link';
 export * from './notifications';
 export * from './posts';
 export * from './profile';
-export * from './replies';
 export * from './reports';
 export * from './topics';

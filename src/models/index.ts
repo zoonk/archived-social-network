@@ -13,7 +13,6 @@ export * from './notification';
 export * from './post';
 export * from './profile';
 export * from './progress';
-export * from './replies';
 export * from './report';
 export * from './search';
 export * from './services';
