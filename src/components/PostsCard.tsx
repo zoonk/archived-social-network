@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { Fragment, useContext, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
@@ -29,8 +29,9 @@ interface PostsCardProps {
   displayFilter?: boolean;
   hideLink?: boolean;
   limit?: number;
+  listOnly?: boolean;
   orderBy?: Post.OrderBy[];
-  title: string;
+  title?: string;
   topicId?: string;
   userId?: string;
 }
@@ -46,6 +47,7 @@ const PostsCard = ({
   displayFilter,
   hideLink,
   limit,
+  listOnly,
   orderBy,
   title,
   topicId,
@@ -105,6 +107,36 @@ const PostsCard = ({
     }
   }, [error]);
 
+  // Display a list of posts
+  const List = () => (
+    <Fragment>
+      {items.length === 0 && loading === false && (
+        <NoPosts
+          category={filter === 'timeline' ? 'references' : filter}
+          isUser={Boolean(userId)}
+        />
+      )}
+      {items.length > 0 && <PostList items={items} />}
+      {loading && <CircularProgress />}
+      {allowLoadMore && lastVisible && (
+        <Button
+          fullWidth
+          variant="contained"
+          color="primary"
+          onClick={loadMore}
+          style={{ margin: theme.spacing(3, 0, 2) }}
+        >
+          {translate('load_more')}
+        </Button>
+      )}
+      <Snackbar action={snackbar} />
+    </Fragment>
+  );
+
+  if (listOnly) {
+    return <List />;
+  }
+
   return (
     <Card variant="outlined">
       <CardContent style={{ paddingBottom: 0 }}>
@@ -114,7 +146,9 @@ const PostsCard = ({
           query={query}
           category="posts"
           list={listSlug}
-          title={displayFilter ? translate(filter) : title}
+          title={
+            displayFilter ? translate(filter) : title || translate('posts')
+          }
         />
 
         {displayFilter && (
@@ -124,14 +158,7 @@ const PostsCard = ({
           />
         )}
 
-        {items.length === 0 && loading === false && (
-          <NoPosts
-            category={filter === 'timeline' ? 'references' : filter}
-            isUser={Boolean(userId)}
-          />
-        )}
-        {items.length > 0 && <PostList items={items} />}
-        {loading && <CircularProgress />}
+        <List />
 
         {!hideLink && !allowLoadMore && (
           <NextLink
@@ -148,20 +175,6 @@ const PostsCard = ({
             </Button>
           </NextLink>
         )}
-
-        {allowLoadMore && lastVisible && (
-          <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            onClick={loadMore}
-            style={{ margin: theme.spacing(3, 0, 2) }}
-          >
-            {translate('load_more')}
-          </Button>
-        )}
-
-        <Snackbar action={snackbar} />
       </CardContent>
     </Card>
   );

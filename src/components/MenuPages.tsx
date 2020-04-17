@@ -1,13 +1,16 @@
 import { Fragment, useContext } from 'react';
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 import {
   Divider,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
+  makeStyles,
 } from '@material-ui/core';
 import {
+  AllInclusive,
   Description,
   History,
   Language,
@@ -20,11 +23,43 @@ import {
 } from '@material-ui/icons';
 import { GlobalContext } from '@zoonk/utils';
 
+const useStyles = makeStyles((theme) => ({
+  active: {
+    color: theme.palette.primary.main,
+  },
+}));
+
 /**
  * Menu containing all available pages.
  */
 const MenuPages = () => {
   const { translate, user } = useContext(GlobalContext);
+  const { asPath } = useRouter();
+  const classes = useStyles();
+  const pages = [
+    { link: '/', title: translate('timeline'), icon: <AllInclusive /> },
+    { link: '/topics', title: translate('topics'), icon: <Subject /> },
+    { link: '/references', title: translate('references'), icon: <Link /> },
+    { link: '/courses', title: translate('courses'), icon: <School /> },
+    { link: '/books', title: translate('books'), icon: <MenuBook /> },
+    { link: '/posts', title: translate('posts'), icon: <Description /> },
+    {
+      link: '/examples',
+      title: translate('real_life_examples'),
+      icon: <Language />,
+    },
+    {
+      link: '/questions',
+      title: translate('questions'),
+      icon: <QuestionAnswer />,
+    },
+    { link: '/edits', title: translate('edit_history'), icon: <History /> },
+  ];
+  const metaPages = [
+    { link: '/contact', title: translate('contact_us') },
+    { link: '/terms', title: translate('terms_service') },
+    { link: '/privacy', title: translate('privacy_policy') },
+  ];
 
   return (
     <Fragment>
@@ -40,99 +75,38 @@ const MenuPages = () => {
           </NextLink>
         )}
 
-        <NextLink href="/topics" passHref>
-          <ListItem button component="a">
-            <ListItemIcon>
-              <Subject />
-            </ListItemIcon>
-            <ListItemText primary={translate('topics')} />
-          </ListItem>
-        </NextLink>
-
-        <NextLink href="/references" passHref>
-          <ListItem button component="a">
-            <ListItemIcon>
-              <Link />
-            </ListItemIcon>
-            <ListItemText primary={translate('references')} />
-          </ListItem>
-        </NextLink>
-
-        <NextLink href="/courses" passHref>
-          <ListItem button component="a">
-            <ListItemIcon>
-              <School />
-            </ListItemIcon>
-            <ListItemText primary={translate('courses')} />
-          </ListItem>
-        </NextLink>
-
-        <NextLink href="/books" passHref>
-          <ListItem button component="a">
-            <ListItemIcon>
-              <MenuBook />
-            </ListItemIcon>
-            <ListItemText primary={translate('books')} />
-          </ListItem>
-        </NextLink>
-
-        <NextLink href="/posts" passHref>
-          <ListItem button component="a">
-            <ListItemIcon>
-              <Description />
-            </ListItemIcon>
-            <ListItemText primary={translate('posts')} />
-          </ListItem>
-        </NextLink>
-
-        <NextLink href="/examples" passHref>
-          <ListItem button component="a">
-            <ListItemIcon>
-              <Language />
-            </ListItemIcon>
-            <ListItemText primary={translate('real_life_examples')} />
-          </ListItem>
-        </NextLink>
-
-        <NextLink href="/questions" passHref>
-          <ListItem button component="a">
-            <ListItemIcon>
-              <QuestionAnswer />
-            </ListItemIcon>
-            <ListItemText primary={translate('questions')} />
-          </ListItem>
-        </NextLink>
-
-        <NextLink href="/edits" passHref>
-          <ListItem button component="a">
-            <ListItemIcon>
-              <History />
-            </ListItemIcon>
-            <ListItemText primary={translate('edit_history')} />
-          </ListItem>
-        </NextLink>
+        {pages.map((page) => (
+          <NextLink href={page.link} passHref key={page.title}>
+            <ListItem
+              button
+              component="a"
+              className={asPath === page.link ? classes.active : undefined}
+            >
+              <ListItemIcon
+                className={asPath === page.link ? classes.active : undefined}
+              >
+                {page.icon}
+              </ListItemIcon>
+              <ListItemText primary={page.title} />
+            </ListItem>
+          </NextLink>
+        ))}
       </List>
 
       <Divider />
 
       <List component="nav" aria-label={translate('about_list')}>
-        <NextLink href="/contact" passHref>
-          <ListItem button component="a">
-            <ListItemText primary={translate('contact_us')} />
-          </ListItem>
-        </NextLink>
-
-        <NextLink href="/terms" passHref>
-          <ListItem button component="a">
-            <ListItemText primary={translate('terms_service')} />
-          </ListItem>
-        </NextLink>
-
-        <NextLink href="/privacy" passHref>
-          <ListItem button component="a">
-            <ListItemText primary={translate('privacy_policy')} />
-          </ListItem>
-        </NextLink>
+        {metaPages.map((page) => (
+          <NextLink href={page.link} passHref key={page.title}>
+            <ListItem
+              button
+              component="a"
+              className={asPath === page.link ? classes.active : undefined}
+            >
+              <ListItemText primary={page.title} />
+            </ListItem>
+          </NextLink>
+        ))}
       </List>
     </Fragment>
   );
