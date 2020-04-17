@@ -217,6 +217,7 @@ const translate: TranslationFn = (key, args) => {
     search_topic_not_found: 'Nenhum tópico encontrado. Tente outra palavra.',
     see_all: 'Ver tudo',
     see_all_edits: 'Ver todas alterações',
+    see_discussion: 'Ver conversa',
     selected_item: 'Item selecionado',
     send: 'Enviar',
     sending: 'Enviando...',

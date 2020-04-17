@@ -1,5 +1,5 @@
 import { Comment } from '@zoonk/models';
-import { analytics, db } from '@zoonk/utils';
+import { analytics, appLanguage, db } from '@zoonk/utils';
 import { serializeComment } from '../serializers';
 
 const commentConverter: firebase.firestore.FirestoreDataConverter<Comment.Get> = {
@@ -43,6 +43,35 @@ export const getComment = async (id: string): Promise<Comment.Get> => {
  */
 export const deleteComment = (id: string): Promise<void> => {
   return db.doc(`comments/${id}`).delete();
+};
+
+/**
+ * Get a list of comments from the database.
+ */
+export const listComments = async (
+  startAfter?: firebase.firestore.DocumentSnapshot,
+  createdById?: string,
+  limit: number = 10,
+): Promise<Comment.Snapshot[]> => {
+  let ref = db
+    .collection('comments')
+    .withConverter(commentConverter)
+    .orderBy('createdAt', 'desc')
+    .where('language', '==', appLanguage)
+    .limit(limit);
+
+  if (createdById) {
+    ref = ref.where('createdById', '==', createdById);
+  }
+
+  if (startAfter) {
+    ref = ref.startAfter(startAfter);
+  }
+
+  const snap = await ref.get();
+  return snap.docs.map((item) => {
+    return { ...item.data(), snap: item };
+  });
 };
 
 /**

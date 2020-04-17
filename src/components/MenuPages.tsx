@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 import {
   AllInclusive,
+  Comment,
   Description,
   History,
   Language,
@@ -53,6 +54,7 @@ const MenuPages = () => {
       title: translate('questions'),
       icon: <QuestionAnswer />,
     },
+    { link: '/comments', title: translate('comments'), icon: <Comment /> },
     { link: '/edits', title: translate('edit_history'), icon: <History /> },
   ];
   const metaPages = [

@@ -71,6 +71,8 @@ function useLoadMore<T>(limit: number = 10) {
           }
         })
         .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.error(err);
           if (active) {
             setLoading(false);
             setError(err);

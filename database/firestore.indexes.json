@@ -109,6 +109,20 @@
       "queryScope": "COLLECTION",
       "fields": [
         {
+          "fieldPath": "language",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "comments",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
           "fieldPath": "createdById",
           "order": "ASCENDING"
         },

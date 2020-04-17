@@ -202,6 +202,7 @@ export type TranslationKeys =
   | 'search'
   | 'see_all_edits'
   | 'see_all'
+  | 'see_discussion'
   | 'selected_item'
   | 'send'
   | 'sending'
