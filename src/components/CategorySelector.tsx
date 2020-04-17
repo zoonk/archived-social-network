@@ -1,64 +1,79 @@
-import { useContext, useEffect, useRef, useState } from 'react';
-import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
-import { MaterialSelect, Post } from '@zoonk/models';
-import { GlobalContext } from '@zoonk/utils';
+import { useContext } from 'react';
+import { Card, CardActionArea, Grid, Typography } from '@material-ui/core';
+import {
+  Description,
+  Language,
+  Link,
+  MenuBook,
+  QuestionAnswer,
+  School,
+} from '@material-ui/icons';
+import { Post } from '@zoonk/models';
+import { GlobalContext, theme } from '@zoonk/utils';
 
 interface CategorySelectorProps {
-  active: Post.Category | 'none';
-  style?: React.CSSProperties;
   onSelect: (category: Post.Category) => void;
+}
+
+interface CategoryList {
+  name: string;
+  value: Post.Category;
+  icon: React.ReactNode;
 }
 
 /**
  * Dropdown menu for selecting a post category.
  */
-const CategorySelector = ({
-  active,
-  style,
-  onSelect,
-}: CategorySelectorProps) => {
+const CategorySelector = ({ onSelect }: CategorySelectorProps) => {
   const { translate } = useContext(GlobalContext);
-  const [labelWidth, setLabelWidth] = useState(0);
-  const inputLabel = useRef<HTMLLabelElement>(null);
-  const categories = [
-    { name: translate('references_links'), value: 'references' },
-    { name: translate('posts'), value: 'posts' },
-    { name: translate('courses'), value: 'courses' },
-    { name: translate('books'), value: 'books' },
-    { name: translate('real_life_examples'), value: 'examples' },
-    { name: translate('questions'), value: 'questions' },
+  const categories: CategoryList[] = [
+    {
+      name: translate('references_links'),
+      value: 'references',
+      icon: <Link />,
+    },
+    { name: translate('posts'), value: 'posts', icon: <Description /> },
+    { name: translate('courses'), value: 'courses', icon: <School /> },
+    { name: translate('books'), value: 'books', icon: <MenuBook /> },
+    {
+      name: translate('real_life_examples'),
+      value: 'examples',
+      icon: <Language />,
+    },
+    {
+      name: translate('questions'),
+      value: 'questions',
+      icon: <QuestionAnswer />,
+    },
   ];
 
-  const handleChange = (event: React.ChangeEvent<MaterialSelect>) => {
-    onSelect(event.target.value as Post.Category);
-  };
-
-  useEffect(() => {
-    setLabelWidth(inputLabel.current!.offsetWidth);
-  }, []);
-
   return (
-    <FormControl variant="outlined" style={{ width: '100%', ...style }}>
-      <InputLabel ref={inputLabel} id="category-label">
-        {translate('post_category')}
-      </InputLabel>
-      <Select
-        labelId="category-label"
-        id="category-select"
-        value={active}
-        onChange={handleChange}
-        labelWidth={labelWidth}
-      >
-        <MenuItem disabled value="none">
-          {translate('post_category')}
-        </MenuItem>
-        {categories.map((item) => (
-          <MenuItem value={item.value} key={item.value}>
-            {item.name}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
+    <Grid container spacing={2}>
+      {categories.map((item) => (
+        <Grid item xs={6} sm={4} key={item.value}>
+          <CardActionArea onClick={() => onSelect(item.value)}>
+            <Card
+              variant="outlined"
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '150px',
+                padding: theme.spacing(1),
+                textAlign: 'center',
+                backgroundColor: theme.palette.primary.main,
+              }}
+            >
+              <div style={{ color: 'white' }}>{item.icon}</div>
+              <Typography variant="h5" style={{ color: 'white' }}>
+                {item.name}
+              </Typography>
+            </Card>
+          </CardActionArea>
+        </Grid>
+      ))}
+    </Grid>
   );
 };
 

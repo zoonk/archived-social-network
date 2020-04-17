@@ -26,8 +26,8 @@ const PostCreate = ({ category, chapterId, topicId }: PostCreateProps) => {
   const { push } = useRouter();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const [topicIds, setTopics] = useState<string[]>(topicId ? [topicId] : []);
-  const [postCategory, setCategory] = useState<Post.Category | 'none'>(
-    category || 'none',
+  const [postCategory, setCategory] = useState<Post.Category | undefined>(
+    category,
   );
 
   useEffect(() => {
@@ -60,10 +60,9 @@ const PostCreate = ({ category, chapterId, topicId }: PostCreateProps) => {
     const links = data.links ? data.links.filter(Boolean) : [];
 
     // Use the post category. Otherwise, set as `references` if there are links.
-    let itemCategory: Post.Category =
-      postCategory === 'none' ? 'posts' : postCategory;
+    let itemCategory: Post.Category = !postCategory ? 'posts' : postCategory;
 
-    if (postCategory === 'none' && links.length > 0) {
+    if (!postCategory && links.length > 0) {
       itemCategory = 'references';
     }
 
@@ -89,11 +88,12 @@ const PostCreate = ({ category, chapterId, topicId }: PostCreateProps) => {
       .catch((e) => setSnackbar(firebaseError(e, 'post_add')));
   };
 
+  if (!postCategory) {
+    return <CategorySelector onSelect={setCategory} />;
+  }
+
   return (
     <Fragment>
-      {!category && (
-        <CategorySelector active={postCategory} onSelect={setCategory} />
-      )}
       <PostForm
         category={postCategory}
         topicIds={topicIds}
