@@ -3,6 +3,7 @@ import NextLink from 'next/link';
 import {
   Avatar,
   IconButton,
+  Link,
   ListItem,
   ListItemAvatar,
   ListItemText,
@@ -132,9 +133,17 @@ const CommentListItem = ({
         disableTypography
         primary={
           <div style={{ display: 'inline' }}>
-            <Typography component="span" variant="body1">
-              {item.createdBy?.name}
-            </Typography>
+            <NextLink
+              href="/profile/[id]"
+              as={`/profile/${item.createdBy.username}`}
+              passHref
+            >
+              <Link color="textPrimary">
+                <Typography component="span" variant="body1">
+                  {item.createdBy?.name}
+                </Typography>
+              </Link>
+            </NextLink>
             <Typography component="span" variant="caption">
               {' '}
               - {item.createdAt}
