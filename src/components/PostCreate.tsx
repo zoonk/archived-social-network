@@ -17,19 +17,22 @@ interface PostCreateProps {
   category?: Post.Category;
   chapterId?: string;
   topicId?: string;
+  onCategoryChange: (category?: Post.Category) => void;
 }
 
 /**
  * Component for creating a post.
  */
-const PostCreate = ({ category, chapterId, topicId }: PostCreateProps) => {
+const PostCreate = ({
+  category,
+  chapterId,
+  topicId,
+  onCategoryChange,
+}: PostCreateProps) => {
   const { profile, translate, user } = useContext(GlobalContext);
   const { push } = useRouter();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const [topicIds, setTopics] = useState<string[]>(topicId ? [topicId] : []);
-  const [postCategory, setCategory] = useState<Post.Category | undefined>(
-    category,
-  );
 
   useEffect(() => {
     if (chapterId) {
@@ -61,9 +64,9 @@ const PostCreate = ({ category, chapterId, topicId }: PostCreateProps) => {
     const links = data.links ? data.links.filter(Boolean) : [];
 
     // Use the post category. Otherwise, set as `references` if there are links.
-    let itemCategory: Post.Category = !postCategory ? 'posts' : postCategory;
+    let itemCategory: Post.Category = !category ? 'posts' : category;
 
-    if (!postCategory && links.length > 0) {
+    if (!category && links.length > 0) {
       itemCategory = 'references';
     }
 
@@ -89,8 +92,8 @@ const PostCreate = ({ category, chapterId, topicId }: PostCreateProps) => {
       .catch((e) => setSnackbar(firebaseError(e, 'post_add')));
   };
 
-  if (!postCategory) {
-    return <CategorySelector onSelect={setCategory} />;
+  if (!category) {
+    return <CategorySelector onSelect={onCategoryChange} />;
   }
 
   return (
@@ -98,12 +101,12 @@ const PostCreate = ({ category, chapterId, topicId }: PostCreateProps) => {
       <Button
         color="primary"
         variant="outlined"
-        onClick={() => setCategory(undefined)}
+        onClick={() => onCategoryChange(undefined)}
       >
         {translate('category_change')}
       </Button>
       <PostForm
-        category={postCategory}
+        category={category}
         topicIds={topicIds}
         saving={snackbar?.type === 'progress' || snackbar?.type === 'success'}
         onSubmit={handleSubmit}

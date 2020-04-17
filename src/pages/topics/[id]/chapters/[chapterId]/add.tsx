@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { CircularProgress, Container } from '@material-ui/core';
@@ -7,18 +7,25 @@ import LoginForm from '@zoonk/components/LoginForm';
 import Meta from '@zoonk/components/Meta';
 import PostCreate from '@zoonk/components/PostCreate';
 import { Post } from '@zoonk/models';
-import { analytics, GlobalContext } from '@zoonk/utils';
+import { analytics, GlobalContext, postCategories } from '@zoonk/utils';
 
 const LessonAddPage: NextPage = () => {
   const { translate, user } = useContext(GlobalContext);
+  const [category, setCategory] = useState<Post.Category>();
   const { query } = useRouter();
-  const category = query.category
-    ? (String(query.category) as Post.Category)
-    : undefined;
 
   useEffect(() => {
     analytics().setCurrentScreen('lessons_add');
   }, []);
+
+  useEffect(() => {
+    const postCategory = postCategories.includes(
+      (query.category as Post.Category) || '',
+    )
+      ? (String(query.category) as Post.Category)
+      : undefined;
+    setCategory(postCategory);
+  }, [query.category]);
 
   if (user === undefined) {
     return <CircularProgress />;
@@ -39,6 +46,7 @@ const LessonAddPage: NextPage = () => {
         category={category}
         chapterId={String(query.chapterId)}
         topicId={String(query.id)}
+        onCategoryChange={setCategory}
       />
     </Container>
   );

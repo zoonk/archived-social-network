@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { CircularProgress, Container } from '@material-ui/core';
@@ -11,18 +11,23 @@ import { analytics, GlobalContext, postCategories } from '@zoonk/utils';
 
 const PostAddPage: NextPage = () => {
   const { translate, user } = useContext(GlobalContext);
+  const [category, setCategory] = useState<Post.Category | undefined>();
   const { query } = useRouter();
-  const category = postCategories.includes(
-    (query.category as Post.Category) || '',
-  )
-    ? (String(query.category) as Post.Category)
-    : undefined;
   const chapterId = query.chapterId ? String(query.chapterId) : undefined;
   const topicId = query.topicId ? String(query.topicId) : undefined;
 
   useEffect(() => {
     analytics().setCurrentScreen('posts_add');
   }, []);
+
+  useEffect(() => {
+    const postCategory = postCategories.includes(
+      (query.category as Post.Category) || '',
+    )
+      ? (String(query.category) as Post.Category)
+      : undefined;
+    setCategory(postCategory);
+  }, [query.category]);
 
   if (user === undefined) {
     return <CircularProgress />;
@@ -40,7 +45,12 @@ const PostAddPage: NextPage = () => {
         topicId={topicId}
         title={translate('post_add')}
       />
-      <PostCreate category={category} chapterId={chapterId} topicId={topicId} />
+      <PostCreate
+        category={category}
+        chapterId={chapterId}
+        topicId={topicId}
+        onCategoryChange={setCategory}
+      />
     </Container>
   );
 };
