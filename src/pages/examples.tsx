@@ -20,7 +20,7 @@ const Examples: NextPage = () => {
         description={translate('seo_examples_desc')}
         canonicalUrl={`${rootUrl}/examples`}
       />
-      <SidebarPage>
+      <SidebarPage category="examples" title={translate('teach_example_title')}>
         <PostsCard category={['examples']} limit={10} listOnly allowLoadMore />
       </SidebarPage>
     </Container>

@@ -20,7 +20,7 @@ const Questions: NextPage = () => {
         description={translate('seo_questions_desc')}
         canonicalUrl={`${rootUrl}/questions`}
       />
-      <SidebarPage>
+      <SidebarPage category="questions" title={translate('ask_question')}>
         <PostsCard category={['questions']} limit={10} allowLoadMore listOnly />
       </SidebarPage>
     </Container>

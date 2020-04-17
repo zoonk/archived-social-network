@@ -20,7 +20,7 @@ const Topics: NextPage = () => {
         description={translate('seo_topics_desc')}
         canonicalUrl={`${rootUrl}/topics`}
       />
-      <SidebarPage>
+      <SidebarPage title={translate('post_share')}>
         <TopicsCard allowLoadMore allowAdd hideLink limit={10} />
       </SidebarPage>
     </Container>

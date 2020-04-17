@@ -1,6 +1,7 @@
 import { Grid, Hidden, makeStyles } from '@material-ui/core';
-import HomeShare from '@zoonk/components/HomeShare';
-import MenuPages from '@zoonk/components/MenuPages';
+import { Post } from '@zoonk/models';
+import HomeShare from './HomeShare';
+import MenuPages from './MenuPages';
 
 const useStyles = makeStyles((theme) => ({
   container: { padding: theme.spacing(2, 0) },
@@ -12,10 +13,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface SidebarPageProps {
+  category?: Post.Category;
   children: React.ReactNode;
+  title?: string;
 }
 
-const SidebarPage = ({ children }: SidebarPageProps) => {
+const SidebarPage = ({ category, children, title }: SidebarPageProps) => {
   const classes = useStyles();
 
   return (
@@ -26,7 +29,7 @@ const SidebarPage = ({ children }: SidebarPageProps) => {
         </Grid>
       </Hidden>
       <Grid item xs={12} sm={9} className={classes.column}>
-        <HomeShare />
+        <HomeShare category={category} title={title} />
         {children}
       </Grid>
     </Grid>

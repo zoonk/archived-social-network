@@ -20,7 +20,7 @@ const Edits: NextPage = () => {
         description={translate('seo_edits_desc')}
         canonicalUrl={`${rootUrl}/edits`}
       />
-      <SidebarPage>
+      <SidebarPage title={translate('post_share')}>
         <EditsList displayTitle />
       </SidebarPage>
     </Container>

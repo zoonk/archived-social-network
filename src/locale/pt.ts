@@ -13,6 +13,7 @@ const translate: TranslationFn = (key, args) => {
     all: 'Todos',
     already_have_account: 'Já tem uma conta? Entre agora',
     already_logged_in: 'Você já está logado.',
+    ask_question: 'Faça uma pergunta',
     back_to_login: 'Voltar para a página de acesso',
     before: 'Antes',
     beginner: 'Iniciante',
@@ -170,6 +171,7 @@ const translate: TranslationFn = (key, args) => {
     post_select_desc:
       'Você pode adicionar um post existente ao capítulo clicando no botão "add":',
     post_select_title: 'Escolher post',
+    post_share: 'O que você aprendeu hoje?',
     posts: 'Posts',
     preview: 'Visualizar',
     preview_quit: 'Voltar ao editor',

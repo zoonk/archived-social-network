@@ -21,7 +21,7 @@ const Home: NextPage = () => {
         canonicalUrl={rootUrl}
         noAppName
       />
-      <SidebarPage>
+      <SidebarPage title={translate('post_share')}>
         <PostsCard limit={10} listOnly allowLoadMore />
       </SidebarPage>
     </Container>

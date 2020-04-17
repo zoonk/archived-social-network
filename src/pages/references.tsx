@@ -20,7 +20,7 @@ const References: NextPage = () => {
         description={translate('seo_refs_desc')}
         canonicalUrl={`${rootUrl}/references`}
       />
-      <SidebarPage>
+      <SidebarPage category="references" title={translate('teach_ref_title')}>
         <PostsCard
           category={['references']}
           limit={10}

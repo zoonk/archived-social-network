@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import NextLink from 'next/link';
 import { makeStyles } from '@material-ui/core';
+import { Post } from '@zoonk/models';
 import { GlobalContext } from '@zoonk/utils';
 
 const useStyles = makeStyles((theme) => ({
@@ -18,14 +19,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const HomeShare = () => {
+interface HomeShareProps {
+  category?: Post.Category;
+  title?: string;
+}
+
+const HomeShare = ({ category, title }: HomeShareProps) => {
   const { translate } = useContext(GlobalContext);
   const classes = useStyles();
 
   return (
     <div style={{ display: 'flex', width: '100%' }}>
-      <NextLink href="/posts/add" passHref>
-        <a className={classes.button}>{translate('post_add')}</a>
+      <NextLink
+        href={category ? `/posts/add?category=${category}` : '/posts/add'}
+        passHref
+      >
+        <a className={classes.button}>{title || translate('post_add')}</a>
       </NextLink>
     </div>
   );

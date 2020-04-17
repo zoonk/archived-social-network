@@ -7,12 +7,14 @@ import Meta from '@zoonk/components/Meta';
 import PostCreate from '@zoonk/components/PostCreate';
 import PostsBreadcrumb from '@zoonk/components/PostsBreadcrumb';
 import { Post } from '@zoonk/models';
-import { analytics, GlobalContext } from '@zoonk/utils';
+import { analytics, GlobalContext, postCategories } from '@zoonk/utils';
 
 const PostAddPage: NextPage = () => {
   const { translate, user } = useContext(GlobalContext);
   const { query } = useRouter();
-  const category = query.category
+  const category = postCategories.includes(
+    (query.category as Post.Category) || '',
+  )
     ? (String(query.category) as Post.Category)
     : undefined;
   const chapterId = query.chapterId ? String(query.chapterId) : undefined;

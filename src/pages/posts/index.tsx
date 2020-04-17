@@ -20,7 +20,7 @@ const Posts: NextPage = () => {
         description={translate('seo_posts_desc')}
         canonicalUrl={`${rootUrl}/posts`}
       />
-      <SidebarPage>
+      <SidebarPage category="posts" title={translate('teach_article_title')}>
         <PostsCard
           category={['posts', 'lessons']}
           listOnly
