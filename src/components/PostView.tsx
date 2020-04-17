@@ -3,7 +3,12 @@ import NextLink from 'next/link';
 import { Button, Card, CardContent, Typography } from '@material-ui/core';
 import { Post } from '@zoonk/models';
 import { getNextLesson, getPreviousLesson } from '@zoonk/services';
-import { containsYoutubeUrl, GlobalContext, theme } from '@zoonk/utils';
+import {
+  containsYoutubeUrl,
+  GlobalContext,
+  postFont,
+  theme,
+} from '@zoonk/utils';
 import EditorView from './EditorView';
 import ItemActions from './ItemActions';
 import LinkList from './LinkList';
@@ -70,7 +75,11 @@ const PostView = ({ chapterId, item, topicId }: PostViewProps) => {
   return (
     <Card variant="outlined">
       <CardContent>
-        <Typography variant="h5" component="h1">
+        <Typography
+          variant="h5"
+          component="h1"
+          style={{ fontFamily: postFont }}
+        >
           {title}
         </Typography>
         <TopicChips items={topics} />
