@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Button, Card, CardContent, Typography } from '@material-ui/core';
 import { Post } from '@zoonk/models';
 import { getLinkMetadata } from '@zoonk/services';
-import { containsYoutubeUrl, GlobalContext } from '@zoonk/utils';
+import { containsYoutubeUrl, GlobalContext, theme } from '@zoonk/utils';
 import EditorView from './EditorView';
 import LinkList from './LinkList';
 import TopicChips from './TopicChips';
@@ -38,8 +38,15 @@ const PostPreview = ({ data, onToggleExpand }: PostPreviewProps) => {
   }, [links]);
 
   return (
-    <div>
-      <Typography variant="h5" gutterBottom>
+    <div
+      style={{
+        background: theme.palette.grey[100],
+        padding: theme.spacing(2),
+        borderRadius: '20px',
+        marginTop: theme.spacing(1),
+      }}
+    >
+      <Typography variant="h5" gutterBottom align="center">
         {translate('preview')}
       </Typography>
       <Card
