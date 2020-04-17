@@ -1,7 +1,9 @@
 import { Grid, Hidden, makeStyles } from '@material-ui/core';
 import { Post } from '@zoonk/models';
 import HomeShare from './HomeShare';
+import LanguageFilter from './LanguageFilter';
 import MenuPages from './MenuPages';
+import SocialLinks from './SocialLinks';
 
 const useStyles = makeStyles((theme) => ({
   container: { padding: theme.spacing(2, 0) },
@@ -10,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(2, 0),
     },
   },
+  filter: { width: 'auto', margin: theme.spacing(2, 0) },
 }));
 
 interface SidebarPageProps {
@@ -26,6 +29,10 @@ const SidebarPage = ({ category, children, title }: SidebarPageProps) => {
       <Hidden xsDown>
         <Grid item sm={3}>
           <MenuPages />
+          <SocialLinks />
+          <div className={classes.filter}>
+            <LanguageFilter />
+          </div>
         </Grid>
       </Hidden>
       <Grid item xs={12} sm={9} className={classes.column}>
