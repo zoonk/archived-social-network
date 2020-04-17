@@ -33,7 +33,7 @@ const ChapterPage: NextPage<ChapterProps> = ({ data, topicId }) => {
     <Container component="main">
       <Meta
         title={title}
-        description={markdownToText(description.slice(0, 200))}
+        description={markdownToText(description).slice(0, 200)}
         canonicalUrl={`https://${language}.zoonk.org/topics/${topics[0]}/chapters/${id}`}
       />
 

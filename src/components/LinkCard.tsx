@@ -39,7 +39,7 @@ const LinkCard = ({ site }: LinkCardProps) => {
               {title}
             </Typography>
             <Typography variant="body2">
-              {markdownToText(description?.slice(0, 200) || '')}
+              {markdownToText(description || '').slice(0, 200)}
             </Typography>
           </div>
         </CardContent>

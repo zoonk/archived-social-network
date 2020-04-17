@@ -73,7 +73,7 @@ const LessonPage: NextPage<PostPageProps> = ({ chapterId, data, topicId }) => {
     <Container component="main">
       <Meta
         title={title}
-        description={markdownToText(content.slice(0, 200))}
+        description={markdownToText(content).slice(0, 200)}
         canonicalUrl={`https://${language}.zoonk.org/posts/${id}`}
         noIndex={language !== appLanguage}
       />
