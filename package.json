@@ -13,6 +13,8 @@
     "dev": "next dev",
     "eslint": "eslint",
     "firebase": "firebase",
+    "install:deps": "yarn & yarn install:functions",
+    "install:functions": "cd functions && yarn",
     "lint": "yarn eslint './**/*.{js,jsx,ts,tsx}'",
     "now": "now",
     "prettier": "prettier",
@@ -21,7 +23,9 @@
     "test": "FIRESTORE_EMULATOR_HOST=localhost:8080 yarn start:firestore 'jest'",
     "test:coverage": "yarn start:firestore 'jest --coverage'",
     "test:watch": "yarn start:firestore 'jest --watch'",
-    "tsc": "tsc"
+    "tsc": "yarn tsc:app & yarn tsc:functions",
+    "tsc:app": "tsc",
+    "tsc:functions": "cd functions && yarn build"
   },
   "dependencies": {
     "@material-ui/core": "^4.9.7",

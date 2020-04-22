@@ -19,7 +19,7 @@ We need to encourage people to acquire **lifelong learning skills** and make it 
 
 In the long-term, **we should make learning as easy and fun as playing a video game** or posting a selfie on social media.
 
-[![Prince Ea school system](http://img.youtube.com/vi/dqTTojTija8/0.jpg)](http://www.youtube.com/watch?v=dqTTojTija8 "Prince Ea school system")
+[![Prince Ea school system](http://img.youtube.com/vi/dqTTojTija8/0.jpg)](http://www.youtube.com/watch?v=dqTTojTija8 'Prince Ea school system')
 
 ## Our stack
 
@@ -28,3 +28,7 @@ In the long-term, **we should make learning as easy and fun as playing a video g
 - **Hosting:** [Zeit](https://zeit.co/home)
 - **Search:** [Algolia](https://www.algolia.com)
 - **UI:** [Material-UI](https://material-ui.com/)
+
+## Contributing
+
+See our [Contributing Guide](./CONTRIBUTING.md) to get started.

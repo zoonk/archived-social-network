@@ -18,6 +18,9 @@
 .env*
 .vscode
 
+# Project config
+.firebaserc
+
 # debug
 *.log
 npm-debug.log*
