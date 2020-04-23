@@ -5,6 +5,7 @@ export type UILanguage = 'en' | 'pt';
 export type TranslationKeys =
   | 'about_list'
   | 'about_me'
+  | 'about_us'
   | 'add_image'
   | 'add'
   | 'admin'

@@ -1,6 +1,6 @@
 import ReactMarkdown from 'react-markdown';
 import shortcodes from 'remark-shortcodes';
-import DividerView from './DividerView';
+import Divider from './Divider';
 import EditorHeading from './EditorHeading';
 import EditorList from './EditorList';
 import EditorText from './EditorText';
@@ -37,7 +37,7 @@ const EditorView = ({ content }: EditorViewProps) => {
         tableBody: TableBodyView,
         tableRow: TableRowView,
         tableCell: TableCellView,
-        thematicBreak: DividerView,
+        thematicBreak: Divider,
       }}
     />
   );

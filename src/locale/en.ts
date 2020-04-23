@@ -5,6 +5,7 @@ const translate: TranslationFn = (key, args) => {
   const data: TranslationData = {
     about_me: 'About me',
     about_list: 'List of pages about how Zoonk works',
+    about_us: 'About us',
     add_image: 'Add image',
     add: 'Add',
     admin: 'Admin',

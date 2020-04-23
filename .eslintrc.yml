@@ -53,6 +53,7 @@ rules: {
     react/jsx-wrap-multilines: 0,
     react/jsx-one-expression-per-line: 0,
     react/jsx-props-no-spreading: 0,
+    react/no-unescaped-entities: 0,
 
     # We use Typescript for validating props
     react/prop-types: 0,

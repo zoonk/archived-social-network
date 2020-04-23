@@ -58,6 +58,7 @@ const MenuPages = () => {
     { link: '/edits', title: translate('edit_history'), icon: <History /> },
   ];
   const metaPages = [
+    { link: '/about', title: translate('about_us') },
     { link: '/contact', title: translate('contact_us') },
     { link: '/terms', title: translate('terms_service') },
     { link: '/privacy', title: translate('privacy_policy') },
