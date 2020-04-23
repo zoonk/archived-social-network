@@ -5,7 +5,7 @@ import { Post } from '@zoonk/models';
  */
 export const getPostImage = (content: string): string | null => {
   // Find custom image tags
-  const tagPattern = /src="(.*)"/;
+  const tagPattern = /src="(.*?)"/;
   const tagUrl = content.match(tagPattern);
 
   if (tagUrl) return tagUrl[1];

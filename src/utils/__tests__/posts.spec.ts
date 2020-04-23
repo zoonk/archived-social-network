@@ -42,7 +42,7 @@ describe('getPostImage()', () => {
   });
 
   test('return URL for custom image tags', () => {
-    const content = 'test: [[ img src="photo.png?size=400" ]].';
+    const content = 'test: [[ img src="photo.png?size=400" alt="test" ]].';
     expect(getPostImage(content)).toEqual('photo.png?size=400');
   });
 });
