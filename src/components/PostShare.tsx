@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import NextLink from 'next/link';
 import { makeStyles } from '@material-ui/core';
-import { Post } from '@zoonk/models';
+import { Dictionary, Post } from '@zoonk/models';
 import { GlobalContext } from '@zoonk/utils';
 
 const useStyles = makeStyles((theme) => ({
@@ -19,25 +19,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface HomeShareProps {
+interface PostShareProps {
   category?: Post.Category;
   title?: string;
+  topicId?: string;
 }
 
-const HomeShare = ({ category, title }: HomeShareProps) => {
+const PostShare = ({ category, title, topicId }: PostShareProps) => {
   const { translate } = useContext(GlobalContext);
   const classes = useStyles();
+  const query: Dictionary<string> = {};
+
+  if (category) {
+    query.category = category;
+  }
+
+  if (topicId) {
+    query.topicId = topicId;
+  }
 
   return (
     <div style={{ display: 'flex', width: '100%' }}>
-      <NextLink
-        href={category ? `/posts/add?category=${category}` : '/posts/add'}
-        passHref
-      >
+      <NextLink href={{ pathname: 'posts/add', query }} passHref>
         <a className={classes.button}>{title || translate('post_add')}</a>
       </NextLink>
     </div>
   );
 };
 
-export default HomeShare;
+export default PostShare;

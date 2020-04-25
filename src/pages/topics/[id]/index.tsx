@@ -5,6 +5,7 @@ import ChaptersCard from '@zoonk/components/ChaptersCard';
 import Meta from '@zoonk/components/Meta';
 import MenuTopics from '@zoonk/components/MenuTopics';
 import PostsCard from '@zoonk/components/PostsCard';
+import PostShare from '@zoonk/components/PostShare';
 import TopicDetails from '@zoonk/components/TopicDetails';
 import TopicsBreadcrumb from '@zoonk/components/TopicsBreadcrumb';
 import { Topic } from '@zoonk/models';
@@ -51,6 +52,10 @@ const TopicPage: NextPage<TopicPageProps> = ({ topic }) => {
         </Grid>
 
         <Grid item xs={12} sm={6} md={8} className={classes.column}>
+          <PostShare
+            title={translate('post_share_topic', { title })}
+            topicId={id}
+          />
           <ChaptersCard chapters={chapterData} />
           <PostsCard
             topicId={id}

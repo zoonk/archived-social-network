@@ -162,6 +162,7 @@ export type TranslationKeys =
   | 'post_select_desc'
   | 'post_select_title'
   | 'post_share'
+  | 'post_share_topic'
   | 'posts'
   | 'preview'
   | 'preview_quit'

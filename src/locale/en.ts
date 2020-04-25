@@ -171,6 +171,7 @@ const translate: TranslationFn = (key, args) => {
     post_select_desc: 'You can add an existing post to this chapter:',
     post_select_title: 'Select a post',
     post_share: 'What did you learn today?',
+    post_share_topic: `Share something about ${args?.title}`,
     posts: 'Posts',
     preview: 'Preview',
     preview_quit: 'Back to the editor',

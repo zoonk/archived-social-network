@@ -174,6 +174,7 @@ const translate: TranslationFn = (key, args) => {
       'Você pode adicionar um post existente ao capítulo clicando no botão "add":',
     post_select_title: 'Escolher post',
     post_share: 'O que você aprendeu hoje?',
+    post_share_topic: `Compartilhe algo sobre ${args?.title}`,
     posts: 'Posts',
     preview: 'Visualizar',
     preview_quit: 'Voltar ao editor',
