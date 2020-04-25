@@ -3,6 +3,7 @@ import * as admin from 'firebase-admin';
 admin.initializeApp();
 
 export * from './activity';
+export * from './admin';
 export * from './chapters';
 export * from './comments';
 export * from './leaderboard';

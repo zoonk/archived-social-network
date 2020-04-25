@@ -43,6 +43,10 @@ service cloud.firestore {
       allow list: if request.query.limit <= 20;
     }
 
+    match /admin/{id} {
+      allow get: if isAdmin();
+    }
+
     match /chapters/{id} {
       allow get;
       allow list;

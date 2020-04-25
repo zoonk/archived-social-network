@@ -1,4 +1,5 @@
 export * from './activity';
+export * from './admin';
 export * from './chapters';
 export * from './comments';
 export * from './feedback';

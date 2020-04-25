@@ -252,6 +252,7 @@ export type TranslationKeys =
   | 'signup_notice'
   | 'signup'
   | 'social_description'
+  | 'stats'
   | 'teach_article_desc'
   | 'teach_article_title'
   | 'teach_book_desc'
@@ -282,6 +283,7 @@ export type TranslationKeys =
   | 'url'
   | 'username_exists'
   | 'username'
+  | 'users'
   | 'video'
   | 'video_link'
   | 'view';
