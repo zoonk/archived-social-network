@@ -36,13 +36,8 @@ test('cannot update an item', async (done) => {
   done();
 });
 
-test('cannot delete an action', async (done) => {
+test('cannot delete an item', async (done) => {
   await firebase.assertFails(doc.delete());
-  done();
-});
-
-test('cannot get an action', async (done) => {
-  await firebase.assertFails(doc.get());
   done();
 });
 
@@ -62,7 +57,15 @@ test('cannot read with moderator access', async (done) => {
   done();
 });
 
-test('cannot list actions', async (done) => {
+test('cannot read with viewer access', async (done) => {
+  const adminApp = initializeFbApp({ uid: 'viewerUser' });
+  const adminDoc = adminApp.doc('admin/stats');
+  await admin.doc('users/viewerUser').set({ role: 'viewer' });
+  await firebase.assertFails(adminDoc.get());
+  done();
+});
+
+test('cannot list items', async (done) => {
   await firebase.assertFails(collection.get());
   done();
 });
