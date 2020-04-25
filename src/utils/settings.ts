@@ -10,4 +10,4 @@ export const rootUrl = `https://${appLanguage}.zoonk.org`;
 
 // eslint-disable-next-line max-len
 export const socialIcon =
-  'https://firebasestorage.googleapis.com/v0/b/zoonk-production.appspot.com/o/core%2Fzoonk-icon.png?alt=media&token=bc80c6eb-d36c-4f6a-b186-f228bdb9688f';
+  'https://firebasestorage.googleapis.com/v0/b/zoonk-production.appspot.com/o/core%2Ficon-192.png?alt=media&token=7bcaa482-06e3-4944-8fac-7e07682c4121';
