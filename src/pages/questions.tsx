@@ -21,7 +21,7 @@ const Questions: NextPage = () => {
         canonicalUrl={`${rootUrl}/questions`}
       />
       <SidebarPage category="questions" title={translate('ask_question')}>
-        <PostsCard category={['questions']} limit={10} allowLoadMore listOnly />
+        <PostsCard category={['questions']} limit={10} />
       </SidebarPage>
     </Container>
   );

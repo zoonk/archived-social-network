@@ -240,10 +240,6 @@ const translate: TranslationFn = (key, args) => {
     seo_posts_desc:
       'Encontre publicações e artigos sobre qualquer assunto. Aprenda lendo artigos online de graça.',
     seo_profile_desc: `${args?.name} está ensinando e aprendendo coisas no Zoonk. Veja o que ${args?.name} está criando.`,
-    seo_profile_posts_desc: `Publicações feitas por ${args?.name}. Todos os artigos publicados online por ${args?.name}.`,
-    seo_profile_posts_title: `Posts de ${args?.name}`,
-    seo_profile_topics_desc: `${args?.name} está escrevendo sobre muitos assuntos interessantes. Veja os assuntos criados por ${args?.name} no Zoonk.`,
-    seo_profile_topics_title: `Assuntos de ${args?.name}`,
     seo_questions_desc:
       'Como tirar dúvidas sobre qualquer assunto online. Perguntas e respostas sobre todos os temas.',
     seo_refs_desc:

@@ -2,6 +2,7 @@ import { useContext, useEffect } from 'react';
 import { NextPage } from 'next';
 import { Container } from '@material-ui/core';
 import PostsCard from '@zoonk/components/PostsCard';
+import PostShare from '@zoonk/components/PostShare';
 import Meta from '@zoonk/components/Meta';
 import TopicsBreadcrumb from '@zoonk/components/TopicsBreadcrumb';
 import {
@@ -10,6 +11,7 @@ import {
   GlobalContext,
   preRender,
   rootUrl,
+  theme,
 } from '@zoonk/utils';
 
 interface TopicExamplesProps {
@@ -35,16 +37,13 @@ const TopicExamples: NextPage<TopicExamplesProps> = ({ title, topicId }) => {
         topicId={topicId}
         title={translate('real_life_examples')}
       />
-      <PostsCard
-        category={['examples']}
+      <PostShare
+        category="examples"
+        title={translate('teach_example_title')}
         topicId={topicId}
-        limit={10}
-        hideLink
-        allowAdd
-        allowLoadMore
-        orderBy={['likes']}
-        title={translate('examples')}
       />
+      <div style={{ margin: theme.spacing(1, 0) }} />
+      <PostsCard category={['examples']} topicId={topicId} limit={10} />
     </Container>
   );
 };

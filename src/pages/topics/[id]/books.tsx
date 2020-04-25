@@ -2,6 +2,7 @@ import { useContext, useEffect } from 'react';
 import { NextPage } from 'next';
 import { Container } from '@material-ui/core';
 import PostsCard from '@zoonk/components/PostsCard';
+import PostShare from '@zoonk/components/PostShare';
 import Meta from '@zoonk/components/Meta';
 import TopicsBreadcrumb from '@zoonk/components/TopicsBreadcrumb';
 import {
@@ -10,6 +11,7 @@ import {
   GlobalContext,
   preRender,
   rootUrl,
+  theme,
 } from '@zoonk/utils';
 
 interface TopicBooksProps {
@@ -32,16 +34,13 @@ const TopicBooks: NextPage<TopicBooksProps> = ({ title, topicId }) => {
         canonicalUrl={`${rootUrl}/topics/${topicId}/books`}
       />
       <TopicsBreadcrumb topicId={topicId} title={translate('books')} />
-      <PostsCard
-        category={['books']}
+      <PostShare
+        category="books"
+        title={translate('teach_book_title')}
         topicId={topicId}
-        limit={10}
-        hideLink
-        allowAdd
-        allowLoadMore
-        orderBy={['likes']}
-        title={translate('books')}
       />
+      <div style={{ margin: theme.spacing(1, 0) }} />
+      <PostsCard category={['books']} topicId={topicId} limit={10} />
     </Container>
   );
 };

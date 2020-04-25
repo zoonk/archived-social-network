@@ -21,12 +21,7 @@ const Posts: NextPage = () => {
         canonicalUrl={`${rootUrl}/posts`}
       />
       <SidebarPage category="posts" title={translate('teach_article_title')}>
-        <PostsCard
-          category={['posts', 'lessons']}
-          listOnly
-          allowLoadMore
-          limit={20}
-        />
+        <PostsCard category={['posts', 'lessons']} limit={20} />
       </SidebarPage>
     </Container>
   );

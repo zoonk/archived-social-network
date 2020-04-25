@@ -40,7 +40,7 @@ const PostShare = ({ category, title, topicId }: PostShareProps) => {
 
   return (
     <div style={{ display: 'flex', width: '100%' }}>
-      <NextLink href={{ pathname: 'posts/add', query }} passHref>
+      <NextLink href={{ pathname: '/posts/add', query }} passHref>
         <a className={classes.button}>{title || translate('post_add')}</a>
       </NextLink>
     </div>

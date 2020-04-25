@@ -21,12 +21,7 @@ const References: NextPage = () => {
         canonicalUrl={`${rootUrl}/references`}
       />
       <SidebarPage category="references" title={translate('teach_ref_title')}>
-        <PostsCard
-          category={['references']}
-          limit={10}
-          listOnly
-          allowLoadMore
-        />
+        <PostsCard category={['references']} limit={10} />
       </SidebarPage>
     </Container>
   );

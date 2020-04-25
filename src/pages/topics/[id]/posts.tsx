@@ -3,6 +3,7 @@ import { NextPage } from 'next';
 import { Container } from '@material-ui/core';
 import Meta from '@zoonk/components/Meta';
 import PostsCard from '@zoonk/components/PostsCard';
+import PostShare from '@zoonk/components/PostShare';
 import TopicsBreadcrumb from '@zoonk/components/TopicsBreadcrumb';
 import {
   analytics,
@@ -10,6 +11,7 @@ import {
   GlobalContext,
   preRender,
   rootUrl,
+  theme,
 } from '@zoonk/utils';
 
 interface TopicPostsProps {
@@ -32,15 +34,13 @@ const TopicPosts: NextPage<TopicPostsProps> = ({ id, title }) => {
         canonicalUrl={`${rootUrl}/topics/${id}/posts`}
       />
       <TopicsBreadcrumb topicId={id} title={translate('posts')} />
-      <PostsCard
+      <PostShare
+        category="posts"
+        title={translate('teach_article_title')}
         topicId={id}
-        limit={10}
-        hideLink
-        allowAdd
-        allowLoadMore
-        displayFilter
-        title={translate('posts')}
       />
+      <div style={{ margin: theme.spacing(1, 0) }} />
+      <PostsCard category={['posts', 'lessons']} topicId={id} limit={10} />
     </Container>
   );
 };

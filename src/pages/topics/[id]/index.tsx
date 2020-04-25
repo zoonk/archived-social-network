@@ -57,14 +57,7 @@ const TopicPage: NextPage<TopicPageProps> = ({ topic }) => {
             topicId={id}
           />
           <ChaptersCard chapters={chapterData} />
-          <PostsCard
-            topicId={id}
-            limit={10}
-            allowAdd
-            allowLoadMore
-            displayFilter
-            title={translate('timeline')}
-          />
+          <PostsCard topicId={id} limit={10} displayFilter />
         </Grid>
       </Grid>
     </Container>

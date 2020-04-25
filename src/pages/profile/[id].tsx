@@ -5,7 +5,6 @@ import HomeBreadcrumb from '@zoonk/components/HomeBreadcrumb';
 import Meta from '@zoonk/components/Meta';
 import PostsCard from '@zoonk/components/PostsCard';
 import ProfileCard from '@zoonk/components/ProfileCard';
-import TopicsCard from '@zoonk/components/TopicsCard';
 import { Leaderboard } from '@zoonk/models';
 import { getUserLeaderboard } from '@zoonk/services';
 import { analytics, GlobalContext, preRender, rootUrl } from '@zoonk/utils';
@@ -48,8 +47,7 @@ const ProfilePage: NextPage<ProfileProps> = ({ profile }: ProfileProps) => {
         </Grid>
 
         <Grid item xs={12} sm={6} md={8} className={classes.column}>
-          <TopicsCard createdById={id} />
-          <PostsCard userId={id} limit={3} title={translate('posts')} />
+          <PostsCard userId={id} limit={10} />
         </Grid>
       </Grid>
     </Container>

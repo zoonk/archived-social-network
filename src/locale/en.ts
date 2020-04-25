@@ -143,7 +143,7 @@ const translate: TranslationFn = (key, args) => {
     no_courses: `Do you know an interesting **${args?.title}** course? Then, help others find it. [Share it](/posts/add?category=courses&topicId=${args?.topicId})!`,
     no_examples: `Why learning about **${args?.title}** is important? Be the first to [share a practical example](/posts/add?category=examples&topicId=${args?.topicId}).`,
     no_lessons: `Be the first to [create a lesson](/topics/${args?.topicId}/chapters/${args?.chapterId}/add?category=lessons) and help others learn about **${args?.title}**.`,
-    no_posts: `Do you have any thoughts about **${args?.title}**? Then, [share it](/posts/add?topicId=${args?.topicId})!`,
+    no_posts: `Do you have any thoughts about **${args?.title}**? Then, [share them](/posts/add?topicId=${args?.topicId})!`,
     no_questions: `Do you have any questions about **${args?.title}**? [Just ask](/posts?category=questions&topicId=${args?.topicId}) and let other people will help you.`,
     no_references: `Did you find an interesting link or reference about **${args?.title}**? Then, [share it](/posts/add?topicId=${args?.topicId}&category=references)!`,
     no_user_posts: "This user didn't share any posts yet.",
@@ -238,10 +238,6 @@ const translate: TranslationFn = (key, args) => {
     seo_posts_desc:
       'Find posts and articles about any subject. Learn by reading free posts online.',
     seo_profile_desc: `${args?.name} is learning and teaching on Zoonk. See what ${args?.name} is creating.`,
-    seo_profile_posts_desc: `Posts written by ${args?.name}. Find all articles published by ${args?.name}.`,
-    seo_profile_posts_title: `Posts by ${args?.name}`,
-    seo_profile_topics_desc: `${args?.name} is teaching about many topics online. See all topics created by ${args?.name} on Zoonk.`,
-    seo_profile_topics_title: `Topics by ${args?.name}`,
     seo_questions_desc:
       'Ask questions about any subjects online. Find answers for everything online.',
     seo_refs_desc:
