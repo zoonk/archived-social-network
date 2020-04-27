@@ -35,7 +35,7 @@ const ChapterForm = ({
     }, 1000),
   );
 
-  const descriptionMax = 500;
+  const descriptionMax = 1000;
   const valid =
     title.length > 0 &&
     description.length > 0 &&

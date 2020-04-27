@@ -101,8 +101,8 @@ test('description is a string', async (done) => {
   done();
 });
 
-test('description cannot have more than 500 characters', async (done) => {
-  const description = new Array(501).fill('a').join('');
+test('description cannot have more than 1000 characters', async (done) => {
+  const description = new Array(1001).fill('a').join('');
   await firebase.assertFails(ref.update({ ...edit, description }));
   done();
 });

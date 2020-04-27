@@ -57,7 +57,7 @@ service cloud.firestore {
         && isValidProfile('createdBy')
         && request.resource.data.createdById == request.auth.uid
         && request.resource.data.description is string
-        && request.resource.data.description.size() <= 500
+        && request.resource.data.description.size() <= 1000
         && request.resource.data.examples is list
         && request.resource.data.examples.size() <= 20
         && request.resource.data.lessons is list
@@ -75,7 +75,7 @@ service cloud.firestore {
         if request.auth.uid != null
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['description', 'examples', 'lessons', 'title', 'topics', 'updatedAt', 'updatedBy', 'updatedById'])
         && request.resource.data.description is string
-        && request.resource.data.description.size() <= 500
+        && request.resource.data.description.size() <= 1000
         && request.resource.data.examples is list
         && request.resource.data.examples.size() <= 20
         && request.resource.data.lessons is list
