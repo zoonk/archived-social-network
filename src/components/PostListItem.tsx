@@ -1,13 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-has-content */
 import { Post } from '@zoonk/models';
 import NextLink from 'next/link';
-import {
-  Card,
-  CardContent,
-  Link,
-  makeStyles,
-  Typography,
-} from '@material-ui/core';
+import { Link, makeStyles, Paper, Typography } from '@material-ui/core';
 import {
   getDomainFromUrl,
   getPostImage,
@@ -18,9 +12,8 @@ import PostListMeta from './PostListMeta';
 
 const useStyles = makeStyles((theme) => ({
   content: {
-    '&:last-child': {
-      paddingBottom: 16,
-    },
+    display: 'flex',
+    padding: theme.spacing(1),
   },
   image: {
     width: '100px',
@@ -46,8 +39,8 @@ const PostListItem = ({ item }: PostListItemProps) => {
   const image = cover || getPostImage(content) || siteImg?.image;
 
   return (
-    <Card variant="outlined">
-      <CardContent style={{ display: 'flex' }} className={classes.content}>
+    <Paper variant="outlined">
+      <div className={classes.content}>
         {image && (
           <NextLink href="/posts/[id]" as={`/posts/${id}`} passHref>
             <a
@@ -87,8 +80,8 @@ const PostListItem = ({ item }: PostListItemProps) => {
 
           <PostListMeta post={item} />
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </Paper>
   );
 };
 

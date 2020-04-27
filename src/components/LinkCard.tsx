@@ -22,7 +22,7 @@ const LinkCard = ({ site }: LinkCardProps) => {
         target={isInternal(url) ? '_self' : '_blank'}
         rel={isInternal(url) ? undefined : 'noopener noreferrer'}
       >
-        <CardContent style={{ display: 'flex' }}>
+        <CardContent style={{ display: 'flex', padding: theme.spacing(1) }}>
           {image && (
             <div
               style={{
