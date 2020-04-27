@@ -2,14 +2,10 @@ import { useContext, useEffect, useState } from 'react';
 import { Button, Card, CardContent, Typography } from '@material-ui/core';
 import { Post } from '@zoonk/models';
 import { getLinkMetadata } from '@zoonk/services';
-import {
-  containsYoutubeUrl,
-  GlobalContext,
-  postFont,
-  theme,
-} from '@zoonk/utils';
+import { containsYoutubeUrl, GlobalContext, theme } from '@zoonk/utils';
 import EditorView from './EditorView';
 import LinkList from './LinkList';
+import PostTitle from './PostTitle';
 import TopicChips from './TopicChips';
 import YoutubePlayer from './YoutubePlayer';
 
@@ -66,13 +62,7 @@ const PostPreview = ({ data, onToggleExpand }: PostPreviewProps) => {
         }}
       >
         <CardContent>
-          <Typography
-            variant="h5"
-            component="h1"
-            style={{ fontFamily: postFont }}
-          >
-            {title}
-          </Typography>
+          <PostTitle>{title}</PostTitle>
           <TopicChips items={topics || []} />
           <EditorView content={content || ''} />
           {links && youtubeId && <YoutubePlayer id={youtubeId} />}

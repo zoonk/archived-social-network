@@ -1,18 +1,13 @@
 import { useContext, useEffect, useState } from 'react';
 import NextLink from 'next/link';
-import {
-  Button,
-  Card,
-  CardContent,
-  makeStyles,
-  Typography,
-} from '@material-ui/core';
+import { Button, Card, CardContent, makeStyles } from '@material-ui/core';
 import { Post } from '@zoonk/models';
 import { getNextLesson, getPreviousLesson } from '@zoonk/services';
 import { containsYoutubeUrl, GlobalContext, postFont } from '@zoonk/utils';
 import EditorView from './EditorView';
 import ItemActions from './ItemActions';
 import LinkList from './LinkList';
+import PostTitle from './PostTitle';
 import TopicChips from './TopicChips';
 import YoutubePlayer from './YoutubePlayer';
 
@@ -93,9 +88,7 @@ const PostView = ({ chapterId, item, topicId }: PostViewProps) => {
   return (
     <Card variant="outlined">
       <CardContent>
-        <Typography component="h1" className={classes.title}>
-          {title}
-        </Typography>
+        <PostTitle>{title}</PostTitle>
         <TopicChips items={topics} />
         <ItemActions
           category="posts"
