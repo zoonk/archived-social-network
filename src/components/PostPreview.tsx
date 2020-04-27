@@ -28,19 +28,23 @@ const PostPreview = ({ data, onToggleExpand }: PostPreviewProps) => {
   const { content, links, title, topics } = data;
   const youtube = links?.find((link) => containsYoutubeUrl(link));
   const youtubeId = containsYoutubeUrl(youtube);
+  const rawLinks = JSON.stringify(links);
 
   useEffect(() => {
     if (onToggleExpand) onToggleExpand(expand);
   }, [expand, onToggleExpand]);
 
   useEffect(() => {
-    if (links && links.length > 0) {
-      const promises = links
+    // React doesn't compare arrays. We've converted it to string and parsed it back to array here.
+    const linksArr = JSON.parse(rawLinks);
+
+    if (linksArr && linksArr.length > 0) {
+      const promises: Post.Link[] = linksArr
         .filter(Boolean)
-        .map((link) => getLinkMetadata(link));
+        .map((link: string) => getLinkMetadata(link));
       Promise.all(promises).then(setSites);
     }
-  }, [links]);
+  }, [rawLinks]);
 
   return (
     <div

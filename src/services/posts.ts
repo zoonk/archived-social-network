@@ -1,5 +1,11 @@
 import { pickBy } from 'lodash';
-import { ChapterProgress, ContentMetadata, Post, Profile } from '@zoonk/models';
+import {
+  ChapterProgress,
+  ContentMetadata,
+  Dictionary,
+  Post,
+  Profile,
+} from '@zoonk/models';
 import {
   analytics,
   appLanguage,
@@ -306,10 +312,19 @@ export const getPreviousLesson = async (
   return getPreviousLesson(previousChapterId, null, topicId);
 };
 
+// Create a cache for generated links.
+const linkCache: Dictionary<Post.Link> = {};
+
 /**
  * Get a website's metadata.
  */
 export const getLinkMetadata = async (url: string): Promise<Post.Link> => {
+  // If the link already exists on cache, then return it.
+  if (linkCache[url]) return linkCache[url];
+
   const fn = await functions.httpsCallable('generateMetadata')({ url });
+
+  // Add results to cache.
+  linkCache[url] = fn.data;
   return fn.data;
 };
