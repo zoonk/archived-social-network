@@ -10,7 +10,7 @@ const EditorText = ({ children }: EditorTextProps) => {
     <Typography
       variant="body1"
       style={{
-        marginBottom: theme.spacing(2),
+        margin: theme.spacing(1, 0),
         fontSize: '1.25rem',
         lineHeight: '2rem',
       }}
