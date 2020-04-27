@@ -65,11 +65,15 @@ const ReferencesForm = ({
     try {
       const url = new URL(link);
       setLinkValid(true);
-      throttled.current(url.href);
+
+      // Don't update metadata when editing a reference.
+      if (!data) {
+        throttled.current(url.href);
+      }
     } catch (e) {
       if (link) setLinkValid(false);
     }
-  }, [link]);
+  }, [data, link]);
 
   return (
     <Grid container spacing={2}>
