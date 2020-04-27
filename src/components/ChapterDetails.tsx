@@ -1,5 +1,6 @@
 import { Card, CardContent, Typography } from '@material-ui/core';
 import { Chapter } from '@zoonk/models';
+import EditorView from './EditorView';
 import ItemActions from './ItemActions';
 
 interface ChapterDetailsProps {
@@ -12,7 +13,6 @@ interface ChapterDetailsProps {
  */
 const ChapterDetails = ({ data, topicId }: ChapterDetailsProps) => {
   const { description, id, likes, title } = data;
-  const descriptionWithLineBreak = description.split('\n').filter(Boolean);
 
   return (
     <Card variant="outlined">
@@ -29,17 +29,7 @@ const ChapterDetails = ({ data, topicId }: ChapterDetailsProps) => {
           linkAs={`/topics/${topicId}/chapters/${data.id}`}
         />
 
-        {descriptionWithLineBreak.map((text, index) => (
-          <Typography
-            key={text}
-            variant="body2"
-            color="textSecondary"
-            component="p"
-            gutterBottom={index !== descriptionWithLineBreak.length - 1}
-          >
-            {text}
-          </Typography>
-        ))}
+        <EditorView content={description} />
       </CardContent>
     </Card>
   );
