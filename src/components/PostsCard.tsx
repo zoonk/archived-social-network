@@ -39,10 +39,13 @@ const PostsCard = ({
   >(limit);
   const listSlug = filter === 'timeline' ? undefined : filter;
 
+  // useEffect doesn't compare arrays, so we need to stringify it.
+  const rawCategory = category ? JSON.stringify(category) : undefined;
+
   const loadMore = () => {
     get({
       data: listPosts({
-        category: listSlug ? [listSlug] : undefined,
+        category: listSlug && displayFilter ? [listSlug] : category,
         lastVisible,
         limit,
         topicId,
@@ -52,16 +55,20 @@ const PostsCard = ({
   };
 
   useEffect(() => {
+    const categories: Post.Category[] = rawCategory
+      ? JSON.parse(rawCategory)
+      : undefined;
+
     get({
       data: listPosts({
-        category: listSlug ? [listSlug] : undefined,
+        category: listSlug && displayFilter ? [listSlug] : categories,
         limit,
         topicId,
         userId,
       }),
       replace: true,
     });
-  }, [get, limit, listSlug, topicId, userId]);
+  }, [displayFilter, get, limit, listSlug, rawCategory, topicId, userId]);
 
   useEffect(() => {
     if (error) {
