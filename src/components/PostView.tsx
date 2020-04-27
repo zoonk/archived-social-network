@@ -1,19 +1,35 @@
 import { useContext, useEffect, useState } from 'react';
 import NextLink from 'next/link';
-import { Button, Card, CardContent, Typography } from '@material-ui/core';
+import {
+  Button,
+  Card,
+  CardContent,
+  makeStyles,
+  Typography,
+} from '@material-ui/core';
 import { Post } from '@zoonk/models';
 import { getNextLesson, getPreviousLesson } from '@zoonk/services';
-import {
-  containsYoutubeUrl,
-  GlobalContext,
-  postFont,
-  theme,
-} from '@zoonk/utils';
+import { containsYoutubeUrl, GlobalContext, postFont } from '@zoonk/utils';
 import EditorView from './EditorView';
 import ItemActions from './ItemActions';
 import LinkList from './LinkList';
 import TopicChips from './TopicChips';
 import YoutubePlayer from './YoutubePlayer';
+
+const useStyles = makeStyles((theme) => ({
+  title: {
+    fontFamily: postFont,
+    fontSize: theme.typography.h5.fontSize,
+    [theme.breakpoints.up('md')]: {
+      fontSize: theme.typography.h3.fontSize,
+    },
+  },
+  navigation: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    margin: theme.spacing(2, 0),
+  },
+}));
 
 interface PostViewProps {
   chapterId?: string;
@@ -26,6 +42,7 @@ interface PostViewProps {
  */
 const PostView = ({ chapterId, item, topicId }: PostViewProps) => {
   const { translate, user } = useContext(GlobalContext);
+  const classes = useStyles();
   const {
     category,
     createdById,
@@ -75,11 +92,7 @@ const PostView = ({ chapterId, item, topicId }: PostViewProps) => {
   return (
     <Card variant="outlined">
       <CardContent>
-        <Typography
-          variant="h5"
-          component="h1"
-          style={{ fontFamily: postFont }}
-        >
+        <Typography component="h1" className={classes.title}>
           {title}
         </Typography>
         <TopicChips items={topics} />
@@ -94,13 +107,7 @@ const PostView = ({ chapterId, item, topicId }: PostViewProps) => {
         {links && youtubeId && <YoutubePlayer id={youtubeId} />}
         <LinkList sites={sites} />
 
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            margin: theme.spacing(2, 0),
-          }}
-        >
+        <div className={classes.navigation}>
           {previous && (
             <NextLink
               href="/topics/[id]/chapters/[chapterId]/[lessonId]"
