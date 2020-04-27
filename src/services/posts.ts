@@ -285,6 +285,13 @@ export const getPreviousLesson = async (
 ): Promise<Post.NextLesson | null> => {
   // Get the previous lesson from this chapter.
   const { lessons } = await getChapter(chapterId);
+
+  // If there's no post ID, then get the last lesson from this chapter.
+  if (!postId) {
+    const lastLesson = lessons[lessons.length - 1];
+    return { chapterId, lessonId: lastLesson };
+  }
+
   const postOrder = lessons.findIndex((lesson) => lesson === postId);
   const previousPost = postOrder - 1;
 
@@ -308,7 +315,7 @@ export const getPreviousLesson = async (
   // Return `null` when this is the last chapter.
   if (!previousChapterId) return null;
 
-  // Get the first lesson from the next chapter.
+  // Get the last lesson from the previous chapter.
   return getPreviousLesson(previousChapterId, null, topicId);
 };
 
