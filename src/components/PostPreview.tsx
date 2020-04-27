@@ -75,9 +75,9 @@ const PostPreview = ({ data, onToggleExpand }: PostPreviewProps) => {
           </Typography>
           <TopicChips items={topics || []} />
           <EditorView content={content || ''} />
+          {links && youtubeId && <YoutubePlayer id={youtubeId} />}
           <LinkList sites={sites} />
         </CardContent>
-        {links && youtubeId && <YoutubePlayer id={youtubeId} />}
       </Card>
 
       {onToggleExpand && (

@@ -91,9 +91,8 @@ const PostView = ({ chapterId, item, topicId }: PostViewProps) => {
           likes={likes}
         />
         <EditorView content={content} />
-        <LinkList sites={sites} />
-
         {links && youtubeId && <YoutubePlayer id={youtubeId} />}
+        <LinkList sites={sites} />
 
         <div
           style={{

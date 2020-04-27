@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { Grid, Typography } from '@material-ui/core';
 import { Post } from '@zoonk/models';
-import { GlobalContext } from '@zoonk/utils';
+import { GlobalContext, theme } from '@zoonk/utils';
 import LinkCard from './LinkCard';
 
 interface LinkListProps {
@@ -14,7 +14,7 @@ const LinkList = ({ sites }: LinkListProps) => {
   if (sites.length === 0) return null;
 
   return (
-    <Grid container spacing={1}>
+    <Grid container spacing={1} style={{ marginTop: theme.spacing(2) }}>
       <Typography variant="h6" gutterBottom>
         {translate('references')}
       </Typography>
