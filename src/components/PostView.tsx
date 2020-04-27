@@ -19,7 +19,8 @@ import YoutubePlayer from './YoutubePlayer';
 const useStyles = makeStyles((theme) => ({
   title: {
     fontFamily: postFont,
-    fontSize: theme.typography.h5.fontSize,
+    fontSize: theme.typography.h4.fontSize,
+    lineHeight: 1.1,
     [theme.breakpoints.up('md')]: {
       fontSize: theme.typography.h3.fontSize,
     },
