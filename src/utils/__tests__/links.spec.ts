@@ -22,11 +22,9 @@ test('get a domain when the url has ws://', () => {
 
 test('get a domain when the url has a subdomain.', () => {
   const url = 'http://dev.zoonk.org/some/random/path?q=123';
-  const url2 = 'https://www.zoonk.org/some/random/path?q=123';
-  const url3 = 'www.zoonk.org/some/random/path?q=123';
+  const url2 = 'zoonk.org/some/random/path?q=123';
   expect(getDomainFromUrl(url)).toEqual('dev.zoonk.org');
-  expect(getDomainFromUrl(url2)).toEqual('www.zoonk.org');
-  expect(getDomainFromUrl(url3)).toEqual('unknown');
+  expect(getDomainFromUrl(url2)).toEqual('unknown');
 });
 
 test('get a domain for urls with multiple paths', () => {
@@ -36,4 +34,9 @@ test('get a domain for urls with multiple paths', () => {
   expect(getDomainFromUrl(url)).toEqual('zoonk.com.br');
   expect(getDomainFromUrl(url2)).toEqual('zoonk.co.uk');
   expect(getDomainFromUrl(url3)).toEqual('unknown');
+});
+
+test('remove www from the domain name', () => {
+  const url = 'http://www.zoonk.org/some/random/path?q=123';
+  expect(getDomainFromUrl(url)).toEqual('zoonk.org');
 });
