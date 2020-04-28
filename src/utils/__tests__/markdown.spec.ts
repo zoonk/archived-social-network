@@ -38,7 +38,14 @@ test('strip anchors', () => {
 
 test('strip anchors with spaces', () => {
   const md =
-    '*Javascript* [developers] (https://engineering.condenast.io/)* are the _best_.';
+    '*Javascript* [developers]   (https://engineering.condenast.io/)* are the _best_.';
+  const expected = 'Javascript developers* are the best.';
+  expect(markdownToText(md)).toEqual(expected);
+});
+
+test('strip anchors with new line', () => {
+  const md =
+    '*Javascript* [developers]\n(https://engineering.condenast.io/)* are the _best_.';
   const expected = 'Javascript developers* are the best.';
   expect(markdownToText(md)).toEqual(expected);
 });
@@ -76,13 +83,13 @@ test('remove double emphasis', () => {
 
 test('remove horizontal rules', () => {
   const md = 'Some text on a line\n\n---\n\nA line below';
-  const expected = 'Some text on a line\n\nA line below';
+  const expected = 'Some text on a line A line below';
   expect(markdownToText(md)).toEqual(expected);
 });
 
 test('remove horizontal rules with space-separated asterisks', () => {
   const md = 'Some text on a line\n\n* * *\n\nA line below';
-  const expected = 'Some text on a line\n\nA line below';
+  const expected = 'Some text on a line A line below';
   expect(markdownToText(md)).toEqual(expected);
 });
 
@@ -125,6 +132,6 @@ test('does not remove greater than signs', () => {
 
 test('remove custom templates', () => {
   const md = 'some text\n[[ youtube id="random-video" ]]\nmore text.';
-  const expected = 'some text\n\nmore text.';
+  const expected = 'some text more text.';
   expect(markdownToText(md)).toEqual(expected);
 });

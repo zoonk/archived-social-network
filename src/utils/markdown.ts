@@ -12,6 +12,8 @@ export const markdownToText = (md: string): string => {
     .replace(/^(-\s*?|\*\s*?|_\s*?){3,}\s*$/gm, '')
     // Remove setext-style headers
     .replace(/^[=-]{2,}\s*$/g, '')
+    // Replace new lines with spaces
+    .replace(/\n/g, ' ')
     // Remove footnotes?
     .replace(/\[\^.+?\](: .*?$)?/g, '')
     .replace(/\s{0,2}\[.*?\]: .*?$/g, '')
@@ -37,8 +39,9 @@ export const markdownToText = (md: string): string => {
     .replace(/`(.+?)`/g, '$1')
     // Replace custom templates
     .replace(/\[(.*?)\]\]/g, '')
-    // Replace two or more newlines with exactly two? Not entirely sure this belongs here...
-    .replace(/\n{2,}/g, '\n\n');
+    // Remove white spaces.
+    .trim()
+    .replace(/\s+/g, ' ');
 
-  return output.trim();
+  return output;
 };
