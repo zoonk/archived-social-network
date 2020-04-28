@@ -18,7 +18,7 @@ export const markdownToText = (md: string): string => {
     // Remove images
     .replace(/!\[(.*?)\][[(].*?[\])]/g, '')
     // Remove inline links
-    .replace(/\[(.*?)\][[(].*?[\])]/g, '$1')
+    .replace(/\[(.*?)\][[ (].*?[\])]/g, '$1')
     // Remove blockquotes
     .replace(/^\s{0,3}>\s?/g, '')
     // Remove reference-style links?

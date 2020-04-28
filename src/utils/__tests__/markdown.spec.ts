@@ -36,6 +36,13 @@ test('strip anchors', () => {
   expect(markdownToText(md)).toEqual(expected);
 });
 
+test('strip anchors with spaces', () => {
+  const md =
+    '*Javascript* [developers] (https://engineering.condenast.io/)* are the _best_.';
+  const expected = 'Javascript developers* are the best.';
+  expect(markdownToText(md)).toEqual(expected);
+});
+
 test('strip img tags', () => {
   const md =
     '![](https://placebear.com/640/480)*Javascript* developers are the _best_.';
