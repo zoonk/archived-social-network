@@ -93,7 +93,6 @@ interface PostArgs {
  */
 export const listPosts = async ({
   category,
-  chapterId,
   lastVisible,
   limit = 10,
   topicId,
@@ -125,7 +124,7 @@ export const listPosts = async ({
   }
 
   // Filter by language when there are no content specific-filters.
-  if (!topicId && !chapterId) {
+  if (!topicId) {
     ref = ref.where('language', '==', appLanguage);
   }
 
