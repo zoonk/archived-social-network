@@ -105,6 +105,10 @@ export const listPosts = async ({
     .orderBy('updatedAt', 'desc')
     .limit(limit);
 
+  if (category?.includes('posts') && !category?.includes('lessons')) {
+    category.push('lessons');
+  }
+
   // Filter by category
   if (category) {
     ref = ref.where('category', 'in', category);
