@@ -1,12 +1,13 @@
 import firebase from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/analytics';
-import 'firebase/firestore';
-import 'firebase/functions';
-import 'firebase/performance';
-import 'firebase/storage';
+import '@firebase/auth';
+import '@firebase/analytics';
+import '@firebase/firestore/memory';
+import '@firebase/functions';
+import '@firebase/performance';
+import '@firebase/storage';
 
 import { FirebaseConfig } from '@zoonk/models';
+import { isProduction } from './settings';
 
 const firebaseConfig: FirebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY as string,
@@ -23,6 +24,8 @@ const firebaseConfig: FirebaseConfig = {
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
+
+firebase.setLogLevel(isProduction ? 'silent' : 'info');
 
 export const auth = firebase.auth();
 export const db = firebase.firestore();

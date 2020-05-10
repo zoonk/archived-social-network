@@ -17,7 +17,7 @@ import EditorView from './EditorView';
 type Section = 'lesson' | 'example' | 'article' | 'ref' | 'course' | 'book';
 
 interface CustomPanelProps {
-  children: React.ReactNode;
+  children: React.ReactNodeArray;
 }
 
 interface CustomSummaryProps {
