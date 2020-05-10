@@ -28,15 +28,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface PostViewProps {
-  chapterId?: string;
+  chapterId?: string | null;
   item: Post.Get;
-  topicId?: string;
 }
 
 /**
  * Display a post view.
  */
-const PostView = ({ chapterId, item, topicId }: PostViewProps) => {
+const PostView = ({ chapterId, item }: PostViewProps) => {
   const { translate, user } = useContext(GlobalContext);
   const classes = useStyles();
   const {
@@ -56,6 +55,7 @@ const PostView = ({ chapterId, item, topicId }: PostViewProps) => {
   const [next, setNext] = useState<Post.NextLesson | null>(null);
   const isAuthoral = category === 'posts' || category === 'questions';
   const isEditable = !isAuthoral || createdById === user?.uid;
+  const topicId = topics[0];
 
   useEffect(() => {
     let active = true;
@@ -104,8 +104,8 @@ const PostView = ({ chapterId, item, topicId }: PostViewProps) => {
         <div className={classes.navigation}>
           {previous && (
             <NextLink
-              href="/topics/[id]/chapters/[chapterId]/[lessonId]"
-              as={`/topics/${topicId}/chapters/${previous.chapterId}/${previous.lessonId}`}
+              href="/posts/[id]"
+              as={`/posts/${previous.lessonId}`}
               passHref
             >
               <Button component="a" color="primary" variant="contained">
@@ -116,8 +116,8 @@ const PostView = ({ chapterId, item, topicId }: PostViewProps) => {
 
           {next && (
             <NextLink
-              href="/topics/[id]/chapters/[chapterId]/[lessonId]"
-              as={`/topics/${topicId}/chapters/${next.chapterId}/${next.lessonId}`}
+              href="/posts/[id]"
+              as={`/posts/${next.lessonId}`}
               passHref
             >
               <Button component="a" color="primary" variant="contained">

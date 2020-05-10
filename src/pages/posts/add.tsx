@@ -21,12 +21,10 @@ const PostAddPage: NextPage = () => {
   }, []);
 
   useEffect(() => {
-    const postCategory = postCategories.includes(
-      (query.category as Post.Category) || '',
-    )
-      ? (String(query.category) as Post.Category)
-      : undefined;
-    setCategory(postCategory);
+    // Check if `query.category` is a valid post category
+    const queryCategory = String(query.category) as Post.Category;
+    const isValid = postCategories.includes(queryCategory);
+    if (isValid) setCategory(queryCategory);
   }, [query.category]);
 
   if (user === undefined) {
@@ -42,6 +40,7 @@ const PostAddPage: NextPage = () => {
       <Meta title={translate('post_add')} noIndex />
       <PostsBreadcrumb
         category={category}
+        chapterId={chapterId}
         topicId={topicId}
         title={translate('post_add')}
       />

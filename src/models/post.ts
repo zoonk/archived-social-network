@@ -1,3 +1,4 @@
+import { Chapter } from './chapter';
 import { ContentMetadata } from './content';
 import { Dictionary } from './misc';
 import { Profile } from './profile';
@@ -44,6 +45,7 @@ export namespace Post {
 
   export interface Fields extends EditableFields {
     category: Category;
+    chapterId: string | null;
   }
 
   /**
@@ -64,6 +66,7 @@ export namespace Post {
    * Fields returned from the backend.
    */
   export interface Response extends Fields, ContentMetadata.Response {
+    chapterData?: Chapter.Summary | null;
     editors?: string[];
     editorsData?: Dictionary<Profile.Response>;
     sites?: Link[];
@@ -73,6 +76,7 @@ export namespace Post {
    * Serialized fields.
    */
   export interface Get extends Fields, ContentMetadata.Get {
+    chapterData?: Chapter.Summary | null;
     editors: Profile.Get[];
     editorsData: Dictionary<Profile.Response>;
     id: string;

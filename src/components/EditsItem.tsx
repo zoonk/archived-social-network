@@ -19,26 +19,17 @@ import EditsRevert from './EditsRevert';
 interface EditsItemProps {
   displayTitle?: boolean;
   edits: Activity.Get;
-  editLink?: { href: string; as: string };
 }
 
 /**
  * Expansion panel containing a comparison between changes (`before` and `after`)
  * made to an item.
- *
- * @property `displayTitle` - set to `true` if the item's title should be displayed.
- * @property `edits` - serialized data returned from the backend.
  */
-const EditsItem = ({ displayTitle, editLink, edits }: EditsItemProps) => {
+const EditsItem = ({ displayTitle, edits }: EditsItemProps) => {
   const { translate } = useContext(GlobalContext);
   const [changes, setChanges] = useState<Diff.Change[][]>([[]]);
-  let hrefLink = editLink?.href || `/${edits.category}/[id]/edit`;
-  let asLink = editLink?.as || `/${edits.itemPath}/edit`;
-
-  if (edits.category === 'chapters') {
-    hrefLink = '/topics/[id]/chapters/[chapterId]/edit';
-    asLink = `/topics/${edits.topics[0]}/chapters/${edits.categoryId}/edit`;
-  }
+  const hrefLink = `/${edits.category}/[id]/edit`;
+  const asLink = `/${edits.itemPath}/edit`;
 
   useEffect(() => {
     const changedFields = editableFields[edits.category].filter((field) => {

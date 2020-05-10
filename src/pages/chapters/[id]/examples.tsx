@@ -3,7 +3,7 @@ import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { Container } from '@material-ui/core';
 import ChaptersBreadcrumb from '@zoonk/components/ChaptersBreadcrumb';
-import EditsList from '@zoonk/components/EditsList';
+import LessonSortableList from '@zoonk/components/LessonSortableList';
 import Meta from '@zoonk/components/Meta';
 import { analytics, GlobalContext } from '@zoonk/utils';
 
@@ -12,25 +12,20 @@ const ChapterEdits: NextPage = () => {
   const { query } = useRouter();
 
   useEffect(() => {
-    analytics().setCurrentScreen('chapter_edits');
+    analytics().setCurrentScreen('chapter_examples');
   }, []);
+
+  if (!query.id) return null;
 
   return (
     <Container component="main">
-      <Meta title={translate('page_edits')} noIndex />
+      <Meta title={translate('examples')} noIndex />
       <ChaptersBreadcrumb
+        chapterId={String(query.id)}
         title={translate('chapter')}
-        page={translate('page_edits')}
+        page={translate('examples')}
       />
-      {query.chapterId && (
-        <EditsList
-          itemPath={`chapters/${query.chapterId}`}
-          editLink={{
-            href: '/topics/[id]/chapters/[chapterId]/edit',
-            as: `/topics/${query.id}/chapters/${query.chapterId}/edit`,
-          }}
-        />
-      )}
+      <LessonSortableList category="examples" chapterId={String(query.id)} />
     </Container>
   );
 };

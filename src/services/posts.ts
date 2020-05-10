@@ -1,11 +1,5 @@
 import { pickBy } from 'lodash';
-import {
-  ChapterProgress,
-  ContentMetadata,
-  Dictionary,
-  Post,
-  Profile,
-} from '@zoonk/models';
+import { ChapterProgress, Dictionary, Post, Profile } from '@zoonk/models';
 import {
   analytics,
   appLanguage,
@@ -34,61 +28,11 @@ const postConverter: firebase.firestore.FirestoreDataConverter<Post.Get> = {
 /**
  * Add a new post to the database.
  */
-export const createPost = async (
-  data: Post.Create,
-  chapterId?: string,
-): Promise<string> => {
-  const batch = db.batch();
+export const createPost = async (data: Post.Create): Promise<string> => {
   const slug = generateSlug(data.title);
-  batch.set(db.doc(`posts/${slug}`), data);
-
-  // Add this post to a chapter.
-  if (chapterId) {
-    const chapterRef = db.doc(`chapters/${chapterId}`);
-    const changes = {
-      [data.category]: arrayUnion(slug),
-      updatedAt: data.updatedAt,
-      updatedBy: data.updatedBy,
-      updatedById: data.updatedById,
-    };
-    batch.update(chapterRef, changes);
-  }
-
+  await db.doc(`posts/${slug}`).set(data);
   analytics().logEvent('post_add', { language: data.language });
-  await batch.commit();
   return slug;
-};
-
-/**
- * Add an existing post to a chapter.
- */
-export const addPostToChapter = (
-  postId: string,
-  chapterId: string,
-  category: Post.Category,
-  user: ContentMetadata.Update,
-): Promise<void> => {
-  const changes = {
-    ...user,
-    [category]: arrayUnion(postId),
-  };
-  return db.doc(`chapters/${chapterId}`).update(changes);
-};
-
-/**
- * Remove a post from a chapter.
- */
-export const removePostFromChapter = (
-  postId: string,
-  chapterId: string,
-  category: Post.Category,
-  user: ContentMetadata.Update,
-): Promise<void> => {
-  const changes = {
-    ...user,
-    [category]: arrayRemove(postId),
-  };
-  return db.doc(`chapters/${chapterId}`).update(changes);
 };
 
 /**

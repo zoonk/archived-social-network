@@ -8,18 +8,31 @@ const NoLessons = dynamic(() => import('./NoLessons'));
 
 interface LessonsCardProps {
   category: 'examples' | 'lessons';
+  chapterId: string;
   lessons: Post.Summary[];
+  topicId: string;
 }
 
 /**
  * Cards for display a list of lessons.
  */
-const LessonsCard = ({ category, lessons }: LessonsCardProps) => {
+const LessonsCard = ({
+  category,
+  chapterId,
+  lessons,
+  topicId,
+}: LessonsCardProps) => {
   return (
     <Card variant="outlined">
       <CardContent style={{ paddingBottom: 0 }}>
-        <LessonsHeader category={category} />
-        {lessons.length === 0 && <NoLessons category={category} />}
+        <LessonsHeader chapterId={chapterId} category={category} />
+        {lessons.length === 0 && (
+          <NoLessons
+            category={category}
+            chapterId={chapterId}
+            topicId={topicId}
+          />
+        )}
         <LessonList items={lessons} />
       </CardContent>
     </Card>

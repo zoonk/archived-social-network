@@ -18,6 +18,8 @@ const profile = {
 
 const add = {
   category: 'posts',
+  chapterData: { title: 'chapter name' },
+  chapterId: 'valid',
   comments: 0,
   content: 'content',
   cover: 'test.png',
@@ -208,6 +210,17 @@ test('can update references', async (done) => {
 
 test('category cannot be changed', async (done) => {
   await firebase.assertFails(ref.update({ ...edit, category: 'examples' }));
+  done();
+});
+
+test('chapterData cannot be changed', async (done) => {
+  await firebase.assertFails(ref.update({ ...edit, chapterData: 'new' }));
+  done();
+});
+
+test('chapterId can only be changed to null', async (done) => {
+  await firebase.assertFails(ref.update({ ...edit, chapterId: 'newId' }));
+  await firebase.assertSucceeds(ref.update({ ...edit, chapterId: null }));
   done();
 });
 

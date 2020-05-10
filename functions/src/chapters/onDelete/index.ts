@@ -1,2 +1,3 @@
 export * from './addToActivity';
-export * from './removeFromTopics';
+export * from './updateParent';
+export * from './updatePosts';

@@ -12,7 +12,6 @@ interface EditsListProps {
   displayTitle?: boolean;
   itemPath?: string;
   limit?: number;
-  editLink?: { href: string; as: string };
 }
 
 /**
@@ -20,12 +19,7 @@ interface EditsListProps {
  * @property `itemPath` - document path in the database.
  * @property `limit` - # of items to be displayed.
  */
-const EditsList = ({
-  displayTitle,
-  editLink,
-  itemPath,
-  limit = 10,
-}: EditsListProps) => {
+const EditsList = ({ displayTitle, itemPath, limit = 10 }: EditsListProps) => {
   const { translate } = useContext(GlobalContext);
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const { error, get, items, lastVisible, loading } = useLoadMore<
@@ -49,12 +43,7 @@ const EditsList = ({
   return (
     <Fragment>
       {items.map((item) => (
-        <EditsItem
-          displayTitle={displayTitle}
-          editLink={editLink}
-          edits={item}
-          key={item.id}
-        />
+        <EditsItem displayTitle={displayTitle} edits={item} key={item.id} />
       ))}
 
       {loading && <EditsSkeleton />}

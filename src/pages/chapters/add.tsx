@@ -11,11 +11,13 @@ import { analytics, GlobalContext } from '@zoonk/utils';
 const ChapterAdd: NextPage = () => {
   const { translate } = useContext(GlobalContext);
   const { query } = useRouter();
-  const topicId = String(query.id);
+  const topicId = String(query.topicId);
 
   useEffect(() => {
     analytics().setCurrentScreen('chapters_add');
   }, []);
+
+  if (!query.topicId) return null;
 
   return (
     <Container component="main" maxWidth="xs">

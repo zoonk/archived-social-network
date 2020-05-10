@@ -15,9 +15,6 @@ interface ChapterCreateProps {
   topicId: string;
 }
 
-/**
- * Component for creating a chapter.
- */
 const ChapterCreate = ({ topicId }: ChapterCreateProps) => {
   const { profile, translate, user } = useContext(GlobalContext);
   const { push } = useRouter();
@@ -47,10 +44,7 @@ const ChapterCreate = ({ topicId }: ChapterCreateProps) => {
     })
       .then((id) => {
         setSnackbar({ type: 'success', msg: translate('saved') });
-        push(
-          '/topics/[id]/chapters/[chapterId]',
-          `/topics/${topicId}/chapters/${id}`,
-        );
+        push('/chapters/[id]', `/chapters/${id}`);
       })
       .catch((e) => setSnackbar(firebaseError(e, 'chapter_add')));
   };

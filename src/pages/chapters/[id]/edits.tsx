@@ -3,33 +3,31 @@ import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { Container } from '@material-ui/core';
 import ChaptersBreadcrumb from '@zoonk/components/ChaptersBreadcrumb';
-import LessonSortableList from '@zoonk/components/LessonSortableList';
+import EditsList from '@zoonk/components/EditsList';
 import Meta from '@zoonk/components/Meta';
 import { analytics, GlobalContext } from '@zoonk/utils';
 
-const ChapterLessons: NextPage = () => {
+const ChapterEdits: NextPage = () => {
   const { translate } = useContext(GlobalContext);
   const { query } = useRouter();
 
   useEffect(() => {
-    analytics().setCurrentScreen('chapter_lessons');
+    analytics().setCurrentScreen('chapter_edits');
   }, []);
+
+  if (!query.id) return null;
 
   return (
     <Container component="main">
-      <Meta title={translate('lessons')} noIndex />
+      <Meta title={translate('page_edits')} noIndex />
       <ChaptersBreadcrumb
+        chapterId={String(query.id)}
         title={translate('chapter')}
-        page={translate('lessons')}
+        page={translate('page_edits')}
       />
-      {query.chapterId && (
-        <LessonSortableList
-          category="lessons"
-          chapterId={String(query.chapterId)}
-        />
-      )}
+      <EditsList itemPath={`chapters/${query.id}`} />
     </Container>
   );
 };
 
-export default ChapterLessons;
+export default ChapterEdits;

@@ -1,10 +1,7 @@
-import { useContext, useEffect, useRef, useState } from 'react';
-import { throttle } from 'lodash';
+import { useContext, useState } from 'react';
 import { Grid, TextField } from '@material-ui/core';
 import { Chapter } from '@zoonk/models';
-import { searchChapter } from '@zoonk/services';
 import { GlobalContext } from '@zoonk/utils';
-import ChapterSelector from './ChapterSelector';
 import FormBase from './FormBase';
 
 interface ChapterFormProps {
@@ -28,25 +25,12 @@ const ChapterForm = ({
   const [description, setDescription] = useState<string>(
     data?.description || '',
   );
-  const [search, setSearch] = useState<ReadonlyArray<Chapter.Index>>([]);
-  const throttled = useRef(
-    throttle((query: string) => {
-      searchChapter(query).then(setSearch);
-    }, 1000),
-  );
 
   const descriptionMax = 1000;
   const valid =
     title.length > 0 &&
     description.length > 0 &&
     description.length <= descriptionMax;
-
-  // Search existing chapters when creating a new one.
-  useEffect(() => {
-    if (!data && title.length > 3) {
-      throttled.current(title);
-    }
-  }, [data, title]);
 
   return (
     <FormBase
@@ -69,8 +53,6 @@ const ChapterForm = ({
             type="text"
           />
         </Grid>
-
-        <ChapterSelector chapters={search} />
 
         <Grid item xs={12}>
           <TextField

@@ -6,22 +6,17 @@ import { GlobalContext } from '@zoonk/utils';
 interface LinkChapterProps {
   id: string;
   title?: string;
-  topicId: string;
 }
 
 /**
  * Default link to a single chapter.
  */
-const LinkChapter = ({ id, title, topicId }: LinkChapterProps) => {
+const LinkChapter = ({ id, title }: LinkChapterProps) => {
   const { translate } = useContext(GlobalContext);
   const name = title || translate('chapter');
 
   return (
-    <NextLink
-      href="/topics/[id]/chapters/[chapterId]"
-      as={`/topics/${topicId}/chapters/${id}`}
-      passHref
-    >
+    <NextLink href="/chapters/[id]" as={`/chapters/${id}`} passHref>
       <Link color="inherit" title={name}>
         {name}
       </Link>

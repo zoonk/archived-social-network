@@ -22,12 +22,12 @@ const EditChapter: NextPage = () => {
   }, []);
 
   useEffect(() => {
-    if (query.chapterId) {
-      getChapter(String(query.chapterId))
+    if (query.id) {
+      getChapter(String(query.id))
         .then(setData)
         .catch((e) => setSnackbar(firebaseError(e, 'chapter_get')));
     }
-  }, [query.chapterId]);
+  }, [query.id]);
 
   if (!data) {
     return <CircularProgress />;
@@ -36,7 +36,12 @@ const EditChapter: NextPage = () => {
   return (
     <Container component="main" maxWidth="xs">
       <Meta title={translate('edit')} />
-      <ChaptersBreadcrumb title={data.title} page={translate('edit')} />
+      <ChaptersBreadcrumb
+        chapterId={data.id}
+        topicId={data.topics[0]}
+        title={data.title}
+        page={translate('edit')}
+      />
       <ChapterFormContainer>
         <ChapterEdit data={data} />
       </ChapterFormContainer>

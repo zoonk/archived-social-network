@@ -1,13 +1,6 @@
 import { pickBy } from 'lodash';
-import { Chapter, ContentMetadata, Profile } from '@zoonk/models';
-import {
-  analytics,
-  arrayRemove,
-  arrayUnion,
-  db,
-  generateSlug,
-  timestamp,
-} from '@zoonk/utils';
+import { Chapter, Profile } from '@zoonk/models';
+import { analytics, db, generateSlug, timestamp } from '@zoonk/utils';
 import { updateTopic } from './topics';
 import { serializeChapter } from '../serializers';
 
@@ -26,57 +19,11 @@ const chapterConverter: firebase.firestore.FirestoreDataConverter<Chapter.Get> =
  * Add a new chapter to the database.
  */
 export const createChapter = async (data: Chapter.Create): Promise<string> => {
-  const { language, title, topics, updatedAt, updatedBy, updatedById } = data;
-  const batch = db.batch();
+  const { language, title } = data;
   const slug = generateSlug(title);
-
-  batch.set(db.doc(`chapters/${slug}`), data);
-
-  // Add this chapter to all topics.
-  topics.forEach((topic) => {
-    const ref = db.doc(`topics/${topic}`);
-    const changes = {
-      chapters: arrayUnion(slug),
-      updatedAt,
-      updatedBy,
-      updatedById,
-    };
-    batch.update(ref, changes);
-  });
-
-  await batch.commit();
+  await db.doc(`chapters/${slug}`).set(data);
   analytics().logEvent('chapter_add', { language });
   return slug;
-};
-
-/**
- * Add an existing chapter to a topic.
- */
-export const addChapterToTopic = (
-  chapterId: string,
-  topicId: string,
-  user: ContentMetadata.Update,
-): Promise<void> => {
-  const changes = {
-    ...user,
-    chapters: arrayUnion(chapterId),
-  };
-  return db.doc(`topics/${topicId}`).update(changes);
-};
-
-/**
- * Remove a chapter from a topic.
- */
-export const removeChapterFromTopic = (
-  chapterId: string,
-  topicId: string,
-  user: ContentMetadata.Update,
-): Promise<void> => {
-  const changes = {
-    ...user,
-    chapters: arrayRemove(chapterId),
-  };
-  return db.doc(`topics/${topicId}`).update(changes);
 };
 
 /**

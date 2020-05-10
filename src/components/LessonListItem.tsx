@@ -22,7 +22,7 @@ interface LessonListItemProps {
 const LessonListItem = ({ divider, index, item }: LessonListItemProps) => {
   const { query } = useRouter();
   const { description, id, title } = item;
-  const lessonId = String(query.lessonId);
+  const lessonId = String(query.id);
 
   /**
    * We fetch a lesson's data in the backend after it's assigned to a chapter.
@@ -34,11 +34,7 @@ const LessonListItem = ({ divider, index, item }: LessonListItemProps) => {
   }
 
   return (
-    <NextLink
-      href="/topics/[id]/chapters/[chapterId]/[lessonId]"
-      as={`/topics/${query.id}/chapters/${query.chapterId}/${id}`}
-      passHref
-    >
+    <NextLink href="/posts/[id]" as={`/posts/${id}`} passHref>
       <ListItem
         alignItems="flex-start"
         button

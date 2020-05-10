@@ -44,67 +44,50 @@ const PostCreate = ({
     return null;
   }
 
+  if (!category) {
+    return <CategorySelector onSelect={onCategoryChange} />;
+  }
+
   const redirect = (id: string) => {
     setSnackbar({ type: 'success', msg: translate('saved') });
-
-    let href = '/posts/[id]';
-    let linkAs = `/posts/${id}`;
-
-    const categories = ['examples', 'lessons'];
-    if (chapterId && categories.includes(String(category))) {
-      href = '/topics/[id]/chapters/[chapterId]/[lessonId]';
-      linkAs = `/topics/${topicId}/chapters/${chapterId}/${id}`;
-    }
-
-    push(href, linkAs);
+    push('/posts/[id]', `/posts/${id}`);
   };
 
   const handleSubmit = async (data: Post.EditableFields, topics: string[]) => {
     setSnackbar({ type: 'progress', msg: translate('saving') });
     const links = data.links ? data.links.filter(Boolean) : [];
 
-    // Use the post category. Otherwise, set as `references` if there are links.
-    let itemCategory: Post.Category = !category ? 'posts' : category;
-
-    if (!category && links.length > 0) {
-      itemCategory = 'references';
-    }
-
-    createPost(
-      {
-        ...data,
-        category: itemCategory,
-        comments: 0,
-        createdAt: timestamp,
-        createdBy: profile,
-        createdById: user.uid,
-        language: appLanguage,
-        likes: 0,
-        links,
-        topics,
-        updatedAt: timestamp,
-        updatedBy: profile,
-        updatedById: user.uid,
-      },
-      chapterId,
-    )
+    createPost({
+      ...data,
+      category,
+      chapterId: chapterId || null,
+      comments: 0,
+      createdAt: timestamp,
+      createdBy: profile,
+      createdById: user.uid,
+      language: appLanguage,
+      likes: 0,
+      links,
+      topics,
+      updatedAt: timestamp,
+      updatedBy: profile,
+      updatedById: user.uid,
+    })
       .then(redirect)
       .catch((e) => setSnackbar(firebaseError(e, 'post_add')));
   };
 
-  if (!category) {
-    return <CategorySelector onSelect={onCategoryChange} />;
-  }
-
   return (
     <Fragment>
-      <Button
-        color="primary"
-        variant="outlined"
-        onClick={() => onCategoryChange(undefined)}
-      >
-        {translate('category_change')}
-      </Button>
+      {!chapterId && (
+        <Button
+          color="primary"
+          variant="outlined"
+          onClick={() => onCategoryChange(undefined)}
+        >
+          {translate('category_change')}
+        </Button>
+      )}
       <PostForm
         category={category}
         topicIds={topicIds}

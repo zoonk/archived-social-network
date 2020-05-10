@@ -18,6 +18,7 @@ const profile = {
 
 const data = {
   category: 'posts',
+  chapterId: null,
   comments: 0,
   content: 'content',
   cover: null,
@@ -40,7 +41,7 @@ beforeAll(async (done) => {
   ref = db.collection('posts');
   await loadFirestoreRules();
   await admin.doc('profile/currentUser').set(profile);
-  await admin.doc('chapters/valid').set({ lessons: 5 });
+  await admin.doc('chapters/valid').set({ lessons: [] });
   done();
 });
 
@@ -74,6 +75,42 @@ test('category has a valid string', async (done) => {
   await firebase.assertSucceeds(ref.add({ ...data, category: 'questions' }));
   await firebase.assertSucceeds(ref.add({ ...data, category: 'references' }));
   await firebase.assertFails(ref.add({ ...data, category: 'other' }));
+  done();
+});
+
+test('chapterId is a string or null', async (done) => {
+  const add = { ...data, category: 'lessons' };
+  await firebase.assertSucceeds(ref.add({ ...add, chapterId: 'valid' }));
+  await firebase.assertSucceeds(ref.add({ ...add, chapterId: null }));
+  await firebase.assertFails(ref.add({ ...add, chapterId: 123 }));
+  await firebase.assertFails(ref.add({ ...add, chapterId: true }));
+  await firebase.assertFails(ref.add({ ...add, chapterId: { 1: true } }));
+  await firebase.assertFails(ref.add({ ...add, chapterId: ['test'] }));
+  done();
+});
+
+test('chapterId is a valid chapter', async (done) => {
+  const add = { ...data, category: 'lessons' };
+  await firebase.assertSucceeds(ref.add({ ...add, chapterId: 'valid' }));
+  await firebase.assertFails(ref.add({ ...add, chapterId: 'invalid' }));
+  done();
+});
+
+test('cannot add more than 20 lessons', async (done) => {
+  const add = { ...data, category: 'lessons', chapterId: 'fullLessons' };
+  const lessons = new Array(20).fill('lessonId');
+  await admin.doc('chapters/fullLessons').set({ lessons, examples: [] });
+  await firebase.assertFails(ref.add(add));
+  await firebase.assertSucceeds(ref.add({ ...add, category: 'examples' }));
+  done();
+});
+
+test('cannot add more than 20 examples', async (done) => {
+  const add = { ...data, category: 'examples', chapterId: 'fullExamples' };
+  const examples = new Array(20).fill('exampleId');
+  await admin.doc('chapters/fullExamples').set({ examples, lessons: [] });
+  await firebase.assertFails(ref.add(add));
+  await firebase.assertSucceeds(ref.add({ ...add, category: 'lessons' }));
   done();
 });
 

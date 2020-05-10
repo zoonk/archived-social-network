@@ -11,10 +11,9 @@ import { analytics, markdownToText, preRender } from '@zoonk/utils';
 
 interface ChapterProps {
   data: Chapter.Get;
-  topicId: string;
 }
 
-const ChapterPage: NextPage<ChapterProps> = ({ data, topicId }) => {
+const ChapterPage: NextPage<ChapterProps> = ({ data }) => {
   const {
     id,
     description,
@@ -34,20 +33,30 @@ const ChapterPage: NextPage<ChapterProps> = ({ data, topicId }) => {
       <Meta
         title={title}
         description={markdownToText(description).slice(0, 200)}
-        canonicalUrl={`https://${language}.zoonk.org/topics/${topics[0]}/chapters/${id}`}
+        canonicalUrl={`https://${language}.zoonk.org/chapters/${id}`}
       />
 
-      <TopicsBreadcrumb topicId={topicId} title={title} />
+      <TopicsBreadcrumb topicId={topics[0]} title={title} />
 
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <ChapterDetails data={data} topicId={topicId} />
+          <ChapterDetails data={data} />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <LessonsCard lessons={lessonData} category="lessons" />
+          <LessonsCard
+            chapterId={id}
+            topicId={topics[0]}
+            lessons={lessonData}
+            category="lessons"
+          />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <LessonsCard lessons={exampleData} category="examples" />
+          <LessonsCard
+            chapterId={id}
+            topicId={topics[0]}
+            lessons={exampleData}
+            category="examples"
+          />
         </Grid>
       </Grid>
     </Container>
@@ -55,10 +64,10 @@ const ChapterPage: NextPage<ChapterProps> = ({ data, topicId }) => {
 };
 
 ChapterPage.getInitialProps = async ({ query }) => {
-  const id = String(query.chapterId);
+  const id = String(query.id);
   const data = await getChapter(id);
   preRender();
-  return { data, topicId: String(query.id) };
+  return { data };
 };
 
 export default ChapterPage;

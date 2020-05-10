@@ -1,17 +1,16 @@
 import { useContext } from 'react';
 import NextLink from 'next/link';
-import { useRouter } from 'next/router';
 import { Button, Typography } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 import { GlobalContext, theme } from '@zoonk/utils';
 
 interface CategoryCardHeaderProps {
   category: 'examples' | 'lessons';
+  chapterId: string;
 }
 
-const LessonsHeader = ({ category }: CategoryCardHeaderProps) => {
+const LessonsHeader = ({ category, chapterId }: CategoryCardHeaderProps) => {
   const { translate } = useContext(GlobalContext);
-  const { query } = useRouter();
 
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -20,8 +19,7 @@ const LessonsHeader = ({ category }: CategoryCardHeaderProps) => {
       </Typography>
       <div style={{ flexGrow: 1 }} />
       <NextLink
-        href={`/topics/[id]/chapters/[chapterId]/add?category=${category}`}
-        as={`/topics/${query.id}/chapters/${query.chapterId}/add?category=${category}`}
+        href={`/posts/add?category=${category}&chapterId=${chapterId}`}
         passHref
       >
         <Button component="a" size="small" color="primary">
@@ -33,8 +31,8 @@ const LessonsHeader = ({ category }: CategoryCardHeaderProps) => {
         </Button>
       </NextLink>
       <NextLink
-        href={`/topics/[id]/chapters/[chapterId]/${category}`}
-        as={`/topics/${query.id}/chapters/${query.chapterId}/${category}`}
+        href={`/chapters/[id]/${category}`}
+        as={`/chapters/${chapterId}/${category}`}
         passHref
       >
         <Button component="a" size="small" color="secondary">

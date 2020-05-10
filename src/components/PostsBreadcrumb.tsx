@@ -2,12 +2,15 @@ import { useContext } from 'react';
 import { Breadcrumbs, Paper, Typography } from '@material-ui/core';
 import { Post } from '@zoonk/models';
 import { GlobalContext, theme } from '@zoonk/utils';
+import LinkChapter from './LinkChapter';
 import LinkHome from './LinkHome';
 import LinkPosts from './LinkPosts';
 import LinkTopic from './LinkTopic';
 
 interface PostsBreadcrumbProps {
   category?: Post.Category;
+  chapterId?: string | null;
+  chapterName?: string;
   children?: React.ReactNode;
   title?: string;
   topicId?: string;
@@ -18,6 +21,8 @@ interface PostsBreadcrumbProps {
  */
 const PostsBreadcrumb = ({
   category,
+  chapterId,
+  chapterName,
   children,
   title,
   topicId,
@@ -29,7 +34,8 @@ const PostsBreadcrumb = ({
       <Breadcrumbs>
         <LinkHome />
         {topicId && <LinkTopic id={topicId} />}
-        <LinkPosts category={category} topicId={topicId} />
+        {chapterId && <LinkChapter id={chapterId} title={chapterName} />}
+        {!chapterId && <LinkPosts category={category} topicId={topicId} />}
         {children}
         <Typography color="textPrimary">
           {title || translate('see_all')}

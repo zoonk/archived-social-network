@@ -5,7 +5,6 @@ import {
   ListItemText,
 } from '@material-ui/core';
 import NextLink from 'next/link';
-import { useRouter } from 'next/router';
 import { Chapter } from '@zoonk/models';
 import { markdownToText, theme } from '@zoonk/utils';
 
@@ -19,15 +18,10 @@ interface ChapterListItemProps {
  * Display a single chapter as a list item.
  */
 const ChapterListItem = ({ divider, index, item }: ChapterListItemProps) => {
-  const { query } = useRouter();
   const { description, title } = item;
 
   return (
-    <NextLink
-      href="/topics/[id]/chapters/[chapterId]"
-      as={`/topics/${query.id}/chapters/${item.id}`}
-      passHref
-    >
+    <NextLink href="/chapters/[id]" as={`/chapters/${item.id}`} passHref>
       <ListItem
         alignItems="flex-start"
         button

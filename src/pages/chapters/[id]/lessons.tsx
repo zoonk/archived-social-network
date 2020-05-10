@@ -7,29 +7,27 @@ import LessonSortableList from '@zoonk/components/LessonSortableList';
 import Meta from '@zoonk/components/Meta';
 import { analytics, GlobalContext } from '@zoonk/utils';
 
-const ChapterEdits: NextPage = () => {
+const ChapterLessons: NextPage = () => {
   const { translate } = useContext(GlobalContext);
   const { query } = useRouter();
 
   useEffect(() => {
-    analytics().setCurrentScreen('chapter_examples');
+    analytics().setCurrentScreen('chapter_lessons');
   }, []);
+
+  if (!query.id) return null;
 
   return (
     <Container component="main">
-      <Meta title={translate('examples')} noIndex />
+      <Meta title={translate('lessons')} noIndex />
       <ChaptersBreadcrumb
+        chapterId={String(query.id)}
         title={translate('chapter')}
-        page={translate('examples')}
+        page={translate('lessons')}
       />
-      {query.chapterId && (
-        <LessonSortableList
-          category="examples"
-          chapterId={String(query.chapterId)}
-        />
-      )}
+      <LessonSortableList category="lessons" chapterId={String(query.id)} />
     </Container>
   );
 };
 
-export default ChapterEdits;
+export default ChapterLessons;

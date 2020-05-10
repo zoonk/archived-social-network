@@ -4,11 +4,11 @@ import { Button, CircularProgress } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 import { Chapter, SnackbarAction } from '@zoonk/models';
 import {
+  deleteChapter,
   getTopicLive,
-  removeChapterFromTopic,
   updateChapterOrder,
 } from '@zoonk/services';
-import { firebaseError, GlobalContext, theme, timestamp } from '@zoonk/utils';
+import { firebaseError, GlobalContext, theme } from '@zoonk/utils';
 import Snackbar from './Snackbar';
 import SortableList from './SortableList';
 
@@ -64,29 +64,28 @@ const ChapterSortableList = ({ topicId }: ChapterSortableListProps) => {
   };
 
   const remove = (id: string) => {
-    setSnackbar({ type: 'progress', msg: translate('chapter_removing') });
+    if (window.confirm(translate('chapter_delete_confirmation'))) {
+      setSnackbar({ type: 'progress', msg: translate('chapter_removing') });
 
-    const metadata = {
-      updatedAt: timestamp,
-      updatedBy: profile,
-      updatedById: user.uid,
-    };
-
-    removeChapterFromTopic(id, topicId, metadata)
-      .then(() =>
-        setSnackbar({ type: 'success', msg: translate('chapter_removed') }),
-      )
-      .catch((e) => setSnackbar(firebaseError(e, 'chapter_remove')));
+      deleteChapter(id, profile, user.uid)
+        .then(() => {
+          /**
+           * Remove the deleted item from the chapters list.
+           */
+          setItems((previous) => {
+            const newItems = previous.filter((chapter) => chapter.id !== id);
+            return newItems;
+          });
+          setSnackbar({ type: 'success', msg: translate('chapter_removed') });
+        })
+        .catch((e) => setSnackbar(firebaseError(e, 'chapter_remove')));
+    }
   };
 
   return (
     <Fragment>
       <div style={{ display: 'flex' }}>
-        <NextLink
-          href="/topics/[id]/chapters/add"
-          as={`/topics/${topicId}/chapters/add`}
-          passHref
-        >
+        <NextLink href={`/chapters/add?topicId=${topicId}`} passHref>
           <Button component="a" size="small" color="primary">
             <Add
               aria-label={translate('create')}

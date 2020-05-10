@@ -1,21 +1,19 @@
 import { useContext } from 'react';
-import { useRouter } from 'next/router';
 import { Post } from '@zoonk/models';
 import { GlobalContext, getPageTitle, theme } from '@zoonk/utils';
 import EditorView from './EditorView';
 
 interface NoLessonsProps {
   category: Post.Category;
+  chapterId: string;
+  topicId: string;
 }
 
 /**
  * Display a message when no lessons are found for a request.
  */
-const NoLessons = ({ category }: NoLessonsProps) => {
+const NoLessons = ({ category, chapterId, topicId }: NoLessonsProps) => {
   const { translate } = useContext(GlobalContext);
-  const { query } = useRouter();
-  const topicId = String(query.id);
-  const chapterId = String(query.chapterId);
   const title = getPageTitle(topicId);
   const msg = category === 'examples' ? 'no_chapter_examples' : 'no_lessons';
 

@@ -15,11 +15,7 @@ const ChaptersHeader = () => {
         {translate('chapters')}
       </Typography>
       <div style={{ flexGrow: 1 }} />
-      <NextLink
-        href="/topics/[id]/chapters/add"
-        as={`/topics/${query.id}/chapters/add`}
-        passHref
-      >
+      <NextLink href={`/chapters/add?topicId=${query.id}`} passHref>
         <Button component="a" size="small" color="primary">
           <Add
             aria-label={translate('create')}

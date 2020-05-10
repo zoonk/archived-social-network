@@ -49,9 +49,9 @@ const firestore: any = jest.fn().mockReturnValue({
 });
 
 firestore.FieldValue = {
-  arrayUnion: jest.fn(),
-  arrayRemove: jest.fn(),
-  delete: jest.fn(),
+  arrayUnion: jest.fn((value) => `added: ${value}`),
+  arrayRemove: jest.fn((value) => `removed: ${value}`),
+  delete: jest.fn().mockReturnValue('deleted'),
   // Return the value passed to these methods to make it easier to test.
   increment: jest.fn((value) => value),
   serverTimestamp: jest.fn().mockReturnValue('timestamp'),

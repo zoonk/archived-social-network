@@ -26,12 +26,16 @@ const PostEdit = ({ data }: PostEditProps) => {
     if (window.confirm(translate('post_delete_confirmation'))) {
       setSnackbar({ type: 'progress', msg: translate('deleting') });
 
-      const { id, topics } = data;
+      const { chapterId, id, topics } = data;
+      const linkPath = chapterId ? '/chapters/[id]' : '/topics/[id]';
+      const linkAs = chapterId
+        ? `/chapters/${chapterId}`
+        : `/topics/${topics[0]}`;
 
       deletePost(id, profile, user.uid)
         .then(() => {
           setSnackbar(null);
-          push('/topics/[id]', `/topics/${topics[0]}`);
+          push(linkPath, linkAs);
         })
         .catch((e) => setSnackbar(firebaseError(e, 'post_delete')));
     }
