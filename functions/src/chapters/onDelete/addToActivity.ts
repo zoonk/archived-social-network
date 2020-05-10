@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-import { Activity, Chapter, Profile } from '@zoonk/models';
+import { Activity, Chapter } from '@zoonk/models';
 
 const db = admin.firestore();
 
@@ -9,9 +9,6 @@ export const onDeleteChapterAddToActivity = functions.firestore
   .onDelete(async (snap, context) => {
     const { id } = context.params;
     const data = snap.data() as Chapter.Response;
-
-    const user = await db.doc(`profile/${data.updatedById}`).get();
-    const userProfile = user.data() as Profile.Response;
 
     const activity: Activity.DeleteChapter = {
       action: 'deleted',
@@ -25,7 +22,7 @@ export const onDeleteChapterAddToActivity = functions.firestore
       title: data.title,
       topics: data.topics,
       updatedAt: data.updatedAt,
-      user: userProfile,
+      user: data.updatedBy,
       userNotification:
         data.createdById === data.updatedById ? [] : [data.createdById],
     };

@@ -1,7 +1,7 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import { isEqual, pick } from 'lodash';
-import { Activity, Post, Profile } from '@zoonk/models';
+import { Activity, Post } from '@zoonk/models';
 
 const db = admin.firestore();
 
@@ -20,9 +20,6 @@ export const onUpdatePostAddToActivity = functions.firestore
       return false;
     }
 
-    const user = await db.doc(`profile/${after.updatedById}`).get();
-    const userProfile = user.data() as Profile.Response;
-
     const activity: Activity.UpdatePost = {
       action: 'updated',
       after,
@@ -35,7 +32,7 @@ export const onUpdatePostAddToActivity = functions.firestore
       title: after.title,
       topics: after.topics,
       updatedAt: after.updatedAt,
-      user: userProfile,
+      user: after.updatedBy,
       userNotification:
         after.createdById === after.updatedById ? [] : [after.createdById],
     };

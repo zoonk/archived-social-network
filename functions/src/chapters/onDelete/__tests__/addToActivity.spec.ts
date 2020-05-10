@@ -15,6 +15,7 @@ test('send a request to add a new delete to activities', async (done) => {
     title: 'old title',
     topics: ['topicId'],
     updatedAt: 'timestamp',
+    updatedBy: profile,
     updatedById: 'editorId',
     url: 'old link',
   };
@@ -37,18 +38,11 @@ test('send a request to add a new delete to activities', async (done) => {
   };
 
   spyOn(db.collection(''), 'add').and.returnValue(true);
-  spyOn(db, 'doc').and.returnValue({
-    get: jest.fn().mockReturnValue({
-      data: () => profile,
-    }),
-  });
 
   const wrapped = testEnv.wrap(onDeleteChapterAddToActivity);
   const req = await wrapped(snap, context);
 
   expect(req).toBe(true);
-  expect(db.doc).toHaveBeenCalledWith('profile/editorId');
-  expect(db.doc).toHaveBeenCalledTimes(1);
   expect(db.collection).toHaveBeenCalledWith('activity');
   expect(db.collection('').add).toHaveBeenCalledWith(expected);
   done();

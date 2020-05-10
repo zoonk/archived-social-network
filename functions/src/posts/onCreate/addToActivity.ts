@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-import { Activity, Post, Profile } from '@zoonk/models';
+import { Activity, Post } from '@zoonk/models';
 
 const db = admin.firestore();
 
@@ -9,9 +9,6 @@ export const onCreatePostAddToActivity = functions.firestore
   .onCreate(async (snap, context) => {
     const data = snap.data() as Post.Response;
     const { id } = context.params;
-
-    const user = await db.doc(`profile/${data.createdById}`).get();
-    const userProfile = user.data() as Profile.Response;
 
     const activity: Activity.CreatePost = {
       action: 'created',
@@ -25,7 +22,7 @@ export const onCreatePostAddToActivity = functions.firestore
       title: data.title,
       topics: data.topics,
       updatedAt: data.updatedAt,
-      user: userProfile,
+      user: data.updatedBy,
       userNotification: [],
     };
 

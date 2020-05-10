@@ -29,6 +29,7 @@ test('send a request to add a new topic activities', async (done) => {
     language: 'en',
     title: 'new topic',
     updatedAt: 'today',
+    updatedBy: profile,
     updatedById: 'editorId',
   };
   const snap = { data: () => data };
@@ -50,18 +51,11 @@ test('send a request to add a new topic activities', async (done) => {
   };
 
   spyOn(db.collection(''), 'add').and.returnValue(true);
-  spyOn(db, 'doc').and.returnValue({
-    get: jest.fn().mockReturnValue({
-      data: () => profile,
-    }),
-  });
 
   const wrapped = testEnv.wrap(onCreateTopicAddToActivity);
   const req = await wrapped(snap, context);
 
   expect(req).toBe(true);
-  expect(db.doc).toHaveBeenCalledWith('profile/editorId');
-  expect(db.doc).toHaveBeenCalledTimes(1);
   expect(db.collection).toHaveBeenCalledWith('activity');
   expect(db.collection('').add).toHaveBeenCalledWith(expected);
   done();

@@ -1,7 +1,7 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import { isEqual, pick } from 'lodash';
-import { Activity, Profile, Topic } from '@zoonk/models';
+import { Activity, Topic } from '@zoonk/models';
 
 const db = admin.firestore();
 
@@ -20,9 +20,6 @@ export const onUpdateTopicAddToActivity = functions.firestore
       return false;
     }
 
-    const user = await db.doc(`profile/${after.updatedById}`).get();
-    const userProfile = user.data() as Profile.Response;
-
     const activity: Activity.UpdateTopic = {
       action: 'updated',
       after,
@@ -35,7 +32,7 @@ export const onUpdateTopicAddToActivity = functions.firestore
       title: after.title,
       topics: [topicId],
       updatedAt: after.updatedAt,
-      user: userProfile,
+      user: after.updatedBy,
       userNotification: [],
     };
 

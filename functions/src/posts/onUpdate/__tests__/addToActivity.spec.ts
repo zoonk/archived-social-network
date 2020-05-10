@@ -58,6 +58,7 @@ test('send a request to add a new item to activities', async (done) => {
     links: ['link1', 'link2'],
     title: 'new title',
     updatedAt: 'today',
+    updatedBy: profile,
   };
   const before = { data: () => beforeData };
   const after = { data: () => afterData };
@@ -80,18 +81,11 @@ test('send a request to add a new item to activities', async (done) => {
   };
 
   spyOn(db.collection(''), 'add').and.returnValue(true);
-  spyOn(db, 'doc').and.returnValue({
-    get: jest.fn().mockReturnValue({
-      data: () => profile,
-    }),
-  });
 
   const wrapped = testEnv.wrap(onUpdatePostAddToActivity);
   const req = await wrapped(changes, context);
 
   expect(req).toBe(true);
-  expect(db.doc).toHaveBeenCalledWith('profile/editorId');
-  expect(db.doc).toHaveBeenCalledTimes(1);
   expect(db.collection).toHaveBeenCalledWith('activity');
   expect(db.collection('').add).toHaveBeenCalledWith(expected);
   done();

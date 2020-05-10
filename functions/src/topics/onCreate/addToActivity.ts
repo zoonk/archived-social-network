@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-import { Activity, Profile, Topic } from '@zoonk/models';
+import { Activity, Topic } from '@zoonk/models';
 
 const db = admin.firestore();
 
@@ -14,9 +14,6 @@ export const onCreateTopicAddToActivity = functions.firestore
     }
 
     const { topicId } = context.params;
-    const user = await db.doc(`profile/${data.updatedById}`).get();
-    const userProfile = user.data() as Profile.Response;
-
     const activity: Activity.CreateTopic = {
       action: 'created',
       before: null,
@@ -29,7 +26,7 @@ export const onCreateTopicAddToActivity = functions.firestore
       title: data.title,
       topics: [topicId],
       updatedAt: data.updatedAt,
-      user: userProfile,
+      user: data.updatedBy,
       userNotification: [],
     };
 
