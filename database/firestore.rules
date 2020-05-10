@@ -87,7 +87,10 @@ service cloud.firestore {
         && isValidProfile('updatedBy')
         && request.resource.data.updatedById == request.auth.uid
       ;
-      allow delete: if isAdmin() || isModerator();
+      allow delete:
+        if isAdmin()
+        || isModerator()
+        || (request.auth.uid == resource.data.createdById && request.auth.uid == resource.data.updatedById);
 
       match /progress/{userId} {
         allow get, create, update: if request.auth.uid == userId;

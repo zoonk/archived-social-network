@@ -18,7 +18,9 @@ const ChapterEdit = ({ data }: ChapterEditProps) => {
   const { translate, profile, user } = useContext(GlobalContext);
   const { push } = useRouter();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
-  const canDelete = user?.role === 'admin' || user?.role === 'moderator';
+  const isAuthor = user?.uid === data.createdById;
+  const canDelete =
+    user?.role === 'admin' || user?.role === 'moderator' || isAuthor;
 
   if (!user || !profile) {
     return null;
