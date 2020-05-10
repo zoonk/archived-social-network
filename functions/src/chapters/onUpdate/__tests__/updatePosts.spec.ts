@@ -50,9 +50,7 @@ test('update all posts', async (done) => {
   };
   const wrapped = testEnv.wrap(onUpdateChapterUpdatePosts);
   const req = await wrapped(change);
-  const payload = {
-    'chapterData.chapterId': { ...newData, id: 'chapterId' },
-  };
+  const payload = { chapterData: { ...newData, id: 'chapterId' } };
 
   expect(req).toBe('updated');
   expect(db.doc).toHaveBeenCalledWith('posts/ex1');

@@ -34,9 +34,7 @@ export const onUpdateChapterUpdatePosts = functions.firestore
         id,
         title: after.title,
       };
-      batch.update(ref, {
-        [`chapterData.${id}`]: summary,
-      });
+      batch.update(ref, { chapterData: summary });
     });
 
     return batch.commit();
