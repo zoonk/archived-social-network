@@ -21,7 +21,7 @@ export const onWriteCategoryLikeUpdateXP = functions.firestore
 
     // Remove a like if the data became falsy
     if (!after?.like && before?.like) {
-      xp = -10;
+      xp = -xpActions.likes;
     }
 
     // Increment a like if the data became truthy

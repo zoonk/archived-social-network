@@ -97,3 +97,31 @@ test('increase XP when a user likes an item', async (done) => {
   expect(batch.set).toHaveBeenCalledWith('groupRef', { xp }, { merge });
   done();
 });
+
+test('decrease XP when a user unlike an item', async (done) => {
+  const change = {
+    before: { data: () => ({ like: true }) },
+    after: { data: () => undefined },
+  };
+  const params = {
+    category: 'posts',
+    categoryId: 'postId',
+    createdById: 'userWhoLiked',
+  };
+  const wrapped = testEnv.wrap(onWriteCategoryLikeUpdateXP);
+  const req = await wrapped(change, { params });
+  const xp = -xpActions.likes;
+  const payload = { createdById: 'userId', xp };
+
+  expect(req).toBe(true);
+  expect(db.doc).toHaveBeenCalledWith('leaderboard/userId');
+  expect(db.doc).toHaveBeenCalledWith('topics/1/leaderboard/userId');
+  expect(db.doc).toHaveBeenCalledWith('topics/2/leaderboard/userId');
+  expect(db.doc).toHaveBeenCalledWith('groups/groupId/followers/userId');
+  expect(db.doc).toHaveBeenCalledTimes(5);
+  expect(batch.set).toHaveBeenCalledWith('userRef', payload, { merge });
+  expect(batch.set).toHaveBeenCalledWith('topic1Ref', payload, { merge });
+  expect(batch.set).toHaveBeenCalledWith('topic2Ref', payload, { merge });
+  expect(batch.set).toHaveBeenCalledWith('groupRef', { xp }, { merge });
+  done();
+});
