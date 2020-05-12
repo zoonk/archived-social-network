@@ -5,7 +5,7 @@ const db = admin.firestore();
 
 export const logIPAddress = functions.https.onCall(async (_, context) => {
   const uid = context.auth?.uid;
-  const { ip, ips } = context.rawRequest;
+  const { ip, ips } = context.rawRequest as any;
 
   if (!uid) {
     throw new functions.https.HttpsError(
