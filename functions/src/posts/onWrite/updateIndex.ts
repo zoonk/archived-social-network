@@ -7,7 +7,7 @@ export const onWritePostUpdateIndex = functions.firestore
   .document('posts/{id}')
   .onWrite((change, context) => {
     const { id } = context.params;
-    const indexFields = ['category', 'content', 'title'];
+    const indexFields = ['category', 'content', 'cover', 'title'];
     const before = change.before.data() as Post.Response | undefined;
     const after = change.after.data() as Post.Response | undefined;
     const language = before?.language || after?.language || 'en';
@@ -31,8 +31,9 @@ export const onWritePostUpdateIndex = functions.firestore
       objectID: id,
       title: after.title,
       category: after.category,
-      description: after.content.slice(0, 500),
-      photo: null,
+      description: after.content.slice(0, 5000),
+      groupId: after.groupId,
+      photo: after.cover,
     };
 
     return index.partialUpdateObject(indexData, { createIfNotExists: true });

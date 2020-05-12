@@ -42,6 +42,7 @@ const PostPage: NextPage<PostPageProps> = ({ data }) => {
     content,
     cover,
     editors,
+    groupId,
     id,
     language,
     sites,
@@ -114,7 +115,12 @@ const PostPage: NextPage<PostPageProps> = ({ data }) => {
         <Grid item xs={12} sm={9} md={8}>
           <PostView chapterId={chapterId} item={data} />
           <div style={{ margin: theme.spacing(1, 0) }} />
-          <PostComments comments={comments} postId={id} topics={topics} />
+          <PostComments
+            comments={comments}
+            groupId={groupId}
+            postId={id}
+            topics={topics}
+          />
         </Grid>
 
         <Grid item xs={12} sm={3} md={4}>

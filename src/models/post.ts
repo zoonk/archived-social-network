@@ -1,5 +1,6 @@
 import { Chapter } from './chapter';
 import { ContentMetadata } from './content';
+import { Group } from './group';
 import { Dictionary } from './misc';
 import { Profile } from './profile';
 import { SearchIndex } from './search';
@@ -40,12 +41,14 @@ export namespace Post {
     content: string;
     cover: string | null;
     links: string[] | null;
+    pinned: boolean;
     title: string;
   }
 
   export interface Fields extends EditableFields {
     category: Category;
     chapterId: string | null;
+    groupId: string | null;
   }
 
   /**
@@ -67,6 +70,7 @@ export namespace Post {
    */
   export interface Response extends Fields, ContentMetadata.Response {
     chapterData?: Chapter.Summary | null;
+    groupData?: Group.Summary | null;
     editors?: string[];
     editorsData?: Dictionary<Profile.Response>;
     sites?: Link[];
@@ -77,6 +81,7 @@ export namespace Post {
    */
   export interface Get extends Fields, ContentMetadata.Get {
     chapterData?: Chapter.Summary | null;
+    groupData?: Group.Summary | null;
     editors: Profile.Get[];
     editorsData: Dictionary<Profile.Response>;
     id: string;
@@ -96,6 +101,7 @@ export namespace Post {
   export interface Index extends SearchIndex {
     category: Category;
     description: string;
+    groupId: string | null;
     photo: string | null;
     title: string;
   }

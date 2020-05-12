@@ -17,7 +17,7 @@ const profile = {
 };
 
 const data = {
-  chapters: [],
+  chapters: ['1', '2', '3'],
   comments: 0,
   createdAt: firebase.firestore.FieldValue.serverTimestamp(),
   createdBy: profile,
@@ -72,12 +72,15 @@ test('chapterData cannot be changed', async (done) => {
   done();
 });
 
-test('chapters is an array', async (done) => {
-  await firebase.assertSucceeds(ref.update({ ...edit, chapters: ['test'] }));
-  await firebase.assertFails(ref.update({ ...edit, chapters: 123 }));
-  await firebase.assertFails(ref.update({ ...edit, chapters: true }));
-  await firebase.assertFails(ref.update({ ...edit, chapters: {} }));
-  await firebase.assertFails(ref.update({ ...edit, chapters: 'test' }));
+test('chapters cannot be changed', async (done) => {
+  const chapters = firebase.firestore.FieldValue.arrayUnion('new');
+  await firebase.assertFails(ref.update({ ...edit, chapters }));
+  done();
+});
+
+test('chapters can be reordered', async (done) => {
+  const chapters = ['3', '1', '2'];
+  await firebase.assertSucceeds(ref.update({ ...edit, chapters }));
   done();
 });
 

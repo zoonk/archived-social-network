@@ -25,9 +25,11 @@ const data = {
   createdAt: firebase.firestore.FieldValue.serverTimestamp(),
   createdBy: profile,
   createdById: 'currentUser',
+  groupId: null,
   language: 'en',
   links: null,
   likes: 0,
+  pinned: false,
   title: 'new name',
   topics: ['topicId'],
   updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -173,6 +175,21 @@ test('editorsData is not included', async (done) => {
   done();
 });
 
+test('groupId is valid or null', async (done) => {
+  await admin.doc('groups/valid').set({ pinned: [] });
+  await admin.doc('users/currentUser/groups/valid').set({});
+  await firebase.assertSucceeds(ref.add({ ...data, groupId: null }));
+  await firebase.assertSucceeds(ref.add({ ...data, groupId: 'valid' }));
+  await firebase.assertFails(ref.add({ ...data, groupId: 'invalid' }));
+  done();
+});
+
+test('cannot post in groups as non-member', async (done) => {
+  await admin.doc('groups/nonMember').set({ pinned: [] });
+  await firebase.assertFails(ref.add({ ...data, groupId: 'nonMember' }));
+  done();
+});
+
 test('language has a valid string', async (done) => {
   await firebase.assertSucceeds(ref.add({ ...data, language: 'pt' }));
   await firebase.assertFails(ref.add({ ...data, language: 'other' }));
@@ -204,6 +221,24 @@ test('links is an array of strings or null', async (done) => {
 
 test('links can be null', async (done) => {
   await firebase.assertSucceeds(ref.add({ ...data, links: null }));
+  done();
+});
+
+test('can pin 20 posts to a group', async (done) => {
+  const pinned = new Array(19).fill('postId');
+  const add = { ...data, groupId: 'notFull', pinned: true };
+  await admin.doc('groups/notFull').set({ pinned });
+  await admin.doc('users/currentUser/groups/notFull').set({});
+  await firebase.assertSucceeds(ref.add(add));
+  done();
+});
+
+test('cannot pin more than 20 posts in a group', async (done) => {
+  const pinned = new Array(20).fill('postId');
+  const add = { ...data, groupId: 'full', pinned: true };
+  await admin.doc('groups/full').set({ pinned });
+  await admin.doc('users/currentUser/groups/full').set({});
+  await firebase.assertFails(ref.add(add));
   done();
 });
 

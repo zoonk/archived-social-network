@@ -1,0 +1,18 @@
+export const xpActions = {
+  created_chapters: 5,
+  created_comments: 2,
+  created_groups: 5,
+  created_posts: 10,
+  created_topics: 1,
+  deleted_chapters: 1,
+  deleted_comments: 1,
+  deleted_groups: 1,
+  deleted_posts: 1,
+  deleted_topics: 1,
+  likes: 20,
+  reads: 1,
+  updated_chapters: 2,
+  updated_groups: 2,
+  updated_posts: 5,
+  updated_topics: 1,
+};

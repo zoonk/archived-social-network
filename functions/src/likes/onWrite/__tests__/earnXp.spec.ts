@@ -4,11 +4,36 @@ import { when } from 'jest-when';
 
 const testEnv = functions();
 const db = admin.firestore();
+const batch = db.batch();
+const merge = true;
 
 import { onWriteCategoryLikeUpdateXP } from '../earnXp';
+import { xpActions } from '../../../settings';
 
-beforeAll(() => {
-  spyOn(db.batch(), 'commit').and.returnValue(true);
+const postData = {
+  createdById: 'userId',
+  groupId: 'groupId',
+  topics: ['1', '2'],
+};
+
+beforeEach(() => {
+  jest.clearAllMocks();
+  spyOn(batch, 'commit').and.returnValue(true);
+  when(db.doc as any)
+    .calledWith('posts/postId')
+    .mockReturnValue({ get: () => ({ data: () => postData }) });
+  when(db.doc as any)
+    .calledWith('leaderboard/userId')
+    .mockReturnValue('userRef');
+  when(db.doc as any)
+    .calledWith('topics/1/leaderboard/userId')
+    .mockReturnValue('topic1Ref');
+  when(db.doc as any)
+    .calledWith('topics/2/leaderboard/userId')
+    .mockReturnValue('topic2Ref');
+  when(db.doc as any)
+    .calledWith('groups/groupId/followers/userId')
+    .mockReturnValue('groupRef');
 });
 
 test('return if the data did not change', async (done) => {
@@ -25,147 +50,50 @@ test('return if the data did not change', async (done) => {
 });
 
 test('return when users like their own content', async (done) => {
-  when(db.doc as any)
-    .calledWith('topics/topicId')
-    .mockReturnValue({
-      get: jest.fn().mockReturnValue({
-        data: () => ({
-          category: 'topics',
-          topics: ['topic1', 'topic2', 'topic3'],
-          createdById: 'editorId',
-        }),
-      }),
-    });
-
   const change = {
     before: { data: () => undefined },
     after: { data: () => ({ like: true }) },
   };
-  const context = {
-    params: {
-      category: 'topics',
-      categoryId: 'topicId',
-      createdById: 'editorId',
-    },
+  const params = {
+    category: 'posts',
+    categoryId: 'postId',
+    createdById: 'userId',
   };
   const wrapped = testEnv.wrap(onWriteCategoryLikeUpdateXP);
-  const req = await wrapped(change, context);
+  const req = await wrapped(change, { params });
 
   expect(req).toBe(false);
-  expect(db.doc).not.toHaveBeenCalledWith('leaderboard/editorId');
+  expect(db.doc).not.toHaveBeenCalledWith('leaderboard/userId');
+  expect(db.doc).not.toHaveBeenCalledWith('topics/1/leaderboard/userId');
+  expect(db.doc).not.toHaveBeenCalledWith('topics/2/leaderboard/userId');
+  expect(db.doc).not.toHaveBeenCalledWith('groups/groupId/followers/userId');
   done();
 });
 
-test('update the XP for the /leaderboard collection', async (done) => {
-  when(db.doc as any)
-    .calledWith('leaderboard/editorId')
-    .mockReturnValue('leaderboardRef');
-  when(db.doc as any)
-    .calledWith('topics/topicId')
-    .mockReturnValue({
-      get: jest.fn().mockReturnValue({
-        data: () => ({
-          topics: ['topic1', 'topic2', 'topic3'],
-          createdById: 'editorId',
-        }),
-      }),
-    });
-
+test('increase XP when a user likes an item', async (done) => {
   const change = {
     before: { data: () => undefined },
     after: { data: () => ({ like: true }) },
   };
-  const context = { params: { category: 'topics', categoryId: 'topicId' } };
-  const expected = {
-    createdById: 'editorId',
-    xp: 10,
+  const params = {
+    category: 'posts',
+    categoryId: 'postId',
+    createdById: 'userWhoLiked',
   };
   const wrapped = testEnv.wrap(onWriteCategoryLikeUpdateXP);
-  const req = await wrapped(change, context);
+  const req = await wrapped(change, { params });
+  const xp = xpActions.likes;
+  const payload = { createdById: 'userId', xp };
 
   expect(req).toBe(true);
-  expect(db.batch().set).toHaveBeenCalledWith('leaderboardRef', expected, {
-    merge: true,
-  });
-  done();
-});
-
-test('decrease the XP when a like is removed', async (done) => {
-  when(db.doc as any)
-    .calledWith('leaderboard/editorId')
-    .mockReturnValue('leaderboardRef');
-  when(db.doc as any)
-    .calledWith('topics/topicId')
-    .mockReturnValue({
-      get: jest.fn().mockReturnValue({
-        data: () => ({
-          topics: ['topic1', 'topic2', 'topic3'],
-          createdById: 'editorId',
-        }),
-      }),
-    });
-
-  const change = {
-    before: { data: () => ({ like: true }) },
-    after: { data: () => undefined },
-  };
-  const context = { params: { category: 'topics', categoryId: 'topicId' } };
-  const expected = {
-    createdById: 'editorId',
-    xp: -10,
-  };
-  const wrapped = testEnv.wrap(onWriteCategoryLikeUpdateXP);
-  const req = await wrapped(change, context);
-
-  expect(req).toBe(true);
-  expect(db.batch().set).toHaveBeenCalledWith('leaderboardRef', expected, {
-    merge: true,
-  });
-  done();
-});
-
-test('update the XP for all topics', async (done) => {
-  when(db.doc as any)
-    .calledWith('topics/topic1/leaderboard/editorId')
-    .mockReturnValue('topic1Ref')
-    .calledWith('topics/topic2/leaderboard/editorId')
-    .mockReturnValue('topic2Ref')
-    .calledWith('topics/topic3/leaderboard/editorId')
-    .mockReturnValue('topic3Ref');
-
-  when(db.doc as any)
-    .calledWith('topics/topicId')
-    .mockReturnValue({
-      get: jest.fn().mockReturnValue({
-        data: () => ({
-          category: 'posts',
-          topics: ['topic1', 'topic2', 'topic3'],
-          createdById: 'editorId',
-        }),
-      }),
-    });
-
-  const change = {
-    before: { data: () => undefined },
-    after: { data: () => ({ like: true }) },
-  };
-  const context = { params: { category: 'topics', categoryId: 'topicId' } };
-  const expected = {
-    createdById: 'editorId',
-    xp: 10,
-  };
-  const wrapped = testEnv.wrap(onWriteCategoryLikeUpdateXP);
-  const req = await wrapped(change, context);
-
-  expect(req).toBe(true);
-  expect(db.batch().set).toHaveBeenCalledWith('topic1Ref', expected, {
-    merge: true,
-  });
-  expect(db.batch().set).toHaveBeenCalledWith('topic2Ref', expected, {
-    merge: true,
-  });
-  expect(db.batch().set).toHaveBeenCalledWith('topic3Ref', expected, {
-    merge: true,
-  });
+  expect(db.doc).toHaveBeenCalledWith('leaderboard/userId');
+  expect(db.doc).toHaveBeenCalledWith('topics/1/leaderboard/userId');
+  expect(db.doc).toHaveBeenCalledWith('topics/2/leaderboard/userId');
+  expect(db.doc).toHaveBeenCalledWith('groups/groupId/followers/userId');
+  expect(db.doc).toHaveBeenCalledTimes(5);
+  expect(batch.set).toHaveBeenCalledWith('userRef', payload, { merge });
+  expect(batch.set).toHaveBeenCalledWith('topic1Ref', payload, { merge });
+  expect(batch.set).toHaveBeenCalledWith('topic2Ref', payload, { merge });
+  expect(batch.set).toHaveBeenCalledWith('groupRef', { xp }, { merge });
   done();
 });

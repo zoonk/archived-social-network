@@ -2,6 +2,7 @@ import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import { ContentTypes, ItemLike } from '@zoonk/models';
 import { earnXp } from '../../helpers';
+import { xpActions } from '../../settings';
 
 const db = admin.firestore();
 
@@ -11,7 +12,7 @@ export const onWriteCategoryLikeUpdateXP = functions.firestore
     const { category, categoryId, createdById } = context.params;
     const before = change.before.data() as ItemLike | undefined;
     const after = change.after.data() as ItemLike | undefined;
-    let count = 0;
+    let xp = 0;
 
     // Return if there are no changes
     if (Boolean(after?.like) === Boolean(before?.like)) {
@@ -20,12 +21,12 @@ export const onWriteCategoryLikeUpdateXP = functions.firestore
 
     // Remove a like if the data became falsy
     if (!after?.like && before?.like) {
-      count = -10;
+      xp = -10;
     }
 
     // Increment a like if the data became truthy
     if (after?.like && !before?.like) {
-      count = 10;
+      xp = xpActions.likes;
     }
 
     const item = await db.doc(`${category}/${categoryId}`).get();
@@ -36,5 +37,5 @@ export const onWriteCategoryLikeUpdateXP = functions.firestore
       return false;
     }
 
-    return earnXp(data, count);
+    return earnXp(data, xp, data.createdById, (data as any).groupId);
   });

@@ -11,6 +11,7 @@ export namespace Comment {
     category: 'comments' | 'replies';
     commentId: string | null;
     content: string;
+    groupId: string | null;
     postId: string;
     replies: number;
   }

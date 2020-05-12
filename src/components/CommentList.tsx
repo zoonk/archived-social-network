@@ -17,13 +17,14 @@ const useStyles = makeStyles((theme) => ({
 
 interface CommentListProps {
   postId: string;
+  groupId: string | null;
   topics: string[];
 }
 
 /**
  * Display a list of comments.
  */
-const CommentList = ({ postId, topics }: CommentListProps) => {
+const CommentList = ({ groupId, postId, topics }: CommentListProps) => {
   const classes = useStyles();
   const [loading, setLoading] = useState<boolean>(false);
   const [comments, setComments] = useState<Comment.Get[]>([]);
@@ -64,6 +65,7 @@ const CommentList = ({ postId, topics }: CommentListProps) => {
             {reply === comment.id && (
               <CommentForm
                 commentId={comment.id}
+                groupId={groupId}
                 postId={postId}
                 topics={topics}
                 onCancel={() => setReply('')}

@@ -28,9 +28,11 @@ const add = {
   createdById: 'currentUser',
   editors: ['otherUser'],
   editorsData: { otherUser: profile },
+  groupId: null,
   language: 'en',
   links: null,
   likes: 0,
+  pinned: false,
   title: 'new name',
   topics: ['topicId'],
   updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -278,6 +280,25 @@ test('editorsData cannot be changed', async (done) => {
   done();
 });
 
+test('groupData cannot be changed', async (done) => {
+  await firebase.assertFails(ref.update({ ...edit, groupData: 'new' }));
+  done();
+});
+
+test('groupId cannot be changed', async (done) => {
+  await admin.doc('groups/valid').set({});
+  await firebase.assertFails(ref.update({ ...edit, groupId: 'valid' }));
+  done();
+});
+
+test('cannot post in groups as non-member', async (done) => {
+  const doc = db.doc('posts/nonMember');
+  await admin.doc('posts/nonMember').set({ ...add, groupId: 'nonMember' });
+  await admin.doc('groups/nonMember').set({ pinned: [] });
+  await firebase.assertFails(doc.update(edit));
+  done();
+});
+
 test('language cannot be changed', async (done) => {
   await firebase.assertFails(ref.update({ ...edit, language: 'pt' }));
   done();
@@ -308,6 +329,28 @@ test('links is an array of strings', async (done) => {
 
 test('links can be null', async (done) => {
   await firebase.assertSucceeds(ref.update({ ...edit, links: null }));
+  done();
+});
+
+test('can pin 20 posts to a group', async (done) => {
+  const doc = db.doc('posts/notFull');
+  const pinned = new Array(19).fill('postId');
+  const changes = { ...edit, pinned: true };
+  await admin.doc('groups/notFull').set({ pinned });
+  await admin.doc('posts/notFull').set({ ...add, groupId: 'notFull' });
+  await admin.doc('users/currentUser/groups/notFull').set({});
+  await firebase.assertSucceeds(doc.update(changes));
+  done();
+});
+
+test('cannot pin more than 20 posts to a group', async (done) => {
+  const doc = db.doc('posts/full');
+  const pinned = new Array(20).fill('postId');
+  const changes = { ...edit, pinned: true };
+  await admin.doc('groups/full').set({ pinned });
+  await admin.doc('posts/full').set({ ...add, groupId: 'full' });
+  await admin.doc('users/currentUser/groups/full').set({});
+  await firebase.assertFails(doc.update(changes));
   done();
 });
 

@@ -4,70 +4,50 @@ import { when } from 'jest-when';
 
 const testEnv = functions();
 const db = admin.firestore();
+const batch = db.batch();
+const merge = true;
 
 import { onCreateCommentEarnXP } from '../earnXp';
+import { xpActions } from '../../../settings';
 
-beforeAll(() => {
-  spyOn(db.batch(), 'commit').and.returnValue(true);
+beforeEach(() => {
+  jest.clearAllMocks();
+  spyOn(batch, 'commit').and.returnValue(true);
+  when(db.doc as any)
+    .calledWith('leaderboard/userId')
+    .mockReturnValue('userRef');
+  when(db.doc as any)
+    .calledWith('topics/1/leaderboard/userId')
+    .mockReturnValue('topic1Ref');
+  when(db.doc as any)
+    .calledWith('topics/2/leaderboard/userId')
+    .mockReturnValue('topic2Ref');
+  when(db.doc as any)
+    .calledWith('groups/groupId/followers/userId')
+    .mockReturnValue('groupRef');
 });
 
-test('update the XP for the /leaderboard collection', async (done) => {
-  when(db.doc as any)
-    .calledWith('leaderboard/editorId')
-    .mockReturnValue('leaderboardRef');
-
-  const snap = {
-    data: () => ({
-      topics: ['topic1', 'topic2', 'topic3'],
-      createdById: 'editorId',
-    }),
+test('increase XP when a comment is created', async (done) => {
+  const data = {
+    createdById: 'userId',
+    groupId: 'groupId',
+    topics: ['1', '2'],
   };
-  const expected = {
-    createdById: 'editorId',
-    xp: 1,
-  };
+  const snap = { data: () => data };
   const wrapped = testEnv.wrap(onCreateCommentEarnXP);
   const req = await wrapped(snap);
+  const xp = xpActions.created_comments;
+  const payload = { createdById: 'userId', xp };
 
   expect(req).toBe(true);
-  expect(db.batch().set).toHaveBeenCalledWith('leaderboardRef', expected, {
-    merge: true,
-  });
-  done();
-});
-
-test('update the XP for all topics', async (done) => {
-  when(db.doc as any)
-    .calledWith('topics/topic1/leaderboard/editorId')
-    .mockReturnValue('topic1Ref')
-    .calledWith('topics/topic2/leaderboard/editorId')
-    .mockReturnValue('topic2Ref')
-    .calledWith('topics/topic3/leaderboard/editorId')
-    .mockReturnValue('topic3Ref');
-
-  const snap = {
-    data: () => ({
-      category: 'posts',
-      topics: ['topic1', 'topic2', 'topic3'],
-      createdById: 'editorId',
-    }),
-  };
-  const expected = {
-    createdById: 'editorId',
-    xp: 1,
-  };
-  const wrapped = testEnv.wrap(onCreateCommentEarnXP);
-  const req = await wrapped(snap);
-
-  expect(req).toBe(true);
-  expect(db.batch().set).toHaveBeenCalledWith('topic1Ref', expected, {
-    merge: true,
-  });
-  expect(db.batch().set).toHaveBeenCalledWith('topic2Ref', expected, {
-    merge: true,
-  });
-  expect(db.batch().set).toHaveBeenCalledWith('topic3Ref', expected, {
-    merge: true,
-  });
+  expect(db.doc).toHaveBeenCalledWith('leaderboard/userId');
+  expect(db.doc).toHaveBeenCalledWith('topics/1/leaderboard/userId');
+  expect(db.doc).toHaveBeenCalledWith('topics/2/leaderboard/userId');
+  expect(db.doc).toHaveBeenCalledWith('groups/groupId/followers/userId');
+  expect(db.doc).toHaveBeenCalledTimes(4);
+  expect(batch.set).toHaveBeenCalledWith('userRef', payload, { merge });
+  expect(batch.set).toHaveBeenCalledWith('topic1Ref', payload, { merge });
+  expect(batch.set).toHaveBeenCalledWith('topic2Ref', payload, { merge });
+  expect(batch.set).toHaveBeenCalledWith('groupRef', { xp }, { merge });
   done();
 });

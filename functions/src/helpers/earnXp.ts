@@ -6,9 +6,15 @@ interface LeaderboardData {
   xp: admin.firestore.FieldValue;
 }
 
-export const earnXp = (data: ContentTypes, xp?: number, user?: string) => {
+export const earnXp = (
+  data: ContentTypes,
+  xp?: number,
+  user?: string,
+  groupId?: string | null,
+) => {
   const db = admin.firestore();
   const batch = db.batch();
+  const xpField = admin.firestore.FieldValue.increment(xp || 1);
 
   /**
    * If a user ID is passed, then that user will earn those points.
@@ -24,7 +30,7 @@ export const earnXp = (data: ContentTypes, xp?: number, user?: string) => {
      * documents this a user owns.
      */
     createdById: userId,
-    xp: admin.firestore.FieldValue.increment(xp || 1),
+    xp: xpField,
   };
 
   const leaderboardRef = db.doc(`leaderboard/${userId}`);
@@ -35,6 +41,12 @@ export const earnXp = (data: ContentTypes, xp?: number, user?: string) => {
     const topicRef = db.doc(`topics/${topic}/leaderboard/${userId}`);
     batch.set(topicRef, newData, { merge: true });
   });
+
+  // Update XP for a group member.
+  if (groupId) {
+    const groupRef = db.doc(`groups/${groupId}/followers/${userId}`);
+    batch.set(groupRef, { xp: xpField }, { merge: true });
+  }
 
   return batch.commit();
 };

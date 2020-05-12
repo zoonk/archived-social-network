@@ -11,7 +11,14 @@ export const onUpdateProfileUpdateCollections = functions.firestore
     }
 
     const { uid } = context.params;
-    const collections = ['chapters', 'comments', 'posts', 'replies', 'topics'];
+    const collections = [
+      'chapters',
+      'comments',
+      'groups',
+      'posts',
+      'replies',
+      'topics',
+    ];
     const promises: any[] = [];
 
     collections.forEach((item) => {

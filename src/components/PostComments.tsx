@@ -6,17 +6,17 @@ import CommentList from './CommentList';
 
 interface PostCommentsProps {
   comments: number;
+  groupId: string | null;
   postId: string;
   topics: string[];
 }
 
-/**
- * Display a list of comments for a post.
- * @property `comments` - number of comments.
- * @property `postId`
- * @property `topics` - topics/tags this post belongs to.
- */
-const PostComments = ({ comments, postId, topics }: PostCommentsProps) => {
+const PostComments = ({
+  comments,
+  groupId,
+  postId,
+  topics,
+}: PostCommentsProps) => {
   const { translate } = useContext(GlobalContext);
 
   return (
@@ -26,8 +26,8 @@ const PostComments = ({ comments, postId, topics }: PostCommentsProps) => {
           {translate('comments_count', { comments })}
         </Typography>
 
-        <CommentForm postId={postId} topics={topics} />
-        <CommentList postId={postId} topics={topics} />
+        <CommentForm groupId={groupId} postId={postId} topics={topics} />
+        <CommentList groupId={groupId} postId={postId} topics={topics} />
       </CardContent>
     </Card>
   );

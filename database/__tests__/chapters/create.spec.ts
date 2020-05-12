@@ -49,7 +49,9 @@ describe('/chapters - create', () => {
   };
 
   beforeAll(async (done) => {
+    const chapters = new Array(19).fill('id');
     await admin.doc('profile/currentUser').set(profile);
+    await admin.doc('topics/topicId').set({ chapters });
     done();
   });
 
@@ -62,6 +64,14 @@ describe('/chapters - create', () => {
     const app = initializeFbApp(undefined);
     const newRef = app.collection('chapters');
     await firebase.assertFails(newRef.add({ ...data, updatedById: null }));
+    done();
+  });
+
+  test('cannot add more than 20 chapters', async (done) => {
+    const add = { ...data, topics: ['full'] };
+    const chapters = new Array(20).fill('chapterId');
+    await admin.doc('topics/full').set({ chapters });
+    await firebase.assertFails(ref.add(add));
     done();
   });
 

@@ -29,6 +29,21 @@ service cloud.firestore {
       ;
     }
 
+    match /{category}/{categoryId}/followers/{userId} {
+      allow get;
+      allow list: if request.query.limit <= 20;
+      allow create:
+        if request.auth.uid == userId
+        && request.resource.data.joined == request.time
+        && request.resource.data.xp == 1
+        && get(/databases/$(database)/documents/profile/$(request.auth.uid)).data.bio == request.resource.data.bio
+        && get(/databases/$(database)/documents/profile/$(request.auth.uid)).data.name == request.resource.data.name
+        && get(/databases/$(database)/documents/profile/$(request.auth.uid)).data.photo == request.resource.data.photo
+        && get(/databases/$(database)/documents/profile/$(request.auth.uid)).data.username == request.resource.data.username
+      ;
+      allow delete: if request.auth.uid == userId;
+    }
+
     match /{category}/{categoryId}/likes/{createdById} {
       allow get, create, update: if request.auth.uid == createdById;
     }
@@ -52,6 +67,7 @@ service cloud.firestore {
       allow list;
       allow create:
         if request.auth.uid != null
+        && get(/databases/$(database)/documents/topics/$(request.resource.data.topics[0])).data.chapters.size() < 20
         && request.resource.data.comments == 0
         && request.resource.data.createdAt == request.time
         && isValidProfile('createdBy')
@@ -76,10 +92,8 @@ service cloud.firestore {
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['description', 'examples', 'lessons', 'title', 'topics', 'updatedAt', 'updatedBy', 'updatedById'])
         && request.resource.data.description is string
         && request.resource.data.description.size() <= 1000
-        && request.resource.data.examples is list
-        && request.resource.data.examples.size() <= 20
-        && request.resource.data.lessons is list
-        && request.resource.data.lessons.size() <= 20
+        && request.resource.data.examples.hasOnly(resource.data.examples)
+        && request.resource.data.lessons.hasOnly(resource.data.lessons)
         && request.resource.data.title is string
         && request.resource.data.topics is list
         && request.resource.data.topics[0] is string
@@ -130,6 +144,48 @@ service cloud.firestore {
       allow create: if request.auth == null || request.auth.uid == request.resource.data.uid;
     }
 
+    match /groups/{id} {
+      allow get;
+      allow list: if request.query.limit <= 20;
+      allow create:
+        if request.auth.uid != null
+        && request.resource.data.comments == 0
+        && request.resource.data.createdAt == request.time
+        && isValidProfile('createdBy')
+        && request.resource.data.createdById == request.auth.uid
+        && request.resource.data.description is string
+        && request.resource.data.likes == 0
+        && request.resource.data.members == 0
+        && (request.resource.data.photo == null || request.resource.data.photo is string)
+        && request.resource.data.pinned is list
+        && request.resource.data.title is string
+        && request.resource.data.topics is list
+        && request.resource.data.topics[0] is string
+        && request.resource.data.updatedAt == request.time
+        && isValidProfile('updatedBy')
+        && request.resource.data.updatedById == request.auth.uid
+        && isValidLanguage()
+      ;
+      allow update:
+        if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['description', 'photo', 'pinned', 'title', 'topics', 'updatedAt', 'updatedBy', 'updatedById'])
+        && request.resource.data.description is string
+        && request.resource.data.description.size() <= 1000
+        && request.resource.data.pinned.hasOnly(resource.data.pinned)
+        && (request.resource.data.photo == null || request.resource.data.photo is string)
+        && request.resource.data.title is string
+        && request.resource.data.topics is list
+        && request.resource.data.topics[0] is string
+        && request.resource.data.updatedAt == request.time
+        && isValidProfile('updatedBy')
+        && request.resource.data.updatedById == request.auth.uid
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid)/groups/$(id))
+      ;
+      allow delete:
+        if isAdmin()
+        || isModerator()
+        || (request.auth.uid == resource.data.createdById && request.auth.uid == resource.data.updatedById);
+    }
+
     match /leaderboard/{createdById} {
       allow get;
       allow list: if request.query.limit <= 20;
@@ -141,7 +197,6 @@ service cloud.firestore {
       allow create:
         if request.auth.uid != null
         && isValidPostCategory()
-        && (request.resource.data.chapterId is string || request.resource.data.chapterId == null)
         && (request.resource.data.chapterId == null || get(/databases/$(database)/documents/chapters/$(request.resource.data.chapterId)).data[request.resource.data.category].size() < 20)
         && request.resource.data.comments == 0
         && request.resource.data.content is string
@@ -150,9 +205,11 @@ service cloud.firestore {
         && request.resource.data.createdById == request.auth.uid
         && !('editors' in request.resource.data)
         && !('editorsData' in request.resource.data)
+        && (request.resource.data.groupId == null || exists(/databases/$(database)/documents/users/$(request.auth.uid)/groups/$(request.resource.data.groupId)))
         && isValidLanguage()
         && request.resource.data.likes == 0
         && (request.resource.data.links == null || request.resource.data.links.size() == 0 || (request.resource.data.links is list && request.resource.data.links[0] is string))
+        && (request.resource.data.groupId == null || !request.resource.data.pinned || get(/databases/$(database)/documents/groups/$(request.resource.data.groupId)).data.pinned.size() < 20)
         && request.resource.data.title is string
         && request.resource.data.topics is list
         && request.resource.data.topics[0] is string
@@ -162,11 +219,13 @@ service cloud.firestore {
       ;
       allow update:
         if request.auth.uid != null
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['chapterId', 'content', 'cover', 'links', 'title', 'topics', 'updatedAt', 'updatedBy', 'updatedById'])
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['chapterId', 'content', 'cover', 'links', 'pinned', 'title', 'topics', 'updatedAt', 'updatedBy', 'updatedById'])
         && (request.resource.data.chapterId == resource.data.chapterId || request.resource.data.chapterId == null)
         && request.resource.data.content is string
         && (!isOneOf('category', 'posts|questions') || resource.data.createdById == request.auth.uid || isAdmin() || isModerator())
+        && (request.resource.data.groupId == null || exists(/databases/$(database)/documents/users/$(request.auth.uid)/groups/$(request.resource.data.groupId)))
         && (request.resource.data.links == null || request.resource.data.links.size() == 0 || (request.resource.data.links is list && request.resource.data.links[0] is string))
+        && (request.resource.data.groupId == null || !request.resource.data.pinned || get(/databases/$(database)/documents/groups/$(request.resource.data.groupId)).data.pinned.size() < 20)
         && request.resource.data.title is string
         && request.resource.data.topics is list
         && request.resource.data.topics[0] is string
@@ -223,7 +282,7 @@ service cloud.firestore {
       allow update:
         if request.auth.uid != null
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['chapters', 'description', 'photo', 'updatedAt', 'updatedBy', 'updatedById'])
-        && request.resource.data.chapters is list
+        && request.resource.data.chapters.hasOnly(resource.data.chapters)
         && request.resource.data.description is string
         && request.resource.data.description.size() <= 1000
         && (request.resource.data.photo == null || request.resource.data.photo is string)
@@ -248,6 +307,10 @@ service cloud.firestore {
         request.auth.uid == userId
         && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['bio', 'name', 'photo', 'role', 'username'])
       ;
+
+      match /groups/{groupId} {
+        allow read: if request.auth.uid == userId;
+      }
 
       match /notifications/{notificationId} {
         allow read: if request.auth.uid == userId;

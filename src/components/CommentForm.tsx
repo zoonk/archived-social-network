@@ -14,6 +14,7 @@ import LoginRequired from './LoginRequired';
 
 interface CommentFormProps {
   commentId?: string;
+  groupId: string | null;
   postId: string;
   topics: string[];
   onCancel?: () => void;
@@ -25,6 +26,7 @@ interface CommentFormProps {
  */
 const CommentForm = ({
   commentId,
+  groupId,
   postId,
   topics,
   onCancel,
@@ -38,29 +40,25 @@ const CommentForm = ({
     return <LoginRequired message={translate('comment_login_required')} />;
   }
 
-  const data = {
-    content,
-    createdAt: timestamp,
-    createdBy: profile,
-    createdById: user.uid,
-    language: appLanguage,
-    likes: 0,
-    postId,
-    replies: 0,
-    topics,
-    updatedAt: timestamp,
-    updatedBy: profile,
-    updatedById: user.uid,
-  };
-
   const handleSubmit = () => {
     setSnackbar({ type: 'progress', msg: translate('saving') });
 
     createComment({
-      ...data,
       category: commentId ? 'replies' : 'comments',
       commentId: commentId || null,
+      content,
+      createdAt: timestamp,
+      createdBy: profile,
+      createdById: user.uid,
+      groupId,
+      language: appLanguage,
+      likes: 0,
+      postId,
       replies: 0,
+      topics,
+      updatedAt: timestamp,
+      updatedBy: profile,
+      updatedById: user.uid,
     })
       .then(() => {
         // Reset the form after saving it.

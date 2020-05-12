@@ -6,6 +6,7 @@ export * from './context';
 export * from './activity';
 export * from './feedback';
 export * from './firebase';
+export * from './group';
 export * from './i18n';
 export * from './leaderboard';
 export * from './likes';

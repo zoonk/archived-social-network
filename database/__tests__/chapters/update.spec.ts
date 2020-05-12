@@ -23,9 +23,9 @@ const data = {
   createdBy: profile,
   createdById: 'currentUser',
   description: 'description',
-  examples: ['example1'],
+  examples: ['1', '2', '3'],
   language: 'en',
-  lessons: ['lesson1'],
+  lessons: ['1', '2', '3'],
   likes: 0,
   title: 'name',
   topics: ['topicId'],
@@ -112,25 +112,15 @@ test('exampleData cannot be changed', async (done) => {
   done();
 });
 
-test('examples is an array', async (done) => {
-  await firebase.assertSucceeds(ref.update({ ...edit, examples: ['2'] }));
-  await firebase.assertFails(ref.update({ ...edit, examples: 'test' }));
-  await firebase.assertFails(ref.update({ ...edit, examples: 123 }));
-  await firebase.assertFails(ref.update({ ...edit, examples: true }));
-  await firebase.assertFails(ref.update({ ...edit, examples: { 1: true } }));
-  await firebase.assertFails(ref.update({ ...edit, examples: null }));
+test('examples cannot be changed', async (done) => {
+  const examples = firebase.firestore.FieldValue.arrayUnion('new');
+  await firebase.assertFails(ref.update({ ...edit, examples }));
   done();
 });
 
-test('cannot have more than 20 examples', async (done) => {
-  const add = (n: number) => ({ ...data, examples: new Array(n).fill('post') });
-  const doc = (id: string) => db.doc(`chapters/${id}`);
-  const { arrayUnion } = firebase.firestore.FieldValue;
-  const examples = arrayUnion('new');
-  await admin.doc('chapters/1').set(add(19));
-  await admin.doc('chapters/2').set(add(20));
-  await firebase.assertSucceeds(doc('1').update({ ...edit, examples }));
-  await firebase.assertFails(doc('2').update({ ...edit, examples }));
+test('examples can be reordered', async (done) => {
+  const examples = ['3', '1', '2'];
+  await firebase.assertSucceeds(ref.update({ ...edit, examples }));
   done();
 });
 
@@ -144,25 +134,15 @@ test('lessonData cannot be changed', async (done) => {
   done();
 });
 
-test('lessons is an array', async (done) => {
-  await firebase.assertSucceeds(ref.update({ ...edit, lessons: ['2'] }));
-  await firebase.assertFails(ref.update({ ...edit, lessons: 'test' }));
-  await firebase.assertFails(ref.update({ ...edit, lessons: 123 }));
-  await firebase.assertFails(ref.update({ ...edit, lessons: true }));
-  await firebase.assertFails(ref.update({ ...edit, lessons: { 1: true } }));
-  await firebase.assertFails(ref.update({ ...edit, lessons: null }));
+test('lessons cannot be changed', async (done) => {
+  const lessons = firebase.firestore.FieldValue.arrayUnion('new');
+  await firebase.assertFails(ref.update({ ...edit, lessons }));
   done();
 });
 
-test('cannot have more than 20 lessons', async (done) => {
-  const add = (n: number) => ({ ...data, lessons: new Array(n).fill('post') });
-  const doc = (id: string) => db.doc(`chapters/${id}`);
-  const { arrayUnion } = firebase.firestore.FieldValue;
-  const lessons = arrayUnion('new');
-  await admin.doc('chapters/1').set(add(19));
-  await admin.doc('chapters/2').set(add(20));
-  await firebase.assertSucceeds(doc('1').update({ ...edit, lessons }));
-  await firebase.assertFails(doc('2').update({ ...edit, lessons }));
+test('lessons can be reordered', async (done) => {
+  const lessons = ['3', '1', '2'];
+  await firebase.assertSucceeds(ref.update({ ...edit, lessons }));
   done();
 });
 
