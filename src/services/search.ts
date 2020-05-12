@@ -3,10 +3,15 @@ import { SearchResponse } from '@algolia/client-search';
 import { Chapter, Post, SearchResult } from '@zoonk/models';
 import { analytics, appLanguage } from '@zoonk/utils';
 
-const ALGOLIA_APP_ID = process.env.ALGOLIA_APP_ID as string;
-const ALGOLIA_SEARCH_KEY = process.env.ALGOLIA_SEARCH_KEY as string;
+const NEXT_PUBLIC_ALGOLIA_APP_ID = process.env
+  .NEXT_PUBLIC_ALGOLIA_APP_ID as string;
+const NEXT_PUBLIC_ALGOLIA_SEARCH_KEY = process.env
+  .NEXT_PUBLIC_ALGOLIA_SEARCH_KEY as string;
 
-const client = algolia(ALGOLIA_APP_ID, ALGOLIA_SEARCH_KEY);
+const client = algolia(
+  NEXT_PUBLIC_ALGOLIA_APP_ID,
+  NEXT_PUBLIC_ALGOLIA_SEARCH_KEY,
+);
 
 /**
  * Full-text search across all collections.

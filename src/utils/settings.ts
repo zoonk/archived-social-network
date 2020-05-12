@@ -1,7 +1,7 @@
 import { UILanguage } from '@zoonk/models';
 
-const envLang = process.env.APP_LANG as UILanguage | undefined;
-export const isProduction = process.env.BUILD_ENV === 'production';
+const envLang = process.env.NEXT_PUBLIC_APP_LANG as UILanguage | undefined;
+export const isProduction = process.env.NEXT_PUBLIC_BUILD_ENV === 'production';
 export const appLanguage: UILanguage = envLang || 'en';
 export const maxFileSize = 2097152;
 export const imgSize = '390x250px';

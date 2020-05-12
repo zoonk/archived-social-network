@@ -37,14 +37,14 @@ We're using [Firebase](https://firebase.google.com) for our backend (authenticat
 After you do so, Firebase will give you a [config object](https://firebase.google.com/docs/web/setup#config-object). You'll need to add those values to your environment variables. You can create an `.env` file on the app's root directory. You need to pass the following environment variables:
 
 ```
-FIREBASE_API_KEY=
-FIREBASE_AUTH_DOMAIN=
-FIREBASE_DB_URL=
-FIREBASE_PROJECT_ID=
-FIREBASE_STORAGE_BUCKET=
-FIREBASE_MESSAGING_ID=
-FIREBASE_APP_ID=
-FIREBASE_MEASUREMENT_ID=
+NEXT_PUBLIC_FIREBASE_API_KEYH_KEY=
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
+NEXT_PUBLIC_FIREBASE_DB_URL=
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=
+NEXT_PUBLIC_FIREBASE_MESSAGING_ID=
+NEXT_PUBLIC_FIREBASE_APP_ID=
+NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=
 ```
 
 You'll also need to update the `.firebaserc` file to match the project ID you've created. Edit that file to have the following:
@@ -66,8 +66,8 @@ We're using [Algolia](https://www.algolia.com/) for our search. Before you get s
 You need to create two environment variables:
 
 ```
-ALGOLIA_APP_ID=
-ALGOLIA_SEARCH_KEY=
+NEXT_PUBLIC_ALGOLIA_APP_ID=
+NEXT_PUBLIC_ALGOLIA_SEARCH_KEY=
 ```
 
 You can get them from the Algolia dashboard:
@@ -80,10 +80,10 @@ You can get them from the Algolia dashboard:
 
 You can also use the following environment variables on your `.env` file:
 
-| Name        | Type       | Default   |
-| ----------- | ---------- | --------- |
-| `APP_LANG`  | `en`, `pt` | `en`      |
-| `BUILD_ENV` | `string`   | `staging` |
+| Name                    | Type       | Default   |
+| ----------------------- | ---------- | --------- |
+| `NEXT_PUBLIC_APP_LANG`  | `en`, `pt` | `en`      |
+| `NEXT_PUBLIC_BUILD_ENV` | `string`   | `staging` |
 
 ### Installing Zoonk locally
 
