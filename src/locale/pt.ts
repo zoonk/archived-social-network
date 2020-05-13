@@ -143,6 +143,7 @@ const translate: TranslationFn = (key, args) => {
     login: 'Entrar',
     login_required: 'Você precisa estar logado para acessar esta área.',
     logout: 'Sair',
+    members: 'Membros',
     menu: 'menu',
     message: 'Mensagem',
     name: 'Nome',

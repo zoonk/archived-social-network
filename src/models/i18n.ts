@@ -132,6 +132,7 @@ export type TranslationKeys =
   | 'login_required'
   | 'login'
   | 'logout'
+  | 'members'
   | 'menu'
   | 'message'
   | 'name'

@@ -1,4 +1,7 @@
+import { useContext } from 'react';
+import NextLink from 'next/link';
 import {
+  Button,
   Card,
   CardContent,
   CardMedia,
@@ -6,6 +9,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Group } from '@zoonk/models';
+import { GlobalContext } from '@zoonk/utils';
 import GroupJoin from './GroupJoin';
 import ItemActionsMenu from './ItemActionsMenu';
 
@@ -21,10 +25,14 @@ const useStyles = makeStyles((theme) => ({
   },
   actions: {
     margin: theme.spacing(1, 0),
+    '& > *': {
+      marginRight: theme.spacing(0.5),
+    },
   },
 }));
 
 const GroupDetails = ({ group }: GroupDetailsProps) => {
+  const { translate } = useContext(GlobalContext);
   const classes = useStyles();
   const { description, id, photo, title } = group;
 
@@ -41,7 +49,18 @@ const GroupDetails = ({ group }: GroupDetailsProps) => {
           </Typography>
           <ItemActionsMenu />
         </div>
-        <GroupJoin groupId={id} className={classes.actions} />
+        <div className={classes.actions}>
+          <GroupJoin groupId={id} />
+          <NextLink
+            href="/groups/[id]/members"
+            as={`/groups/${id}/members`}
+            passHref
+          >
+            <Button component="a" color="primary">
+              {translate('members')}
+            </Button>
+          </NextLink>
+        </div>
         <Typography variant="body2" color="textSecondary">
           {description}
         </Typography>

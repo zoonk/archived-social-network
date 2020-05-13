@@ -171,7 +171,6 @@ export const getGroupMembers = async (
     .collection(`groups/${groupId}/followers`)
     .withConverter(groupMemberConverter)
     .orderBy('xp', 'desc')
-    .orderBy('joined', 'asc')
     .limit(limit);
 
   if (startAfter) {
