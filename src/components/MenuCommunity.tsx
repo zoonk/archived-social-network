@@ -3,6 +3,7 @@ import NextLink from 'next/link';
 import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import {
   Description,
+  GroupWork,
   Language,
   Link,
   MenuBook,
@@ -11,18 +12,34 @@ import {
 } from '@material-ui/icons';
 import { GlobalContext } from '@zoonk/utils';
 
-interface MenuTopics {
-  topicId: string;
+interface MenuCommunityProps {
+  category: 'groups' | 'topics';
+  id: string;
 }
 
-const MenuTopics = ({ topicId }: MenuTopics) => {
+const MenuCommunity = ({ category, id }: MenuCommunityProps) => {
   const { translate } = useContext(GlobalContext);
 
   return (
     <List component="nav" disablePadding>
+      {category === 'topics' && (
+        <NextLink
+          href="/topics/[id]/groups"
+          as={`/topics/${id}/groups`}
+          passHref
+        >
+          <ListItem button component="a">
+            <ListItemIcon>
+              <GroupWork />
+            </ListItemIcon>
+            <ListItemText primary={translate('groups')} />
+          </ListItem>
+        </NextLink>
+      )}
+
       <NextLink
-        href="/topics/[id]/references"
-        as={`/topics/${topicId}/references`}
+        href={`/${category}/[id]/references`}
+        as={`/${category}/${id}/references`}
         passHref
       >
         <ListItem button component="a">
@@ -34,8 +51,8 @@ const MenuTopics = ({ topicId }: MenuTopics) => {
       </NextLink>
 
       <NextLink
-        href="/topics/[id]/courses"
-        as={`/topics/${topicId}/courses`}
+        href={`/${category}/[id]/courses`}
+        as={`/${category}/${id}/courses`}
         passHref
       >
         <ListItem button component="a">
@@ -47,8 +64,8 @@ const MenuTopics = ({ topicId }: MenuTopics) => {
       </NextLink>
 
       <NextLink
-        href="/topics/[id]/books"
-        as={`/topics/${topicId}/books`}
+        href={`/${category}/[id]/books`}
+        as={`/${category}/${id}/books`}
         passHref
       >
         <ListItem button component="a">
@@ -60,8 +77,8 @@ const MenuTopics = ({ topicId }: MenuTopics) => {
       </NextLink>
 
       <NextLink
-        href="/topics/[id]/posts"
-        as={`/topics/${topicId}/posts`}
+        href={`/${category}/[id]/posts`}
+        as={`/${category}/${id}/posts`}
         passHref
       >
         <ListItem button component="a">
@@ -73,8 +90,8 @@ const MenuTopics = ({ topicId }: MenuTopics) => {
       </NextLink>
 
       <NextLink
-        href="/topics/[id]/examples"
-        as={`/topics/${topicId}/examples`}
+        href={`/${category}/[id]/examples`}
+        as={`/${category}/${id}/examples`}
         passHref
       >
         <ListItem button component="a">
@@ -86,8 +103,8 @@ const MenuTopics = ({ topicId }: MenuTopics) => {
       </NextLink>
 
       <NextLink
-        href="/topics/[id]/questions"
-        as={`/topics/${topicId}/questions`}
+        href={`/${category}/[id]/questions`}
+        as={`/${category}/${id}/questions`}
         passHref
       >
         <ListItem button component="a">
@@ -101,4 +118,4 @@ const MenuTopics = ({ topicId }: MenuTopics) => {
   );
 };
 
-export default MenuTopics;
+export default MenuCommunity;

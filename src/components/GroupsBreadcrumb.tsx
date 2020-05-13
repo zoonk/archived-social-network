@@ -1,37 +1,26 @@
 import { useContext } from 'react';
 import { Breadcrumbs, Paper, Typography } from '@material-ui/core';
-import { Post } from '@zoonk/models';
 import { GlobalContext, theme } from '@zoonk/utils';
-import LinkChapter from './LinkChapter';
 import LinkGroup from './LinkGroup';
+import LinkGroups from './LinkGroups';
 import LinkHome from './LinkHome';
-import LinkPosts from './LinkPosts';
 import LinkTopic from './LinkTopic';
 
-interface PostsBreadcrumbProps {
-  category?: Post.Category;
-  chapterId?: string | null;
-  chapterName?: string;
+interface GroupsBreadcrumbProps {
   children?: React.ReactNode;
-  groupId?: string | null;
+  groupId?: string;
   groupName?: string;
   title?: string;
   topicId?: string;
 }
 
-/**
- * Breadcrumb for posts.
- */
-const PostsBreadcrumb = ({
-  category,
-  chapterId,
-  chapterName,
+const GroupsBreadcrumb = ({
   children,
   groupId,
   groupName,
   title,
   topicId,
-}: PostsBreadcrumbProps) => {
+}: GroupsBreadcrumbProps) => {
   const { translate } = useContext(GlobalContext);
 
   return (
@@ -39,11 +28,8 @@ const PostsBreadcrumb = ({
       <Breadcrumbs>
         <LinkHome />
         {topicId && <LinkTopic id={topicId} />}
-        {chapterId && <LinkChapter id={chapterId} title={chapterName} />}
+        <LinkGroups topicId={topicId} />
         {groupId && <LinkGroup id={groupId} title={groupName} />}
-        {!chapterId && !groupId && (
-          <LinkPosts category={category} topicId={topicId} />
-        )}
         {children}
         <Typography color="textPrimary">
           {title || translate('see_all')}
@@ -53,4 +39,4 @@ const PostsBreadcrumb = ({
   );
 };
 
-export default PostsBreadcrumb;
+export default GroupsBreadcrumb;

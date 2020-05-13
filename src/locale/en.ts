@@ -50,6 +50,7 @@ const translate: TranslationFn = (key, args) => {
     courses: 'Courses',
     cover: 'Cover image',
     create: 'Create',
+    created_by: 'Created by',
     created: 'created',
     creating_account: 'Creating account...',
     current_item: 'Current item',
@@ -108,6 +109,12 @@ const translate: TranslationFn = (key, args) => {
     formatting_youtube: 'YouTube',
     go_back: 'Go back',
     go_home: 'Go to the home page.',
+    group_create: 'Create group',
+    group_edit: 'Edit group',
+    group: 'Group',
+    groups_about: `Learning groups about ${args?.title}`,
+    groups_my: 'My groups',
+    groups: 'Groups',
     having_issues:
       'Are you finding this confusing or are you having any issues?',
     home: 'Home',
@@ -231,6 +238,7 @@ const translate: TranslationFn = (key, args) => {
       'See all changes made to Zoonk pages. Navigate the whole edit history, revert and report changes on Zoonk.',
     seo_examples_desc:
       'Find real-life examples about everything. See how things work in everyday life.',
+    seo_groups_desc: 'Join learning groups and communities about any subjects.',
     seo_home_desc:
       'Share and find the best learning resources on Zoonk. Share your knowledge with others or learn anything for free online.',
     seo_home_title: 'Zoonk: Learning resources online',

@@ -13,7 +13,7 @@ export const onCreateGroupSetupAuthor = functions.firestore
   .document('groups/{id}')
   .onCreate((snap) => {
     const { createdAt, createdBy, createdById } = snap.data() as Group.Response;
-    const member: GroupMember.Request = {
+    const member: GroupMember.Response = {
       ...createdBy,
       joined: createdAt,
       xp: xpActions.created_groups,

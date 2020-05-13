@@ -16,6 +16,7 @@ import Snackbar from './Snackbar';
 interface PostCreateProps {
   category?: Post.Category;
   chapterId?: string;
+  groupId?: string;
   topicId?: string;
   onCategoryChange: (category?: Post.Category) => void;
 }
@@ -26,6 +27,7 @@ interface PostCreateProps {
 const PostCreate = ({
   category,
   chapterId,
+  groupId,
   topicId,
   onCategoryChange,
 }: PostCreateProps) => {
@@ -65,9 +67,11 @@ const PostCreate = ({
       createdAt: timestamp,
       createdBy: profile,
       createdById: user.uid,
+      groupId: groupId || null,
       language: appLanguage,
       likes: 0,
       links,
+      pinned: false,
       topics,
       updatedAt: timestamp,
       updatedBy: profile,

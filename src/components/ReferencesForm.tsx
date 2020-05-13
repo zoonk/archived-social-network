@@ -83,7 +83,10 @@ const ReferencesForm = ({
           saving={saving}
           onDelete={onDelete}
           onSubmit={() => {
-            onSubmit({ content, cover, links: [link], title }, topics);
+            onSubmit(
+              { content, cover, links: [link], pinned: false, title },
+              topics,
+            );
           }}
         >
           <Grid item xs={12} className={classes.column}>

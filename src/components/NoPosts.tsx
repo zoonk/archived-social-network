@@ -5,21 +5,23 @@ import { GlobalContext, getPageTitle, theme } from '@zoonk/utils';
 import EditorView from './EditorView';
 
 interface NoPostsProps {
-  category?: Post.Category;
+  category: 'groups' | 'topics';
+  postCategory?: Post.Category;
   isUser?: boolean;
 }
 
 /**
  * Display a message when no posts are found for a request.
  */
-const NoPosts = ({ category, isUser }: NoPostsProps) => {
+const NoPosts = ({ category, postCategory, isUser }: NoPostsProps) => {
   const { translate } = useContext(GlobalContext);
   const { query } = useRouter();
   const topicId = String(query.id);
   const title = getPageTitle(topicId);
   const msg = () => {
     if (isUser) return 'no_user_posts';
-    switch (category) {
+    if (category === 'groups') return 'items_empty';
+    switch (postCategory) {
       case 'books':
         return 'no_books';
       case 'courses':

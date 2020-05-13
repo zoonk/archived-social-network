@@ -13,6 +13,7 @@ import {
   AllInclusive,
   Comment,
   Description,
+  GroupWork,
   History,
   Language,
   Link,
@@ -37,9 +38,15 @@ const MenuPages = () => {
   const { translate, user } = useContext(GlobalContext);
   const { asPath } = useRouter();
   const classes = useStyles();
+  const groupsLink = user ? '/groups/my' : '/groups';
+  const isActive = (link: string): boolean => {
+    if (asPath === '/') return link === asPath;
+    return link.includes(asPath);
+  };
   const pages = [
     { link: '/', title: translate('timeline'), icon: <AllInclusive /> },
     { link: '/topics', title: translate('topics'), icon: <Subject /> },
+    { link: groupsLink, title: translate('groups'), icon: <GroupWork /> },
     { link: '/references', title: translate('references'), icon: <Link /> },
     { link: '/courses', title: translate('courses'), icon: <School /> },
     { link: '/books', title: translate('books'), icon: <MenuBook /> },
@@ -83,10 +90,10 @@ const MenuPages = () => {
             <ListItem
               button
               component="a"
-              className={asPath === page.link ? classes.active : undefined}
+              className={isActive(page.link) ? classes.active : undefined}
             >
               <ListItemIcon
-                className={asPath === page.link ? classes.active : undefined}
+                className={isActive(page.link) ? classes.active : undefined}
               >
                 {page.icon}
               </ListItemIcon>

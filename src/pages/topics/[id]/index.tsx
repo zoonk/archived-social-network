@@ -3,7 +3,7 @@ import { NextPage } from 'next';
 import { Container, Grid, makeStyles } from '@material-ui/core';
 import ChaptersCard from '@zoonk/components/ChaptersCard';
 import Meta from '@zoonk/components/Meta';
-import MenuTopics from '@zoonk/components/MenuTopics';
+import MenuCommunity from '@zoonk/components/MenuCommunity';
 import PostsCard from '@zoonk/components/PostsCard';
 import PostShare from '@zoonk/components/PostShare';
 import TopicDetails from '@zoonk/components/TopicDetails';
@@ -48,7 +48,7 @@ const TopicPage: NextPage<TopicPageProps> = ({ topic }) => {
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6} md={4} className={classes.column}>
           <TopicDetails topic={topic} />
-          <MenuTopics topicId={id} />
+          <MenuCommunity category="topics" id={id} />
         </Grid>
 
         <Grid item xs={12} sm={6} md={8} className={classes.column}>

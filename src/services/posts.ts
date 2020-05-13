@@ -7,7 +7,7 @@ import {
   arrayUnion,
   db,
   functions,
-  generateSlug,
+  generateRandomSlug,
   timestamp,
 } from '@zoonk/utils';
 import { serializePost } from '../serializers';
@@ -29,7 +29,7 @@ const postConverter: firebase.firestore.FirestoreDataConverter<Post.Get> = {
  * Add a new post to the database.
  */
 export const createPost = async (data: Post.Create): Promise<string> => {
-  const slug = generateSlug(data.title);
+  const slug = generateRandomSlug(data.title);
   await db.doc(`posts/${slug}`).set(data);
   analytics().logEvent('post_add', { language: data.language });
   return slug;
@@ -81,6 +81,7 @@ export const deletePost = async (
 interface PostArgs {
   category?: Post.Category[];
   chapterId?: string;
+  groupId?: string;
   lastVisible?: firebase.firestore.DocumentSnapshot;
   limit?: number;
   orderBy?: Post.OrderBy[];
@@ -93,6 +94,7 @@ interface PostArgs {
  */
 export const listPosts = async ({
   category,
+  groupId,
   lastVisible,
   limit = 10,
   topicId,
@@ -118,13 +120,18 @@ export const listPosts = async ({
     ref = ref.where('topics', 'array-contains', topicId);
   }
 
+  // Filter by group
+  if (groupId) {
+    ref = ref.where('groupId', '==', groupId);
+  }
+
   // Filter by user
   if (userId) {
     ref = ref.where('createdById', '==', userId);
   }
 
   // Filter by language when there are no content specific-filters.
-  if (!topicId) {
+  if (!topicId && !groupId) {
     ref = ref.where('language', '==', appLanguage);
   }
 

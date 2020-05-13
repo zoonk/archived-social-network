@@ -16,6 +16,7 @@ type Filter = Post.Category | 'timeline';
 interface PostsCardProps {
   category?: Post.Category[];
   displayFilter?: boolean;
+  groupId?: string;
   limit?: number;
   topicId?: string;
   userId?: string;
@@ -27,6 +28,7 @@ interface PostsCardProps {
 const PostsCard = ({
   category,
   displayFilter,
+  groupId,
   limit,
   topicId,
   userId,
@@ -46,6 +48,7 @@ const PostsCard = ({
     get({
       data: listPosts({
         category: listSlug && displayFilter ? [listSlug] : category,
+        groupId,
         lastVisible,
         limit,
         topicId,
@@ -62,13 +65,23 @@ const PostsCard = ({
     get({
       data: listPosts({
         category: listSlug && displayFilter ? [listSlug] : categories,
+        groupId,
         limit,
         topicId,
         userId,
       }),
       replace: true,
     });
-  }, [displayFilter, get, limit, listSlug, rawCategory, topicId, userId]);
+  }, [
+    displayFilter,
+    get,
+    groupId,
+    limit,
+    listSlug,
+    rawCategory,
+    topicId,
+    userId,
+  ]);
 
   useEffect(() => {
     if (error) {
@@ -86,7 +99,8 @@ const PostsCard = ({
       )}
       {items.length === 0 && loading === false && (
         <NoPosts
-          category={filter === 'timeline' ? 'references' : filter}
+          category={groupId ? 'groups' : 'topics'}
+          postCategory={filter === 'timeline' ? 'references' : filter}
           isUser={Boolean(userId)}
         />
       )}

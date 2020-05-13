@@ -14,6 +14,7 @@ const PostAddPage: NextPage = () => {
   const [category, setCategory] = useState<Post.Category | undefined>();
   const { query } = useRouter();
   const chapterId = query.chapterId ? String(query.chapterId) : undefined;
+  const groupId = query.groupId ? String(query.groupId) : undefined;
   const topicId = query.topicId ? String(query.topicId) : undefined;
 
   useEffect(() => {
@@ -47,6 +48,7 @@ const PostAddPage: NextPage = () => {
       <PostCreate
         category={category}
         chapterId={chapterId}
+        groupId={groupId}
         topicId={topicId}
         onCategoryChange={setCategory}
       />

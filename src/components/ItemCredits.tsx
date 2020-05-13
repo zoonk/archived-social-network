@@ -14,12 +14,13 @@ import { GlobalContext } from '@zoonk/utils';
 
 interface ItemCreditsProps {
   editors: Profile.Get[];
+  title?: string;
 }
 
 /**
  * Display credits for an item (all editors).
  */
-const ItemCredits = ({ editors }: ItemCreditsProps) => {
+const ItemCredits = ({ editors, title }: ItemCreditsProps) => {
   const { translate } = useContext(GlobalContext);
 
   if (editors.length === 0) {
@@ -31,7 +32,9 @@ const ItemCredits = ({ editors }: ItemCreditsProps) => {
       <List
         disablePadding
         subheader={
-          <ListSubheader component="div">{translate('editors')}</ListSubheader>
+          <ListSubheader component="div">
+            {title || translate('editors')}
+          </ListSubheader>
         }
       >
         {editors.map((editor) => (

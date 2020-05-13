@@ -42,6 +42,7 @@ const PostPage: NextPage<PostPageProps> = ({ data }) => {
     content,
     cover,
     editors,
+    groupData,
     groupId,
     id,
     language,
@@ -107,6 +108,8 @@ const PostPage: NextPage<PostPageProps> = ({ data }) => {
         category={category}
         chapterId={chapterId}
         chapterName={chapterData?.title}
+        groupId={groupId}
+        groupName={groupData?.title}
         topicId={topics[0]}
         title={title}
       />

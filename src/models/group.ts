@@ -31,10 +31,12 @@ export namespace Group {
       ContentMetadata.Update {}
 
   export interface Response extends Fields, ContentMetadata.Response {
+    joined?: firebase.firestore.Timestamp;
     pinnedPosts?: Dictionary<Chapter.Summary>;
   }
 
   export interface Get extends Fields, ContentMetadata.Get {
+    joined: string | null;
     pinnedPosts: Chapter.Summary[];
     id: string;
   }
@@ -51,38 +53,20 @@ export namespace Group {
 }
 
 export namespace GroupMember {
-  export interface Request extends Profile.Response {
+  export interface Join {
     joined: firebase.firestore.FieldValue;
+  }
+
+  export interface Setup extends Profile.Response {
     xp: number;
   }
 
-  export interface Response extends Request {
+  export interface Response extends Setup {
     joined: firebase.firestore.Timestamp;
   }
 
   export interface Get extends Omit<Response, 'joined'> {
     joined: string;
-  }
-
-  export interface Snapshot extends Get {
-    snap: firebase.firestore.DocumentSnapshot;
-  }
-}
-
-export namespace UserGroup {
-  export interface Request extends Group.Summary {
-    joined: firebase.firestore.FieldValue;
-    updatedAt: firebase.firestore.FieldValue;
-  }
-
-  export interface Response extends Group.Summary {
-    joined: firebase.firestore.Timestamp;
-    updatedAt: firebase.firestore.Timestamp;
-  }
-
-  export interface Get extends Group.Summary {
-    joined: string;
-    updatedAt: string;
   }
 
   export interface Snapshot extends Get {

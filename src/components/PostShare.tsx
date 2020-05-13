@@ -21,11 +21,12 @@ const useStyles = makeStyles((theme) => ({
 
 interface PostShareProps {
   category?: Post.Category;
+  groupId?: string;
   title?: string;
   topicId?: string;
 }
 
-const PostShare = ({ category, title, topicId }: PostShareProps) => {
+const PostShare = ({ category, groupId, title, topicId }: PostShareProps) => {
   const { translate } = useContext(GlobalContext);
   const classes = useStyles();
   const query: Dictionary<string> = {};
@@ -36,6 +37,10 @@ const PostShare = ({ category, title, topicId }: PostShareProps) => {
 
   if (topicId) {
     query.topicId = topicId;
+  }
+
+  if (groupId) {
+    query.groupId = groupId;
   }
 
   return (

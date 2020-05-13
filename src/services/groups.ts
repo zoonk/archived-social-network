@@ -1,5 +1,5 @@
 import { pickBy } from 'lodash';
-import { Group, GroupMember, Profile, UserGroup } from '@zoonk/models';
+import { Group, GroupMember, Profile } from '@zoonk/models';
 import {
   analytics,
   appLanguage,
@@ -8,11 +8,7 @@ import {
   generateSlug,
   timestamp,
 } from '@zoonk/utils';
-import {
-  serializeGroup,
-  serializeGroupMember,
-  serializeUserGroup,
-} from '../serializers';
+import { serializeGroup, serializeGroupMember } from '../serializers';
 
 const groupConverter: firebase.firestore.FirestoreDataConverter<Group.Get> = {
   toFirestore(data: Group.Get) {
@@ -33,17 +29,6 @@ const groupMemberConverter: firebase.firestore.FirestoreDataConverter<GroupMembe
     snapshot: firebase.firestore.QueryDocumentSnapshot<GroupMember.Response>,
   ): GroupMember.Get {
     return serializeGroupMember(snapshot);
-  },
-};
-
-const userGroupConverter: firebase.firestore.FirestoreDataConverter<UserGroup.Get> = {
-  toFirestore(data: UserGroup.Get) {
-    return data;
-  },
-  fromFirestore(
-    snapshot: firebase.firestore.QueryDocumentSnapshot<UserGroup.Response>,
-  ): UserGroup.Get {
-    return serializeUserGroup(snapshot);
   },
 };
 
@@ -128,25 +113,22 @@ export const getGroupLive = (
 export const listGroups = async (
   topicId?: string,
   startAfter?: firebase.firestore.DocumentSnapshot,
-  createdById?: string,
+  userId?: string,
   limit: number = 12,
 ): Promise<Group.Snapshot[]> => {
+  const collection = userId ? `users/${userId}/groups` : 'groups';
   let ref = db
-    .collection('groups')
+    .collection(collection)
     .withConverter(groupConverter)
     .orderBy('updatedAt', 'desc')
     .limit(limit);
-
-  if (createdById) {
-    ref = ref.where('createdById', '==', createdById);
-  }
 
   if (topicId) {
     ref = ref.where('topics', 'array-contains', topicId);
   }
 
   // If it's not filtered by topics, then filter by language.
-  if (!topicId) {
+  if (!topicId && !userId) {
     ref = ref.where('language', '==', appLanguage);
   }
 
@@ -165,8 +147,9 @@ export const joinGroup = (
   userId: string,
   profile: Profile.Response,
 ): Promise<void> => {
-  const payload: GroupMember.Request = { ...profile, joined: timestamp, xp: 1 };
-  return db.doc(`groups/${groupId}/followers/${userId}`).set(payload);
+  return db
+    .doc(`groups/${groupId}/followers/${userId}`)
+    .set({ ...profile, joined: timestamp });
 };
 
 export const leaveGroup = (groupId: string, userId: string): Promise<void> => {
@@ -183,27 +166,6 @@ export const getGroupMembers = async (
     .withConverter(groupMemberConverter)
     .orderBy('xp', 'desc')
     .orderBy('joined', 'asc')
-    .limit(limit);
-
-  if (startAfter) {
-    ref = ref.startAfter(startAfter);
-  }
-
-  const snap = await ref.get();
-  return snap.docs.map((item) => {
-    return { ...item.data(), snap: item };
-  });
-};
-
-export const getMyGroups = async (
-  userId: string,
-  startAfter?: firebase.firestore.DocumentSnapshot,
-  limit: number = 10,
-): Promise<UserGroup.Snapshot[]> => {
-  let ref = db
-    .collection(`users/${userId}/groups`)
-    .withConverter(userGroupConverter)
-    .orderBy('updatedAt', 'desc')
     .limit(limit);
 
   if (startAfter) {

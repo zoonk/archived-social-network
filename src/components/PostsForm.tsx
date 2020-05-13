@@ -79,7 +79,7 @@ const PostsForm = ({
           saving={saving}
           onDelete={onDelete}
           onSubmit={() => {
-            onSubmit({ content, cover, links, title }, topics);
+            onSubmit({ content, cover, links, pinned: false, title }, topics);
           }}
         >
           <Grid item xs={12} className={classes.column}>

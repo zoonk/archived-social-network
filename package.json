@@ -13,6 +13,7 @@
     "dev": "next dev",
     "eslint": "eslint",
     "firebase": "firebase",
+    "indexes:get": "firebase firestore:indexes > database/firestore.indexes.json",
     "install:deps": "yarn & yarn install:functions",
     "install:functions": "cd functions && yarn",
     "lint": "yarn eslint './**/*.{js,jsx,ts,tsx}'",

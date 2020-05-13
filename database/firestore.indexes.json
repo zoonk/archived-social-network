@@ -33,42 +33,6 @@
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "postId",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "likes",
-          "order": "DESCENDING"
-        },
-        {
-          "fieldPath": "createdAt",
-          "order": "DESCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "comments",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "createdById",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "likes",
-          "order": "DESCENDING"
-        },
-        {
-          "fieldPath": "createdAt",
-          "order": "DESCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "comments",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
           "fieldPath": "category",
           "order": "ASCENDING"
         },
@@ -109,7 +73,7 @@
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "language",
+          "fieldPath": "createdById",
           "order": "ASCENDING"
         },
         {
@@ -127,7 +91,89 @@
           "order": "ASCENDING"
         },
         {
+          "fieldPath": "likes",
+          "order": "DESCENDING"
+        },
+        {
           "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "comments",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "language",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "comments",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "postId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "likes",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "groups",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "language",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "updatedAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "groups",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "topics",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "updatedAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "posts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "category",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "groupId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "updatedAt",
           "order": "DESCENDING"
         }
       ]
@@ -142,6 +188,38 @@
         },
         {
           "fieldPath": "language",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "updatedAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "posts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "createdById",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "language",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "updatedAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "posts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "groupId",
           "order": "ASCENDING"
         },
         {
@@ -174,24 +252,6 @@
         },
         {
           "fieldPath": "category",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "updatedAt",
-          "order": "DESCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "posts",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "createdById",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "language",
           "order": "ASCENDING"
         },
         {
@@ -218,6 +278,10 @@
       "collectionGroup": "topics",
       "queryScope": "COLLECTION",
       "fields": [
+        {
+          "fieldPath": "createdById",
+          "order": "ASCENDING"
+        },
         {
           "fieldPath": "language",
           "order": "ASCENDING"
@@ -240,10 +304,6 @@
       "collectionGroup": "topics",
       "queryScope": "COLLECTION",
       "fields": [
-        {
-          "fieldPath": "createdById",
-          "order": "ASCENDING"
-        },
         {
           "fieldPath": "language",
           "order": "ASCENDING"
