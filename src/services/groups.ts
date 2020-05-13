@@ -1,5 +1,5 @@
 import { pickBy } from 'lodash';
-import { Group, GroupMember, Profile } from '@zoonk/models';
+import { Group, GroupMember } from '@zoonk/models';
 import {
   analytics,
   appLanguage,
@@ -142,18 +142,24 @@ export const listGroups = async (
   });
 };
 
-export const joinGroup = (
-  groupId: string,
-  userId: string,
-  profile: Profile.Response,
-): Promise<void> => {
+export const joinGroup = (groupId: string, userId: string): Promise<void> => {
   return db
     .doc(`groups/${groupId}/followers/${userId}`)
-    .set({ ...profile, joined: timestamp });
+    .set({ joined: timestamp });
 };
 
 export const leaveGroup = (groupId: string, userId: string): Promise<void> => {
   return db.doc(`groups/${groupId}/followers/${userId}`).delete();
+};
+
+export const getGroupStatus = (
+  groupId: string,
+  userId: string,
+  onSnapshot: (joined: boolean) => void,
+): firebase.Unsubscribe => {
+  return db.doc(`groups/${groupId}/followers/${userId}`).onSnapshot((snap) => {
+    onSnapshot(snap.exists);
+  });
 };
 
 export const getGroupMembers = async (

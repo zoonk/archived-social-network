@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react';
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 import {
   Avatar,
   Button,
@@ -21,6 +22,7 @@ import Snackbar from './Snackbar';
  */
 const LoginForm = () => {
   const { translate } = useContext(GlobalContext);
+  const { push, query } = useRouter();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -28,9 +30,13 @@ const LoginForm = () => {
   const handleSubmit = () => {
     setSnackbar({ msg: translate('signing_in'), type: 'progress' });
 
-    signIn(email, password).catch((e) =>
-      setSnackbar(firebaseError(e, 'login')),
-    );
+    signIn(email, password)
+      .then(() => {
+        if (query.redirect) {
+          push(String(query.redirect));
+        }
+      })
+      .catch((e) => setSnackbar(firebaseError(e, 'login')));
   };
 
   return (

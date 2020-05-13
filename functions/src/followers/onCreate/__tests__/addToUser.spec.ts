@@ -21,7 +21,7 @@ test("add group to a user's groups", async (done) => {
   const snap = { data: () => data };
   const wrapped = testEnv.wrap(onCreateFollowerAddToUser);
   const req = await wrapped(snap, { params });
-  const payload = { ...group, id: 'itemId', joined: 'now' };
+  const payload = { ...group, id: 'itemId', joined: 'timestamp' };
 
   expect(req).toBe('updated');
   expect(db.doc).toHaveBeenCalledWith('groups/itemId');

@@ -32,16 +32,7 @@ service cloud.firestore {
     match /{category}/{categoryId}/followers/{userId} {
       allow get;
       allow list: if request.query.limit <= 20;
-      allow create:
-        if request.auth.uid == userId
-        && request.resource.data.joined == request.time
-        && request.resource.data.xp == 1
-        && get(/databases/$(database)/documents/profile/$(request.auth.uid)).data.bio == request.resource.data.bio
-        && get(/databases/$(database)/documents/profile/$(request.auth.uid)).data.name == request.resource.data.name
-        && get(/databases/$(database)/documents/profile/$(request.auth.uid)).data.photo == request.resource.data.photo
-        && get(/databases/$(database)/documents/profile/$(request.auth.uid)).data.username == request.resource.data.username
-      ;
-      allow delete: if request.auth.uid == userId;
+      allow create, delete: if request.auth.uid == userId;
     }
 
     match /{category}/{categoryId}/likes/{createdById} {
@@ -178,7 +169,6 @@ service cloud.firestore {
         && request.resource.data.updatedAt == request.time
         && isValidProfile('updatedBy')
         && request.resource.data.updatedById == request.auth.uid
-        && exists(/databases/$(database)/documents/users/$(request.auth.uid)/groups/$(id))
       ;
       allow delete:
         if isAdmin()
@@ -205,7 +195,7 @@ service cloud.firestore {
         && request.resource.data.createdById == request.auth.uid
         && !('editors' in request.resource.data)
         && !('editorsData' in request.resource.data)
-        && (request.resource.data.groupId == null || exists(/databases/$(database)/documents/users/$(request.auth.uid)/groups/$(request.resource.data.groupId)))
+        && (request.resource.data.groupId == null || exists(/databases/$(database)/documents/groups/$(request.resource.data.groupId)))
         && isValidLanguage()
         && request.resource.data.likes == 0
         && (request.resource.data.links == null || request.resource.data.links.size() == 0 || (request.resource.data.links is list && request.resource.data.links[0] is string))
@@ -223,7 +213,6 @@ service cloud.firestore {
         && (request.resource.data.chapterId == resource.data.chapterId || request.resource.data.chapterId == null)
         && request.resource.data.content is string
         && (!isOneOf('category', 'posts|questions') || resource.data.createdById == request.auth.uid || isAdmin() || isModerator())
-        && (request.resource.data.groupId == null || exists(/databases/$(database)/documents/users/$(request.auth.uid)/groups/$(request.resource.data.groupId)))
         && (request.resource.data.links == null || request.resource.data.links.size() == 0 || (request.resource.data.links is list && request.resource.data.links[0] is string))
         && (request.resource.data.groupId == null || !request.resource.data.pinned || get(/databases/$(database)/documents/groups/$(request.resource.data.groupId)).data.pinned.size() < 20)
         && request.resource.data.title is string

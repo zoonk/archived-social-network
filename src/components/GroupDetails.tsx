@@ -1,14 +1,32 @@
-import { Card, CardContent, CardMedia, Typography } from '@material-ui/core';
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  makeStyles,
+  Typography,
+} from '@material-ui/core';
 import { Group } from '@zoonk/models';
-import EditorView from './EditorView';
+import GroupJoin from './GroupJoin';
 import ItemActionsMenu from './ItemActionsMenu';
 
 interface GroupDetailsProps {
   group: Group.Get;
 }
 
+const useStyles = makeStyles((theme) => ({
+  header: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  actions: {
+    margin: theme.spacing(1, 0),
+  },
+}));
+
 const GroupDetails = ({ group }: GroupDetailsProps) => {
-  const { description, photo, title } = group;
+  const classes = useStyles();
+  const { description, id, photo, title } = group;
 
   return (
     <Card variant="outlined">
@@ -17,19 +35,16 @@ const GroupDetails = ({ group }: GroupDetailsProps) => {
       )}
 
       <CardContent>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
+        <div className={classes.header}>
           <Typography variant="h5" component="h2">
             {title}
           </Typography>
           <ItemActionsMenu />
         </div>
-        <EditorView content={description} />
+        <GroupJoin groupId={id} className={classes.actions} />
+        <Typography variant="body2" color="textSecondary">
+          {description}
+        </Typography>
       </CardContent>
     </Card>
   );

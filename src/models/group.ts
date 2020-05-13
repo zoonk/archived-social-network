@@ -61,6 +61,8 @@ export namespace GroupMember {
     xp: number;
   }
 
+  export interface Request extends Join, Setup {}
+
   export interface Response extends Setup {
     joined: firebase.firestore.Timestamp;
   }

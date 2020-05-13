@@ -291,14 +291,6 @@ test('groupId cannot be changed', async (done) => {
   done();
 });
 
-test('cannot post in groups as non-member', async (done) => {
-  const doc = db.doc('posts/nonMember');
-  await admin.doc('posts/nonMember').set({ ...add, groupId: 'nonMember' });
-  await admin.doc('groups/nonMember').set({ pinned: [] });
-  await firebase.assertFails(doc.update(edit));
-  done();
-});
-
 test('language cannot be changed', async (done) => {
   await firebase.assertFails(ref.update({ ...edit, language: 'pt' }));
   done();

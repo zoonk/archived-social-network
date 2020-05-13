@@ -184,12 +184,6 @@ test('groupId is valid or null', async (done) => {
   done();
 });
 
-test('cannot post in groups as non-member', async (done) => {
-  await admin.doc('groups/nonMember').set({ pinned: [] });
-  await firebase.assertFails(ref.add({ ...data, groupId: 'nonMember' }));
-  done();
-});
-
 test('language has a valid string', async (done) => {
   await firebase.assertSucceeds(ref.add({ ...data, language: 'pt' }));
   await firebase.assertFails(ref.add({ ...data, language: 'other' }));

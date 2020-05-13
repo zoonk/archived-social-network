@@ -64,50 +64,8 @@ test('cannot join a group using a fake UID', async (done) => {
   done();
 });
 
-test('bio is valid', async (done) => {
-  const invalid = { ...data, bio: 'invalid' };
-  await admin.doc('groups/groupId/followers/groupUser').delete();
-  await firebase.assertFails(ref.set(invalid));
-  done();
-});
-
-test('joined has a valid timestamp', async (done) => {
-  const invalid = { ...data, joined: 'invalid' };
-  await admin.doc('groups/groupId/followers/groupUser').delete();
-  await firebase.assertFails(ref.set(invalid));
-  done();
-});
-
-test('name is valid', async (done) => {
-  const invalid = { ...data, name: 'invalid' };
-  await admin.doc('groups/groupId/followers/groupUser').delete();
-  await firebase.assertFails(ref.set(invalid));
-  done();
-});
-
-test('photo is valid', async (done) => {
-  const invalid = { ...data, photo: 'invalid' };
-  await admin.doc('groups/groupId/followers/groupUser').delete();
-  await firebase.assertFails(ref.set(invalid));
-  done();
-});
-
-test('username is valid', async (done) => {
-  const invalid = { ...data, username: 'invalid' };
-  await admin.doc('groups/groupId/followers/groupUser').delete();
-  await firebase.assertFails(ref.set(invalid));
-  done();
-});
-
 test('users can leave a group', async (done) => {
   await firebase.assertSucceeds(ref.delete());
-  done();
-});
-
-test('xp is set to 1', async (done) => {
-  const invalid = { ...data, xp: 10 };
-  await admin.doc('groups/groupId/followers/groupUser').delete();
-  await firebase.assertFails(ref.set(invalid));
   done();
 });
 

@@ -57,19 +57,6 @@ afterAll(async (done) => {
   done();
 });
 
-test('non-members cannot update', async (done) => {
-  const app = initializeFbApp({ uid: 'nonMember' });
-  const docRef = app.doc('groups/itemId');
-  const valid = {
-    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-    updatedBy: profile,
-    updatedById: 'nonMember',
-  };
-  await admin.doc('profile/nonMember').set(profile);
-  await firebase.assertFails(docRef.update(valid));
-  done();
-});
-
 test('comments cannot be changed', async (done) => {
   await firebase.assertFails(ref.update({ ...edit, comments: 1 }));
   done();
