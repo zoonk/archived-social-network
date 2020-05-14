@@ -16,7 +16,7 @@ const GroupPinned = ({ group }: GroupPinnedProps) => {
     <Fragment>
       <PinnedHeader groupId={id} hideButtons={noPosts} topicId={topics[0]} />
       {noPosts && <NoPinned groupId={id} />}
-      <PinnedList items={pinnedPosts} />
+      <PinnedList group={group} />
     </Fragment>
   );
 };

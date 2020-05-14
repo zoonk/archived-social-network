@@ -1,64 +1,50 @@
 /* eslint-disable jsx-a11y/anchor-has-content */
 import { Post } from '@zoonk/models';
 import NextLink from 'next/link';
-import { Link, makeStyles, Paper, Typography } from '@material-ui/core';
-import { markdownToText } from '@zoonk/utils';
+import {
+  Card,
+  CardActionArea,
+  CardContent,
+  CardMedia,
+  makeStyles,
+  Typography,
+} from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
-  content: {
-    display: 'flex',
-    padding: theme.spacing(1),
-  },
-  image: {
-    width: '100px',
-    minWidth: '100px',
-    marginRight: theme.spacing(1),
-    [theme.breakpoints.down('xs')]: {
-      width: '40px',
-      minWidth: '40px',
-      maxHeight: '40px',
+  root: { height: '100%' },
+  media: {
+    height: '5em',
+    [theme.breakpoints.up('sm')]: {
+      height: '7em',
     },
   },
 }));
 
 interface PinnedListItemProps {
+  groupImg?: string | null;
   item: Post.Summary;
 }
 
-const PinnedListItem = ({ item }: PinnedListItemProps) => {
+const PinnedListItem = ({ groupImg, item }: PinnedListItemProps) => {
   const classes = useStyles();
-  const { cover, description, id, title } = item;
+  const { cover, id, title } = item;
+  const image = cover || groupImg;
 
   return (
-    <Paper variant="outlined">
-      <div className={classes.content}>
-        {cover && (
-          <NextLink href="/posts/[id]" as={`/posts/${id}`} passHref>
-            <a
-              className={classes.image}
-              style={{
-                background: `url(${cover}) no-repeat center center`,
-                backgroundSize: 'cover',
-              }}
-            />
-          </NextLink>
-        )}
-
-        <div style={{ minWidth: 0 }}>
-          <NextLink href="/posts/[id]" as={`/posts/${id}`} passHref>
-            <Link color="textPrimary">
-              <Typography gutterBottom variant="h6" noWrap>
-                {title}
-              </Typography>
-            </Link>
-          </NextLink>
-
-          <Typography variant="body2" gutterBottom>
-            {markdownToText(description).slice(0, 200)}
-          </Typography>
-        </div>
-      </div>
-    </Paper>
+    <Card variant="outlined" className={classes.root}>
+      <NextLink href="/posts/[id]" as={`/posts/${id}`} passHref>
+        <CardActionArea component="a">
+          {image && (
+            <CardMedia className={classes.media} image={image} title={title} />
+          )}
+          <CardContent>
+            <Typography variant="h6" component="h2">
+              {title}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+      </NextLink>
+    </Card>
   );
 };
 

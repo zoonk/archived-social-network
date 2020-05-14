@@ -1,23 +1,17 @@
 import { Grid } from '@material-ui/core';
-import { Post } from '@zoonk/models';
-import { theme } from '@zoonk/utils';
+import { Group } from '@zoonk/models';
 import PinnedListItem from './PinnedListItem';
 
 interface PostListProps {
-  items: Post.Summary[];
+  group: Group.Get;
 }
 
-const PinnedList = ({ items }: PostListProps) => {
+const PinnedList = ({ group }: PostListProps) => {
   return (
-    <Grid container>
-      {items.map((item) => (
-        <Grid
-          item
-          xs={12}
-          key={item.id}
-          style={{ margin: theme.spacing(0.5, 0) }}
-        >
-          <PinnedListItem item={item} />
+    <Grid container spacing={2}>
+      {group.pinnedPosts.map((item) => (
+        <Grid item xs={6} md={4} lg={3} key={item.id}>
+          <PinnedListItem item={item} groupImg={group.photo} />
         </Grid>
       ))}
     </Grid>
