@@ -6,6 +6,8 @@
  */
 export const markdownToText = (md: string): string => {
   const output = md
+    // Replace custom templates
+    .replace(/\[(.*?)\]\]/g, '')
     // Remove HTML tags
     .replace(/<[^>]*>/g, '')
     // Remove horizontal rules
@@ -37,8 +39,6 @@ export const markdownToText = (md: string): string => {
     .replace(/(`{3,})(.*?)\1/gm, '$2')
     // Remove inline code
     .replace(/`(.+?)`/g, '$1')
-    // Replace custom templates
-    .replace(/\[(.*?)\]\]/g, '')
     // Remove white spaces.
     .trim()
     .replace(/\s+/g, ' ');

@@ -135,3 +135,10 @@ test('remove custom templates', () => {
   const expected = 'some text more text.';
   expect(markdownToText(md)).toEqual(expected);
 });
+
+test('remove custom templates when structure is broken', () => {
+  const md =
+    'some text\n[[ youtube id="random-video" ]]\nmore **[random]() test**.';
+  const expected = 'some text more random test.';
+  expect(markdownToText(md)).toEqual(expected);
+});
