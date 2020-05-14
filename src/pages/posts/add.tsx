@@ -43,6 +43,7 @@ const PostAddPage: NextPage = () => {
         category={category}
         chapterId={chapterId}
         topicId={topicId}
+        groupId={groupId}
         title={translate('post_add')}
       />
       <PostCreate
