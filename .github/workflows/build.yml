@@ -50,10 +50,10 @@ jobs:
         run: cd functions && yarn
 
       - name: Type-check frontend
-        run: yarn tsc
+        run: yarn tsc:app
 
       - name: Build functions
-        run: cd functions && yarn build
+        run: yarn tsc:functions
 
       - name: Lint
         run: yarn lint
