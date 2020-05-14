@@ -1,5 +1,5 @@
 import { pickBy } from 'lodash';
-import { Group, GroupMember } from '@zoonk/models';
+import { Group, GroupMember, Profile } from '@zoonk/models';
 import {
   analytics,
   appLanguage,
@@ -181,4 +181,20 @@ export const getGroupMembers = async (
   return snap.docs.map((item) => {
     return { ...item.data(), snap: item };
   });
+};
+
+export const updatePinOrder = (
+  pinned: string[],
+  groupId: string,
+  profile: Profile.Response,
+  editorId: string,
+): Promise<void> => {
+  const changes = {
+    pinned,
+    updatedAt: timestamp,
+    updatedBy: profile,
+    updatedById: editorId,
+  };
+
+  return updateGroup(changes, groupId);
 };

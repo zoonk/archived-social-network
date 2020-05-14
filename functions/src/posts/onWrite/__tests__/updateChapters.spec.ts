@@ -39,6 +39,7 @@ test('add a lesson to a chapter', async (done) => {
   const post = {
     title: 'title',
     content: 'description',
+    cover: 'photo.png',
     category: 'lessons',
   };
   const params = { id: 'lessonId' };
@@ -49,6 +50,7 @@ test('add a lesson to a chapter', async (done) => {
   const req = await wrapped(change, { params });
   const changes = {
     'lessonData.lessonId': {
+      cover: 'photo.png',
       description: 'description',
       title: 'title',
       id: 'lessonId',
@@ -68,6 +70,7 @@ test('add an example to a chapter', async (done) => {
   const post = {
     title: 'title',
     content: 'description',
+    cover: 'photo.png',
     category: 'examples',
   };
   const params = { id: 'exampleId' };
@@ -78,6 +81,7 @@ test('add an example to a chapter', async (done) => {
   const req = await wrapped(change, { params });
   const changes = {
     'exampleData.exampleId': {
+      cover: 'photo.png',
       description: 'description',
       title: 'title',
       id: 'exampleId',
@@ -146,7 +150,11 @@ test('update a lesson from a chapter', async (done) => {
 
   const post = { category: 'lessons', chapterId: 'chapterId' };
   const oldPost = { title: 'title', content: 'description' };
-  const newPost = { title: 'new title', content: 'new description' };
+  const newPost = {
+    title: 'new title',
+    content: 'new description',
+    cover: 'photo.png',
+  };
   const params = { id: 'lessonId' };
   const before = { data: () => ({ ...post, ...oldPost }) };
   const after = { data: () => ({ ...post, ...newPost }) };
@@ -156,6 +164,7 @@ test('update a lesson from a chapter', async (done) => {
   const changes = {
     'lessonData.lessonId': {
       title: 'new title',
+      cover: 'photo.png',
       description: 'new description',
       id: 'lessonId',
     },
@@ -172,7 +181,11 @@ test('update an example from a chapter', async (done) => {
 
   const post = { category: 'examples', chapterId: 'chapterId' };
   const oldPost = { title: 'title', content: 'description' };
-  const newPost = { title: 'new title', content: 'new description' };
+  const newPost = {
+    title: 'new title',
+    content: 'new description',
+    cover: 'photo.png',
+  };
   const params = { id: 'exampleId' };
   const before = { data: () => ({ ...post, ...oldPost }) };
   const after = { data: () => ({ ...post, ...newPost }) };
@@ -182,6 +195,7 @@ test('update an example from a chapter', async (done) => {
   const changes = {
     'exampleData.exampleId': {
       title: 'new title',
+      cover: 'photo.png',
       description: 'new description',
       id: 'exampleId',
     },

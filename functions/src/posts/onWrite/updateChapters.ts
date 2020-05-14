@@ -22,7 +22,8 @@ export const onWritePostUpdateChapters = functions.firestore
       const category =
         after.category === 'lessons' ? 'lessonData' : 'exampleData';
       const summary: Post.Summary = {
-        description: after?.content.slice(0, 500),
+        cover: after?.cover || null,
+        description: after?.content.slice(0, 1000),
         id,
         title: after?.title,
       };
@@ -54,7 +55,8 @@ export const onWritePostUpdateChapters = functions.firestore
       const category =
         after.category === 'lessons' ? 'lessonData' : 'exampleData';
       const summary: Post.Summary = {
-        description: after?.content.slice(0, 500),
+        cover: after?.cover || null,
+        description: after?.content.slice(0, 1000),
         id,
         title: after?.title,
       };

@@ -42,6 +42,7 @@ const PostView = ({ chapterId, item }: PostViewProps) => {
     category,
     createdById,
     content,
+    groupId,
     id,
     likes,
     links,
@@ -96,6 +97,7 @@ const PostView = ({ chapterId, item }: PostViewProps) => {
           linkAs={`/posts/${id}`}
           id={id}
           likes={likes}
+          groupId={groupId}
         />
         <EditorView content={content} />
         {links && youtubeId && <YoutubePlayer id={youtubeId} />}

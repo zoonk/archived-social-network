@@ -27,6 +27,7 @@ export namespace Post {
   export type OrderBy = 'likes';
 
   export interface Summary {
+    cover: string | null;
     description: string;
     id: string;
     title: string;

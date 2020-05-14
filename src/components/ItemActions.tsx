@@ -14,6 +14,7 @@ import ItemActionsMenu from './ItemActionsMenu';
 
 interface ItemActionsProps {
   category: ContentCategory;
+  groupId?: string | null;
   hideEdits?: boolean;
   id: string;
   isAuthor?: boolean;
@@ -28,6 +29,7 @@ interface ItemActionsProps {
 const ItemActions = ({
   category,
   hideEdits,
+  groupId,
   href,
   id,
   isAuthor,
@@ -86,6 +88,8 @@ const ItemActions = ({
         href={href}
         isAuthor={isAuthor}
         linkAs={linkAs}
+        groupId={groupId}
+        postId={category === 'posts' ? id : undefined}
       />
       <Snackbar action={snackbar} />
     </CardActions>

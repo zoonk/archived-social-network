@@ -91,7 +91,7 @@ test('remove post from group when it is deleted', async (done) => {
 test('add post to group when pinned becomes true', async (done) => {
   spyOn(db.doc(''), 'update').and.returnValue('updated');
 
-  const data = { content: 'test', title: 'name' };
+  const data = { content: 'test', cover: 'photo.png', title: 'name' };
   const change = {
     before: { data: () => ({ pinned: false, groupId: null }) },
     after: { data: () => ({ ...data, pinned: true, groupId: 'groupId' }) },
@@ -101,7 +101,12 @@ test('add post to group when pinned becomes true', async (done) => {
   const req = await wrapped(change, { params });
   const payload = {
     pinned: 'added: postId',
-    'pinnedPosts.postId': { description: 'test', title: 'name', id: 'postId' },
+    'pinnedPosts.postId': {
+      cover: 'photo.png',
+      description: 'test',
+      title: 'name',
+      id: 'postId',
+    },
   };
 
   expect(req).toBe('updated');

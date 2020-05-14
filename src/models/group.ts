@@ -1,7 +1,6 @@
-import { Chapter } from './chapter';
 import { ContentMetadata } from './content';
 import { Dictionary } from './misc';
-import {} from './post';
+import { Post } from './post';
 import { Profile } from './profile';
 import { SearchIndex } from './search';
 
@@ -32,12 +31,12 @@ export namespace Group {
 
   export interface Response extends Fields, ContentMetadata.Response {
     joined?: firebase.firestore.Timestamp;
-    pinnedPosts?: Dictionary<Chapter.Summary>;
+    pinnedPosts?: Dictionary<Post.Summary>;
   }
 
   export interface Get extends Fields, ContentMetadata.Get {
     joined: string | null;
-    pinnedPosts: Chapter.Summary[];
+    pinnedPosts: Post.Summary[];
     id: string;
   }
 

@@ -17,6 +17,7 @@ interface PostCreateProps {
   category?: Post.Category;
   chapterId?: string;
   groupId?: string;
+  pinned?: boolean;
   topicId?: string;
   onCategoryChange: (category?: Post.Category) => void;
 }
@@ -28,6 +29,7 @@ const PostCreate = ({
   category,
   chapterId,
   groupId,
+  pinned,
   topicId,
   onCategoryChange,
 }: PostCreateProps) => {
@@ -71,7 +73,7 @@ const PostCreate = ({
       language: appLanguage,
       likes: 0,
       links,
-      pinned: false,
+      pinned: Boolean(pinned),
       topics,
       updatedAt: timestamp,
       updatedBy: profile,

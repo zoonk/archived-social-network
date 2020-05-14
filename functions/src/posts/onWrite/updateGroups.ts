@@ -26,7 +26,8 @@ export const onWritePostUpdateGroups = functions.firestore
 
     if (added && after) {
       const post: Post.Summary = {
-        description: after.content,
+        cover: after.cover,
+        description: after.content.slice(0, 1000),
         id,
         title: after.title,
       };

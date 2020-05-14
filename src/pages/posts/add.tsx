@@ -49,6 +49,7 @@ const PostAddPage: NextPage = () => {
         category={category}
         chapterId={chapterId}
         groupId={groupId}
+        pinned={Boolean(query.pinned)}
         topicId={topicId}
         onCategoryChange={setCategory}
       />

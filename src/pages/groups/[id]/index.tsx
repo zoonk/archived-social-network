@@ -2,6 +2,7 @@ import { useContext, useEffect } from 'react';
 import { GetServerSideProps, NextPage } from 'next';
 import { Container, Grid, makeStyles } from '@material-ui/core';
 import GroupDetails from '@zoonk/components/GroupDetails';
+import GroupPinned from '@zoonk/components/GroupPinned';
 import GroupsBreadcrumb from '@zoonk/components/GroupsBreadcrumb';
 import ItemCredits from '@zoonk/components/ItemCredits';
 import MenuCommunity from '@zoonk/components/MenuCommunity';
@@ -70,6 +71,7 @@ const GroupPage: NextPage<GroupPageProps> = ({ group }) => {
 
         <Grid item xs={12} sm={6} md={8} className={classes.column}>
           <PostShare groupId={id} />
+          <GroupPinned group={group} />
           <PostsCard groupId={id} limit={10} displayFilter />
         </Grid>
       </Grid>
