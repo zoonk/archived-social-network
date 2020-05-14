@@ -37,7 +37,7 @@ We're using [Firebase](https://firebase.google.com) for our backend (authenticat
 After you do so, Firebase will give you a [config object](https://firebase.google.com/docs/web/setup#config-object). You'll need to add those values to your environment variables. You can create an `.env` file on the app's root directory. You need to pass the following environment variables:
 
 ```
-NEXT_PUBLIC_FIREBASE_API_KEYH_KEY=
+NEXT_PUBLIC_FIREBASE_API_KEY=
 NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
 NEXT_PUBLIC_FIREBASE_DB_URL=
 NEXT_PUBLIC_FIREBASE_PROJECT_ID=

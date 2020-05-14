@@ -10,7 +10,7 @@ import { FirebaseConfig } from '@zoonk/models';
 import { isProduction } from './settings';
 
 const firebaseConfig: FirebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEYH_KEY as string,
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY as string,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN as string,
   databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DB_URL as string,
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID as string,
