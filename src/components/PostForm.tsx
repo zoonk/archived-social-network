@@ -10,7 +10,10 @@ interface PostFormProps {
   saving: boolean;
   topicIds?: string[];
   onDelete?: () => void;
-  onSubmit: (data: Post.EditableFields, topics: string[]) => void;
+  onSubmit: (
+    data: Omit<Post.EditableFields, 'pinned'>,
+    topics: string[],
+  ) => void;
 }
 
 /**

@@ -24,7 +24,10 @@ interface ReferencesFormProps {
   saving: boolean;
   topicIds?: string[];
   onDelete?: () => void;
-  onSubmit: (data: Post.EditableFields, topics: string[]) => void;
+  onSubmit: (
+    data: Omit<Post.EditableFields, 'pinned'>,
+    topics: string[],
+  ) => void;
 }
 
 const ReferencesForm = ({
@@ -83,10 +86,7 @@ const ReferencesForm = ({
           saving={saving}
           onDelete={onDelete}
           onSubmit={() => {
-            onSubmit(
-              { content, cover, links: [link], pinned: false, title },
-              topics,
-            );
+            onSubmit({ content, cover, links: [link], title }, topics);
           }}
         >
           <Grid item xs={12} className={classes.column}>

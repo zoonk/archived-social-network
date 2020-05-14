@@ -32,7 +32,10 @@ interface PostsFormProps {
   saving: boolean;
   topicIds?: string[];
   onDelete?: () => void;
-  onSubmit: (data: Post.EditableFields, topics: string[]) => void;
+  onSubmit: (
+    data: Omit<Post.EditableFields, 'pinned'>,
+    topics: string[],
+  ) => void;
 }
 
 const PostsForm = ({
@@ -79,7 +82,7 @@ const PostsForm = ({
           saving={saving}
           onDelete={onDelete}
           onSubmit={() => {
-            onSubmit({ content, cover, links, pinned: false, title }, topics);
+            onSubmit({ content, cover, links, title }, topics);
           }}
         >
           <Grid item xs={12} className={classes.column}>

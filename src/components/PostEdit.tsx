@@ -41,7 +41,10 @@ const PostEdit = ({ data }: PostEditProps) => {
     }
   };
 
-  const handleSubmit = (newData: Post.EditableFields, topics: string[]) => {
+  const handleSubmit = (
+    newData: Omit<Post.EditableFields, 'pinned'>,
+    topics: string[],
+  ) => {
     setSnackbar({ type: 'progress', msg: translate('saving') });
 
     const changes: Post.Update = {

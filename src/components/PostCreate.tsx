@@ -57,7 +57,10 @@ const PostCreate = ({
     push('/posts/[id]', `/posts/${id}`);
   };
 
-  const handleSubmit = async (data: Post.EditableFields, topics: string[]) => {
+  const handleSubmit = async (
+    data: Omit<Post.EditableFields, 'pinned'>,
+    topics: string[],
+  ) => {
     setSnackbar({ type: 'progress', msg: translate('saving') });
     const links = data.links ? data.links.filter(Boolean) : [];
 
