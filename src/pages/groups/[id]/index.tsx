@@ -70,7 +70,7 @@ const GroupPage: NextPage<GroupPageProps> = ({ group }) => {
         </Grid>
 
         <Grid item xs={12} sm={6} md={8} className={classes.column}>
-          <PostShare groupId={id} />
+          <PostShare groupId={id} topicId={topics[0]} />
           <GroupPinned group={group} />
           <PostsCard groupId={id} limit={10} displayFilter />
         </Grid>

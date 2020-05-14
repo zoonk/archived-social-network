@@ -8,7 +8,7 @@ import Meta from '@zoonk/components/Meta';
 import PostComments from '@zoonk/components/PostComments';
 import PostsBreadcrumb from '@zoonk/components/PostsBreadcrumb';
 import PostView from '@zoonk/components/PostView';
-import { Post } from '@zoonk/models';
+import { Dictionary, Post } from '@zoonk/models';
 import {
   getChapterLive,
   getPost,
@@ -52,6 +52,9 @@ const PostPage: NextPage<PostPageProps> = ({ data }) => {
   } = data;
   const siteImg = sites.find((site) => Boolean(site.image));
   const image = cover || getPostImage(content) || siteImg?.image;
+  const query: Dictionary<string> = {};
+
+  if (groupId) query.groupId = groupId;
 
   useEffect(() => {
     analytics().setCurrentScreen('posts_view');
@@ -128,7 +131,7 @@ const PostPage: NextPage<PostPageProps> = ({ data }) => {
 
         <Grid item xs={12} sm={3} md={4}>
           <Hidden xsDown>
-            <NextLink href="/posts/add" passHref>
+            <NextLink href={{ pathname: '/posts/add', query }} passHref>
               <Button
                 component="a"
                 fullWidth
