@@ -23,7 +23,7 @@ import {
   Subject,
   SupervisorAccount,
 } from '@material-ui/icons';
-import { GlobalContext } from '@zoonk/utils';
+import { getAboutId, GlobalContext } from '@zoonk/utils';
 
 const useStyles = makeStyles((theme) => ({
   active: {
@@ -65,7 +65,11 @@ const MenuPages = () => {
     { link: '/edits', title: translate('edit_history'), icon: <History /> },
   ];
   const metaPages = [
-    { link: '/about', title: translate('about_us') },
+    {
+      link: '/groups/[id]',
+      as: `/groups/${getAboutId()}`,
+      title: translate('about_us'),
+    },
     { link: '/contact', title: translate('contact_us') },
     { link: '/terms', title: translate('terms_service') },
     { link: '/privacy', title: translate('privacy_policy') },
@@ -107,7 +111,7 @@ const MenuPages = () => {
 
       <List component="nav" aria-label={translate('about_list')}>
         {metaPages.map((page) => (
-          <NextLink href={page.link} passHref key={page.title}>
+          <NextLink href={page.link} as={page.as} passHref key={page.title}>
             <ListItem
               button
               component="a"
