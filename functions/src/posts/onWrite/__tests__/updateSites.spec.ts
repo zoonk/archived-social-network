@@ -1,5 +1,5 @@
 import functions from 'firebase-functions-test';
-import * as helpers from '../../../helpers';
+import * as helpers from '../../../helpers/url';
 
 const testEnv = functions();
 

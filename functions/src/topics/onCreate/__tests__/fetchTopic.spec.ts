@@ -1,6 +1,6 @@
 import functions from 'firebase-functions-test';
 import * as admin from 'firebase-admin';
-import * as helpers from '../../../helpers';
+import * as helpers from '../../../helpers/wikipedia';
 
 const testEnv = functions();
 const db = admin.firestore();
