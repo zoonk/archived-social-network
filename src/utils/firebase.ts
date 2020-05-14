@@ -1,10 +1,10 @@
 import firebase from 'firebase/app';
-import '@firebase/auth';
-import '@firebase/analytics';
-import '@firebase/firestore/memory';
-import '@firebase/functions';
-import '@firebase/performance';
-import '@firebase/storage';
+import 'firebase/auth';
+import 'firebase/analytics';
+import 'firebase/firestore';
+import 'firebase/functions';
+import 'firebase/performance';
+import 'firebase/storage';
 
 import { FirebaseConfig } from '@zoonk/models';
 import { isProduction } from './settings';
