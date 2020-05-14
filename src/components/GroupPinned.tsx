@@ -9,12 +9,12 @@ interface GroupPinnedProps {
 }
 
 const GroupPinned = ({ group }: GroupPinnedProps) => {
-  const { id, pinnedPosts } = group;
+  const { id, pinnedPosts, topics } = group;
   const noPosts = pinnedPosts.length === 0;
 
   return (
     <Fragment>
-      <PinnedHeader groupId={id} hideButtons={noPosts} />
+      <PinnedHeader groupId={id} hideButtons={noPosts} topicId={topics[0]} />
       {noPosts && <NoPinned groupId={id} />}
       <PinnedList items={pinnedPosts} />
     </Fragment>

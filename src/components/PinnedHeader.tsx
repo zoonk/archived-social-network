@@ -8,6 +8,7 @@ import PinIcon from './PinIcon';
 interface PinnedHeaderProps {
   groupId: string;
   hideButtons?: boolean;
+  topicId: string;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -17,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   add: { marginRight: theme.spacing(0.5) },
 }));
 
-const PinnedHeader = ({ groupId, hideButtons }: PinnedHeaderProps) => {
+const PinnedHeader = ({ groupId, hideButtons, topicId }: PinnedHeaderProps) => {
   const { translate } = useContext(GlobalContext);
   const classes = useStyles();
 
@@ -35,7 +36,10 @@ const PinnedHeader = ({ groupId, hideButtons }: PinnedHeaderProps) => {
 
       {!hideButtons && (
         <Fragment>
-          <NextLink href={`/posts/add?groupId=${groupId}&pinned=true`} passHref>
+          <NextLink
+            href={`/posts/add?groupId=${groupId}&topicId=${topicId}&pinned=true`}
+            passHref
+          >
             <Button component="a" size="small" color="primary">
               <Add aria-label={translate('create')} className={classes.add} />
               {translate('post_pinned_add')}
