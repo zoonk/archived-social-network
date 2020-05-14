@@ -55,7 +55,6 @@ export const searchTopic = async (
   params.append('pslimit', limit);
   params.append('format', 'json');
   params.append('list', 'prefixsearch');
-  params.append('psprofile', 'classic');
   params.append('redirects', '1');
   params.append('formatversion', '2');
   params.append('origin', '*');
