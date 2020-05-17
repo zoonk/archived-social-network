@@ -112,12 +112,12 @@ const LoginForm = () => {
 
           <Grid container>
             <Grid item xs>
-              <NextLink href="/reset-password" passHref>
+              <NextLink href={{ pathname: '/reset-password', query }} passHref>
                 <Link variant="body2">{translate('forgot_password')}</Link>
               </NextLink>
             </Grid>
             <Grid item>
-              <NextLink href="/signup" passHref>
+              <NextLink href={{ pathname: '/signup', query }} passHref>
                 <Link variant="body2">{translate('dont_have_account')}</Link>
               </NextLink>
             </Grid>

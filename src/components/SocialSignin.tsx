@@ -1,4 +1,5 @@
 import { Fragment, useContext, useState } from 'react';
+import { useRouter } from 'next/router';
 import { Button } from '@material-ui/core';
 import { SnackbarAction } from '@zoonk/models';
 import { signInWithFacebook, signInWithGoogle } from '@zoonk/services';
@@ -10,16 +11,27 @@ import Snackbar from './Snackbar';
  */
 const SocialSignin = () => {
   const { translate } = useContext(GlobalContext);
+  const { query, push } = useRouter();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
+
+  const redirect = () => {
+    if (query.redirect) {
+      push(String(query.redirect));
+    }
+  };
 
   const facebook = () => {
     setSnackbar({ type: 'progress', msg: translate('signing_in') });
-    signInWithFacebook().catch((e) => setSnackbar(firebaseError(e, 'login')));
+    signInWithFacebook()
+      .then(redirect)
+      .catch((e) => setSnackbar(firebaseError(e, 'login')));
   };
 
   const google = () => {
     setSnackbar({ type: 'progress', msg: translate('signing_in') });
-    signInWithGoogle().catch((e) => setSnackbar(firebaseError(e, 'login')));
+    signInWithGoogle()
+      .then(redirect)
+      .catch((e) => setSnackbar(firebaseError(e, 'login')));
   };
 
   return (

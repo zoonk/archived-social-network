@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 import { Link, Paper, Typography } from '@material-ui/core';
 import { GlobalContext, theme } from '@zoonk/utils';
 
@@ -14,12 +15,13 @@ interface LoginRequiredProps {
  */
 const LoginRequired = ({ message }: LoginRequiredProps) => {
   const { translate } = useContext(GlobalContext);
+  const { asPath } = useRouter();
 
   return (
     <Paper style={{ margin: theme.spacing(2, 0), padding: theme.spacing(3) }}>
       <Typography component="p" variant="body1">
         {message || translate('login_required')}{' '}
-        <NextLink href="/login" passHref>
+        <NextLink href={`/login?redirect=${asPath}`} passHref>
           <Link>{translate('login')}</Link>
         </NextLink>
       </Typography>

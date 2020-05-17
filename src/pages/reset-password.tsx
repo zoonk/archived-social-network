@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 import {
   Avatar,
   Button,
@@ -19,6 +20,7 @@ import { auth, analytics, GlobalContext, rootUrl, theme } from '@zoonk/utils';
 
 const ResetPassword: NextPage = () => {
   const { translate, user } = useContext(GlobalContext);
+  const { query } = useRouter();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const [email, setEmail] = useState<string>('');
 
@@ -118,7 +120,7 @@ const ResetPassword: NextPage = () => {
 
           <Grid container justify="flex-end">
             <Grid item>
-              <NextLink href="/login" passHref>
+              <NextLink href={{ pathname: '/login', query }} passHref>
                 <Link variant="body2">{translate('back_to_login')}</Link>
               </NextLink>
             </Grid>

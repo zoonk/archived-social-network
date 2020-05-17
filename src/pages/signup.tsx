@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 import {
   Avatar,
   Button,
@@ -20,6 +21,7 @@ import { analytics, auth, GlobalContext, rootUrl, theme } from '@zoonk/utils';
 
 const SignUp: NextPage = () => {
   const { translate, user } = useContext(GlobalContext);
+  const { query, push } = useRouter();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -34,6 +36,10 @@ const SignUp: NextPage = () => {
       .then(() => {
         setSignup(true);
         setSnackbar(null);
+
+        if (query.redirect) {
+          push(String(query.redirect));
+        }
       })
       .catch((error) => {
         setSnackbar({
@@ -152,7 +158,7 @@ const SignUp: NextPage = () => {
 
           <Grid container justify="flex-end">
             <Grid item>
-              <NextLink href="/login" passHref>
+              <NextLink href={{ pathname: '/login', query }} passHref>
                 <Link variant="body2">{translate('already_have_account')}</Link>
               </NextLink>
             </Grid>
