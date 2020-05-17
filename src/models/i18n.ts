@@ -266,6 +266,7 @@ export type TranslationKeys =
   | 'signup_notice'
   | 'signup'
   | 'social_description'
+  | 'social_media'
   | 'stats'
   | 'subtitle'
   | 'teach_article_desc'
@@ -301,7 +302,8 @@ export type TranslationKeys =
   | 'users'
   | 'video'
   | 'video_link'
-  | 'view';
+  | 'view'
+  | 'website';
 
 export type TranslationData = {
   [key in TranslationKeys]: string;

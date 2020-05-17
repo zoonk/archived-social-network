@@ -283,6 +283,7 @@ const translate: TranslationFn = (key, args) => {
     signup_notice_and: 'and the',
     social_description:
       'Zoonk is a social network where you can learn anything for free.',
+    social_media: 'Social media',
     stats: 'Stats',
     subtitle: 'Subtitle',
     teach_article_desc: `A good way to teach something is by sharing personal stories and experiences. Do you have an interesting point of view about ${args?.title}? Then, [share it with other people](/posts/add?category=posts&topicId=${args?.id})! :)`,
@@ -322,6 +323,7 @@ const translate: TranslationFn = (key, args) => {
     video: 'Video',
     video_link: 'Video URL',
     view: 'View',
+    website: 'Website',
   };
 
   return data[key] || key;

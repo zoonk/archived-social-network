@@ -288,6 +288,7 @@ const translate: TranslationFn = (key, args) => {
     signup_notice_and: 'e a',
     social_description:
       'Zoonk é uma rede social onde você pode aprender qualquer coisa de graça online.',
+    social_media: 'Redes sociais',
     stats: 'Estatísticas',
     subtitle: 'Subtítulo',
     teach_article_desc: `Uma boa maneira de ensinar é compartilhando histórias e experiências pessoais. Você tem algum ponto de vista interessante sobre ${args?.title}? Então [compartilhe com outras pessoas](/posts/add?category=posts&topicId=${args?.id})! :)`,
@@ -327,6 +328,7 @@ const translate: TranslationFn = (key, args) => {
     video: 'Vídeo',
     video_link: 'Link do vídeo',
     view: 'Ver',
+    website: 'Site',
   };
 
   return data[key] || key;

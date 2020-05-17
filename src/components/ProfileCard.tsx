@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core';
 import { Leaderboard } from '@zoonk/models';
 import { GlobalContext, theme } from '@zoonk/utils';
+import ProfileSocial from './ProfileSocial';
 import UserReputation from './UserReputation';
 
 interface ProfileCardProps {
@@ -41,9 +42,11 @@ const ProfileCard = ({ data }: ProfileCardProps) => {
           <UserReputation xp={xp} />
         </div>
 
-        <Typography variant="body2" color="textSecondary">
+        <Typography variant="body2" color="textSecondary" gutterBottom>
           {bio}
         </Typography>
+
+        <ProfileSocial data={data} />
       </CardContent>
 
       {user?.uid === id && (

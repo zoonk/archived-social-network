@@ -1,6 +1,7 @@
 import NextLink from 'next/link';
 import { Avatar, Link, makeStyles } from '@material-ui/core';
 import { Profile } from '@zoonk/models';
+import ProfileSocial from './ProfileSocial';
 
 interface CommentUserProps {
   user: Profile.Response;
@@ -34,6 +35,7 @@ const CommentUser = ({ user }: CommentUserProps) => {
             {name}
           </Link>
         </NextLink>
+        <ProfileSocial data={user} />
       </div>
     </div>
   );

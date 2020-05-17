@@ -108,6 +108,13 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
                 name: userData.name,
                 photo: userData.photo,
                 username: userData.username,
+                facebook: userData.facebook,
+                github: userData.github,
+                instagram: userData.instagram,
+                linkedin: userData.linkedin,
+                twitter: userData.twitter,
+                web: userData.web,
+                youtube: userData.youtube,
               }
             : null,
           user: userData,

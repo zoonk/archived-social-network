@@ -4,6 +4,7 @@ import { CircularProgress, Container, Grid } from '@material-ui/core';
 import CredentialsUpdate from '@zoonk/components/CredentialsUpdate';
 import LoginForm from '@zoonk/components/LoginForm';
 import Meta from '@zoonk/components/Meta';
+import SocialMediaUpdate from '@zoonk/components/SocialMediaUpdate';
 import ProfileUpdate from '@zoonk/components/ProfileUpdate';
 import UserBreadcrumb from '@zoonk/components/UserBreadcrumb';
 import UsernameUpdate from '@zoonk/components/UsernameUpdate';
@@ -37,6 +38,8 @@ const Settings: NextPage = () => {
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
           <ProfileUpdate />
+          <div style={{ marginTop: theme.spacing(2) }} />
+          <SocialMediaUpdate />
         </Grid>
 
         <Grid item xs={12} sm={6}>

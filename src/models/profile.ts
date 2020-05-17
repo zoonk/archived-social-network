@@ -6,31 +6,26 @@ export interface Username {
  * User profile model
  */
 export namespace Profile {
-  /**
-   * Raw data returned from the backend.
-   */
   export interface Response {
     bio: string | null;
+    facebook?: string | null;
+    github?: string | null;
+    instagram?: string | null;
+    linkedin?: string | null;
     name: string;
     photo: string | null;
+    twitter?: string | null;
     username: string;
+    web?: string | null;
+    youtube?: string | null;
   }
 
-  /**
-   * Required fields for updating a user's profile.
-   */
   export interface Update extends Partial<Response> {}
 
-  /**
-   * Serialized fields.
-   */
   export interface Get extends Response {
     id: string;
   }
 
-  /**
-   * Keep Firebase snapshot
-   */
   export interface Snapshot extends Get {
     snap: firebase.firestore.DocumentSnapshot;
   }
