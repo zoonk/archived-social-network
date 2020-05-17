@@ -1,18 +1,21 @@
-import { Fragment, useEffect, useState } from 'react';
-import { CircularProgress, List, makeStyles } from '@material-ui/core';
+import { useContext, useEffect, useState } from 'react';
+import {
+  CircularProgress,
+  Grid,
+  makeStyles,
+  Typography,
+} from '@material-ui/core';
+import { Comment as CommentIcon } from '@material-ui/icons';
 import { Comment } from '@zoonk/models';
 import { liveComments } from '@zoonk/services';
+import { GlobalContext } from '@zoonk/utils';
+import CommentCard from './CommentCard';
 import CommentForm from './CommentForm';
-import CommentListItem from './CommentListItem';
-import ReplyList from './ReplyList';
 
 const useStyles = makeStyles((theme) => ({
-  replyList: {
-    marginLeft: theme.spacing(2),
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(6),
-    },
-  },
+  container: { margin: theme.spacing(5, 0) },
+  title: { display: 'flex', alignItems: 'center' },
+  titleIcon: { marginRight: theme.spacing(1) },
 }));
 
 interface CommentListProps {
@@ -21,14 +24,11 @@ interface CommentListProps {
   topics: string[];
 }
 
-/**
- * Display a list of comments.
- */
 const CommentList = ({ groupId, postId, topics }: CommentListProps) => {
+  const { translate } = useContext(GlobalContext);
   const classes = useStyles();
   const [loading, setLoading] = useState<boolean>(false);
   const [comments, setComments] = useState<Comment.Get[]>([]);
-  const [reply, setReply] = useState<string>('');
 
   useEffect(() => {
     setLoading(true);
@@ -48,40 +48,25 @@ const CommentList = ({ groupId, postId, topics }: CommentListProps) => {
   }
 
   return (
-    <List>
-      {comments.map((comment, index) => {
-        const isLast = index === comments.length - 1;
-        const hasReplies = comment.replies > 0;
-
-        return (
-          <Fragment key={comment.id}>
-            <CommentListItem
-              item={comment}
-              divider={!isLast && !hasReplies}
-              type="comments"
-              onReply={setReply}
-            />
-
-            {reply === comment.id && (
-              <CommentForm
-                commentId={comment.id}
-                groupId={groupId}
-                postId={postId}
-                topics={topics}
-                onCancel={() => setReply('')}
-                onSave={() => setReply('')}
-              />
-            )}
-
-            {hasReplies && (
-              <div className={classes.replyList}>
-                <ReplyList commentId={comment.id} divider={!isLast} />
-              </div>
-            )}
-          </Fragment>
-        );
-      })}
-    </List>
+    <div className={classes.container}>
+      <Typography
+        variant="h5"
+        color="textSecondary"
+        gutterBottom
+        className={classes.title}
+      >
+        <CommentIcon fontSize="small" className={classes.titleIcon} />
+        {translate('join_discussion')}
+      </Typography>
+      <CommentForm postId={postId} groupId={groupId} topics={topics} />
+      <Grid container spacing={2}>
+        {comments.map((comment) => (
+          <Grid item xs={12} key={comment.id}>
+            <CommentCard data={comment} />
+          </Grid>
+        ))}
+      </Grid>
+    </div>
   );
 };
 

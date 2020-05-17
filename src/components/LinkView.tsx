@@ -6,15 +6,13 @@ interface LinkViewProps {
   href: string;
 }
 
-/**
- * Custom link renderer for markdown viewer.
- */
 const LinkView = ({ children, href }: LinkViewProps) => {
   return (
     <Link
       href={href}
       target={isInternal(href) ? '_self' : '_blank'}
       rel="noopener noreferrer"
+      style={{ fontFamily: "'Raleway', sans-serif" }}
     >
       {children}
     </Link>

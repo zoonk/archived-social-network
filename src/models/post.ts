@@ -43,6 +43,7 @@ export namespace Post {
     cover: string | null;
     links: string[] | null;
     pinned: boolean;
+    subtitle: string;
     title: string;
   }
 
@@ -82,6 +83,7 @@ export namespace Post {
    */
   export interface Get extends Fields, ContentMetadata.Get {
     chapterData?: Chapter.Summary | null;
+    createdBy: Profile.Get;
     groupData?: Group.Summary | null;
     editors: Profile.Get[];
     editorsData: Dictionary<Profile.Response>;

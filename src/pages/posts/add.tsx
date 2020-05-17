@@ -40,7 +40,6 @@ const PostAddPage: NextPage = () => {
     <Container component="main">
       <Meta title={translate('post_add')} noIndex />
       <PostsBreadcrumb
-        category={category}
         chapterId={chapterId}
         topicId={topicId}
         groupId={groupId}

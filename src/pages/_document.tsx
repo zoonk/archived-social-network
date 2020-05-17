@@ -51,6 +51,11 @@ class CustomDocument extends Document<CustomDocumentProps> {
             type="text/css"
           />
 
+          <link
+            href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;400;700&display=swap"
+            rel="stylesheet"
+          />
+
           <link rel="manifest" href="/manifest.json" />
           <link rel="shortcut icon" href="/favicon.ico" />
           <link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png" />
@@ -89,14 +94,6 @@ class CustomDocument extends Document<CustomDocumentProps> {
               ::selection {
                 background-color: ${theme.palette.secondary.main};
                 color: ${theme.palette.secondary.contrastText};
-              }
-
-              blockquote {
-                border-left: 5px solid ${theme.palette.divider};
-                color: ${theme.palette.text.secondary};
-                font-style: italic;
-                margin: ${theme.spacing(2, 0)};
-                padding: ${theme.spacing(1.5, 2)};
               }
 
               ul, ol {

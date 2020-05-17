@@ -1,24 +1,20 @@
-import { Typography } from '@material-ui/core';
-import { theme } from '@zoonk/utils';
+import { makeStyles } from '@material-ui/core';
 
-interface EditorTextProps {
+interface EditorListProps {
   children: React.ReactNode;
 }
 
-const EditorList = ({ children }: EditorTextProps) => {
-  return (
-    <Typography
-      variant="body1"
-      component="li"
-      style={{
-        marginBottom: theme.spacing(2),
-        fontSize: '1.25rem',
-        lineHeight: '2rem',
-      }}
-    >
-      {children}
-    </Typography>
-  );
+const useStyles = makeStyles((theme) => ({
+  root: {
+    marginBottom: theme.spacing(2),
+    fontSize: '1.25rem',
+    lineHeight: '2rem',
+  },
+}));
+
+const EditorList = ({ children }: EditorListProps) => {
+  const classes = useStyles();
+  return <li className={classes.root}>{children}</li>;
 };
 
 export default EditorList;

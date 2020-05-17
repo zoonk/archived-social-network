@@ -14,9 +14,6 @@ const getMaterialLanguage = () => {
   }
 };
 
-export const postFont =
-  'medium-content-serif-font, Georgia, Cambria, "Times New Roman", Times, serif';
-
 // Create a theme instance.
 export const theme = createMuiTheme(
   {

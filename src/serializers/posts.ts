@@ -15,6 +15,7 @@ export const serializePost = (
   return {
     ...data,
     createdAt: serializeFirebaseDate(data.createdAt),
+    createdBy: { ...data.createdBy, id: data.createdById },
     editors: editors.map((editor) => ({
       ...editorsData[editor],
       id: editor,

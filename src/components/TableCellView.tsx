@@ -9,7 +9,12 @@ interface TableCellViewProps {
  */
 const TableCellView = ({ children }: TableCellViewProps) => {
   return (
-    <TableCell align="left" padding="default" size="medium">
+    <TableCell
+      align="left"
+      padding="default"
+      size="medium"
+      style={{ fontFamily: "'Raleway', sans-serif" }}
+    >
       {children}
     </TableCell>
   );

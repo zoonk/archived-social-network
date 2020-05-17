@@ -43,10 +43,6 @@ const translate: TranslationFn = (key, args) => {
     comment_login_required:
       'Você precisa estar logado para deixar um comentário.',
     comments: 'Comentários',
-    comments_count:
-      Number(args?.comments) === 1
-        ? `${args?.comments} comentário`
-        : `${args?.comments} comentários`,
     confirm: 'Confirmar',
     contact_us: 'Fale conosco',
     content: 'Conteúdo',
@@ -119,9 +115,10 @@ const translate: TranslationFn = (key, args) => {
     groups_my: 'Meus grupos',
     groups: 'Grupos',
     having_issues: 'Está achando complicado ou encontrando alguma dificuldade?',
+    history: 'Histórico',
     home: 'Início',
-    improve_page: 'Melhorar esta página',
     items_empty: 'Nenhum item encontrado.',
+    join_discussion: 'Faça parte da conversa',
     join: 'Entrar',
     leaderboard: 'Ranking',
     learn_about: `Aprenda sobre ${args?.title}`,
@@ -132,10 +129,7 @@ const translate: TranslationFn = (key, args) => {
     level: 'Nível',
     like: 'Curtir',
     liked: 'Você curtiu',
-    likes_count:
-      Number(args?.likes) === 1
-        ? `${args?.likes} curtida`
-        : `${args?.likes} curtidas`,
+    link_copied: 'Link copiado!',
     link_helper: 'Link para uma referência',
     link_invalid: 'Link inválido',
     link: 'Link',
@@ -148,7 +142,7 @@ const translate: TranslationFn = (key, args) => {
     message: 'Mensagem',
     name: 'Nome',
     need_to_be_loggedin: 'Você precisa estar logado para fazer isso.',
-    next_lesson: 'Próxima aula',
+    next: 'Próxima',
     no_books: `Leu algum livro interessante sobre **${args?.title}**? Então, [compartilhe](/posts/add?category=books&topicId=${args?.topicId}) com mais pessoas!`,
     no_chapter_examples: `Ajude mais pessoas a entenderem por que é importante aprender sobre **${args?.title}**. [Compartilhe um exemplo prático](/posts/add?category=examples&topicId=${args?.topicId}&chapterId=${args?.chapterId}).`,
     no_chapters: `Os capítulos têm aulas para ensinar um assunto. Ajude mais pessoas a aprenderem sobre **${args?.title}**. [Crie o primeiro capítulo](/chapters/add?topicId=${args?.id}).`,
@@ -195,7 +189,7 @@ const translate: TranslationFn = (key, args) => {
     posts: 'Posts',
     preview: 'Visualizar',
     preview_quit: 'Voltar ao editor',
-    previous_lesson: 'Aula anterior',
+    previous: 'Anterior',
     privacy_policy: 'Política de privacidade',
     pro: 'Profissional',
     profile: 'Perfil',
@@ -206,8 +200,8 @@ const translate: TranslationFn = (key, args) => {
     references: 'Referências',
     reorder: 'Reordenar',
     replies: 'Respostas',
-    report: 'Reportar',
-    reports: 'Reportes',
+    report: 'Denunciar',
+    reports: 'Denúncias',
     report_confirmation:
       'Por favor, clique no botão "confirmar" para reportar este conteúdo e o autor. Você também pode incluir um comentário abaixo explicando por que o conteúdo não deve estar no Zoonk.',
     report_issue: 'Relatar problema',
@@ -295,6 +289,7 @@ const translate: TranslationFn = (key, args) => {
     social_description:
       'Zoonk é uma rede social onde você pode aprender qualquer coisa de graça online.',
     stats: 'Estatísticas',
+    subtitle: 'Subtítulo',
     teach_article_desc: `Uma boa maneira de ensinar é compartilhando histórias e experiências pessoais. Você tem algum ponto de vista interessante sobre ${args?.title}? Então [compartilhe com outras pessoas](/posts/add?category=posts&topicId=${args?.id})! :)`,
     teach_article_title: 'Escrever um artigo',
     teach_book_desc: `Você leu algum livro interessante sobre ${args?.title}? Não guarde esse achado apenas com você, outras pessoas podem se beneficiar dessa leitura. [Compartilhe um pequeno resumo do livro](/posts/add?category=books&topicId=${args?.id}) e fale por que ele é interessante para quem quiser aprender sobre ${args?.title}.`,

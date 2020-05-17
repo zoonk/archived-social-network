@@ -14,7 +14,7 @@
     "eslint": "eslint",
     "firebase": "firebase",
     "indexes:get": "firebase firestore:indexes > database/firestore.indexes.json",
-    "install:deps": "yarn & yarn install:functions",
+    "install:deps": "yarn && yarn install:functions",
     "install:functions": "cd functions && yarn",
     "lint": "yarn eslint './**/*.{js,jsx,ts,tsx}'",
     "now": "now",
@@ -24,7 +24,7 @@
     "test": "FIRESTORE_EMULATOR_HOST=localhost:8080 yarn start:firestore 'jest'",
     "test:coverage": "yarn start:firestore 'jest --coverage'",
     "test:watch": "yarn start:firestore 'jest --watch'",
-    "tsc": "yarn tsc:app & yarn tsc:functions",
+    "tsc": "yarn tsc:app && yarn tsc:functions",
     "tsc:app": "tsc",
     "tsc:functions": "cd functions && yarn build"
   },
@@ -34,9 +34,9 @@
     "@material-ui/lab": "^4.0.0-alpha.52",
     "algoliasearch": "^4.0.3",
     "diff": "^4.0.2",
-    "firebase": "^7.14.3",
+    "firebase": "^7.14.4",
     "lodash": "^4.17.15",
-    "next": "^9.4.0",
+    "next": "^9.4.1",
     "react": "^16.13.1",
     "react-dnd": "^10.0.2",
     "react-dnd-html5-backend": "^10.0.2",
@@ -69,7 +69,7 @@
     "now": "^19.0.1",
     "prettier": "^1.19.1",
     "ts-jest": "^25.5.1",
-    "typescript": "^3.8.3"
+    "typescript": "^3.9.2"
   },
   "husky": {
     "hooks": {

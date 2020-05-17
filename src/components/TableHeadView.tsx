@@ -8,7 +8,7 @@ interface TableHeadViewProps {
  * Custom table head for the markdown preview.
  */
 const TableHeadView = ({ children }: TableHeadViewProps) => {
-  return <TableHead>{children}</TableHead>;
+  return <TableHead style={{ fontWeight: 700 }}>{children}</TableHead>;
 };
 
 export default TableHeadView;

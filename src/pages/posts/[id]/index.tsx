@@ -1,20 +1,15 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { NextPage } from 'next';
-import dynamic from 'next/dynamic';
-import NextLink from 'next/link';
-import { Button, Container, Grid, Hidden } from '@material-ui/core';
-import ItemCredits from '@zoonk/components/ItemCredits';
+import { Container, Divider, makeStyles } from '@material-ui/core';
+import CommentList from '@zoonk/components/CommentList';
+import LinkList from '@zoonk/components/LinkList';
 import Meta from '@zoonk/components/Meta';
-import PostComments from '@zoonk/components/PostComments';
-import PostsBreadcrumb from '@zoonk/components/PostsBreadcrumb';
+import PostBar from '@zoonk/components/PostBar';
+import PostFooter from '@zoonk/components/PostFooter';
+import PostHeader from '@zoonk/components/PostHeader';
 import PostView from '@zoonk/components/PostView';
-import { Dictionary, Post } from '@zoonk/models';
-import {
-  getChapterLive,
-  getPost,
-  markPostAsRead,
-  togglePostProgress,
-} from '@zoonk/services';
+import { Post } from '@zoonk/models';
+import { getPost, markPostAsRead, togglePostProgress } from '@zoonk/services';
 import {
   analytics,
   appLanguage,
@@ -22,27 +17,29 @@ import {
   GlobalContext,
   markdownToText,
   preRender,
-  theme,
 } from '@zoonk/utils';
-
-const LessonsCard = dynamic(() => import('@zoonk/components/LessonsCard'));
 
 interface PostPageProps {
   data: Post.Get;
 }
 
+const useStyles = makeStyles((theme) => ({
+  root: { marginBottom: '89px' },
+  container: {
+    [theme.breakpoints.only('sm')]: {
+      padding: theme.spacing(0, 4),
+    },
+  },
+}));
+
 const PostPage: NextPage<PostPageProps> = ({ data }) => {
-  const { translate, user } = useContext(GlobalContext);
-  const [lessons, setLessons] = useState<Post.Summary[]>([]);
+  const { user } = useContext(GlobalContext);
+  const classes = useStyles();
   const {
     category,
-    chapterData,
     chapterId,
-    comments,
     content,
     cover,
-    editors,
-    groupData,
     groupId,
     id,
     language,
@@ -52,9 +49,6 @@ const PostPage: NextPage<PostPageProps> = ({ data }) => {
   } = data;
   const siteImg = sites.find((site) => Boolean(site.image));
   const image = cover || getPostImage(content) || siteImg?.image;
-  const query: Dictionary<string> = {};
-
-  if (groupId) query.groupId = groupId;
 
   useEffect(() => {
     analytics().setCurrentScreen('posts_view');
@@ -80,25 +74,8 @@ const PostPage: NextPage<PostPageProps> = ({ data }) => {
     }
   }, [category, chapterId, id, user]);
 
-  /**
-   * Get a list of lessons for this chapter.
-   */
-  useEffect(() => {
-    let unsubscribe: firebase.Unsubscribe = () => {};
-
-    if (chapterId) {
-      unsubscribe = getChapterLive(chapterId, (chapter) => {
-        const items =
-          category === 'examples' ? chapter.exampleData : chapter.lessonData;
-        setLessons(items);
-      });
-    }
-
-    return () => unsubscribe();
-  }, [category, chapterId]);
-
   return (
-    <Container component="main">
+    <main className={classes.root}>
       <Meta
         title={title}
         description={markdownToText(content).slice(0, 200)}
@@ -106,56 +83,16 @@ const PostPage: NextPage<PostPageProps> = ({ data }) => {
         image={image}
         noIndex={language !== appLanguage}
       />
-
-      <PostsBreadcrumb
-        category={category}
-        chapterId={chapterId}
-        chapterName={chapterData?.title}
-        groupId={groupId}
-        groupName={groupData?.title}
-        topicId={topics[0]}
-        title={title}
-      />
-
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={9} md={8}>
-          <PostView chapterId={chapterId} item={data} />
-          <div style={{ margin: theme.spacing(1, 0) }} />
-          <PostComments
-            comments={comments}
-            groupId={groupId}
-            postId={id}
-            topics={topics}
-          />
-        </Grid>
-
-        <Grid item xs={12} sm={3} md={4}>
-          <Hidden xsDown>
-            <NextLink href={{ pathname: '/posts/add', query }} passHref>
-              <Button
-                component="a"
-                fullWidth
-                variant="outlined"
-                color="primary"
-              >
-                {translate('post_add')}
-              </Button>
-            </NextLink>
-            <div style={{ margin: theme.spacing(1) }} />
-          </Hidden>
-          <ItemCredits editors={editors} />
-          <div style={{ margin: theme.spacing(1, 0) }} />
-          {lessons.length > 0 && chapterId && (
-            <LessonsCard
-              chapterId={chapterId}
-              topicId={topics[0]}
-              lessons={lessons}
-              category={category as any}
-            />
-          )}
-        </Grid>
-      </Grid>
-    </Container>
+      <PostHeader data={data} />
+      <Container maxWidth="md" className={classes.container}>
+        <PostView content={content} />
+        <LinkList sites={sites} />
+        <PostFooter id={id} />
+        <Divider />
+        <CommentList postId={id} groupId={groupId} topics={topics} />
+      </Container>
+      <PostBar data={data} />
+    </main>
   );
 };
 

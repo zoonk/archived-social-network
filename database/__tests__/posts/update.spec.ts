@@ -33,6 +33,7 @@ const add = {
   links: null,
   likes: 0,
   pinned: false,
+  subtitle: 'old subtitle',
   title: 'new name',
   topics: ['topicId'],
   updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -343,6 +344,11 @@ test('cannot pin more than 20 posts to a group', async (done) => {
   await admin.doc('posts/full').set({ ...add, groupId: 'full' });
   await admin.doc('users/currentUser/groups/full').set({});
   await firebase.assertFails(doc.update(changes));
+  done();
+});
+
+test('subtitle can be changed', async (done) => {
+  await firebase.assertSucceeds(ref.update({ ...edit, subtitle: 'new' }));
   done();
 });
 

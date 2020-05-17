@@ -1,6 +1,7 @@
 import ReactMarkdown from 'react-markdown';
 import shortcodes from 'remark-shortcodes';
 import Divider from './Divider';
+import EditorBlockquote from './EditorBlockquote';
 import EditorHeading from './EditorHeading';
 import EditorList from './EditorList';
 import EditorText from './EditorText';
@@ -24,8 +25,9 @@ const EditorView = ({ content }: EditorViewProps) => {
   return (
     <ReactMarkdown
       source={content}
-      plugins={[[shortcodes, { startBlock: '[[', endBlock: ']]' }]]}
+      plugins={[[shortcodes]]}
       renderers={{
+        blockquote: EditorBlockquote,
         heading: EditorHeading,
         image: Image,
         link: LinkView,

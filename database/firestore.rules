@@ -209,7 +209,7 @@ service cloud.firestore {
       ;
       allow update:
         if request.auth.uid != null
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['chapterId', 'content', 'cover', 'links', 'pinned', 'title', 'topics', 'updatedAt', 'updatedBy', 'updatedById'])
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['chapterId', 'content', 'cover', 'links', 'pinned', 'subtitle', 'title', 'topics', 'updatedAt', 'updatedBy', 'updatedById'])
         && (request.resource.data.chapterId == resource.data.chapterId || request.resource.data.chapterId == null)
         && request.resource.data.content is string
         && (!isOneOf('category', 'posts|questions') || resource.data.createdById == request.auth.uid || isAdmin() || isModerator())

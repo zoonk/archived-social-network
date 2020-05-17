@@ -1,20 +1,14 @@
 import { useEffect, useState } from 'react';
-import { CircularProgress, List } from '@material-ui/core';
+import { CircularProgress, Grid } from '@material-ui/core';
 import { Comment } from '@zoonk/models';
 import { liveReplies } from '@zoonk/services';
-import CommentListItem from './CommentListItem';
+import CommentCard from './CommentCard';
 
 interface ReplyListProps {
   commentId: string;
-  divider?: boolean;
 }
 
-/**
- * Display a list of comments replies.
- * @property `commentId` - set which comment we should get replies from.
- * @property `divider` - define if we should display a divider line between items.
- */
-const ReplyList = ({ commentId, divider }: ReplyListProps) => {
+const ReplyList = ({ commentId }: ReplyListProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [replies, setReplies] = useState<Comment.Get[]>([]);
 
@@ -35,17 +29,13 @@ const ReplyList = ({ commentId, divider }: ReplyListProps) => {
   }
 
   return (
-    <List>
+    <Grid container spacing={2}>
       {replies.map((reply) => (
-        <CommentListItem
-          key={reply.id}
-          item={reply}
-          divider={divider}
-          type="replies"
-          onReply={undefined}
-        />
+        <Grid item xs={12} key={reply.id}>
+          <CommentCard data={reply} />
+        </Grid>
       ))}
-    </List>
+    </Grid>
   );
 };
 

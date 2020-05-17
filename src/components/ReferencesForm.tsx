@@ -86,7 +86,10 @@ const ReferencesForm = ({
           saving={saving}
           onDelete={onDelete}
           onSubmit={() => {
-            onSubmit({ content, cover, links: [link], title }, topics);
+            onSubmit(
+              { content, cover, links: [link], subtitle: '', title },
+              topics,
+            );
           }}
         >
           <Grid item xs={12} className={classes.column}>
@@ -161,14 +164,7 @@ const ReferencesForm = ({
       </Grid>
 
       <Grid item xs={12} sm={6} className={classes.preview}>
-        <PostPreview
-          data={{
-            content,
-            links: [link],
-            title,
-            topics,
-          }}
-        />
+        <PostPreview content={content} />
       </Grid>
     </Grid>
   );

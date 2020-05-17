@@ -30,6 +30,7 @@ const data = {
   links: null,
   likes: 0,
   pinned: false,
+  subtitle: 'subtitle',
   title: 'new name',
   topics: ['topicId'],
   updatedAt: firebase.firestore.FieldValue.serverTimestamp(),

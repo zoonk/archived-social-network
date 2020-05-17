@@ -1,28 +1,38 @@
-import { makeStyles, Typography } from '@material-ui/core';
-import { postFont } from '@zoonk/utils';
+import { Fragment } from 'react';
+import { makeStyles } from '@material-ui/core';
 
 interface PostTitleProps {
-  children: React.ReactNode;
+  subtitle: string;
+  title: string;
 }
 
 const useStyles = makeStyles((theme) => ({
   title: {
-    fontFamily: postFont,
-    fontSize: theme.typography.h4.fontSize,
-    lineHeight: 1.1,
+    fontSize: '2rem',
+    lineHeight: 1,
+    marginBottom: '1.25rem',
+    fontWeight: 700,
     [theme.breakpoints.up('md')]: {
-      fontSize: theme.typography.h3.fontSize,
+      fontSize: '4rem',
     },
+  },
+  subtitle: {
+    fontSize: '1.125rem',
+    fontWeight: 400,
+    fontStyle: 'italic',
+    lineHeight: 1.25,
+    textAlign: 'left',
   },
 }));
 
-const PostTitle = ({ children }: PostTitleProps) => {
+const PostTitle = ({ subtitle, title }: PostTitleProps) => {
   const classes = useStyles();
 
   return (
-    <Typography component="h1" className={classes.title}>
-      {children}
-    </Typography>
+    <Fragment>
+      <h1 className={classes.title}>{title}</h1>
+      <h2 className={classes.subtitle}>{subtitle}</h2>
+    </Fragment>
   );
 };
 

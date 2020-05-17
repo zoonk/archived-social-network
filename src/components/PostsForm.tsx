@@ -50,6 +50,7 @@ const PostsForm = ({
   const [expand, setExpand] = useState<boolean>(false);
   const [content, setContent] = useState<string>(data?.content || '');
   const [cover, setCover] = useState<string | null>(data?.cover || null);
+  const [subtitle, setSubtitle] = useState<string>(data?.subtitle || '');
   const [title, setTitle] = useState<string>(data?.title || '');
   const [topics, setTopics] = useState<string[]>(data?.topics || []);
   const [links, setLinks] = useState<string[]>(
@@ -82,7 +83,7 @@ const PostsForm = ({
           saving={saving}
           onDelete={onDelete}
           onSubmit={() => {
-            onSubmit({ content, cover, links, title }, topics);
+            onSubmit({ content, cover, links, subtitle, title }, topics);
           }}
         >
           <Grid item xs={12} className={classes.column}>
@@ -105,6 +106,18 @@ const PostsForm = ({
                 <FormattingTips />
               </Grid>
             </Grid>
+
+            <TextField
+              value={subtitle}
+              onChange={(e) => setSubtitle(e.target.value)}
+              multiline
+              variant="outlined"
+              fullWidth
+              id="post-subtitle"
+              label={translate('subtitle')}
+              name="post-subtitle"
+              type="textarea"
+            />
 
             <TextField
               required
@@ -161,15 +174,7 @@ const PostsForm = ({
       </Grid>
 
       <Grid item xs={12} sm={6} className={classes.preview}>
-        <PostPreview
-          data={{
-            content,
-            links,
-            title,
-            topics,
-          }}
-          onToggleExpand={setExpand}
-        />
+        <PostPreview content={content} onToggleExpand={setExpand} />
       </Grid>
     </Grid>
   );

@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { Button, TextField } from '@material-ui/core';
+import { Button, makeStyles, Paper, TextField } from '@material-ui/core';
 import { SnackbarAction } from '@zoonk/models';
 import { createComment } from '@zoonk/services';
 import {
@@ -7,7 +7,6 @@ import {
   firebaseError,
   GlobalContext,
   timestamp,
-  theme,
 } from '@zoonk/utils';
 import Snackbar from './Snackbar';
 import LoginRequired from './LoginRequired';
@@ -21,9 +20,17 @@ interface CommentFormProps {
   onSave?: () => void;
 }
 
-/**
- * Form for adding a new comment or reply.
- */
+const useStyles = makeStyles((theme) => ({
+  root: { padding: theme.spacing(1), margin: theme.spacing(2, 0) },
+  actions: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginTop: theme.spacing(1),
+    '& > *': { marginLeft: theme.spacing(1) },
+  },
+}));
+
 const CommentForm = ({
   commentId,
   groupId,
@@ -33,6 +40,7 @@ const CommentForm = ({
   onSave,
 }: CommentFormProps) => {
   const { translate, profile, user } = useContext(GlobalContext);
+  const classes = useStyles();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const [content, setContent] = useState<string>('');
 
@@ -72,51 +80,39 @@ const CommentForm = ({
   };
 
   return (
-    <form
-      style={{
-        width: '100%',
-        margin: theme.spacing(3, 0),
-      }}
-      noValidate
-      onSubmit={(e) => {
-        e.preventDefault();
-        handleSubmit();
-      }}
-    >
-      <TextField
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        multiline
-        rows={4}
-        variant="outlined"
-        fullWidth
-        id="comment-form"
-        label={translate('comment_leave')}
-        name="comment-form"
-      />
-
-      <Button
-        type="submit"
-        variant="contained"
-        color="primary"
-        style={{ margin: theme.spacing(3, 0, 0) }}
+    <Paper variant="outlined" className={classes.root}>
+      <form
+        noValidate
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit();
+        }}
       >
-        {translate('save_changes')}
-      </Button>
-
-      {commentId && onCancel && (
-        <Button
-          type="reset"
-          color="secondary"
-          style={{ margin: theme.spacing(3, 2, 0) }}
-          onClick={() => onCancel()}
-        >
-          {translate('cancel')}
-        </Button>
-      )}
-
+        <TextField
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          placeholder={translate('comment_leave')}
+          fullWidth
+          type="textarea"
+          rows={5}
+          multiline
+          variant="outlined"
+          id="comment-form"
+          name="comment-form"
+        />
+        <div className={classes.actions}>
+          {commentId && onCancel && (
+            <Button variant="outlined" color="secondary" onClick={onCancel}>
+              {translate('cancel')}
+            </Button>
+          )}
+          <Button variant="outlined" color="primary" type="submit">
+            {translate('save')}
+          </Button>
+        </div>
+      </form>
       <Snackbar action={snackbar} />
-    </form>
+    </Paper>
   );
 };
 
