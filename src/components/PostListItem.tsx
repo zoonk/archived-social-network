@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
       maxHeight: '40px',
     },
   },
+  linkList: { display: 'flex', flexWrap: 'wrap' },
   link: { marginRight: theme.spacing(1) },
 }));
 
@@ -62,17 +63,19 @@ const PostListItem = ({ item }: PostListItemProps) => {
             </Link>
           </NextLink>
 
-          {sites.slice(0, 3).map(({ url }) => (
-            <Link
-              key={url}
-              href={url}
-              target={isInternal(url) ? '_self' : '_blank'}
-              rel={isInternal(url) ? undefined : 'noopener noreferrer'}
-              className={classes.link}
-            >
-              {getDomainFromUrl(url)}
-            </Link>
-          ))}
+          <div className={classes.linkList}>
+            {sites.slice(0, 3).map(({ url }) => (
+              <Link
+                key={url}
+                href={url}
+                target={isInternal(url) ? '_self' : '_blank'}
+                rel={isInternal(url) ? undefined : 'noopener noreferrer'}
+                className={classes.link}
+              >
+                {getDomainFromUrl(url)}
+              </Link>
+            ))}
+          </div>
 
           <Typography variant="body2" gutterBottom>
             {markdownToText(content).slice(0, 200)}
