@@ -26,9 +26,11 @@ const PostListMeta = ({ post }: PostListMetaProps) => {
         }}
       />
       <div style={{ margin: theme.spacing(0, 0.25) }} />
-      {topics.slice(0, 3).map((id) => (
-        <TopicLabel key={id} id={id} />
-      ))}
+      <div>
+        {topics.slice(0, 3).map((id) => (
+          <TopicLabel key={id} id={id} />
+        ))}
+      </div>
     </div>
   );
 };
