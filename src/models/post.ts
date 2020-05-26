@@ -74,7 +74,7 @@ export namespace Post {
     chapterData?: Chapter.Summary | null;
     groupData?: Group.Summary | null;
     editors?: string[];
-    editorsData?: Dictionary<Profile.Response>;
+    editorsData?: Dictionary<Profile.Get>;
     sites?: Link[];
   }
 
@@ -86,7 +86,7 @@ export namespace Post {
     createdBy: Profile.Get;
     groupData?: Group.Summary | null;
     editors: Profile.Get[];
-    editorsData: Dictionary<Profile.Response>;
+    editorsData: Dictionary<Profile.Get>;
     id: string;
     sites: Link[];
   }

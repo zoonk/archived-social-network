@@ -27,7 +27,7 @@ export namespace ContentMetadata {
   export interface Create extends Update {
     comments: number;
     createdAt: firebase.firestore.FieldValue;
-    createdBy: Profile.Response;
+    createdBy: Profile.Get;
     createdById: string;
     language: UILanguage;
     likes: number;

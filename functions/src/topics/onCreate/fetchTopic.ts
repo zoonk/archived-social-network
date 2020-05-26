@@ -23,7 +23,7 @@ export const onCreateTopicFetchData = functions.firestore
     const adminId = functions.config().admin.uid;
     const createdById = data.updatedById || adminId;
     const user = await db.doc(`profile/${createdById}`).get();
-    const userProfile = user.data() as Profile.Response;
+    const userProfile = user.data() as Profile.Get;
     const wikipediaSlug = snap.id.slice(0, snap.id.length - 3);
     const page = await getWikipediaPage(wikipediaSlug, data.language);
 
