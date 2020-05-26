@@ -4,7 +4,7 @@ import { User } from './user';
 
 export interface GlobalState {
   translate: TranslationFn;
-  profile: Profile.Response | null;
+  profile: Profile.Get | null;
   user: User.Get | null | undefined;
 }
 
