@@ -6,7 +6,6 @@ import {
 } from '@material-ui/core';
 import NextLink from 'next/link';
 import { Group } from '@zoonk/models';
-import { markdownToText } from '@zoonk/utils';
 
 interface GroupListItemProps {
   divider?: boolean;
@@ -30,7 +29,7 @@ const GroupListItem = ({ divider, item }: GroupListItemProps) => {
         </ListItemAvatar>
         <ListItemText
           primary={title}
-          secondary={markdownToText(description)}
+          secondary={description}
           secondaryTypographyProps={{
             gutterBottom: false,
             noWrap: true,

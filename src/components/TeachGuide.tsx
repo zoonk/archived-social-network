@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import {
   Card,
@@ -11,8 +12,22 @@ import {
   Typography,
 } from '@material-ui/core';
 import { ExpandMore } from '@material-ui/icons';
-import { getPageTitle, GlobalContext } from '@zoonk/utils';
-import EditorView from './EditorView';
+import { appLanguage, getPageTitle, GlobalContext } from '@zoonk/utils';
+
+const TeachArticleEn = dynamic(() => import('./Teach/en/Article'));
+const TeachArticlePt = dynamic(() => import('./Teach/pt/Article'));
+const TeachBookEn = dynamic(() => import('./Teach/en/Book'));
+const TeachBookPt = dynamic(() => import('./Teach/pt/Book'));
+const TeachCourseEn = dynamic(() => import('./Teach/en/Course'));
+const TeachCoursePt = dynamic(() => import('./Teach/pt/Course'));
+const TeachIntroEn = dynamic(() => import('./Teach/en/Intro'));
+const TeachIntroPt = dynamic(() => import('./Teach/pt/Intro'));
+const TeachExampleEn = dynamic(() => import('./Teach/en/Example'));
+const TeachExamplePt = dynamic(() => import('./Teach/pt/Example'));
+const TeachLessonEn = dynamic(() => import('./Teach/en/Lesson'));
+const TeachLessonPt = dynamic(() => import('./Teach/pt/Lesson'));
+const TeachReferenceEn = dynamic(() => import('./Teach/en/Reference'));
+const TeachReferencePt = dynamic(() => import('./Teach/pt/Reference'));
 
 type Section = 'lesson' | 'example' | 'article' | 'ref' | 'course' | 'book';
 
@@ -25,8 +40,7 @@ interface CustomSummaryProps {
 }
 
 interface CustomDetailsProps {
-  children?: React.ReactNode;
-  content: string;
+  children: React.ReactNode;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -63,12 +77,11 @@ const CustomSummary = ({ section }: CustomSummaryProps) => {
   );
 };
 
-const CustomDetails = ({ children, content }: CustomDetailsProps) => {
+const CustomDetails = ({ children }: CustomDetailsProps) => {
   const classes = useStyles();
 
   return (
     <ExpansionPanelDetails className={classes.details}>
-      <EditorView content={content} />
       {children}
     </ExpansionPanelDetails>
   );
@@ -86,46 +99,57 @@ const TeachGuide = () => {
       <Card variant="outlined">
         <CardHeader title={translate('teach_title')} />
         <CardContent>
-          <EditorView content={translate('teach_intro')} />
+          {appLanguage === 'en' && <TeachIntroEn />}
+          {appLanguage === 'pt' && <TeachIntroPt />}
         </CardContent>
       </Card>
 
       <CustomPanel>
         <CustomSummary section="lesson" />
-        <CustomDetails
-          content={translate('teach_lesson_desc', { title, id })}
-        />
+        <CustomDetails>
+          {appLanguage === 'en' && <TeachLessonEn id={id} title={title} />}
+          {appLanguage === 'pt' && <TeachLessonPt id={id} title={title} />}
+        </CustomDetails>
       </CustomPanel>
 
       <CustomPanel>
         <CustomSummary section="example" />
-        <CustomDetails
-          content={translate('teach_example_desc', { title, id })}
-        />
+        <CustomDetails>
+          {appLanguage === 'en' && <TeachExampleEn id={id} title={title} />}
+          {appLanguage === 'pt' && <TeachExamplePt id={id} title={title} />}
+        </CustomDetails>
       </CustomPanel>
 
       <CustomPanel>
         <CustomSummary section="article" />
-        <CustomDetails
-          content={translate('teach_article_desc', { title, id })}
-        />
+        <CustomDetails>
+          {appLanguage === 'en' && <TeachArticleEn id={id} title={title} />}
+          {appLanguage === 'pt' && <TeachArticlePt id={id} title={title} />}
+        </CustomDetails>
       </CustomPanel>
 
       <CustomPanel>
         <CustomSummary section="ref" />
-        <CustomDetails content={translate('teach_ref_desc', { title, id })} />
+        <CustomDetails>
+          {appLanguage === 'en' && <TeachReferenceEn id={id} title={title} />}
+          {appLanguage === 'pt' && <TeachReferencePt id={id} title={title} />}
+        </CustomDetails>
       </CustomPanel>
 
       <CustomPanel>
         <CustomSummary section="course" />
-        <CustomDetails
-          content={translate('teach_course_desc', { title, id })}
-        />
+        <CustomDetails>
+          {appLanguage === 'en' && <TeachCourseEn id={id} title={title} />}
+          {appLanguage === 'pt' && <TeachCoursePt id={id} title={title} />}
+        </CustomDetails>
       </CustomPanel>
 
       <CustomPanel>
         <CustomSummary section="book" />
-        <CustomDetails content={translate('teach_book_desc', { title, id })} />
+        <CustomDetails>
+          {appLanguage === 'en' && <TeachBookEn id={id} title={title} />}
+          {appLanguage === 'pt' && <TeachBookPt id={id} title={title} />}
+        </CustomDetails>
       </CustomPanel>
     </div>
   );

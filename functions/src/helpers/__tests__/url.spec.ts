@@ -81,7 +81,7 @@ test('use description tag when open-graph tag is falsy', async (done) => {
   const response = {
     description: 'meta description',
     image: null,
-    title: 'undefined',
+    title: 'zoonk.org',
     url,
   };
 
@@ -123,12 +123,12 @@ test('return the url when there is no canonical link', async (done) => {
 
   fetch.mockReturnValue(Promise.resolve(new Response(html)));
 
-  const url = 'https://zoonk.org';
+  const url = 'https://www.zoonk.org';
   const request = await getMetadataFromUrl(url);
   const response = {
     description: null,
     image: null,
-    title: 'undefined',
+    title: 'zoonk.org',
     url,
   };
 

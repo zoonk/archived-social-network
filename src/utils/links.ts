@@ -1,3 +1,6 @@
+import Delta from 'quill-delta';
+import { rootUrl } from './settings';
+
 /**
  * JavaScript function to match (and return) the video Id
  * of any valid Youtube Url, given as input string.
@@ -7,6 +10,16 @@
 export const containsYoutubeUrl = (text?: string | null): string | null => {
   if (!text) return null;
   const rule = /(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/g;
+  const find = text.split(' ').find((str) => !!str.match(rule));
+  return find ? RegExp.$1 : null;
+};
+
+/**
+ * Check if a string contains a Vimeo URL.
+ */
+export const containsVimeoUrl = (text?: string | null): string | null => {
+  if (!text) return null;
+  const rule = /(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/(?:[^/]*)\/videos\/|album\/(?:\d+)\/video\/|video\/|)(\d+)(?:[a-zA-Z0-9_-]+)?/i;
   const find = text.split(' ').find((str) => !!str.match(rule));
   return find ? RegExp.$1 : null;
 };
@@ -28,4 +41,18 @@ export const getDomainFromUrl = (url: string): string => {
  */
 export const isInternal = (url: string): boolean => {
   return url.includes('zoonk.org') || url.startsWith('/');
+};
+
+/**
+ * Get links from post.
+ */
+export const getPostLinks = (post?: Delta): string[] => {
+  const links = post?.ops
+    .map((item) => {
+      const link = item.attributes?.link;
+      if (link?.startsWith('mailto')) return null;
+      return link?.startsWith('/') ? `${rootUrl}${link}` : link;
+    })
+    .filter(Boolean);
+  return [...new Set(links)];
 };

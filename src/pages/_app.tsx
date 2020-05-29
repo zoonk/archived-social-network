@@ -18,6 +18,8 @@ import {
   performance,
   theme,
 } from '@zoonk/utils';
+import '../quill.css';
+import '../styles.css';
 
 let translation: TranslationFn = require('../locale/en').default;
 

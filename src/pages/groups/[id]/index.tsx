@@ -11,13 +11,7 @@ import PostsCard from '@zoonk/components/PostsCard';
 import PostShare from '@zoonk/components/PostShare';
 import { Group } from '@zoonk/models';
 import { getGroup } from '@zoonk/services';
-import {
-  analytics,
-  appLanguage,
-  GlobalContext,
-  markdownToText,
-  preRender,
-} from '@zoonk/utils';
+import { analytics, appLanguage, GlobalContext, preRender } from '@zoonk/utils';
 
 const useStyles = makeStyles((theme) => ({
   column: {
@@ -54,7 +48,7 @@ const GroupPage: NextPage<GroupPageProps> = ({ group }) => {
     <Container component="main">
       <Meta
         title={title}
-        description={markdownToText(description).slice(0, 200)}
+        description={description.slice(0, 200)}
         image={photo}
         canonicalUrl={`https://${language}.zoonk.org/groups/${id}`}
         noIndex={appLanguage !== language}

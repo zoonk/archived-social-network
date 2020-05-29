@@ -9,7 +9,6 @@ interface PostFormProps {
   data?: Post.Get;
   saving: boolean;
   topicIds?: string[];
-  onDelete?: () => void;
   onSubmit: (
     data: Omit<Post.EditableFields, 'pinned'>,
     topics: string[],

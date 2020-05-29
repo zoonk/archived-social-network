@@ -1,6 +1,7 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import { Post } from '@zoonk/models';
+import { HTMLToText } from '../../helpers';
 
 const db = admin.firestore();
 
@@ -27,7 +28,7 @@ export const onWritePostUpdateGroups = functions.firestore
     if (added && after) {
       const post: Post.Summary = {
         cover: after.cover,
-        description: after.content.slice(0, 1000),
+        description: HTMLToText(after.html),
         id,
         title: after.title,
       };

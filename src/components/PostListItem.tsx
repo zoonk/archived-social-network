@@ -6,7 +6,7 @@ import {
   getDomainFromUrl,
   getPostImage,
   isInternal,
-  markdownToText,
+  getPlainText,
 } from '@zoonk/utils';
 import PostListMeta from './PostListMeta';
 
@@ -35,9 +35,9 @@ interface PostListItemProps {
 
 const PostListItem = ({ item }: PostListItemProps) => {
   const classes = useStyles();
-  const { content, cover, id, sites, title } = item;
+  const { cover, html, id, sites, title } = item;
   const siteImg = sites.find((site) => Boolean(site.image));
-  const image = cover || getPostImage(content) || siteImg?.image;
+  const image = cover || getPostImage(html) || siteImg?.image;
 
   return (
     <Paper variant="outlined">
@@ -78,7 +78,7 @@ const PostListItem = ({ item }: PostListItemProps) => {
           </div>
 
           <Typography variant="body2" gutterBottom>
-            {markdownToText(content).slice(0, 200)}
+            {getPlainText(html).slice(0, 200)}
           </Typography>
 
           <PostListMeta post={item} />

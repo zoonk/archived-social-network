@@ -1,10 +1,9 @@
 import { Fragment, useState } from 'react';
-import { makeStyles, Paper } from '@material-ui/core';
+import { makeStyles, Paper, Typography } from '@material-ui/core';
 import { Comment } from '@zoonk/models';
 import CommentActions from './CommentActions';
 import CommentForm from './CommentForm';
 import CommentUser from './CommentUser';
-import EditorView from './EditorView';
 import ReplyList from './ReplyList';
 
 interface CommentCardProps {
@@ -13,6 +12,7 @@ interface CommentCardProps {
 
 const useStyles = makeStyles((theme) => ({
   root: { padding: theme.spacing(2) },
+  content: { margin: theme.spacing(2, 0) },
 }));
 
 const CommentCard = ({ data }: CommentCardProps) => {
@@ -34,7 +34,13 @@ const CommentCard = ({ data }: CommentCardProps) => {
   return (
     <Paper variant="outlined" className={classes.root}>
       <CommentUser user={createdBy} />
-      <EditorView content={content} />
+      <div className={classes.content}>
+        {content.split('\n').map((line) => (
+          <Typography variant="body1" key={line} gutterBottom>
+            {line}
+          </Typography>
+        ))}
+      </div>
       <CommentActions
         data={data}
         onReply={isReply ? undefined : () => setExpanded(!expanded)}

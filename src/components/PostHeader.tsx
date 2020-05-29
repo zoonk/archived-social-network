@@ -62,18 +62,18 @@ const PostHeader = ({ data }: PostHeaderProps) => {
     chapterData,
     chapterId,
     createdBy,
-    content,
     cover,
     editors,
     groupId,
     groupData,
+    html,
     sites,
     subtitle,
     title,
     topics,
   } = data;
   const siteImg = sites.find((site) => Boolean(site.image));
-  const image = cover || getPostImage(content) || siteImg?.image;
+  const image = cover || getPostImage(html) || siteImg?.image;
   const classes = useStyles({ cover: image });
 
   return (

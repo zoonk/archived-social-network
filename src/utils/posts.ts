@@ -1,19 +1,13 @@
+import { fromString } from 'html-to-text';
 import { Post } from '@zoonk/models';
 
 /**
  * Get the URL from a post image.
  */
 export const getPostImage = (content: string): string | null => {
-  // Find custom image tags
-  const tagPattern = /src="(.*?)"/;
+  const tagPattern = /<img[^>]+src="(.*?)"/;
   const tagUrl = content.match(tagPattern);
-
-  if (tagUrl) return tagUrl[1];
-
-  const pattern = /\((.+?\.(?:png|jpg|gif|svg)[^)]*)\)/;
-  const findImage = content.match(pattern);
-  const imageUrl = findImage ? findImage[1] : null;
-  return imageUrl ? imageUrl.split(' ')[0] : null;
+  return tagUrl ? tagUrl[1] : null;
 };
 
 export const postCategories: Post.Category[] = [
@@ -25,3 +19,11 @@ export const postCategories: Post.Category[] = [
   'questions',
   'references',
 ];
+
+export const getPlainText = (text: string): string => {
+  return fromString(text, {
+    uppercaseHeadings: false,
+    ignoreHref: true,
+    ignoreImage: true,
+  }).replace('\n', ' ');
+};

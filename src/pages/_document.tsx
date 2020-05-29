@@ -83,34 +83,6 @@ class CustomDocument extends Document<CustomDocumentProps> {
             content={isProduction ? 'index, follow' : 'noindex, nofollow'}
           />
 
-          <style>
-            {`
-              * {
-                box-sizing: border-box;
-                padding: 0;
-                margin: 0;
-              }
-              
-              ::selection {
-                background-color: ${theme.palette.secondary.main};
-                color: ${theme.palette.secondary.contrastText};
-              }
-
-              ul, ol {
-                padding: ${theme.spacing(1, 4)};
-              }
-
-              pre {
-                background-color: black;
-                color: white;
-                font-size: ${theme.typography.fontSize}px;
-                padding: ${theme.spacing(2, 2)};
-                margin: ${theme.spacing(2, 0)};
-                overflow: auto;
-              } 
-            `}
-          </style>
-
           {this.props.styleTags}
         </Head>
         <body

@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import NextLink from 'next/link';
 import { Chapter } from '@zoonk/models';
-import { markdownToText, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
 
 interface ChapterListItemProps {
   divider?: boolean;
@@ -36,7 +36,7 @@ const ChapterListItem = ({ divider, index, item }: ChapterListItemProps) => {
         </ListItemAvatar>
         <ListItemText
           primary={title}
-          secondary={markdownToText(description)}
+          secondary={description}
           secondaryTypographyProps={{
             gutterBottom: false,
             noWrap: true,

@@ -1,3 +1,4 @@
+import Delta from 'quill-delta';
 import { Chapter } from './chapter';
 import { ContentMetadata } from './content';
 import { Group } from './group';
@@ -39,16 +40,18 @@ export namespace Post {
   }
 
   export interface EditableFields {
-    content: string;
     cover: string | null;
+    delta: Delta;
+    html: string;
     links: string[] | null;
     pinned: boolean;
     subtitle: string;
     title: string;
   }
 
-  export interface Fields extends EditableFields {
+  export interface Fields extends Omit<EditableFields, 'delta'> {
     category: Category;
+    delta: string;
     chapterId: string | null;
     groupId: string | null;
   }
@@ -62,8 +65,9 @@ export namespace Post {
    * Required fields for updating an item.
    */
   export interface Update
-    extends Partial<EditableFields>,
+    extends Partial<Omit<EditableFields, 'delta'>>,
       ContentMetadata.Update {
+    delta?: string;
     topics?: string[];
   }
 
@@ -81,9 +85,10 @@ export namespace Post {
   /**
    * Serialized fields.
    */
-  export interface Get extends Fields, ContentMetadata.Get {
+  export interface Get extends Omit<Fields, 'delta'>, ContentMetadata.Get {
     chapterData?: Chapter.Summary | null;
     createdBy: Profile.Get;
+    delta: Delta;
     groupData?: Group.Summary | null;
     editors: Profile.Get[];
     editorsData: Dictionary<Profile.Get>;

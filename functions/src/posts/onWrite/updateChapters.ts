@@ -2,6 +2,7 @@ import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import { isEqual, pick } from 'lodash';
 import { Post } from '@zoonk/models';
+import { HTMLToText } from '../../helpers';
 
 const db = admin.firestore();
 
@@ -22,10 +23,10 @@ export const onWritePostUpdateChapters = functions.firestore
       const category =
         after.category === 'lessons' ? 'lessonData' : 'exampleData';
       const summary: Post.Summary = {
-        cover: after?.cover || null,
-        description: after?.content.slice(0, 1000),
+        cover: after.cover || null,
+        description: HTMLToText(after.html),
         id,
-        title: after?.title,
+        title: after.title,
       };
       const changes = {
         [after.category]: admin.firestore.FieldValue.arrayUnion(id),
@@ -46,7 +47,7 @@ export const onWritePostUpdateChapters = functions.firestore
     }
 
     // Update a lesson's data when it's changed.
-    const fieldsToTrack = ['content', 'title'];
+    const fieldsToTrack = ['html', 'title'];
     const beforeChanges = pick(before, fieldsToTrack);
     const afterChanges = pick(after, fieldsToTrack);
     const hasChanges = !isEqual(beforeChanges, afterChanges);
@@ -55,10 +56,10 @@ export const onWritePostUpdateChapters = functions.firestore
       const category =
         after.category === 'lessons' ? 'lessonData' : 'exampleData';
       const summary: Post.Summary = {
-        cover: after?.cover || null,
-        description: after?.content.slice(0, 1000),
+        cover: after.cover || null,
+        description: HTMLToText(after.html),
         id,
-        title: after?.title,
+        title: after.title,
       };
       const changes = {
         [`${category}.${id}`]: summary,

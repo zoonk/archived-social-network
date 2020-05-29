@@ -1,7 +1,21 @@
 import cheerio from 'cheerio';
 import fetch from 'node-fetch';
+import { fromString } from 'html-to-text';
 import url from 'url';
 import { Post } from '@zoonk/models';
+
+const getDomain = (link: string) => {
+  const { host } = new URL(link);
+  return host.replace('www.', '');
+};
+
+export const HTMLToText = (html: string): string => {
+  return fromString(html, {
+    uppercaseHeadings: false,
+    ignoreHref: true,
+    ignoreImage: true,
+  }).replace('\n', ' ');
+};
 
 export const getMetadataFromUrl = async (link: string): Promise<Post.Link> => {
   const response = await fetch(link);
@@ -20,6 +34,8 @@ export const getMetadataFromUrl = async (link: string): Promise<Post.Link> => {
   const shortcut = $('link[rel="shortcut icon"]').attr('href');
   const icon = $('link[rel="icon"]').attr('href');
   const appleIcon = $('link[rel="apple-touch-icon"]').attr('href');
+  const pageUrl = canonical || pageAddress;
+  const pageTitle = ogTitle || title || getDomain(pageUrl);
 
   let image = ogImage || appleIcon || shortcut || icon || null;
 
@@ -31,7 +47,7 @@ export const getMetadataFromUrl = async (link: string): Promise<Post.Link> => {
   return {
     description: ogDesc || description || null,
     image,
-    title: ogTitle || title || 'undefined',
-    url: canonical || pageAddress,
+    title: pageUrl.includes('.pdf') ? `${pageTitle} (PDF)` : pageTitle,
+    url: pageUrl,
   };
 };

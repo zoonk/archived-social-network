@@ -1,8 +1,9 @@
 import { useContext } from 'react';
+import NextLink from 'next/link';
 import { useRouter } from 'next/router';
+import { Link, Typography } from '@material-ui/core';
 import { Post } from '@zoonk/models';
 import { GlobalContext, getPageTitle, theme } from '@zoonk/utils';
-import EditorView from './EditorView';
 
 interface NoPostsProps {
   category: 'groups' | 'topics';
@@ -35,13 +36,23 @@ const NoPosts = ({ category, postCategory, isUser }: NoPostsProps) => {
       case 'references':
         return 'no_references';
       default:
-        return 'no_references';
+        return 'items_empty';
     }
   };
 
   return (
     <div style={{ margin: theme.spacing(2, 0) }}>
-      <EditorView content={translate(msg(), { title, topicId })} />
+      <Typography variant="body2" color="textSecondary">
+        {translate(msg(), { title })}{' '}
+        {!isUser && category !== 'groups' && (
+          <NextLink
+            href={`/posts/add?category=${category}&topicId=${topicId}`}
+            passHref
+          >
+            <Link>{translate('share_it')}</Link>
+          </NextLink>
+        )}
+      </Typography>
     </div>
   );
 };

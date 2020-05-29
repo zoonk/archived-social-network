@@ -5,7 +5,7 @@ import {
   CardContent,
   Typography,
 } from '@material-ui/core';
-import { isInternal, markdownToText, theme } from '@zoonk/utils';
+import { isInternal, theme } from '@zoonk/utils';
 
 interface LinkCardProps {
   site: Post.Link;
@@ -39,7 +39,7 @@ const LinkCard = ({ site }: LinkCardProps) => {
               {title}
             </Typography>
             <Typography variant="body2">
-              {markdownToText(description || '').slice(0, 200)}
+              {description?.slice(0, 200)}
             </Typography>
           </div>
         </CardContent>

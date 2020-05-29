@@ -1,11 +1,11 @@
 import { Fragment, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Button } from '@material-ui/core';
 import { Post, SnackbarAction } from '@zoonk/models';
 import { createPost, getChapter } from '@zoonk/services';
 import {
   appLanguage,
   firebaseError,
+  getPostLinks,
   GlobalContext,
   timestamp,
 } from '@zoonk/utils';
@@ -22,9 +22,6 @@ interface PostCreateProps {
   onCategoryChange: (category?: Post.Category) => void;
 }
 
-/**
- * Component for creating a post.
- */
 const PostCreate = ({
   category,
   chapterId,
@@ -62,8 +59,6 @@ const PostCreate = ({
     topics: string[],
   ) => {
     setSnackbar({ type: 'progress', msg: translate('saving') });
-    const links = data.links ? data.links.filter(Boolean) : [];
-
     createPost({
       ...data,
       category,
@@ -72,10 +67,11 @@ const PostCreate = ({
       createdAt: timestamp,
       createdBy: profile,
       createdById: user.uid,
+      delta: JSON.stringify(data.delta),
       groupId: groupId || null,
       language: appLanguage,
       likes: 0,
-      links,
+      links: data.links || getPostLinks(data.delta),
       pinned: Boolean(pinned),
       topics,
       updatedAt: timestamp,
@@ -88,15 +84,6 @@ const PostCreate = ({
 
   return (
     <Fragment>
-      {!chapterId && (
-        <Button
-          color="primary"
-          variant="outlined"
-          onClick={() => onCategoryChange(undefined)}
-        >
-          {translate('category_change')}
-        </Button>
-      )}
       <PostForm
         category={category}
         topicIds={topicIds}

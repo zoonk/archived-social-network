@@ -1,6 +1,5 @@
 import { Card, CardContent, Typography } from '@material-ui/core';
 import { Chapter } from '@zoonk/models';
-import EditorView from './EditorView';
 import ItemActionsMenu from './ItemActionsMenu';
 
 interface ChapterDetailsProps {
@@ -28,7 +27,7 @@ const ChapterDetails = ({ data }: ChapterDetailsProps) => {
           </Typography>
           <ItemActionsMenu />
         </div>
-        <EditorView content={description} />
+        <Typography variant="body1">{description}</Typography>
       </CardContent>
     </Card>
   );

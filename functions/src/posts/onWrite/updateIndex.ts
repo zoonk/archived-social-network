@@ -2,12 +2,13 @@ import * as functions from 'firebase-functions';
 import { isEqual, pick } from 'lodash';
 import { Post } from '@zoonk/models';
 import { algoliaClient } from '../../algolia';
+import { HTMLToText } from '../../helpers';
 
 export const onWritePostUpdateIndex = functions.firestore
   .document('posts/{id}')
   .onWrite((change, context) => {
     const { id } = context.params;
-    const indexFields = ['category', 'content', 'cover', 'title'];
+    const indexFields = ['category', 'cover', 'html', 'title'];
     const before = change.before.data() as Post.Response | undefined;
     const after = change.after.data() as Post.Response | undefined;
     const language = before?.language || after?.language || 'en';
@@ -31,7 +32,7 @@ export const onWritePostUpdateIndex = functions.firestore
       objectID: id,
       title: after.title,
       category: after.category,
-      description: after.content.slice(0, 5000),
+      description: HTMLToText(after.html),
       groupId: after.groupId,
       photo: after.cover,
     };

@@ -9,7 +9,7 @@ import { onWritePostUpdateIndex } from '../updateIndex';
 const { initIndex } = algoliaClient;
 
 test('return if there are no changes', async (done) => {
-  const data = { content: 'content', title: 'name' };
+  const data = { html: 'content', title: 'name' };
   const change = {
     before: { data: () => data },
     after: { data: () => ({ ...data, updatedAt: 'now' }) },
@@ -27,7 +27,7 @@ test('delete the index when an item is removed', async (done) => {
   spyOn(initIndex(''), 'deleteObject').and.returnValue('deleted');
 
   const params = { id: 'itemId' };
-  const data = { content: 'content', language: 'pt', title: 'name' };
+  const data = { html: 'content', language: 'pt', title: 'name' };
   const change = {
     before: { data: () => data },
     after: { data: () => undefined },
@@ -47,7 +47,7 @@ test('update the index when the category changes', async (done) => {
 
   const params = { id: 'itemId' };
   const data = {
-    content: 'text',
+    html: '<h1>title</h1><p>text.</p>',
     cover: null,
     groupId: 'groupId',
     language: 'en',
@@ -66,7 +66,7 @@ test('update the index when the category changes', async (done) => {
     objectID: 'itemId',
     title: 'name',
     category: 'books',
-    description: 'text',
+    description: 'title text.',
     groupId: 'groupId',
     photo: null,
   };
@@ -80,7 +80,7 @@ test('update the index when the category changes', async (done) => {
   done();
 });
 
-test('update the index when the content changes', async (done) => {
+test('update the index when the html changes', async (done) => {
   spyOn(initIndex(''), 'partialUpdateObject').and.returnValue('updated');
 
   const params = { id: 'itemId' };
@@ -91,8 +91,8 @@ test('update the index when the content changes', async (done) => {
     language: 'pt',
     title: 'name',
   };
-  const before = { ...data, content: 'old' };
-  const after = { ...data, content: 'new' };
+  const before = { ...data, html: 'old' };
+  const after = { ...data, html: '<h1>new</h1><p>text.</p>' };
   const change = {
     before: { data: () => before },
     after: { data: () => after },
@@ -104,7 +104,7 @@ test('update the index when the content changes', async (done) => {
     objectID: 'itemId',
     title: 'name',
     category: 'examples',
-    description: 'new',
+    description: 'new text.',
     groupId: null,
     photo: 'pic',
   };
@@ -124,7 +124,7 @@ test('update the index when the cover changes', async (done) => {
   const params = { id: 'itemId' };
   const data = {
     category: 'examples',
-    content: 'text',
+    html: '<h1>title</h1><p>text.</p>',
     groupId: null,
     language: 'es',
     title: 'name',
@@ -142,7 +142,7 @@ test('update the index when the cover changes', async (done) => {
     objectID: 'itemId',
     title: 'name',
     category: 'examples',
-    description: 'text',
+    description: 'title text.',
     groupId: null,
     photo: 'new',
   };
@@ -162,7 +162,7 @@ test('update the index when the title changes', async (done) => {
   const params = { id: 'itemId' };
   const data = {
     category: 'courses',
-    content: 'text',
+    html: '<h1>title</h1><p>text.</p>',
     cover: null,
     groupId: null,
     language: 'en',
@@ -180,7 +180,7 @@ test('update the index when the title changes', async (done) => {
     objectID: 'itemId',
     title: 'new',
     category: 'courses',
-    description: 'text',
+    description: 'title text.',
     groupId: null,
     photo: null,
   };

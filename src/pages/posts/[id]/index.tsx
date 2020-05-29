@@ -7,7 +7,7 @@ import Meta from '@zoonk/components/Meta';
 import PostBar from '@zoonk/components/PostBar';
 import PostFooter from '@zoonk/components/PostFooter';
 import PostHeader from '@zoonk/components/PostHeader';
-import PostView from '@zoonk/components/PostView';
+import Viewer from '@zoonk/components/rich-text/Viewer';
 import { Post } from '@zoonk/models';
 import { getPost, markPostAsRead, togglePostProgress } from '@zoonk/services';
 import {
@@ -15,7 +15,7 @@ import {
   appLanguage,
   getPostImage,
   GlobalContext,
-  markdownToText,
+  getPlainText,
   preRender,
 } from '@zoonk/utils';
 
@@ -38,9 +38,9 @@ const PostPage: NextPage<PostPageProps> = ({ data }) => {
   const {
     category,
     chapterId,
-    content,
     cover,
     groupId,
+    html,
     id,
     language,
     sites,
@@ -48,7 +48,7 @@ const PostPage: NextPage<PostPageProps> = ({ data }) => {
     topics,
   } = data;
   const siteImg = sites.find((site) => Boolean(site.image));
-  const image = cover || getPostImage(content) || siteImg?.image;
+  const image = cover || getPostImage(html) || siteImg?.image;
 
   useEffect(() => {
     analytics().setCurrentScreen('posts_view');
@@ -78,14 +78,14 @@ const PostPage: NextPage<PostPageProps> = ({ data }) => {
     <main className={classes.root}>
       <Meta
         title={title}
-        description={markdownToText(content).slice(0, 200)}
+        description={getPlainText(html).slice(0, 200)}
         canonicalUrl={`https://${language}.zoonk.org/posts/${id}`}
         image={image}
         noIndex={language !== appLanguage}
       />
       <PostHeader data={data} />
       <Container maxWidth="md" className={classes.container}>
-        <PostView content={content} />
+        <Viewer html={html} />
         <LinkList sites={sites} />
         <PostFooter id={id} />
         <Divider />

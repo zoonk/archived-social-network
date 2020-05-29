@@ -21,7 +21,7 @@ test('return when there are no changes to a lesson', async (done) => {
   const post = {
     chapterId: 'valid',
     title: 'title',
-    content: 'description',
+    html: 'description',
   };
   const before = { data: () => post };
   const after = { data: () => ({ ...post, likes: 10 }) };
@@ -38,7 +38,7 @@ test('add a lesson to a chapter', async (done) => {
 
   const post = {
     title: 'title',
-    content: 'description',
+    html: '<h1>title</h1><p>text.</p>',
     cover: 'photo.png',
     category: 'lessons',
   };
@@ -51,7 +51,7 @@ test('add a lesson to a chapter', async (done) => {
   const changes = {
     'lessonData.lessonId': {
       cover: 'photo.png',
-      description: 'description',
+      description: 'title text.',
       title: 'title',
       id: 'lessonId',
     },
@@ -69,7 +69,7 @@ test('add an example to a chapter', async (done) => {
 
   const post = {
     title: 'title',
-    content: 'description',
+    html: '<h1>title</h1><p>text.</p>',
     cover: 'photo.png',
     category: 'examples',
   };
@@ -82,7 +82,7 @@ test('add an example to a chapter', async (done) => {
   const changes = {
     'exampleData.exampleId': {
       cover: 'photo.png',
-      description: 'description',
+      description: 'title text.',
       title: 'title',
       id: 'exampleId',
     },
@@ -100,7 +100,7 @@ test('remove a lesson to a chapter', async (done) => {
 
   const post = {
     title: 'title',
-    content: 'description',
+    html: '<h1>title</h1><p>text.</p>',
     category: 'lessons',
   };
   const params = { id: 'lessonId' };
@@ -125,7 +125,7 @@ test('remove an example to a chapter', async (done) => {
 
   const post = {
     title: 'title',
-    content: 'description',
+    html: 'description',
     category: 'examples',
   };
   const params = { id: 'exampleId' };
@@ -149,10 +149,10 @@ test('update a lesson from a chapter', async (done) => {
   spyOn(db.doc(''), 'update').and.returnValue('updated');
 
   const post = { category: 'lessons', chapterId: 'chapterId' };
-  const oldPost = { title: 'title', content: 'description' };
+  const oldPost = { title: 'title', html: 'description' };
   const newPost = {
     title: 'new title',
-    content: 'new description',
+    html: '<h1>title</h1><p>text.</p>',
     cover: 'photo.png',
   };
   const params = { id: 'lessonId' };
@@ -165,7 +165,7 @@ test('update a lesson from a chapter', async (done) => {
     'lessonData.lessonId': {
       title: 'new title',
       cover: 'photo.png',
-      description: 'new description',
+      description: 'title text.',
       id: 'lessonId',
     },
   };
@@ -180,10 +180,10 @@ test('update an example from a chapter', async (done) => {
   spyOn(db.doc(''), 'update').and.returnValue('updated');
 
   const post = { category: 'examples', chapterId: 'chapterId' };
-  const oldPost = { title: 'title', content: 'description' };
+  const oldPost = { title: 'title', html: 'description' };
   const newPost = {
     title: 'new title',
-    content: 'new description',
+    html: '<h1>title</h1><p>text.</p>',
     cover: 'photo.png',
   };
   const params = { id: 'exampleId' };
@@ -196,7 +196,7 @@ test('update an example from a chapter', async (done) => {
     'exampleData.exampleId': {
       title: 'new title',
       cover: 'photo.png',
-      description: 'new description',
+      description: 'title text.',
       id: 'exampleId',
     },
   };
