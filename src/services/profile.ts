@@ -1,4 +1,3 @@
-import { pickBy } from 'lodash';
 import { Profile } from '@zoonk/models';
 import { db } from '@zoonk/utils';
 import { serializeProfile } from '../serializers';
@@ -21,8 +20,7 @@ export const updateProfile = (
   profile: Profile.Update,
   uid: string,
 ): Promise<void> => {
-  const data = pickBy(profile, (value) => value !== undefined);
-  return db.doc(`profile/${uid}`).update(data);
+  return db.doc(`profile/${uid}`).update(profile);
 };
 
 /**

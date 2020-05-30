@@ -1,4 +1,3 @@
-import { pickBy } from 'lodash';
 import { Topic } from '@zoonk/models';
 import { analytics, appLanguage, db } from '@zoonk/utils';
 import { serializeTopic } from '../serializers';
@@ -26,8 +25,7 @@ export const createTopic = (topic: Topic.Create, id: string): Promise<void> => {
  * Update an existing topic.
  */
 export const updateTopic = (topic: Topic.Update, id: string): Promise<void> => {
-  const data = pickBy(topic, (value) => value !== undefined);
-  return db.doc(`topics/${id}`).update(data);
+  return db.doc(`topics/${id}`).update(topic);
 };
 
 /**

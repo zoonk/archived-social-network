@@ -1,4 +1,3 @@
-import { pickBy } from 'lodash';
 import { Chapter, Profile } from '@zoonk/models';
 import { analytics, db, generateRandomSlug, timestamp } from '@zoonk/utils';
 import { updateTopic } from './topics';
@@ -33,8 +32,7 @@ export const updateChapter = (
   data: Chapter.Update,
   id: string,
 ): Promise<void> => {
-  const changes = pickBy(data, (value) => value !== undefined);
-  return db.doc(`chapters/${id}`).update(changes);
+  return db.doc(`chapters/${id}`).update(data);
 };
 
 /**

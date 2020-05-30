@@ -32,6 +32,8 @@ export const db = firebase.firestore();
 export const functions = firebase.functions();
 export const storage = firebase.storage();
 
+db.settings({ ignoreUndefinedProperties: true });
+
 // These modules need to be imported on the client because they use `window`.
 export const { analytics, performance } = firebase;
 

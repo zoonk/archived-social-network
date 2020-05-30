@@ -1,4 +1,3 @@
-import { pickBy } from 'lodash';
 import { ChapterProgress, Dictionary, Post, Profile } from '@zoonk/models';
 import {
   analytics,
@@ -39,8 +38,7 @@ export const createPost = async (data: Post.Create): Promise<string> => {
  * Update an existing post.
  */
 export const updatePost = (data: Post.Update, id: string): Promise<void> => {
-  const changes = pickBy(data, (value) => value !== undefined);
-  return db.doc(`posts/${id}`).update(changes);
+  return db.doc(`posts/${id}`).update(data);
 };
 
 /**

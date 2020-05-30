@@ -1,4 +1,3 @@
-import { pickBy } from 'lodash';
 import { Group, GroupMember, Profile } from '@zoonk/models';
 import {
   analytics,
@@ -61,8 +60,7 @@ export const createGroup = async (group: Group.Create): Promise<string> => {
  * Update an existing group.
  */
 export const updateGroup = (group: Group.Update, id: string): Promise<void> => {
-  const data = pickBy(group, (value) => value !== undefined);
-  return db.doc(`groups/${id}`).update(data);
+  return db.doc(`groups/${id}`).update(group);
 };
 
 /**
