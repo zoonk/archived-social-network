@@ -13,6 +13,10 @@ service cloud.firestore {
       return request.resource.data[field].matches(values);
     }
 
+    function isReadOnly(field) {
+      return !(field in request.resource.data) || request.resource.data[field] == resource.data[field];
+    }
+
     function isValidPostCategory() {
       return isOneOf('category', 'books|courses|examples|lessons|posts|questions|references');
     }
@@ -210,13 +214,14 @@ service cloud.firestore {
       ;
       allow update:
         if request.auth.uid != null
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['chapterId', 'cover', 'delta', 'html', 'links', 'pinned', 'subtitle', 'title', 'topics', 'updatedAt', 'updatedBy', 'updatedById'])
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['chapterId', 'cover', 'delta', 'html', 'links', 'pinned', 'pinnedComment', 'subtitle', 'title', 'topics', 'updatedAt', 'updatedBy', 'updatedById'])
         && (request.resource.data.chapterId == resource.data.chapterId || request.resource.data.chapterId == null)
         && (!isOneOf('category', 'posts|questions') || resource.data.createdById == request.auth.uid || isAdmin() || isModerator())
         && request.resource.data.delta is string
         && request.resource.data.html is string
         && (request.resource.data.links == null || request.resource.data.links.size() == 0 || (request.resource.data.links is list && request.resource.data.links[0] is string))
         && (request.resource.data.groupId == null || !request.resource.data.pinned || get(/databases/$(database)/documents/groups/$(request.resource.data.groupId)).data.pinned.size() < 20)
+        && (isReadOnly('pinnedComment') || resource.data.createdById == request.auth.uid)
         && request.resource.data.title is string
         && request.resource.data.topics is list
         && request.resource.data.topics[0] is string

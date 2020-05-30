@@ -1,6 +1,8 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useContext, useState } from 'react';
 import { makeStyles, Paper, Typography } from '@material-ui/core';
+import { green } from '@material-ui/core/colors';
 import { Comment } from '@zoonk/models';
+import { PostContext } from '@zoonk/utils';
 import CommentActions from './CommentActions';
 import CommentForm from './CommentForm';
 import CommentUser from './CommentUser';
@@ -16,23 +18,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CommentCard = ({ data }: CommentCardProps) => {
-  const {
-    category,
-    content,
-    createdBy,
-    groupId,
-    id,
-    postId,
-    replies,
-    topics,
-  } = data;
+  const { pinnedComment } = useContext(PostContext);
+  const { category, content, createdBy, id, replies } = data;
   const [expanded, setExpanded] = useState<boolean>(false);
   const classes = useStyles();
   const isReply = category === 'replies';
   const hasReplies = replies > 0;
+  const isPinned = pinnedComment === id;
+  const pinnedStyle = { borderColor: green[600] };
 
   return (
-    <Paper variant="outlined" className={classes.root}>
+    <Paper
+      variant="outlined"
+      className={classes.root}
+      style={isPinned ? pinnedStyle : undefined}
+    >
       <CommentUser user={createdBy} />
       <div className={classes.content}>
         {content.split('\n').map((line) => (
@@ -48,14 +48,7 @@ const CommentCard = ({ data }: CommentCardProps) => {
 
       {expanded && (
         <Fragment>
-          <CommentForm
-            commentId={id}
-            postId={postId}
-            groupId={groupId}
-            topics={topics}
-            onCancel={() => setExpanded(false)}
-          />
-
+          <CommentForm commentId={id} onCancel={() => setExpanded(false)} />
           {hasReplies && <ReplyList commentId={id} />}
         </Fragment>
       )}

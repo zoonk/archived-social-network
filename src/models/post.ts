@@ -50,6 +50,7 @@ export namespace Post {
   }
 
   export interface Fields extends Omit<EditableFields, 'delta'> {
+    pinnedComment?: string | null;
     category: Category;
     delta: string;
     chapterId: string | null;

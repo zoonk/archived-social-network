@@ -16,6 +16,7 @@ import {
   getPostImage,
   GlobalContext,
   getPlainText,
+  PostContext,
   preRender,
 } from '@zoonk/utils';
 
@@ -35,18 +36,7 @@ const useStyles = makeStyles((theme) => ({
 const PostPage: NextPage<PostPageProps> = ({ data }) => {
   const { user } = useContext(GlobalContext);
   const classes = useStyles();
-  const {
-    category,
-    chapterId,
-    cover,
-    groupId,
-    html,
-    id,
-    language,
-    sites,
-    title,
-    topics,
-  } = data;
+  const { category, chapterId, cover, html, id, language, sites, title } = data;
   const siteImg = sites.find((site) => Boolean(site.image));
   const image = cover || getPostImage(html) || siteImg?.image;
 
@@ -75,24 +65,26 @@ const PostPage: NextPage<PostPageProps> = ({ data }) => {
   }, [category, chapterId, id, user]);
 
   return (
-    <main className={classes.root}>
-      <Meta
-        title={title}
-        description={getPlainText(html).slice(0, 200)}
-        canonicalUrl={`https://${language}.zoonk.org/posts/${id}`}
-        image={image}
-        noIndex={language !== appLanguage}
-      />
-      <PostHeader data={data} />
-      <Container maxWidth="md" className={classes.container}>
-        <Viewer html={html} />
-        <LinkList sites={sites} />
-        <PostFooter id={id} />
-        <Divider />
-        <CommentList postId={id} groupId={groupId} topics={topics} />
-      </Container>
-      <PostBar data={data} />
-    </main>
+    <PostContext.Provider value={{ ...data }}>
+      <main className={classes.root}>
+        <Meta
+          title={title}
+          description={getPlainText(html).slice(0, 200)}
+          canonicalUrl={`https://${language}.zoonk.org/posts/${id}`}
+          image={image}
+          noIndex={language !== appLanguage}
+        />
+        <PostHeader />
+        <Container maxWidth="md" className={classes.container}>
+          <Viewer html={html} />
+          <LinkList sites={sites} />
+          <PostFooter id={id} />
+          <Divider />
+          <CommentList />
+        </Container>
+        <PostBar />
+      </main>
+    </PostContext.Provider>
   );
 };
 

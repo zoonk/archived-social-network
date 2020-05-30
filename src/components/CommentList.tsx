@@ -8,7 +8,7 @@ import {
 import { Comment as CommentIcon } from '@material-ui/icons';
 import { Comment } from '@zoonk/models';
 import { liveComments } from '@zoonk/services';
-import { GlobalContext } from '@zoonk/utils';
+import { GlobalContext, PostContext } from '@zoonk/utils';
 import CommentCard from './CommentCard';
 import CommentForm from './CommentForm';
 
@@ -18,22 +18,22 @@ const useStyles = makeStyles((theme) => ({
   titleIcon: { marginRight: theme.spacing(1) },
 }));
 
-interface CommentListProps {
-  postId: string;
-  groupId: string | null;
-  topics: string[];
-}
-
-const CommentList = ({ groupId, postId, topics }: CommentListProps) => {
+const CommentList = () => {
   const { translate } = useContext(GlobalContext);
+  const { category, id, pinnedComment } = useContext(PostContext);
   const classes = useStyles();
   const [loading, setLoading] = useState<boolean>(false);
   const [comments, setComments] = useState<Comment.Get[]>([]);
 
+  // Sort comments to move the pinned item to the top
+  const sortedComments = comments.sort(
+    (a, b) => Number(b.id === pinnedComment) - Number(a.id === pinnedComment),
+  );
+
   useEffect(() => {
     setLoading(true);
 
-    const unsubscribe = liveComments(postId, (snap) => {
+    const unsubscribe = liveComments(id, (snap) => {
       setLoading(false);
       setComments(snap);
     });
@@ -41,7 +41,7 @@ const CommentList = ({ groupId, postId, topics }: CommentListProps) => {
     return () => {
       unsubscribe();
     };
-  }, [postId]);
+  }, [id]);
 
   if (loading) {
     return <CircularProgress />;
@@ -56,11 +56,13 @@ const CommentList = ({ groupId, postId, topics }: CommentListProps) => {
         className={classes.title}
       >
         <CommentIcon fontSize="small" className={classes.titleIcon} />
-        {translate('join_discussion')}
+        {category === 'questions'
+          ? translate('answers')
+          : translate('join_discussion')}
       </Typography>
-      <CommentForm postId={postId} groupId={groupId} topics={topics} />
+      <CommentForm />
       <Grid container spacing={2}>
-        {comments.map((comment) => (
+        {sortedComments.map((comment) => (
           <Grid item xs={12} key={comment.id}>
             <CommentCard data={comment} />
           </Grid>

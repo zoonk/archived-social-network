@@ -1,19 +1,16 @@
 import { Fragment, useContext } from 'react';
 import dynamic from 'next/dynamic';
-import { Post } from '@zoonk/models';
-import { GlobalContext } from '@zoonk/utils';
+import { GlobalContext, PostContext } from '@zoonk/utils';
 import BottomBar from './BottomBar';
 import PostBarActions from './PostBarActions';
 
 const PostBarLessons = dynamic(() => import('./PostBarLessons'));
 
-interface PostBarProps {
-  data: Post.Get;
-}
-
-const PostBar = ({ data }: PostBarProps) => {
+const PostBar = () => {
   const { user } = useContext(GlobalContext);
-  const { category, chapterId, createdById, id, likes, topics } = data;
+  const { category, chapterId, createdById, id, likes, topics } = useContext(
+    PostContext,
+  );
   const isAuthoral = category === 'posts' || category === 'questions';
   const isModerator = user?.role === 'admin' || user?.role === 'moderator';
   const isEditable = !isAuthoral || createdById === user?.uid || isModerator;

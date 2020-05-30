@@ -358,6 +358,23 @@ test('cannot pin more than 20 posts to a group', async (done) => {
   done();
 });
 
+test('authors can pin comments', async (done) => {
+  const doc = db.doc('posts/author');
+  const changes = { ...edit, pinnedComment: 'id' };
+  await admin.doc('posts/author').set({ ...add, createdById: 'currentUser' });
+  await firebase.assertSucceeds(doc.update(changes));
+  done();
+});
+
+test('non-authors cannot pin comments', async (done) => {
+  const doc = db.doc('posts/nonAuthor');
+  const create = { ...add, category: 'examples', createdById: 'other' };
+  const changes = { ...edit, pinnedComment: 'id' };
+  await admin.doc('posts/nonAuthor').set(create);
+  await firebase.assertFails(doc.update(changes));
+  done();
+});
+
 test('subtitle can be changed', async (done) => {
   await firebase.assertSucceeds(ref.update({ ...edit, subtitle: 'new' }));
   done();

@@ -1,9 +1,12 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { Button, IconButton, makeStyles } from '@material-ui/core';
-import { Delete, Favorite, FavoriteBorder, Reply } from '@material-ui/icons';
+import { Delete, Reply } from '@material-ui/icons';
+import { green } from '@material-ui/core/colors';
 import { Comment, SnackbarAction } from '@zoonk/models';
-import { deleteComment, getLikedStatus, toggleLike } from '@zoonk/services';
-import { firebaseError, GlobalContext } from '@zoonk/utils';
+import { deleteComment } from '@zoonk/services';
+import { firebaseError, GlobalContext, PostContext } from '@zoonk/utils';
+import LikeButton from './LikeButton';
+import MarkAsAnswer from './MarkAsAnswer';
 import Snackbar from './Snackbar';
 
 interface CommentActionsProps {
@@ -17,38 +20,23 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     '& > *': { marginRight: theme.spacing(1) },
   },
+  pin: { color: green[600] },
 }));
 
 const CommentActions = ({ data, onReply }: CommentActionsProps) => {
   const { translate, user } = useContext(GlobalContext);
-  const { createdById, id, likes, replies } = data;
+  const { category: postCategory, createdById: postAuthor } = useContext(
+    PostContext,
+  );
+  const { category, createdById, id, likes, replies } = data;
   const classes = useStyles();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
-  const [liked, setLiked] = useState<boolean>(false);
   const isAuthor = createdById === user?.uid;
   const isModerator = user?.role === 'moderator' || user?.role === 'admin';
-
-  useEffect(() => {
-    let unsubscribe: firebase.Unsubscribe = () => {};
-
-    if (user) {
-      const itemPath = `comments/${id}`;
-      unsubscribe = getLikedStatus(itemPath, user.uid, setLiked);
-    }
-
-    return () => {
-      unsubscribe();
-    };
-  }, [id, user]);
-
-  const like = () => {
-    if (!user) {
-      setSnackbar({ type: 'error', msg: translate('need_to_be_loggedin') });
-      return;
-    }
-
-    toggleLike(`comments/${id}`, user.uid, liked);
-  };
+  const isPostAuthor = postAuthor === user?.uid;
+  const canDelete = isAuthor || isModerator;
+  const canPin =
+    postCategory === 'questions' && category === 'comments' && isPostAuthor;
 
   const remove = () => {
     if (!user) {
@@ -66,14 +54,7 @@ const CommentActions = ({ data, onReply }: CommentActionsProps) => {
 
   return (
     <div className={classes.root}>
-      <Button
-        variant="outlined"
-        color="secondary"
-        startIcon={liked ? <Favorite /> : <FavoriteBorder />}
-        onClick={like}
-      >
-        {likes}
-      </Button>
+      <LikeButton likes={likes} itemPath={`comments/${id}`} />
 
       {onReply && (
         <Button
@@ -86,7 +67,7 @@ const CommentActions = ({ data, onReply }: CommentActionsProps) => {
         </Button>
       )}
 
-      {(isAuthor || isModerator) && (
+      {canDelete && (
         <IconButton
           edge="end"
           aria-label={translate('delete')}
@@ -96,6 +77,8 @@ const CommentActions = ({ data, onReply }: CommentActionsProps) => {
         </IconButton>
       )}
 
+      <div style={{ flexGrow: 1 }} />
+      {canPin && <MarkAsAnswer commentId={id} />}
       <Snackbar action={snackbar} />
     </div>
   );

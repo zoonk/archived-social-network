@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { GlobalState, UserState } from '@zoonk/models';
+import { GlobalState, Post, UserState } from '@zoonk/models';
 
 /**
  * This context is available throughout the whole app.
@@ -24,3 +24,5 @@ export const GlobalContext = createContext<GlobalState>({
 export const UserContext = createContext<UserState>({
   xp: 1,
 });
+
+export const PostContext = createContext<Post.Get>({} as Post.Get);

@@ -6,6 +6,7 @@ import {
   appLanguage,
   firebaseError,
   GlobalContext,
+  PostContext,
   timestamp,
 } from '@zoonk/utils';
 import Snackbar from './Snackbar';
@@ -13,9 +14,6 @@ import LoginRequired from './LoginRequired';
 
 interface CommentFormProps {
   commentId?: string;
-  groupId: string | null;
-  postId: string;
-  topics: string[];
   onCancel?: () => void;
   onSave?: () => void;
 }
@@ -31,15 +29,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CommentForm = ({
-  commentId,
-  groupId,
-  postId,
-  topics,
-  onCancel,
-  onSave,
-}: CommentFormProps) => {
+const CommentForm = ({ commentId, onCancel, onSave }: CommentFormProps) => {
   const { translate, profile, user } = useContext(GlobalContext);
+  const { category, groupId, id, topics } = useContext(PostContext);
   const classes = useStyles();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const [content, setContent] = useState<string>('');
@@ -61,7 +53,7 @@ const CommentForm = ({
       groupId,
       language: appLanguage,
       likes: 0,
-      postId,
+      postId: id,
       replies: 0,
       topics,
       updatedAt: timestamp,
@@ -91,7 +83,11 @@ const CommentForm = ({
         <TextField
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          placeholder={translate('comment_leave')}
+          placeholder={
+            category === 'questions' && !commentId
+              ? translate('answer_question')
+              : translate('comment_leave')
+          }
           fullWidth
           type="textarea"
           rows={5}

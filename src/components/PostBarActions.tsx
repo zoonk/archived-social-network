@@ -1,11 +1,9 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import NextLink from 'next/link';
 import { Button, Hidden, makeStyles } from '@material-ui/core';
-import { Edit, Favorite, FavoriteBorder } from '@material-ui/icons';
-import { SnackbarAction } from '@zoonk/models';
-import { getLikedStatus, toggleLike } from '@zoonk/services';
+import { Edit } from '@material-ui/icons';
 import { GlobalContext } from '@zoonk/utils';
-import Snackbar from './Snackbar';
+import LikeButton from './LikeButton';
 
 interface PostBarActionsProps {
   canEdit: boolean;
@@ -29,50 +27,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const PostBarActions = ({ canEdit, id, likes }: PostBarActionsProps) => {
-  const { translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
   const classes = useStyles();
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
-  const [saving, setSaving] = useState<boolean>(false);
-  const [liked, setLiked] = useState<boolean>(false);
-  const [newLike, setNewLike] = useState<number>(likes);
-
-  const like = () => {
-    if (!user) {
-      setSnackbar({ type: 'error', msg: translate('need_to_be_loggedin') });
-      return;
-    }
-
-    setSaving(true);
-
-    toggleLike(`posts/${id}`, user.uid, liked).then(() => {
-      setNewLike(liked ? newLike - 1 : newLike + 1);
-      setSaving(false);
-    });
-  };
-
-  // Check if the current user has liked the item being displayed.
-  useEffect(() => {
-    if (!user) return;
-    const unsubscribe = getLikedStatus(`posts/${id}`, user.uid, setLiked);
-    return () => unsubscribe();
-  }, [id, user]);
 
   return (
     <div className={classes.root}>
-      <Button
-        color="secondary"
-        variant="outlined"
-        onClick={like}
-        disabled={saving}
-      >
-        {liked ? (
-          <Favorite className={classes.button} />
-        ) : (
-          <FavoriteBorder className={classes.button} />
-        )}
-        <Hidden smDown>{newLike}</Hidden>
-      </Button>
-
+      <LikeButton likes={likes} itemPath={`posts/${id}`} />
       {canEdit && (
         <NextLink href="/posts/[id]/edit" as={`/posts/${id}/edit`} passHref>
           <Button color="primary" variant="outlined" component="a">
@@ -81,8 +41,6 @@ const PostBarActions = ({ canEdit, id, likes }: PostBarActionsProps) => {
           </Button>
         </NextLink>
       )}
-
-      <Snackbar action={snackbar} />
     </div>
   );
 };

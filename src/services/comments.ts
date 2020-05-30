@@ -1,6 +1,7 @@
-import { Comment } from '@zoonk/models';
-import { analytics, appLanguage, db } from '@zoonk/utils';
+import { Comment, Profile } from '@zoonk/models';
+import { analytics, appLanguage, db, timestamp } from '@zoonk/utils';
 import { serializeComment } from '../serializers';
+import { updatePost } from './posts';
 
 const commentConverter: firebase.firestore.FirestoreDataConverter<Comment.Get> = {
   toFirestore(data: Comment.Get) {
@@ -111,4 +112,39 @@ export const liveReplies = (
       const data = snap.docs.map((doc) => doc.data());
       onSnapshot(data);
     });
+};
+
+/**
+ * Pin a comment to a post.
+ */
+export const pinComment = (
+  commentId: string,
+  postId: string,
+  profile: Profile.Response,
+  userId: string,
+): Promise<void> => {
+  const data = {
+    pinnedComment: commentId,
+    updatedAt: timestamp,
+    updatedBy: profile,
+    updatedById: userId,
+  };
+  return updatePost(data, postId);
+};
+
+/**
+ * Unpin a comment from a post.
+ */
+export const unpinComment = (
+  postId: string,
+  profile: Profile.Response,
+  userId: string,
+): Promise<void> => {
+  const data = {
+    pinnedComment: null,
+    updatedAt: timestamp,
+    updatedBy: profile,
+    updatedById: userId,
+  };
+  return updatePost(data, postId);
 };
