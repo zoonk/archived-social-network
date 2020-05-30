@@ -9,15 +9,12 @@ import {
   LinearProgress,
   Toolbar,
 } from '@material-ui/core';
-import { Menu, Notifications } from '@material-ui/icons';
+import { Edit, Menu, Notifications } from '@material-ui/icons';
 import { liveUserXP } from '@zoonk/services';
 import { GlobalContext, UserContext } from '@zoonk/utils';
 import MenuDrawer from './MenuDrawer';
 import SearchBox from './SearchBox';
 
-/**
- * Display a navbar.
- */
 const Navbar = () => {
   const { translate, user } = useContext(GlobalContext);
   const [displayMenu, setMenu] = useState<boolean>(false);
@@ -60,8 +57,18 @@ const Navbar = () => {
 
         <SearchBox />
 
+        <Link href="/posts/add" passHref>
+          <IconButton
+            aria-label={translate('post_add')}
+            color="inherit"
+            edge="end"
+          >
+            <Edit />
+          </IconButton>
+        </Link>
+
         {user && (
-          <Link href="/notifications">
+          <Link href="/notifications" passHref>
             <IconButton
               aria-label={translate('notifications')}
               color="inherit"
