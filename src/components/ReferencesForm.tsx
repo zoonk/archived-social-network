@@ -2,10 +2,21 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { throttle } from 'lodash';
 import Delta from 'quill-delta';
-import { Grid, makeStyles, TextField, Typography } from '@material-ui/core';
+import {
+  CircularProgress,
+  Grid,
+  makeStyles,
+  TextField,
+  Typography,
+} from '@material-ui/core';
 import { Post } from '@zoonk/models';
 import { getLinkMetadata } from '@zoonk/services';
-import { appLanguage, GlobalContext } from '@zoonk/utils';
+import {
+  appLanguage,
+  containsVimeoUrl,
+  containsYoutubeUrl,
+  GlobalContext,
+} from '@zoonk/utils';
 import ImageUpload from './ImageUpload';
 import TopicSelector from './TopicSelector';
 
@@ -49,9 +60,18 @@ const ReferencesForm = ({
 
   const throttled = useRef(
     throttle((url: string) => {
+      const ops: object[] = [];
+      let insert: string | object | null = null;
+      const youtube = containsYoutubeUrl(url);
+      const vimeo = containsVimeoUrl(url);
+      if (youtube) insert = { video: `https://youtube.com/embed/${youtube}` };
+      if (vimeo) insert = { video: `https://player.vimeo.com/video/${vimeo}` };
+      if (insert) ops.push({ insert });
+
       getLinkMetadata(url).then((meta) => {
+        ops.push({ insert: meta?.description || '' });
         setTitle(meta.title);
-        setContent({ ops: [{ insert: meta?.description || '' }] });
+        setContent({ ops });
         setCover(meta.image);
       });
     }, 1000),
@@ -130,26 +150,29 @@ const ReferencesForm = ({
       </Grid>
 
       <Grid item xs={12} sm={6}>
-        <Editor
-          content={content as Delta}
-          placeholder={translate('description')}
-          toolbarPosition="bottom"
-          valid={valid}
-          saving={saving}
-          onSave={(delta, html) => {
-            onSubmit(
-              {
-                cover,
-                delta,
-                html,
-                links: [link],
-                subtitle: '',
-                title,
-              },
-              topics,
-            );
-          }}
-        />
+        {link && !content && <CircularProgress />}
+        {content && (
+          <Editor
+            content={content as Delta}
+            placeholder={translate('description')}
+            toolbarPosition="bottom"
+            valid={valid}
+            saving={saving}
+            onSave={(delta, html) => {
+              onSubmit(
+                {
+                  cover,
+                  delta,
+                  html,
+                  links: [link],
+                  subtitle: '',
+                  title,
+                },
+                topics,
+              );
+            }}
+          />
+        )}
       </Grid>
     </Grid>
   );
