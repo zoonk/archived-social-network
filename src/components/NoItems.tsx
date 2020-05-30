@@ -8,7 +8,7 @@ import { GlobalContext } from '@zoonk/utils';
 const NoItems = () => {
   const { translate } = useContext(GlobalContext);
   return (
-    <Typography gutterBottom variant="body2">
+    <Typography gutterBottom variant="body2" color="textSecondary">
       {translate('items_empty')}
     </Typography>
   );

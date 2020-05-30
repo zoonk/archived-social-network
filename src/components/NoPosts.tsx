@@ -41,7 +41,7 @@ const NoPosts = ({ category, postCategory, isUser }: NoPostsProps) => {
   };
 
   return (
-    <div style={{ margin: theme.spacing(2, 0) }}>
+    <div style={{ margin: isUser ? 0 : theme.spacing(2, 0) }}>
       <Typography variant="body2" color="textSecondary">
         {translate(msg(), { title })}{' '}
         {!isUser && category !== 'groups' && (
