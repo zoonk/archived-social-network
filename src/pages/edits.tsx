@@ -21,7 +21,9 @@ const Edits: NextPage = () => {
         canonicalUrl={`${rootUrl}/edits`}
       />
       <SidebarPage title={translate('post_share')}>
-        <EditsList displayTitle />
+        <div>
+          <EditsList displayTitle />
+        </div>
       </SidebarPage>
     </Container>
   );
