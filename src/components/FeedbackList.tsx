@@ -30,7 +30,7 @@ const FeedbackList = ({ allowLoadMore, limit }: FeedbackListProps) => {
   >(limit);
 
   useEffect(() => {
-    get({ data: listFeedback(limit) });
+    get({ data: listFeedback(limit), replace: true });
   }, [get, limit]);
 
   useEffect(() => {
@@ -52,9 +52,25 @@ const FeedbackList = ({ allowLoadMore, limit }: FeedbackListProps) => {
                 <Typography component="p" variant="body1" gutterBottom>
                   {item.message}
                 </Typography>
-                <Typography component="p" variant="body2" color="textSecondary">
+                <Typography
+                  component="p"
+                  variant="body2"
+                  color="textSecondary"
+                  gutterBottom
+                >
                   {item.email}
                 </Typography>
+
+                {item.query.path && (
+                  <Button
+                    component="a"
+                    variant="outlined"
+                    color="primary"
+                    href={item.query.path}
+                  >
+                    {translate('view')}
+                  </Button>
+                )}
               </CardContent>
             </Card>
           </Grid>

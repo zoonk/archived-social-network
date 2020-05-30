@@ -1,10 +1,9 @@
-/**
- * Feedback messages model.
- */
 export namespace Feedback {
-  /**
-   * Required fields for sending a feedback.
-   */
+  export interface Query {
+    action?: string;
+    path?: string;
+  }
+
   export interface Create {
     createdAt: firebase.firestore.FieldValue;
     email?: string;
@@ -18,9 +17,10 @@ export namespace Feedback {
     createdAt: firebase.firestore.Timestamp;
   }
 
-  export interface Get extends Omit<Response, 'createdAt'> {
+  export interface Get extends Omit<Response, 'createdAt' | 'query'> {
     createdAt: string;
     id: string;
+    query: Query;
   }
 
   export interface Snapshot extends Get {

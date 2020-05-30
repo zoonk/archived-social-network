@@ -32,7 +32,7 @@ const ReportsList = ({ allowLoadMore, limit }: ReportsListProps) => {
   >(limit);
 
   useEffect(() => {
-    get({ data: listReports(limit) });
+    get({ data: listReports(limit), replace: true });
   }, [get, limit]);
 
   useEffect(() => {
@@ -72,13 +72,15 @@ const ReportsList = ({ allowLoadMore, limit }: ReportsListProps) => {
                   {item.comments}
                 </Typography>
 
-                <Typography
-                  component="p"
-                  variant="caption"
-                  color="textSecondary"
+                <NextLink
+                  href="/edits/[id]"
+                  as={`/edits/${item.editId}`}
+                  passHref
                 >
-                  {item.editId}
-                </Typography>
+                  <Button component="a" variant="outlined" color="primary">
+                    {translate('view')}
+                  </Button>
+                </NextLink>
               </CardContent>
             </Card>
           </Grid>

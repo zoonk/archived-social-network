@@ -52,6 +52,21 @@ export const listActivities = async (
   });
 };
 
+export const getActivity = async (id: string): Promise<Activity.Get> => {
+  const snap = await db
+    .doc(`activity/${id}`)
+    .withConverter(activityConverter)
+    .get();
+
+  const data = snap.data();
+
+  if (!data) {
+    throw new Error('activity_not_found');
+  }
+
+  return data;
+};
+
 /**
  * Delete the document when reverting a recently created item.
  */
