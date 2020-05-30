@@ -13,6 +13,7 @@ export const serializeFeedback = (
     ...data,
     createdAt: serializeFirebaseDate(data.createdAt),
     id: snap.id,
+    query: JSON.parse(data.query),
   };
 };
 
