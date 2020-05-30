@@ -32,6 +32,7 @@ const PostBarActions = ({ canEdit, id, likes }: PostBarActionsProps) => {
   const { translate, user } = useContext(GlobalContext);
   const classes = useStyles();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
+  const [saving, setSaving] = useState<boolean>(false);
   const [liked, setLiked] = useState<boolean>(false);
   const [newLike, setNewLike] = useState<number>(likes);
 
@@ -41,8 +42,11 @@ const PostBarActions = ({ canEdit, id, likes }: PostBarActionsProps) => {
       return;
     }
 
+    setSaving(true);
+
     toggleLike(`posts/${id}`, user.uid, liked).then(() => {
-      setNewLike(liked ? likes - 1 : likes + 1);
+      setNewLike(liked ? newLike - 1 : newLike + 1);
+      setSaving(false);
     });
   };
 
@@ -55,7 +59,12 @@ const PostBarActions = ({ canEdit, id, likes }: PostBarActionsProps) => {
 
   return (
     <div className={classes.root}>
-      <Button color="secondary" variant="outlined" onClick={like}>
+      <Button
+        color="secondary"
+        variant="outlined"
+        onClick={like}
+        disabled={saving}
+      >
         {liked ? (
           <Favorite className={classes.button} />
         ) : (

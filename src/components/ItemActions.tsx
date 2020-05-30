@@ -38,6 +38,7 @@ const ItemActions = ({
 }: ItemActionsProps) => {
   const { translate, user } = useContext(GlobalContext);
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
+  const [saving, setSaving] = useState<boolean>(false);
   const [liked, setLiked] = useState<boolean>(false);
   const [newLike, setNewLike] = useState<number>(0);
 
@@ -47,8 +48,11 @@ const ItemActions = ({
       return;
     }
 
+    setSaving(true);
+
     toggleLike(`${category}/${id}`, user.uid, liked).then(() => {
-      setNewLike(liked ? -1 : 1);
+      setNewLike(liked ? newLike - 1 : newLike + 1);
+      setSaving(false);
     });
   };
 
@@ -75,6 +79,7 @@ const ItemActions = ({
             edge="start"
             aria-label={liked ? translate('liked') : translate('like')}
             onClick={like}
+            disabled={saving}
           >
             <Favorite color={liked ? 'secondary' : 'inherit'} />
           </IconButton>
