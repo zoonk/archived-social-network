@@ -201,8 +201,8 @@
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "createdById",
-          "order": "ASCENDING"
+          "fieldPath": "editors",
+          "arrayConfig": "CONTAINS"
         },
         {
           "fieldPath": "language",

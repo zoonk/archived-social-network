@@ -125,7 +125,7 @@ export const listPosts = async ({
 
   // Filter by user
   if (userId) {
-    ref = ref.where('createdById', '==', userId);
+    ref = ref.where('editors', 'array-contains', userId);
   }
 
   // Filter by language when there are no content specific-filters.
