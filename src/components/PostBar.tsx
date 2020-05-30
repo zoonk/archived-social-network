@@ -15,7 +15,8 @@ const PostBar = ({ data }: PostBarProps) => {
   const { user } = useContext(GlobalContext);
   const { category, chapterId, createdById, id, likes, topics } = data;
   const isAuthoral = category === 'posts' || category === 'questions';
-  const isEditable = !isAuthoral || createdById === user?.uid;
+  const isModerator = user?.role === 'admin' || user?.role === 'moderator';
+  const isEditable = !isAuthoral || createdById === user?.uid || isModerator;
 
   return (
     <Fragment>
