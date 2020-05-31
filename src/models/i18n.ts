@@ -80,6 +80,7 @@ export type TranslationKeys =
   | 'forgot_password'
   | 'formatting_bold'
   | 'formatting_clean'
+  | 'formatting_code_inline'
   | 'formatting_code_multiline'
   | 'formatting_header'
   | 'formatting_image'

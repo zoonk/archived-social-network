@@ -84,6 +84,7 @@ const translate: TranslationFn = (key, args) => {
     forgot_password: 'Esqueceu a senha?',
     formatting_bold: 'Negrito',
     formatting_clean: 'Limpar',
+    formatting_code_inline: 'Código (mesma linha)',
     formatting_code_multiline: 'Código (várias linhas)',
     formatting_header: 'Cabeçalho',
     formatting_image: 'Imagem',
