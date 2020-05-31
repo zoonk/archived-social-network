@@ -16,6 +16,7 @@ import { Comment, SnackbarAction } from '@zoonk/models';
 import { deleteComment } from '@zoonk/services';
 import { firebaseError, GlobalContext } from '@zoonk/utils';
 import Snackbar from './Snackbar';
+import Viewer from './rich-text/Viewer';
 
 interface DiscussionListItemProps {
   comment: Comment.Get;
@@ -24,7 +25,7 @@ interface DiscussionListItemProps {
 const DiscussionListItem = ({ comment }: DiscussionListItemProps) => {
   const { translate, user } = useContext(GlobalContext);
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
-  const { content, createdAt, createdBy, createdById, id, postId } = comment;
+  const { createdAt, createdBy, createdById, html, id, postId } = comment;
   const isAuthor = createdById === user?.uid;
   const isModerator = user?.role === 'moderator' || user?.role === 'admin';
 
@@ -77,9 +78,7 @@ const DiscussionListItem = ({ comment }: DiscussionListItemProps) => {
         subheader={createdAt}
       />
       <CardContent>
-        <Typography variant="body2" color="textSecondary">
-          {content}
-        </Typography>
+        <Viewer html={html} />
         <Snackbar action={snackbar} />
       </CardContent>
       <CardActions disableSpacing>

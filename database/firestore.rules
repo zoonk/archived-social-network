@@ -113,11 +113,11 @@ service cloud.firestore {
         if request.auth.uid != null
         && isOneOf('category', 'comments|replies')
         && (request.resource.data.commentId is string || request.resource.data.category == 'comments')
-        && request.resource.data.content is string
-        && request.resource.data.content.size() > 0
         && request.resource.data.createdAt == request.time
         && isValidProfile('createdBy')
         && request.resource.data.createdById == request.auth.uid
+        && request.resource.data.delta is string
+        && request.resource.data.html is string
         && request.resource.data.likes == 0
         && exists(/databases/$(database)/documents/posts/$(request.resource.data.postId))
         && request.resource.data.replies == 0

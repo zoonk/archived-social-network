@@ -1,5 +1,6 @@
-import { Fragment, useContext, useEffect, useState } from 'react';
+import { Fragment, useContext, useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
+import Quill from 'quill';
 import {
   Button,
   Grid,
@@ -14,7 +15,9 @@ import ImageUpload from './ImageUpload';
 import ShowCard from './ShowCard';
 import TopicSelector from './TopicSelector';
 
-const Editor = dynamic(() => import('./rich-text/Editor'), { ssr: false });
+const EditorFixed = dynamic(() => import('./rich-text/EditorFixed'), {
+  ssr: false,
+});
 
 const useStyles = makeStyles((theme) => ({
   paper: { padding: theme.spacing(2) },
@@ -46,6 +49,7 @@ interface PostsFormProps {
 
 const PostsForm = ({ data, saving, topicIds, onSubmit }: PostsFormProps) => {
   const { translate } = useContext(GlobalContext);
+  const editorRef = useRef<Quill>();
   const classes = useStyles();
   const [settings, setSettings] = useState<boolean>(!data);
   const [cover, setCover] = useState<string | null>(data?.cover || null);
@@ -60,6 +64,15 @@ const PostsForm = ({ data, saving, topicIds, onSubmit }: PostsFormProps) => {
       setTopics(topicIds);
     }
   }, [data, topicIds]);
+
+  const handleSubmit = () => {
+    const delta = editorRef.current?.getContents();
+    const html = editorRef.current?.root.innerHTML;
+
+    if (delta && html) {
+      onSubmit({ cover, delta, html, links: null, subtitle, title }, topics);
+    }
+  };
 
   return (
     <Fragment>
@@ -130,24 +143,13 @@ const PostsForm = ({ data, saving, topicIds, onSubmit }: PostsFormProps) => {
         </Paper>
       )}
 
-      <Editor
-        content={data?.delta}
-        toolbarPosition="bottom"
+      <EditorFixed
+        initialData={data?.delta}
+        editorRef={editorRef}
+        placeholder={translate('post_share')}
         valid={valid}
         saving={saving}
-        onSave={(delta, html) => {
-          onSubmit(
-            {
-              cover,
-              delta,
-              html,
-              links: null,
-              subtitle,
-              title,
-            },
-            topics,
-          );
-        }}
+        onSave={handleSubmit}
       />
     </Fragment>
   );

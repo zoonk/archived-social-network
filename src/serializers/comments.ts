@@ -12,6 +12,7 @@ export const serializeComment = (
   return {
     ...data,
     createdAt: serializeFirebaseDate(data.createdAt),
+    delta: JSON.parse(data.delta),
     id: snap.id,
     updatedAt: serializeFirebaseDate(data.updatedAt),
   };

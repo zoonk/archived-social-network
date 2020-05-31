@@ -1,5 +1,7 @@
-import { useContext, useState } from 'react';
-import { Button, makeStyles, Paper, TextField } from '@material-ui/core';
+import { useContext, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
+import Quill from 'quill';
+import { Button, makeStyles, Paper } from '@material-ui/core';
 import { SnackbarAction } from '@zoonk/models';
 import { createComment } from '@zoonk/services';
 import {
@@ -11,6 +13,8 @@ import {
 } from '@zoonk/utils';
 import Snackbar from './Snackbar';
 import LoginRequired from './LoginRequired';
+
+const Editor = dynamic(() => import('./rich-text/Editor'), { ssr: false });
 
 interface CommentFormProps {
   commentId?: string;
@@ -31,10 +35,10 @@ const useStyles = makeStyles((theme) => ({
 
 const CommentForm = ({ commentId, onCancel, onSave }: CommentFormProps) => {
   const { translate, profile, user } = useContext(GlobalContext);
+  const editorRef = useRef<Quill>();
   const { category, groupId, id, topics } = useContext(PostContext);
   const classes = useStyles();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
-  const [content, setContent] = useState<string>('');
 
   if (!user || !profile) {
     return <LoginRequired message={translate('comment_login_required')} />;
@@ -43,14 +47,20 @@ const CommentForm = ({ commentId, onCancel, onSave }: CommentFormProps) => {
   const handleSubmit = () => {
     setSnackbar({ type: 'progress', msg: translate('saving') });
 
+    if (!editorRef.current) return;
+
+    const delta = editorRef.current.getContents();
+    const html = editorRef.current.root.innerHTML;
+
     createComment({
       category: commentId ? 'replies' : 'comments',
       commentId: commentId || null,
-      content,
       createdAt: timestamp,
       createdBy: profile,
       createdById: user.uid,
+      delta: JSON.stringify(delta),
       groupId,
+      html,
       language: appLanguage,
       likes: 0,
       postId: id,
@@ -61,9 +71,9 @@ const CommentForm = ({ commentId, onCancel, onSave }: CommentFormProps) => {
       updatedById: user.uid,
     })
       .then(() => {
-        // Reset the form after saving it.
-        setContent('');
         setSnackbar({ type: 'success', msg: translate('saved') });
+        // Reset the current content
+        if (editorRef.current) editorRef.current.setText('');
         if (onSave) onSave();
       })
       .catch((err) => {
@@ -80,21 +90,14 @@ const CommentForm = ({ commentId, onCancel, onSave }: CommentFormProps) => {
           handleSubmit();
         }}
       >
-        <TextField
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
+        <Editor
+          editorRef={editorRef}
+          id={commentId || 'main'}
           placeholder={
             category === 'questions' && !commentId
               ? translate('answer_question')
               : translate('comment_leave')
           }
-          fullWidth
-          type="textarea"
-          rows={5}
-          multiline
-          variant="outlined"
-          id="comment-form"
-          name="comment-form"
         />
         <div className={classes.actions}>
           {commentId && onCancel && (

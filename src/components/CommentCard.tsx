@@ -1,5 +1,5 @@
 import { Fragment, useContext, useState } from 'react';
-import { makeStyles, Paper, Typography } from '@material-ui/core';
+import { makeStyles, Paper } from '@material-ui/core';
 import { green } from '@material-ui/core/colors';
 import { Comment } from '@zoonk/models';
 import { PostContext } from '@zoonk/utils';
@@ -7,6 +7,7 @@ import CommentActions from './CommentActions';
 import CommentForm from './CommentForm';
 import CommentUser from './CommentUser';
 import ReplyList from './ReplyList';
+import Viewer from './rich-text/Viewer';
 
 interface CommentCardProps {
   data: Comment.Get;
@@ -19,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 
 const CommentCard = ({ data }: CommentCardProps) => {
   const { pinnedComment } = useContext(PostContext);
-  const { category, content, createdBy, id, replies } = data;
+  const { category, createdBy, html, id, replies } = data;
   const [expanded, setExpanded] = useState<boolean>(false);
   const classes = useStyles();
   const isReply = category === 'replies';
@@ -35,11 +36,7 @@ const CommentCard = ({ data }: CommentCardProps) => {
     >
       <CommentUser user={createdBy} />
       <div className={classes.content}>
-        {content.split('\n').map((line) => (
-          <Typography variant="body1" key={line} gutterBottom>
-            {line}
-          </Typography>
-        ))}
+        <Viewer html={html} />
       </div>
       <CommentActions
         data={data}

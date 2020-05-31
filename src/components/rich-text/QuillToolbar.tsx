@@ -1,11 +1,16 @@
 import { useContext } from 'react';
 import { GlobalContext } from '@zoonk/utils';
 
-const QuillToolbar = () => {
+interface QuillToolbarProps {
+  id?: string;
+}
+
+const QuillToolbar = ({ id }: QuillToolbarProps) => {
   const { translate } = useContext(GlobalContext);
+  const toolbarId = id ? `toolbar-${id}` : 'toolbar';
 
   return (
-    <div id="toolbar">
+    <div id={toolbarId}>
       <span className="ql-formats">
         <button
           type="button"

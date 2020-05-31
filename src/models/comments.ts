@@ -1,3 +1,4 @@
+import Delta from 'quill-delta';
 import { ContentMetadata } from './content';
 
 /**
@@ -10,8 +11,9 @@ export namespace Comment {
   interface Fields {
     category: 'comments' | 'replies';
     commentId: string | null;
-    content: string;
+    delta: string;
     groupId: string | null;
+    html: string;
     postId: string;
     replies: number;
   }
@@ -31,7 +33,8 @@ export namespace Comment {
   /**
    * Serialized fields.
    */
-  export interface Get extends Fields, ContentMetadata.Get {
+  export interface Get extends Omit<Fields, 'delta'>, ContentMetadata.Get {
+    delta: Delta;
     id: string;
   }
 

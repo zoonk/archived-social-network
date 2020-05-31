@@ -1,6 +1,7 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { throttle } from 'lodash';
+import Quill from 'quill';
 import Delta from 'quill-delta';
 import {
   CircularProgress,
@@ -20,7 +21,9 @@ import {
 import ImageUpload from './ImageUpload';
 import TopicSelector from './TopicSelector';
 
-const Editor = dynamic(() => import('./rich-text/Editor'), { ssr: false });
+const EditorFixed = dynamic(() => import('./rich-text/EditorFixed'), {
+  ssr: false,
+});
 
 const useStyles = makeStyles((theme) => ({
   column: {
@@ -47,10 +50,9 @@ const ReferencesForm = ({
   onSubmit,
 }: ReferencesFormProps) => {
   const { translate } = useContext(GlobalContext);
+  const editorRef = useRef<Quill>();
   const classes = useStyles();
-  const [content, setContent] = useState<Partial<Delta> | undefined>(
-    data?.delta,
-  );
+  const [content, setContent] = useState<Delta | undefined>(data?.delta);
   const [cover, setCover] = useState<string | null>(data?.cover || null);
   const [title, setTitle] = useState<string>(data?.title || '');
   const [topics, setTopics] = useState<string[]>(data?.topics || []);
@@ -60,18 +62,18 @@ const ReferencesForm = ({
 
   const throttled = useRef(
     throttle((url: string) => {
-      const ops: object[] = [];
-      let insert: string | object | null = null;
+      const delta = new Delta([]);
+      let embed: string | null = null;
       const youtube = containsYoutubeUrl(url);
       const vimeo = containsVimeoUrl(url);
-      if (youtube) insert = { video: `https://youtube.com/embed/${youtube}` };
-      if (vimeo) insert = { video: `https://player.vimeo.com/video/${vimeo}` };
-      if (insert) ops.push({ insert });
+      if (youtube) embed = `https://youtube.com/embed/${youtube}`;
+      if (vimeo) embed = `https://player.vimeo.com/video/${vimeo}`;
+      if (embed) delta.insert({ video: embed });
 
       getLinkMetadata(url).then((meta) => {
-        ops.push({ insert: meta?.description || '' });
+        delta.insert(meta?.description || '');
+        setContent(delta);
         setTitle(meta.title);
-        setContent({ ops });
         setCover(meta.image);
       });
     }, 1000),
@@ -98,11 +100,24 @@ const ReferencesForm = ({
     }
   }, [data, link]);
 
+  const handleSubmit = () => {
+    const delta = editorRef.current?.getContents();
+    const html = editorRef.current?.root.innerHTML;
+
+    if (delta && html) {
+      onSubmit(
+        { cover, delta, html, links: [link], subtitle: '', title },
+        topics,
+      );
+    }
+  };
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} sm={6} className={classes.column}>
         <TextField
           value={link}
+          disabled={Boolean(data)}
           onChange={(e) => setLink(e.target.value)}
           variant="outlined"
           fullWidth
@@ -152,25 +167,13 @@ const ReferencesForm = ({
       <Grid item xs={12} sm={6}>
         {link && !content && <CircularProgress />}
         {content && (
-          <Editor
-            content={content as Delta}
+          <EditorFixed
+            initialData={content}
+            editorRef={editorRef}
             placeholder={translate('description')}
-            toolbarPosition="bottom"
             valid={valid}
             saving={saving}
-            onSave={(delta, html) => {
-              onSubmit(
-                {
-                  cover,
-                  delta,
-                  html,
-                  links: [link],
-                  subtitle: '',
-                  title,
-                },
-                topics,
-              );
-            }}
+            onSave={handleSubmit}
           />
         )}
       </Grid>
