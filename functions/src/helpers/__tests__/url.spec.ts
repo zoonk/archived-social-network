@@ -25,13 +25,13 @@ test('return the metadata from a page', async (done) => {
 
   fetch.mockReturnValue(Promise.resolve(new Response(html)));
 
-  const url = 'https://zoonk.org';
+  const url = 'https://zoonk.org/';
   const request = await getMetadataFromUrl(url);
   const response = {
     description: 'OG description',
     image: 'https://zoonk.org/test.png',
     title: 'Zoonk',
-    url: 'https://canonical.zoonk.org',
+    url: 'https://canonical.zoonk.org/',
   };
 
   expect(request).toEqual(response);
@@ -51,7 +51,7 @@ test('replace http with https for an image URL', async (done) => {
 
   fetch.mockReturnValue(Promise.resolve(new Response(html)));
 
-  const url = 'https://zoonk.org';
+  const url = 'https://zoonk.org/';
   const request = await getMetadataFromUrl(url);
   const response = {
     description: null,
@@ -76,7 +76,7 @@ test('use description tag when open-graph tag is falsy', async (done) => {
 
   fetch.mockReturnValue(Promise.resolve(new Response(html)));
 
-  const url = 'https://zoonk.org';
+  const url = 'https://zoonk.org/';
   const request = await getMetadataFromUrl(url);
   const response = {
     description: 'meta description',
@@ -101,7 +101,7 @@ test('use title tag when open-graph tag is falsy', async (done) => {
 
   fetch.mockReturnValue(Promise.resolve(new Response(html)));
 
-  const url = 'https://zoonk.org';
+  const url = 'https://zoonk.org/';
   const request = await getMetadataFromUrl(url);
   const response = {
     description: null,
@@ -123,7 +123,7 @@ test('return the url when there is no canonical link', async (done) => {
 
   fetch.mockReturnValue(Promise.resolve(new Response(html)));
 
-  const url = 'https://www.zoonk.org';
+  const url = 'https://www.zoonk.org/';
   const request = await getMetadataFromUrl(url);
   const response = {
     description: null,
@@ -149,7 +149,7 @@ test('use appleIcon when the open-graph is falsy', async (done) => {
 
   fetch.mockReturnValue(Promise.resolve(new Response(html)));
 
-  const url = 'https://zoonk.org';
+  const url = 'https://zoonk.org/';
   const request = await getMetadataFromUrl(url);
   const response = {
     description: null,
@@ -175,7 +175,7 @@ test('use shortcut when open-graph and appleIcon are falsy', async (done) => {
 
   fetch.mockReturnValue(Promise.resolve(new Response(html)));
 
-  const url = 'https://zoonk.org';
+  const url = 'https://zoonk.org/';
   const request = await getMetadataFromUrl(url);
   const response = {
     description: null,
@@ -201,7 +201,7 @@ test('use icon when open-graph, appleIcon, and shortcut are falsy', async (done)
 
   fetch.mockReturnValue(Promise.resolve(new Response(html)));
 
-  const url = 'https://zoonk.org';
+  const url = 'https://zoonk.org/';
   const request = await getMetadataFromUrl(url);
   const response = {
     description: null,
@@ -227,13 +227,13 @@ test('add the domain name when the shortcut starts with /', async (done) => {
 
   fetch.mockReturnValue(Promise.resolve(new Response(html)));
 
-  const url = 'http://zoonk.org';
+  const url = 'http://zoonk.org/';
   const request = await getMetadataFromUrl(url);
   const response = {
     description: null,
     image: 'https://zoonk.org/shortcut.png',
     title: 'Zoonk',
-    url: 'https://zoonk.org',
+    url: 'https://zoonk.org/',
   };
 
   expect(request).toEqual(response);
@@ -253,13 +253,13 @@ test('add the domain name when the appleIcon starts with /', async (done) => {
 
   fetch.mockReturnValue(Promise.resolve(new Response(html)));
 
-  const url = 'http://zoonk.org';
+  const url = 'http://zoonk.org/';
   const request = await getMetadataFromUrl(url);
   const response = {
     description: null,
     image: 'https://zoonk.org/ios.png',
     title: 'Zoonk',
-    url: 'https://zoonk.org',
+    url: 'https://zoonk.org/',
   };
 
   expect(request).toEqual(response);
@@ -279,13 +279,13 @@ test('add the domain name when the icon starts with /', async (done) => {
 
   fetch.mockReturnValue(Promise.resolve(new Response(html)));
 
-  const url = 'http://zoonk.org';
+  const url = 'http://zoonk.org/';
   const request = await getMetadataFromUrl(url);
   const response = {
     description: null,
     image: 'https://zoonk.org/icon.png',
     title: 'Zoonk',
-    url: 'https://zoonk.org',
+    url: 'https://zoonk.org/',
   };
 
   expect(request).toEqual(response);
@@ -364,6 +364,32 @@ test('resolve relative path for icon', async (done) => {
     image: 'https://zoonk.org/assets/icon.png',
     title: 'Zoonk',
     url,
+  };
+
+  expect(request).toEqual(response);
+  expect(fetch).toHaveBeenCalledWith(url);
+  done();
+});
+
+test('resolve relative path a canonical URL', async (done) => {
+  const html = `
+    <html>
+      <head>
+        <meta property="og:title" content="Zoonk" />
+        <link rel="canonical" href="/test-url" />
+      </head>
+    </html>
+  `;
+
+  fetch.mockReturnValue(Promise.resolve(new Response(html)));
+
+  const url = 'https://zoonk.org/path1/path2';
+  const request = await getMetadataFromUrl(url);
+  const response = {
+    description: null,
+    image: null,
+    title: 'Zoonk',
+    url: 'https://zoonk.org/test-url',
   };
 
   expect(request).toEqual(response);

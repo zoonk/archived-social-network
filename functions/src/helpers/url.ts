@@ -48,6 +48,6 @@ export const getMetadataFromUrl = async (link: string): Promise<Post.Link> => {
     description: ogDesc || description || null,
     image,
     title: pageUrl.includes('.pdf') ? `${pageTitle} (PDF)` : pageTitle,
-    url: pageUrl,
+    url: url.resolve(pageAddress, pageUrl),
   };
 };
