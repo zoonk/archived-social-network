@@ -26,7 +26,12 @@ const Notifications: NextPage = () => {
     <Container component="main">
       <Meta title={translate('notifications')} noIndex />
       <HomeBreadcrumb title={translate('notifications')} />
-      <NotificationList allowLoadMore limit={20} uid={user.uid} />
+      <NotificationList
+        allowLoadMore
+        limit={20}
+        uid={user.uid}
+        settings={user.notificationSettings}
+      />
     </Container>
   );
 };

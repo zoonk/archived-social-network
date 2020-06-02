@@ -1,5 +1,5 @@
-import { Notification } from '@zoonk/models';
-import { db } from '@zoonk/utils';
+import { Notification, User } from '@zoonk/models';
+import { db, entries } from '@zoonk/utils';
 import { serializeNotification } from '../serializers';
 
 const notificationConverter: firebase.firestore.FirestoreDataConverter<Notification.Get> = {
@@ -25,6 +25,7 @@ export const resetNotificationCount = (uid: string) => {
  */
 export const listNotifications = async (
   uid: string,
+  settings: User.NotificationSettings,
   startAfter?: firebase.firestore.DocumentSnapshot,
   limit: number = 10,
 ): Promise<Notification.Snapshot[]> => {
@@ -33,6 +34,20 @@ export const listNotifications = async (
     .withConverter(notificationConverter)
     .orderBy('updatedAt', 'desc')
     .limit(limit);
+
+  const contentTypes: Notification.RequestType[] = ['none'];
+
+  /**
+   * Users can enable/disable notifications for certain kinds of content.
+   * We check what content types are enabled for `app` to filter them
+   * during our request to the backend.
+   */
+  entries(settings).forEach(([key, value]) => {
+    const isEnabled = value.includes('app');
+    if (isEnabled) contentTypes.push(key);
+  });
+
+  ref = ref.where('type', 'in', contentTypes);
 
   if (startAfter) {
     ref = ref.startAfter(startAfter);

@@ -1,4 +1,5 @@
-import { analytics, auth, functions } from '@zoonk/utils';
+import { User } from '@zoonk/models';
+import { analytics, auth, db, functions } from '@zoonk/utils';
 import firebase from '@zoonk/utils/firebase';
 
 /**
@@ -57,4 +58,12 @@ export const updatePassword = async (
 
   await currentUser.reauthenticateWithCredential(credential);
   return currentUser.updatePassword(newPassword);
+};
+
+export const updateNotificationSettings = async (
+  userId: string,
+  settings: User.NotificationSettings,
+) => {
+  const changes: User.Update = { notificationSettings: settings };
+  return db.doc(`users/${userId}`).update(changes);
 };

@@ -27,6 +27,9 @@ test('add the user info to their settings', async (done) => {
     bio: null,
     name: 'test',
     notifications: 0,
+    notificationSettings: {
+      contentChanges: ['app', 'email'],
+    },
     photo: null,
     role: 'viewer',
     username: 'testUID',

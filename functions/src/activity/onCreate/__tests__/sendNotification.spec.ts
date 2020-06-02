@@ -50,6 +50,7 @@ test('send a notification to all required users', async (done) => {
   const expected = {
     ...data,
     activityId: 'activityId',
+    type: 'contentChanges',
   };
   const snap = { data: () => snapData };
   const context = { params: { id: 'activityId' } };

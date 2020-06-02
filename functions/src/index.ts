@@ -10,6 +10,7 @@ export * from './followers';
 export * from './groups';
 export * from './leaderboard';
 export * from './likes';
+export * from './notifications';
 export * from './posts';
 export * from './profile';
 export * from './progress';

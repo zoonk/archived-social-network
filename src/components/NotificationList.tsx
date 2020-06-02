@@ -1,6 +1,6 @@
 import { Fragment, useContext, useEffect, useState } from 'react';
 import { Button, List } from '@material-ui/core';
-import { Notification, SnackbarAction } from '@zoonk/models';
+import { Notification, SnackbarAction, User } from '@zoonk/models';
 import { listNotifications, resetNotificationCount } from '@zoonk/services';
 import { firebaseError, GlobalContext, theme } from '@zoonk/utils';
 import ListSkeleton from './ListSkeleton';
@@ -12,6 +12,7 @@ import useLoadMore from './useLoadMore';
 interface NotificationListProps {
   allowLoadMore?: boolean;
   limit?: number;
+  settings: User.NotificationSettings;
   uid: string;
 }
 
@@ -21,6 +22,7 @@ interface NotificationListProps {
 const NotificationList = ({
   allowLoadMore,
   limit = 10,
+  settings,
   uid,
 }: NotificationListProps) => {
   const { translate } = useContext(GlobalContext);
@@ -30,12 +32,16 @@ const NotificationList = ({
   >(limit);
 
   const loadMore = () => {
-    get({ data: listNotifications(uid, lastVisible, limit) });
+    get({
+      data: listNotifications(uid, settings, lastVisible, limit),
+    });
   };
 
   useEffect(() => {
-    get({ data: listNotifications(uid, undefined, limit) });
-  }, [get, limit, uid]);
+    get({
+      data: listNotifications(uid, settings, undefined, limit),
+    });
+  }, [get, limit, settings, uid]);
 
   useEffect(() => {
     resetNotificationCount(uid);

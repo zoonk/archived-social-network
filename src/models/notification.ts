@@ -2,11 +2,15 @@ import { ContentCategory, UserAction } from './activity';
 import { RawFirebaseTimestamp } from './firebase';
 import { UILanguage } from './i18n';
 import { Profile } from './profile';
+import { User } from './user';
 
 /**
  * User notifications model
  */
 export namespace Notification {
+  export type Type = keyof User.NotificationSettings;
+  export type RequestType = Type | 'none';
+
   /**
    * Required fields when creating a notification.
    */
@@ -17,6 +21,7 @@ export namespace Notification {
     itemPath: string;
     language: UILanguage;
     title: string;
+    type: Type;
     updatedAt: firebase.firestore.FieldValue;
     user: Profile.Response;
   }
