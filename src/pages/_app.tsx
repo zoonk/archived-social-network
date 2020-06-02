@@ -50,11 +50,7 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
           const fbUser = snap.data() as User.Response;
 
           // Store the user data to be saved in the GlobalContext.
-          setUserData({
-            ...fbUser,
-            email: user.email,
-            uid: user.uid,
-          });
+          setUserData({ ...fbUser, uid: user.uid });
 
           // Disable analytics for admins.
           analytics().setAnalyticsCollectionEnabled(fbUser.role !== 'admin');

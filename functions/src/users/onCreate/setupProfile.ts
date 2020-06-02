@@ -24,6 +24,7 @@ export const onCreateUserSetupProfile = functions.auth
 
     const userData: User.Response = {
       ...userInfo,
+      email: user.email || null,
       notifications: 0,
       notificationSettings: {
         contentChanges: ['app', 'email'],
