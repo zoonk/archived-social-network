@@ -20,6 +20,7 @@ export const onCreateActivitySendNotification = functions.firestore
       activityId: id,
       category: data.category,
       itemPath: data.itemPath,
+      language: data.language,
       title: data.title,
       updatedAt: admin.firestore.FieldValue.serverTimestamp(),
       user: data.user,

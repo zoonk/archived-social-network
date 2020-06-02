@@ -1,5 +1,6 @@
 import { ContentCategory, UserAction } from './activity';
 import { RawFirebaseTimestamp } from './firebase';
+import { UILanguage } from './i18n';
 import { Profile } from './profile';
 
 /**
@@ -14,6 +15,7 @@ export namespace Notification {
     activityId: string;
     category: ContentCategory;
     itemPath: string;
+    language: UILanguage;
     title: string;
     updatedAt: firebase.firestore.FieldValue;
     user: Profile.Response;

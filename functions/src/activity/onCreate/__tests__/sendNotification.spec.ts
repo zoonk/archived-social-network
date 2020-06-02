@@ -38,6 +38,7 @@ test('send a notification to all required users', async (done) => {
     action: 'updated',
     category: 'posts',
     itemPath: 'posts/itemId',
+    language: 'en',
     title: 'title',
     updatedAt: 'timestamp',
     user: { name: 'user name' },
