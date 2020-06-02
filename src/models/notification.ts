@@ -11,6 +11,13 @@ export namespace Notification {
   export type Type = keyof User.NotificationSettings;
   export type RequestType = Type | 'none';
 
+  export interface Email {
+    editId: string;
+    name: string;
+    title: string;
+    username: string;
+  }
+
   /**
    * Required fields when creating a notification.
    */

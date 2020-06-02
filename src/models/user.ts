@@ -11,13 +11,13 @@ export namespace User {
   }
 
   export interface Response extends Profile.Response {
+    email: string | null;
     notifications: number;
     notificationSettings: NotificationSettings;
     role: 'admin' | 'moderator' | 'viewer';
   }
 
   export interface Get extends Response {
-    email: string | null;
     uid: string;
   }
 

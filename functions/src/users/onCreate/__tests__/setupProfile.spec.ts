@@ -25,6 +25,7 @@ test('add the user info to their settings', async (done) => {
 
   const userInfo = {
     bio: null,
+    email: 'test@test.com',
     name: 'test',
     notifications: 0,
     notificationSettings: {
