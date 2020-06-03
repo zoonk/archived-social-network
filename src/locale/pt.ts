@@ -48,6 +48,8 @@ const translate: TranslationFn = (key, args) => {
     comment_leave: 'Deixe um comentário',
     comment_login_required:
       'Você precisa estar logado para deixar um comentário.',
+    comment_not_found: 'Comentário não encontrado.',
+    comment_notification: `${args?.name} comentou o seu post.`,
     comments: 'Comentários',
     confirm: 'Confirmar',
     contact_us: 'Fale conosco',

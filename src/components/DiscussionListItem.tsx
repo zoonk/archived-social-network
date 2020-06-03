@@ -20,14 +20,19 @@ import Viewer from './rich-text/Viewer';
 
 interface DiscussionListItemProps {
   comment: Comment.Get;
+  link?: 'posts' | 'comments';
 }
 
-const DiscussionListItem = ({ comment }: DiscussionListItemProps) => {
+const DiscussionListItem = ({
+  comment,
+  link = 'comments',
+}: DiscussionListItemProps) => {
   const { translate, user } = useContext(GlobalContext);
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const { createdAt, createdBy, createdById, html, id, postId } = comment;
   const isAuthor = createdById === user?.uid;
   const isModerator = user?.role === 'moderator' || user?.role === 'admin';
+  const linkId = link === 'posts' ? postId : id;
 
   /**
    * Delete current comment.
@@ -82,7 +87,7 @@ const DiscussionListItem = ({ comment }: DiscussionListItemProps) => {
         <Snackbar action={snackbar} />
       </CardContent>
       <CardActions disableSpacing>
-        <NextLink href="/posts/[id]" as={`/posts/${postId}`} passHref>
+        <NextLink href={`/${link}/[id]`} as={`/${link}/${linkId}`} passHref>
           <Button component="a" color="primary">
             {translate('see_discussion')}
           </Button>

@@ -27,16 +27,14 @@ export const createComment = (
 /**
  * Get a single comment from the database.
  */
-export const getComment = async (id: string): Promise<Comment.Get> => {
+export const getComment = async (
+  id: string,
+): Promise<Comment.Get | undefined> => {
   const snap = await db
     .doc(`comments/${id}`)
     .withConverter(commentConverter)
     .get();
-  const comment = snap.data();
-
-  if (!comment) throw new Error('comment_not_found');
-
-  return comment;
+  return snap.data();
 };
 
 /**
@@ -73,6 +71,20 @@ export const listComments = async (
   return snap.docs.map((item) => {
     return { ...item.data(), snap: item };
   });
+};
+
+export const listReplies = async (
+  commentId: string,
+): Promise<Comment.Get[]> => {
+  const snap = await db
+    .collection('comments')
+    .withConverter(commentConverter)
+    .where('commentId', '==', commentId)
+    .orderBy('likes', 'desc')
+    .orderBy('createdAt', 'desc')
+    .get();
+
+  return snap.docs.map((item) => item.data());
 };
 
 /**

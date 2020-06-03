@@ -22,8 +22,10 @@ interface NotificationListItemProps {
  */
 const NotificationListItem = ({ item, divider }: NotificationListItemProps) => {
   const { translate } = useContext(GlobalContext);
-  const { action, activityId, title, updatedAt, user } = item;
-  const text = `${user.name} ${translate(action)} ${title}.`;
+  const { action, activityId, category, title, updatedAt, user } = item;
+  const editableText = `${user.name} ${translate(action)} ${title}.`;
+  const commentText = translate('comment_notification', { name: user.name });
+  const text = category === 'comments' ? commentText : editableText;
 
   return (
     <ListItem alignItems="flex-start" divider={divider} disableGutters>
@@ -36,8 +38,12 @@ const NotificationListItem = ({ item, divider }: NotificationListItemProps) => {
       </NextLink>
       <ListItemText primary={text} secondary={updatedAt} />
       <ListItemSecondaryAction>
-        {action === 'updated' && <NotificationView item={item} />}
-        {action === 'deleted' && <NotificationRestore id={activityId} />}
+        {(action === 'created' || action === 'updated') && (
+          <NotificationView item={item} />
+        )}
+        {action === 'deleted' && activityId && (
+          <NotificationRestore id={activityId} />
+        )}
       </ListItemSecondaryAction>
     </ListItem>
   );
