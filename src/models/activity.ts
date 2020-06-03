@@ -23,7 +23,7 @@ type EditableContentType = {
 /**
  * All content types (both editable and authoral)
  */
-export type ContentCategory = EditableContent | 'comments' | 'replies';
+export type ContentCategory = EditableContent | 'comments';
 
 /**
  * History activity model where we keep track of every change made to editable contents.

@@ -29,6 +29,7 @@ test('add the user info to their settings', async (done) => {
     name: 'test',
     notifications: 0,
     notificationSettings: {
+      comments: ['app', 'email'],
       contentChanges: ['app', 'email'],
     },
     photo: null,
