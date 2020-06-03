@@ -9,4 +9,9 @@ const contentTemplate = {
   pt: 'd-c343bf9961e0498ab807352f10eb57c0',
 };
 
-export { contentTemplate, mailClient };
+const commentsTemplate = {
+  en: 'd-09ba3117481749b1aa082f86e986f79c',
+  pt: 'd-c63b1c03031c4a409b689e9b6b919ec5',
+};
+
+export { commentsTemplate, contentTemplate, mailClient };

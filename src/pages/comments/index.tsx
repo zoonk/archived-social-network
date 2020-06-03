@@ -6,11 +6,11 @@ import Meta from '@zoonk/components/Meta';
 import SidebarPage from '@zoonk/components/SidebarPage';
 import { analytics, GlobalContext } from '@zoonk/utils';
 
-const Courses: NextPage = () => {
+const CommentsPage: NextPage = () => {
   const { translate } = useContext(GlobalContext);
 
   useEffect(() => {
-    analytics().setCurrentScreen('courses');
+    analytics().setCurrentScreen('comments');
   }, []);
 
   return (
@@ -23,4 +23,4 @@ const Courses: NextPage = () => {
   );
 };
 
-export default Courses;
+export default CommentsPage;

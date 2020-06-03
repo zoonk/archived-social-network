@@ -1,7 +1,7 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import { Notification, User } from '@zoonk/models';
-import { contentTemplate, mailClient } from '../../mail';
+import { commentsTemplate, contentTemplate, mailClient } from '../../mail';
 
 const db = admin.firestore();
 
@@ -21,16 +21,18 @@ export const onCreateNotificationSendEmail = functions.firestore
     if (!isEnabled || !userData.email) return false;
 
     const templateData: Notification.Email = {
-      editId: data.activityId,
+      editId: data.activityId || data.itemPath,
       name: data.user.name,
       title: data.title,
       username: userData.username,
     };
+    const templateId =
+      data.category === 'comments' ? commentsTemplate : contentTemplate;
 
     const msg = {
       to: userData.email,
       from: 'support@zoonk.org',
-      templateId: contentTemplate[data.language],
+      templateId: templateId[data.language],
       dynamic_template_data: templateData,
     };
 

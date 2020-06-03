@@ -23,7 +23,7 @@ export namespace Notification {
    */
   export interface Create {
     action: UserAction;
-    activityId: string;
+    activityId: string | null;
     category: ContentCategory;
     itemPath: string;
     language: UILanguage;

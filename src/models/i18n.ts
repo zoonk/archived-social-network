@@ -44,6 +44,8 @@ export type TranslationKeys =
   | 'collapse'
   | 'comment_leave'
   | 'comment_login_required'
+  | 'comment_not_found'
+  | 'comment_notification'
   | 'comments'
   | 'confirm'
   | 'contact_us'
