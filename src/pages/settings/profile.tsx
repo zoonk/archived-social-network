@@ -16,11 +16,11 @@ const Settings: NextPage = () => {
     analytics().setCurrentScreen('settings_profile');
   }, []);
 
-  if (user === null || !profile) {
+  if (user === null) {
     return <LoginForm />;
   }
 
-  if (!user) {
+  if (user === undefined || !profile) {
     return <CircularProgress />;
   }
 

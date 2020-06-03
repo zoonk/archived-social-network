@@ -7,6 +7,7 @@ export namespace User {
   export type NotificationType = 'app' | 'email';
 
   export interface NotificationSettings {
+    comments: NotificationType[];
     contentChanges: NotificationType[];
   }
 

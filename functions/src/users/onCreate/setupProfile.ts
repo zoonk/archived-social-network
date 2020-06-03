@@ -27,6 +27,7 @@ export const onCreateUserSetupProfile = functions.auth
       email: user.email || null,
       notifications: 0,
       notificationSettings: {
+        comments: ['app', 'email'],
         contentChanges: ['app', 'email'],
       },
       role: 'viewer',

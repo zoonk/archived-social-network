@@ -1,4 +1,4 @@
-import { User } from '@zoonk/models';
+import { Notification, User } from '@zoonk/models';
 import { analytics, auth, db, functions } from '@zoonk/utils';
 import firebase from '@zoonk/utils/firebase';
 
@@ -62,8 +62,9 @@ export const updatePassword = async (
 
 export const updateNotificationSettings = async (
   userId: string,
-  settings: User.NotificationSettings,
+  field: Notification.Type,
+  active: User.NotificationType[],
 ) => {
-  const changes: User.Update = { notificationSettings: settings };
+  const changes = { [`notificationSettings.${field}`]: active };
   return db.doc(`users/${userId}`).update(changes);
 };
