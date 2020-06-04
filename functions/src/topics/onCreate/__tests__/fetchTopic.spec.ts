@@ -52,6 +52,7 @@ test('fetch the topic data and update it', async (done) => {
     description: 'page description',
     language: 'pt',
     likes: 0,
+    members: 0,
     photo: 'photo.png',
     posts: 0,
     title: 'Albert Einstein',

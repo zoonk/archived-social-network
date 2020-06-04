@@ -1,4 +1,5 @@
 export * from './earnXp';
+export * from './followers';
 export * from './misc';
 export * from './nameFromEmail';
 export * from './profileChanges';

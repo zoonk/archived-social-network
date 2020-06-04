@@ -9,7 +9,7 @@ import { onCreateFollowerUpdateMemberCount } from '../updateMemberCount';
 test('increase the member count', async (done) => {
   spyOn(db.doc(''), 'update').and.returnValue('updated');
 
-  const params = { groupId: 'groupId' };
+  const params = { collection: 'groups', docId: 'groupId' };
   const wrapped = testEnv.wrap(onCreateFollowerUpdateMemberCount);
   const req = await wrapped({}, { params });
 

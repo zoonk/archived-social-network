@@ -4,10 +4,10 @@ import * as admin from 'firebase-admin';
 const db = admin.firestore();
 
 export const onDeleteFollowerUpdateMemberCount = functions.firestore
-  .document('groups/{groupId}/followers/{userId}')
+  .document('{collection}/{docId}/followers/{userId}')
   .onDelete((_, context) => {
-    const { groupId } = context.params;
+    const { collection, docId } = context.params;
     return db
-      .doc(`groups/${groupId}`)
+      .doc(`${collection}/${docId}`)
       .update({ members: admin.firestore.FieldValue.increment(-1) });
   });

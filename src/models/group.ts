@@ -1,7 +1,6 @@
 import { ContentMetadata } from './content';
 import { Dictionary } from './misc';
 import { Post } from './post';
-import { Profile } from './profile';
 import { SearchIndex } from './search';
 
 export namespace Group {
@@ -48,29 +47,5 @@ export namespace Group {
     description: string;
     photo: string | null;
     title: string;
-  }
-}
-
-export namespace GroupMember {
-  export interface Join {
-    joined: firebase.firestore.FieldValue;
-  }
-
-  export interface Setup extends Profile.Response {
-    xp: number;
-  }
-
-  export interface Request extends Join, Setup {}
-
-  export interface Response extends Setup {
-    joined: firebase.firestore.Timestamp;
-  }
-
-  export interface Get extends Omit<Response, 'joined'> {
-    joined: string;
-  }
-
-  export interface Snapshot extends Get {
-    snap: firebase.firestore.DocumentSnapshot;
   }
 }

@@ -36,6 +36,7 @@ export const onCreateTopicFetchData = functions.firestore
       description: page.description,
       language: data.language,
       likes: 0,
+      members: 0,
       photo: page.photo,
       posts: 0,
       title: page.title,

@@ -1,4 +1,4 @@
-import { Group, GroupMember, Profile } from '@zoonk/models';
+import { Group, Profile } from '@zoonk/models';
 import {
   analytics,
   appLanguage,
@@ -7,7 +7,7 @@ import {
   generateSlug,
   timestamp,
 } from '@zoonk/utils';
-import { serializeGroup, serializeGroupMember } from '../serializers';
+import { serializeGroup } from '../serializers';
 
 const groupConverter: firebase.firestore.FirestoreDataConverter<Group.Get> = {
   toFirestore(data: Group.Get) {
@@ -17,17 +17,6 @@ const groupConverter: firebase.firestore.FirestoreDataConverter<Group.Get> = {
     snapshot: firebase.firestore.QueryDocumentSnapshot<Group.Response>,
   ): Group.Get {
     return serializeGroup(snapshot);
-  },
-};
-
-const groupMemberConverter: firebase.firestore.FirestoreDataConverter<GroupMember.Get> = {
-  toFirestore(data: GroupMember.Get) {
-    return data;
-  },
-  fromFirestore(
-    snapshot: firebase.firestore.QueryDocumentSnapshot<GroupMember.Response>,
-  ): GroupMember.Get {
-    return serializeGroupMember(snapshot);
   },
 };
 
@@ -157,27 +146,6 @@ export const getGroupStatus = (
 ): firebase.Unsubscribe => {
   return db.doc(`groups/${groupId}/followers/${userId}`).onSnapshot((snap) => {
     onSnapshot(snap.exists);
-  });
-};
-
-export const getGroupMembers = async (
-  groupId: string,
-  startAfter?: firebase.firestore.DocumentSnapshot,
-  limit: number = 10,
-): Promise<GroupMember.Snapshot[]> => {
-  let ref = db
-    .collection(`groups/${groupId}/followers`)
-    .withConverter(groupMemberConverter)
-    .orderBy('xp', 'desc')
-    .limit(limit);
-
-  if (startAfter) {
-    ref = ref.startAfter(startAfter);
-  }
-
-  const snap = await ref.get();
-  return snap.docs.map((item) => {
-    return { ...item.data(), snap: item };
   });
 };
 

@@ -3,6 +3,7 @@ export * from './chapters';
 export * from './comments';
 export * from './date';
 export * from './feedback';
+export * from './followers';
 export * from './groups';
 export * from './leaderboard';
 export * from './link';
