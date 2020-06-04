@@ -82,6 +82,7 @@ const translate: TranslationFn = (key, args) => {
     feedback: 'Feedback',
     field_required: 'Field required',
     file_too_big: 'This file is too big. The maximum size is 2MB.',
+    follow: 'Follow',
     forgot_password: 'Forgot password?',
     formatting_bold: 'Bold',
     formatting_clean: 'Clean',
@@ -303,6 +304,7 @@ const translate: TranslationFn = (key, args) => {
     topic_selector_helper:
       'What subjects are you teaching? (e.g. Chemistry, Star Trek, History, etc.).',
     topics: 'Topics',
+    unfollow: 'Unfollow',
     updated: 'edited',
     uploading: 'Uploading...',
     url: 'URL',

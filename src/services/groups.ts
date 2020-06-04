@@ -129,26 +129,6 @@ export const listGroups = async (
   });
 };
 
-export const joinGroup = (groupId: string, userId: string): Promise<void> => {
-  return db
-    .doc(`groups/${groupId}/followers/${userId}`)
-    .set({ joined: timestamp });
-};
-
-export const leaveGroup = (groupId: string, userId: string): Promise<void> => {
-  return db.doc(`groups/${groupId}/followers/${userId}`).delete();
-};
-
-export const getGroupStatus = (
-  groupId: string,
-  userId: string,
-  onSnapshot: (joined: boolean) => void,
-): firebase.Unsubscribe => {
-  return db.doc(`groups/${groupId}/followers/${userId}`).onSnapshot((snap) => {
-    onSnapshot(snap.exists);
-  });
-};
-
 export const updatePinOrder = (
   pinned: string[],
   groupId: string,

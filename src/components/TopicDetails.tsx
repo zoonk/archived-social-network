@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core';
 import { Topic } from '@zoonk/models';
 import { GlobalContext } from '@zoonk/utils';
-import ItemActions from './ItemActions';
+import TopicActions from './TopicActions';
 
 interface TopicDetailsProps {
   topic: Topic.Get;
@@ -36,7 +36,7 @@ const TopicDetails = ({ topic }: TopicDetailsProps) => {
           {title}
         </Typography>
 
-        <ItemActions category="topics" id={id} likes={likes} />
+        <TopicActions id={id} likes={likes} />
 
         {descriptionWithLineBreak.map((text, index) => (
           <Typography
