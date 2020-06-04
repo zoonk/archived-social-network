@@ -296,6 +296,7 @@ export const getTimeline = async (
   let ref = db
     .collection(`users/${userId}/timeline`)
     .withConverter(postConverter)
+    .where('language', '==', appLanguage)
     .orderBy('updatedAt', 'desc')
     .limit(limit);
 
