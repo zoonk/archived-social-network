@@ -40,13 +40,14 @@ const MenuPages = () => {
   const classes = useStyles();
   const groupsLink = user ? '/groups/my' : '/groups';
   const homeLink = user ? '/following' : '/';
+  const topicsLink = user ? '/topics/following' : '/topics';
   const isActive = (link: string): boolean => {
     if (asPath === '/') return link === asPath || link === '/following';
     return link.includes(asPath);
   };
   const pages = [
     { link: homeLink, title: translate('timeline'), icon: <AllInclusive /> },
-    { link: '/topics', title: translate('topics'), icon: <Subject /> },
+    { link: topicsLink, title: translate('topics'), icon: <Subject /> },
     { link: groupsLink, title: translate('groups'), icon: <GroupWork /> },
     { link: '/references', title: translate('references'), icon: <Link /> },
     { link: '/courses', title: translate('courses'), icon: <School /> },

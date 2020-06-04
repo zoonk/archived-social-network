@@ -101,3 +101,27 @@ export const validateTopic = async (id: string): Promise<boolean> => {
   const data = await db.doc(`topics/${id}`).get();
   return !data.exists;
 };
+
+export const getFollowingTopics = async (
+  userId: string,
+  startAfter?: firebase.firestore.DocumentSnapshot,
+  limit: number = 10,
+): Promise<Topic.Snapshot[]> => {
+  let ref = db
+    .collection(`users/${userId}/topics`)
+    .withConverter(topicConverter)
+    .orderBy('likes', 'desc')
+    .orderBy('posts', 'desc')
+    .orderBy('updatedAt', 'desc')
+    .where('language', '==', appLanguage)
+    .limit(limit);
+
+  if (startAfter) {
+    ref = ref.startAfter(startAfter);
+  }
+
+  const snap = await ref.get();
+  return snap.docs.map((item) => {
+    return { ...item.data(), snap: item };
+  });
+};
