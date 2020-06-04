@@ -43,6 +43,7 @@ const MenuPages = () => {
   const topicsLink = user ? '/topics/following' : '/topics';
   const isActive = (link: string): boolean => {
     if (asPath === '/') return link === asPath || link === '/following';
+    if (asPath === '/following') return link === '/following';
     return link.includes(asPath);
   };
   const pages = [
