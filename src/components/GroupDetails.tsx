@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core';
 import { Group } from '@zoonk/models';
 import { GlobalContext } from '@zoonk/utils';
-import GroupJoin from './GroupJoin';
+import FollowButton from './FollowButton';
 import ItemActionsMenu from './ItemActionsMenu';
 
 interface GroupDetailsProps {
@@ -50,7 +50,7 @@ const GroupDetails = ({ group }: GroupDetailsProps) => {
           <ItemActionsMenu />
         </div>
         <div className={classes.actions}>
-          <GroupJoin groupId={id} />
+          <FollowButton category="groups" categoryId={id} />
           <NextLink
             href="/groups/[id]/members"
             as={`/groups/${id}/members`}
