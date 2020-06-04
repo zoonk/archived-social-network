@@ -13,11 +13,11 @@ export const onCreateGroupSetupAuthor = functions.firestore
   .document('groups/{id}')
   .onCreate((snap) => {
     const { createdAt, createdBy, createdById } = snap.data() as Group.Response;
-    const member: Follower.Response = {
+    const follower: Follower.Response = {
       ...createdBy,
       joined: createdAt,
       xp: xpActions.created_groups,
     };
 
-    return db.doc(`groups/${snap.id}/followers/${createdById}`).set(member);
+    return db.doc(`groups/${snap.id}/followers/${createdById}`).set(follower);
   });

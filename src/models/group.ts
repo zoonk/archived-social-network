@@ -18,7 +18,7 @@ export namespace Group {
   }
 
   interface Fields extends EditableFields {
-    members: number;
+    followers: number;
     pinned: string[];
   }
 
