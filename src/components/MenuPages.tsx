@@ -39,12 +39,13 @@ const MenuPages = () => {
   const { asPath } = useRouter();
   const classes = useStyles();
   const groupsLink = user ? '/groups/my' : '/groups';
+  const homeLink = user ? '/following' : '/';
   const isActive = (link: string): boolean => {
-    if (asPath === '/') return link === asPath;
+    if (asPath === '/') return link === asPath || link === '/following';
     return link.includes(asPath);
   };
   const pages = [
-    { link: '/', title: translate('timeline'), icon: <AllInclusive /> },
+    { link: homeLink, title: translate('timeline'), icon: <AllInclusive /> },
     { link: '/topics', title: translate('topics'), icon: <Subject /> },
     { link: groupsLink, title: translate('groups'), icon: <GroupWork /> },
     { link: '/references', title: translate('references'), icon: <Link /> },
