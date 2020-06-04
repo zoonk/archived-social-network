@@ -83,7 +83,7 @@ const translate: TranslationFn = (key, args) => {
     field_required: 'Field required',
     file_too_big: 'This file is too big. The maximum size is 2MB.',
     follow: 'Follow',
-    following_empty: "You're not following anyone yet.",
+    following_empty: "You're not following any topics yet.",
     following_find: 'Find topics to follow.',
     following: 'Following',
     forgot_password: 'Forgot password?',
