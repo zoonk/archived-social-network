@@ -24,7 +24,7 @@ const data = {
   description: 'content',
   language: 'en',
   likes: 0,
-  members: 0,
+  followers: 0,
   photo: null,
   pinned: [],
   title: 'name',
@@ -108,6 +108,11 @@ test('description is a string', async (done) => {
   done();
 });
 
+test('followers is set to 0', async (done) => {
+  await firebase.assertFails(ref.add({ ...data, followers: 1 }));
+  done();
+});
+
 test('language has a valid string', async (done) => {
   await firebase.assertSucceeds(ref.add({ ...data, language: 'pt' }));
   await firebase.assertFails(ref.add({ ...data, language: 'other' }));
@@ -116,11 +121,6 @@ test('language has a valid string', async (done) => {
 
 test('likes is set to 0', async (done) => {
   await firebase.assertFails(ref.add({ ...data, likes: 1 }));
-  done();
-});
-
-test('members is set to 0', async (done) => {
-  await firebase.assertFails(ref.add({ ...data, members: 1 }));
   done();
 });
 

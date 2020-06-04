@@ -24,7 +24,7 @@ const data = {
   description: 'content',
   language: 'en',
   likes: 0,
-  members: 0,
+  followers: 0,
   photo: null,
   pinned: ['1', '2', '3'],
   pinnedPosts: {},
@@ -96,6 +96,11 @@ test('description cannot have more than 1000 characters', async (done) => {
   done();
 });
 
+test('followers cannot be changed', async (done) => {
+  await firebase.assertFails(ref.update({ ...edit, followers: 1 }));
+  done();
+});
+
 test('language cannot be changed', async (done) => {
   await firebase.assertFails(ref.update({ ...edit, language: 'pt' }));
   done();
@@ -103,11 +108,6 @@ test('language cannot be changed', async (done) => {
 
 test('likes cannot be changed', async (done) => {
   await firebase.assertFails(ref.update({ ...edit, likes: 1 }));
-  done();
-});
-
-test('members cannot be changed', async (done) => {
-  await firebase.assertFails(ref.update({ ...edit, members: 1 }));
   done();
 });
 

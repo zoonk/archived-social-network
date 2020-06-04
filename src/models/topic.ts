@@ -14,7 +14,7 @@ export namespace Topic {
 
   interface Fields extends EditableFields {
     chapters: string[];
-    members: number;
+    followers: number;
     posts: number;
     title: string;
   }

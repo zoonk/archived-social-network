@@ -13,14 +13,14 @@ beforeAll(() => {
 test('return when there are no changes', async (done) => {
   const data = {
     description: 'old',
-    members: 10,
+    followers: 10,
     photo: 'old.png',
     title: 'old name',
     updatedAt: 'old',
   };
   const change = {
     before: { data: () => data },
-    after: { data: () => ({ ...data, members: 100 }), id: 'itemId' },
+    after: { data: () => ({ ...data, followers: 100 }), id: 'itemId' },
   };
   const wrapped = testEnv.wrap(onUpdateTopicUpdateMyTopics);
   const req = await wrapped(change);

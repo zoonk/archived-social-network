@@ -3,11 +3,11 @@ import * as admin from 'firebase-admin';
 
 const db = admin.firestore();
 
-export const onCreateFollowerUpdateMemberCount = functions.firestore
+export const onDeleteFollowerUpdateCount = functions.firestore
   .document('{collection}/{docId}/followers/{userId}')
-  .onCreate((_, context) => {
+  .onDelete((_, context) => {
     const { collection, docId } = context.params;
     return db
       .doc(`${collection}/${docId}`)
-      .update({ members: admin.firestore.FieldValue.increment(1) });
+      .update({ followers: admin.firestore.FieldValue.increment(-1) });
   });

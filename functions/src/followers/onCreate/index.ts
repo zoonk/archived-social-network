@@ -1,4 +1,4 @@
 export * from './addToTimeline';
 export * from './addToUser';
 export * from './setupUser';
-export * from './updateMemberCount';
+export * from './updateCount';

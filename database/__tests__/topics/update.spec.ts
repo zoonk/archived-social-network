@@ -23,9 +23,9 @@ const data = {
   createdBy: profile,
   createdById: 'currentUser',
   description: 'content',
+  followers: 0,
   language: 'en',
   likes: 0,
-  members: 0,
   photo: null,
   posts: 0,
   title: 'name',
@@ -134,8 +134,8 @@ test('likes cannot be changed', async (done) => {
   done();
 });
 
-test('members cannot be changed', async (done) => {
-  await firebase.assertFails(ref.update({ ...edit, members: 1 }));
+test('followers cannot be changed', async (done) => {
+  await firebase.assertFails(ref.update({ ...edit, followers: 1 }));
   done();
 });
 

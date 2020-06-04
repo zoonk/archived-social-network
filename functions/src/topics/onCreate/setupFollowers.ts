@@ -13,11 +13,11 @@ export const onCreateTopicSetupFollowers = functions.firestore
   .document('topics/{id}')
   .onCreate((snap) => {
     const { createdAt, createdBy, createdById } = snap.data() as Topic.Response;
-    const member: Follower.Response = {
+    const follower: Follower.Response = {
       ...createdBy,
       joined: createdAt,
       xp: xpActions.created_topics,
     };
 
-    return db.doc(`topics/${snap.id}/followers/${createdById}`).set(member);
+    return db.doc(`topics/${snap.id}/followers/${createdById}`).set(follower);
   });
