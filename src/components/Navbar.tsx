@@ -45,7 +45,7 @@ const Navbar = () => {
       {loading && <LinearProgress variant="query" />}
 
       <Toolbar variant="dense">
-        <Link href="/">
+        <Link href={user ? '/following' : '/'}>
           <a>
             <img
               src="/icon_white.svg"

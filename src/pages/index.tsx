@@ -4,10 +4,11 @@ import { Container } from '@material-ui/core';
 import Meta from '@zoonk/components/Meta';
 import PostsCard from '@zoonk/components/PostsCard';
 import SidebarPage from '@zoonk/components/SidebarPage';
+import TimelineHeader from '@zoonk/components/TimelineHeader';
 import { analytics, GlobalContext, rootUrl } from '@zoonk/utils';
 
 const Home: NextPage = () => {
-  const { translate } = useContext(GlobalContext);
+  const { translate, user } = useContext(GlobalContext);
 
   useEffect(() => {
     analytics().setCurrentScreen('home');
@@ -22,6 +23,7 @@ const Home: NextPage = () => {
         noAppName
       />
       <SidebarPage title={translate('post_share')}>
+        {user && <TimelineHeader active="all" />}
         <PostsCard limit={10} />
       </SidebarPage>
     </Container>

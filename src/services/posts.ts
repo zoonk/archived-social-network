@@ -287,3 +287,22 @@ export const getLinkMetadata = async (url: string): Promise<Post.Link> => {
   linkCache[url] = fn.data;
   return fn.data;
 };
+
+export const getTimeline = async (
+  userId: string,
+  lastVisible?: firebase.firestore.DocumentSnapshot,
+  limit: number = 10,
+): Promise<Post.Snapshot[]> => {
+  let ref = db
+    .collection(`users/${userId}/timeline`)
+    .withConverter(postConverter)
+    .orderBy('updatedAt', 'desc')
+    .limit(limit);
+
+  if (lastVisible) {
+    ref = ref.startAfter(lastVisible);
+  }
+
+  const snap = await ref.get();
+  return snap.docs.map((doc) => ({ ...doc.data(), snap: doc }));
+};

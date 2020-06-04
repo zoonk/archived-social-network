@@ -7,10 +7,10 @@ import { GlobalContext } from '@zoonk/utils';
  * Default link to the homepage
  */
 const LinkHome = () => {
-  const { translate } = useContext(GlobalContext);
+  const { translate, user } = useContext(GlobalContext);
 
   return (
-    <NextLink href="/" passHref>
+    <NextLink href={user ? '/following' : '/'} passHref>
       <Link color="inherit" title="Free learning app">
         {translate('home')}
       </Link>
