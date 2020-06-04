@@ -1,7 +1,7 @@
 import { Fragment, useContext, useEffect, useState } from 'react';
 import { Button, CircularProgress, Grid, makeStyles } from '@material-ui/core';
-import { GroupMember, SnackbarAction } from '@zoonk/models';
-import { getGroupMembers } from '@zoonk/services';
+import { Follower, SnackbarAction } from '@zoonk/models';
+import { getFollowers } from '@zoonk/services';
 import { firebaseError, GlobalContext } from '@zoonk/utils';
 import FollowerListItem from './FollowerListItem';
 import Snackbar from './Snackbar';
@@ -21,18 +21,18 @@ const FollowersList = ({ groupId, limit = 10 }: FollowersListProps) => {
   const classes = useStyles();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const { error, get, items, lastVisible, loading } = useLoadMore<
-    GroupMember.Snapshot
+    Follower.Snapshot
   >(limit);
 
   const loadMore = () => {
     get({
-      data: getGroupMembers(groupId, lastVisible, limit),
+      data: getFollowers('groups', groupId, lastVisible, limit),
     });
   };
 
   useEffect(() => {
     get({
-      data: getGroupMembers(groupId, undefined, limit),
+      data: getFollowers('groups', groupId, undefined, limit),
       replace: true,
     });
   }, [get, groupId, limit]);

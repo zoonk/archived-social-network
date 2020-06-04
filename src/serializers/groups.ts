@@ -1,4 +1,4 @@
-import { Group, GroupMember } from '@zoonk/models';
+import { Group } from '@zoonk/models';
 import { serializeFirebaseDate } from './date';
 
 export const serializeGroup = (
@@ -16,16 +16,5 @@ export const serializeGroup = (
       (pinned) => pinnedPosts?.[pinned] || ({} as any),
     ),
     updatedAt: serializeFirebaseDate(data.updatedAt),
-  };
-};
-
-export const serializeGroupMember = (
-  snap: firebase.firestore.DocumentSnapshot<GroupMember.Response>,
-): GroupMember.Get => {
-  const data = snap.data()!;
-
-  return {
-    ...data,
-    joined: serializeFirebaseDate(data.joined),
   };
 };

@@ -13,8 +13,18 @@ const firebaseCollection = jest.fn().mockReturnValue({
   docs: [],
 });
 
+const firebaseLimit = jest.fn().mockReturnValue({
+  get: jest.fn(),
+});
+
+const firebaseOrderBy = jest.fn().mockReturnValue({
+  limit: firebaseLimit,
+  get: jest.fn(),
+});
+
 const firebaseWhere = jest.fn().mockReturnValue({
   get: firebaseCollection,
+  orderBy: firebaseOrderBy,
   where: jest.fn(),
 });
 

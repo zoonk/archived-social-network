@@ -1,15 +1,15 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-import { GroupMember, Profile } from '@zoonk/models';
+import { Follower, Profile } from '@zoonk/models';
 
 const db = admin.firestore();
 
 export const onCreateFollowerSetupUser = functions.firestore
-  .document('groups/{groupId}/followers/{userId}')
+  .document('{collection}/{docId}/followers/{userId}')
   .onCreate(async (snap) => {
     const profile = await db.doc(`profile/${snap.id}`).get();
     const profileData = profile.data() as Profile.Response;
-    const data: GroupMember.Request = {
+    const data: Follower.Request = {
       ...profileData,
       joined: admin.firestore.FieldValue.serverTimestamp(),
       xp: 1,

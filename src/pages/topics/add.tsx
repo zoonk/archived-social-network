@@ -64,6 +64,7 @@ const CreateTopic: NextPage = () => {
       description,
       language: appLanguage,
       likes: 0,
+      members: 0,
       photo,
       posts: 0,
       title,

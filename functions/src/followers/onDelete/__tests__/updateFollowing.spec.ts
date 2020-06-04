@@ -4,17 +4,17 @@ import * as admin from 'firebase-admin';
 const testEnv = functions();
 const db = admin.firestore();
 
-import { onDeleteFollowerUpdateMyGroups } from '../updateMyGroups';
+import { onDeleteFollowerUpdateFollowing } from '../updateFollowing';
 
-test('delete from user groups', async (done) => {
+test('delete from the following list', async (done) => {
   spyOn(db.doc(''), 'delete').and.returnValue('deleted');
 
-  const params = { id: 'groupId', userId: 'userId' };
-  const wrapped = testEnv.wrap(onDeleteFollowerUpdateMyGroups);
+  const params = { collection: 'topics', docId: 'topicId', userId: 'userId' };
+  const wrapped = testEnv.wrap(onDeleteFollowerUpdateFollowing);
   const req = await wrapped({}, { params });
 
   expect(req).toBe('deleted');
-  expect(db.doc).toHaveBeenCalledWith('users/userId/groups/groupId');
+  expect(db.doc).toHaveBeenCalledWith('users/userId/topics/topicId');
   expect(db.doc('').delete).toHaveBeenCalledTimes(1);
   done();
 });

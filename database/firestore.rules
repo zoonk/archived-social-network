@@ -304,11 +304,7 @@ service cloud.firestore {
         && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['bio', 'name', 'photo', 'role', 'username'])
       ;
 
-      match /groups/{groupId} {
-        allow read: if request.auth.uid == userId;
-      }
-
-      match /notifications/{notificationId} {
+      match /{subcollection}/{groupId} {
         allow read: if request.auth.uid == userId;
       }
     }

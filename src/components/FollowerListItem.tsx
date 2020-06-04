@@ -1,6 +1,6 @@
 import NextLink from 'next/link';
 import { Avatar, Link, makeStyles, Paper, Typography } from '@material-ui/core';
-import { GroupMember } from '@zoonk/models';
+import { Follower } from '@zoonk/models';
 import UserReputation from './UserReputation';
 
 const useStyles = makeStyles((theme) => ({
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface FolloweListItemProps {
-  item: GroupMember.Get;
+  item: Follower.Get;
 }
 
 const FollowerListItem = ({ item }: FolloweListItemProps) => {

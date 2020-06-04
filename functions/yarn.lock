@@ -2006,10 +2006,10 @@ jest-regex-util@^24.9.0:
   resolved "https://registry.yarnpkg.com/jest-regex-util/-/jest-regex-util-24.9.0.tgz#c13fb3380bde22bf6575432c493ea8fe37965636"
   integrity sha512-05Cmb6CuxaA+Ys6fjr3PhvV3bGQmO+2p2La4hFbU+W5uOc479f7FdLXUWXw4pYMAhhSZIuKHwSXSu6CsSBAXQA==
 
-jest-when@^2.7.1:
-  version "2.7.1"
-  resolved "https://registry.yarnpkg.com/jest-when/-/jest-when-2.7.1.tgz#09ab7114d014bdb4e35183deac63cdf2bcec8698"
-  integrity sha512-4J2kNNEiu8rWmiZTn9HJB8U1HyDfvywpZ+FzgwnUv7yftvDFLo95U7sEiOeVK3j20af8lj6/7nrFf9lyCmOjKA==
+jest-when@^2.7.2:
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/jest-when/-/jest-when-2.7.2.tgz#b7b4225e8882bd84a1cfd09216b2c63d22f892bd"
+  integrity sha512-GuVzimG0wW18A5JlYwhHrvuwmWRAQpsnilRVdJktvrZX5V0++al1f/iwITE7+Cud8Rbw/U2eka4tyy7kvxIWnw==
   dependencies:
     bunyan "^1.8.12"
     expect "^24.8.0"
