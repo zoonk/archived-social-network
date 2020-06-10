@@ -1,4 +1,3 @@
-import { fromString } from 'html-to-text';
 import { Post } from '@zoonk/models';
 
 /**
@@ -21,9 +20,8 @@ export const postCategories: Post.Category[] = [
 ];
 
 export const getPlainText = (text: string): string => {
-  return fromString(text, {
-    uppercaseHeadings: false,
-    ignoreHref: true,
-    ignoreImage: true,
-  }).replace('\n', ' ');
+  return text
+    .replace(/(<([^>]+)>)/gi, ' ')
+    .replace(/ {1,}/g, ' ')
+    .trim();
 };

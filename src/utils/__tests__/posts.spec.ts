@@ -16,8 +16,8 @@ describe('getPostImage()', () => {
 describe('getPlainText()', () => {
   test('convert HTML to plain text', () => {
     const html =
-      '<h1>title</h1><p>text with a <a href="test.com">link</a><img src="photo.png" alt="photo" title="photo" />.';
-    const text = 'title text with a link.';
+      '<h1>title</h1><p>text with a <a href="test.com">link</a><img src="photo.png" alt="photo" title="photo" /> for testing.</p>';
+    const text = 'title text with a link for testing.';
     expect(getPlainText(html)).toEqual(text);
   });
 });

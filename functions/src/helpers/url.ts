@@ -1,6 +1,5 @@
 import cheerio from 'cheerio';
 import fetch from 'node-fetch';
-import { fromString } from 'html-to-text';
 import url from 'url';
 import { Post } from '@zoonk/models';
 
@@ -10,11 +9,10 @@ const getDomain = (link: string) => {
 };
 
 export const HTMLToText = (html: string): string => {
-  return fromString(html, {
-    uppercaseHeadings: false,
-    ignoreHref: true,
-    ignoreImage: true,
-  }).replace('\n', ' ');
+  return html
+    .replace(/(<([^>]+)>)/gi, ' ')
+    .replace(/ {1,}/g, ' ')
+    .trim();
 };
 
 export const getMetadataFromUrl = async (link: string): Promise<Post.Link> => {
