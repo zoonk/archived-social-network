@@ -1,5 +1,5 @@
+import { db } from '@zoonk/firebase/db';
 import { ItemLike } from '@zoonk/models';
-import { db } from '@zoonk/utils';
 
 /**
  * Check if a user has liked an item or not.

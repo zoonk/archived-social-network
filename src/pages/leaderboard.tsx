@@ -1,17 +1,13 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { NextPage } from 'next';
 import { Container } from '@material-ui/core';
 import HomeBreadcrumb from '@zoonk/components/HomeBreadcrumb';
 import LeaderboardList from '@zoonk/components/LeaderboardList';
 import Meta from '@zoonk/components/Meta';
-import { analytics, GlobalContext } from '@zoonk/utils';
+import { GlobalContext } from '@zoonk/utils';
 
 const Leaderboard: NextPage = () => {
   const { translate } = useContext(GlobalContext);
-
-  useEffect(() => {
-    analytics().setCurrentScreen('leaderboard');
-  }, []);
 
   return (
     <Container component="main">

@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { NextPage } from 'next';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
@@ -6,16 +6,12 @@ import { Button, Container } from '@material-ui/core';
 import GroupList from '@zoonk/components/GroupList';
 import Meta from '@zoonk/components/Meta';
 import TopicsBreadcrumb from '@zoonk/components/TopicsBreadcrumb';
-import { analytics, GlobalContext, rootUrl, theme } from '@zoonk/utils';
+import { GlobalContext, rootUrl, theme } from '@zoonk/utils';
 
 const TopicGroups: NextPage = () => {
   const { translate } = useContext(GlobalContext);
   const { query } = useRouter();
   const topicId = String(query.id);
-
-  useEffect(() => {
-    analytics().setCurrentScreen('topic_groups');
-  }, []);
 
   return (
     <Container component="main">

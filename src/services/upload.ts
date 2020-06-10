@@ -1,4 +1,5 @@
-import { analytics, storage } from '@zoonk/utils';
+import { analytics } from '@zoonk/firebase/analytics';
+import { storage } from '@zoonk/firebase/storage';
 
 /**
  * Upload a file to Firebase.

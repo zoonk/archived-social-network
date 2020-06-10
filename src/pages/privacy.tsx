@@ -1,20 +1,16 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import { Container, Typography } from '@material-ui/core';
 import HomeBreadcrumb from '@zoonk/components/HomeBreadcrumb';
 import Meta from '@zoonk/components/Meta';
-import { analytics, appLanguage, GlobalContext, theme } from '@zoonk/utils';
+import { appLanguage, GlobalContext, theme } from '@zoonk/utils';
 
 const English = dynamic(() => import('../components/Privacy/en'));
 const Portuguese = dynamic(() => import('../components/Privacy/pt'));
 
 const Privacy: NextPage = () => {
   const { translate } = useContext(GlobalContext);
-
-  useEffect(() => {
-    analytics().setCurrentScreen('privacy');
-  }, []);
 
   return (
     <Container component="main" maxWidth="sm">

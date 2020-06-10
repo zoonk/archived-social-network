@@ -1,5 +1,6 @@
+import { db } from '@zoonk/firebase/db';
 import { Notification, User } from '@zoonk/models';
-import { db, entries } from '@zoonk/utils';
+import { entries } from '@zoonk/utils';
 import { serializeNotification } from '../serializers';
 
 const notificationConverter: firebase.firestore.FirestoreDataConverter<Notification.Get> = {

@@ -1,6 +1,6 @@
+import { db, timestamp } from '@zoonk/firebase/db';
 import { Report, User } from '@zoonk/models';
 import { serializeReport } from '@zoonk/serializers';
-import { db, timestamp } from '@zoonk/utils';
 
 const reportConverter: firebase.firestore.FirestoreDataConverter<Report.Get> = {
   toFirestore(data: Report.Get) {

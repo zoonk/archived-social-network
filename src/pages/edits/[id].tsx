@@ -6,16 +6,12 @@ import EditsItem from '@zoonk/components/EditsItem';
 import Meta from '@zoonk/components/Meta';
 import { Activity } from '@zoonk/models';
 import { getActivity } from '@zoonk/services';
-import { analytics, GlobalContext } from '@zoonk/utils';
+import { GlobalContext } from '@zoonk/utils';
 
 const EditPage = () => {
   const { translate } = useContext(GlobalContext);
   const { query } = useRouter();
   const [activity, setActivity] = useState<Activity.Get>();
-
-  useEffect(() => {
-    analytics().setCurrentScreen('edit');
-  }, []);
 
   useEffect(() => {
     if (query.id) {

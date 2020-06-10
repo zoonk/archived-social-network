@@ -8,8 +8,9 @@ import {
 } from '@material-ui/core';
 import { green } from '@material-ui/core/colors';
 import { Close } from '@material-ui/icons';
+import { analytics } from '@zoonk/firebase/analytics';
 import { SnackbarAction } from '@zoonk/models';
-import { analytics, errorTimeout, successTimeout } from '@zoonk/utils';
+import { errorTimeout, successTimeout } from '@zoonk/utils';
 
 interface SnackbarProps {
   action: SnackbarAction | null;

@@ -1,6 +1,6 @@
+import { db } from '@zoonk/firebase/db';
 import { Feedback } from '@zoonk/models';
 import { serializeFeedback } from '@zoonk/serializers';
-import { db } from '@zoonk/utils';
 
 const feedbackConverter: firebase.firestore.FirestoreDataConverter<Feedback.Get> = {
   toFirestore(data: Feedback.Get) {

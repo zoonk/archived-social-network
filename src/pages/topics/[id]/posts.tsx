@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { NextPage } from 'next';
 import { Container } from '@material-ui/core';
 import Meta from '@zoonk/components/Meta';
@@ -6,7 +6,6 @@ import PostsCard from '@zoonk/components/PostsCard';
 import PostShare from '@zoonk/components/PostShare';
 import TopicsBreadcrumb from '@zoonk/components/TopicsBreadcrumb';
 import {
-  analytics,
   getPageTitle,
   GlobalContext,
   preRender,
@@ -21,10 +20,6 @@ interface TopicPostsProps {
 
 const TopicPosts: NextPage<TopicPostsProps> = ({ id, title }) => {
   const { translate } = useContext(GlobalContext);
-
-  useEffect(() => {
-    analytics().setCurrentScreen('topic_posts');
-  }, []);
 
   return (
     <Container component="main">

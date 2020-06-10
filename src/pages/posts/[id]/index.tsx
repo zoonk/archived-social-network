@@ -12,7 +12,6 @@ import useAuth from '@zoonk/components/useAuth';
 import { Post } from '@zoonk/models';
 import { getPost, markPostAsRead, togglePostProgress } from '@zoonk/services';
 import {
-  analytics,
   appLanguage,
   getPostImage,
   getPlainText,
@@ -39,10 +38,6 @@ const PostPage: NextPage<PostPageProps> = ({ data }) => {
   const { category, chapterId, cover, html, id, language, sites, title } = data;
   const siteImg = sites.find((site) => Boolean(site.image));
   const image = cover || getPostImage(html) || siteImg?.image;
-
-  useEffect(() => {
-    analytics().setCurrentScreen('posts_view');
-  }, []);
 
   // Mark a post as read when the page is loaded.
   useEffect(() => {

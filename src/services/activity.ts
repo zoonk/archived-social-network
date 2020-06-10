@@ -1,12 +1,8 @@
 import { pick } from 'lodash';
+import { db, timestamp } from '@zoonk/firebase/db';
+import { functions } from '@zoonk/firebase/functions';
 import { ContentMetadata, Activity, Profile } from '@zoonk/models';
-import {
-  appLanguage,
-  db,
-  editableFields,
-  functions,
-  timestamp,
-} from '@zoonk/utils';
+import { appLanguage, editableFields } from '@zoonk/utils';
 import { serializeActivity } from '../serializers';
 
 const activityConverter: firebase.firestore.FirestoreDataConverter<Activity.Get> = {

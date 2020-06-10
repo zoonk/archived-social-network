@@ -12,7 +12,7 @@ import Snackbar from '@zoonk/components/Snackbar';
 import useAuth from '@zoonk/components/useAuth';
 import { Post, SnackbarAction } from '@zoonk/models';
 import { deletePost, getPost } from '@zoonk/services';
-import { analytics, firebaseError, GlobalContext } from '@zoonk/utils';
+import { firebaseError, GlobalContext } from '@zoonk/utils';
 
 const EditPost: NextPage = () => {
   const { translate } = useContext(GlobalContext);
@@ -26,10 +26,6 @@ const EditPost: NextPage = () => {
   const isEditable = !isPost && !isQuestion;
   const isModerator = user?.role === 'admin' || user?.role === 'moderator';
   const canDelete = isModerator || isAuthor;
-
-  useEffect(() => {
-    analytics().setCurrentScreen('post_edit');
-  }, []);
 
   useEffect(() => {
     if (query.id) {

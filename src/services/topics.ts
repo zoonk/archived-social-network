@@ -1,5 +1,7 @@
+import { analytics } from '@zoonk/firebase/analytics';
+import { db } from '@zoonk/firebase/db';
 import { Topic } from '@zoonk/models';
-import { analytics, appLanguage, db } from '@zoonk/utils';
+import { appLanguage } from '@zoonk/utils';
 import { serializeTopic } from '../serializers';
 
 const topicConverter: firebase.firestore.FirestoreDataConverter<Topic.Get> = {

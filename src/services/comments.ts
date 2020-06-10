@@ -1,5 +1,7 @@
+import { analytics } from '@zoonk/firebase/analytics';
+import { db, timestamp } from '@zoonk/firebase/db';
 import { Comment, Profile } from '@zoonk/models';
-import { analytics, appLanguage, db, timestamp } from '@zoonk/utils';
+import { appLanguage } from '@zoonk/utils';
 import { serializeComment } from '../serializers';
 import { updatePost } from './posts';
 

@@ -1,5 +1,7 @@
+import { analytics } from '@zoonk/firebase/analytics';
+import { db, timestamp } from '@zoonk/firebase/db';
 import { Chapter, Profile } from '@zoonk/models';
-import { analytics, db, generateRandomSlug, timestamp } from '@zoonk/utils';
+import { generateRandomSlug } from '@zoonk/utils';
 import { updateTopic } from './topics';
 import { serializeChapter } from '../serializers';
 

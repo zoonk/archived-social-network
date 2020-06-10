@@ -10,7 +10,7 @@ import TopicsBreadcrumb from '@zoonk/components/TopicsBreadcrumb';
 import useAuth from '@zoonk/components/useAuth';
 import { Topic } from '@zoonk/models';
 import { getTopic } from '@zoonk/services';
-import { analytics, GlobalContext } from '@zoonk/utils';
+import { GlobalContext } from '@zoonk/utils';
 
 const EditTopic: NextPage = () => {
   const { translate } = useContext(GlobalContext);
@@ -18,10 +18,6 @@ const EditTopic: NextPage = () => {
   const { query } = useRouter();
   const id = String(query.id);
   const [topic, setTopic] = useState<Topic.Get>();
-
-  useEffect(() => {
-    analytics().setCurrentScreen('topic_edit');
-  }, []);
 
   useEffect(() => {
     if (query.id && user) {

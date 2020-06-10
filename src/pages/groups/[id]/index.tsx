@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { GetServerSideProps, NextPage } from 'next';
 import { Container, Grid, makeStyles } from '@material-ui/core';
 import GroupDetails from '@zoonk/components/GroupDetails';
@@ -11,7 +11,7 @@ import PostsCard from '@zoonk/components/PostsCard';
 import PostShare from '@zoonk/components/PostShare';
 import { Group } from '@zoonk/models';
 import { getGroup } from '@zoonk/services';
-import { analytics, appLanguage, GlobalContext, preRender } from '@zoonk/utils';
+import { appLanguage, GlobalContext, preRender } from '@zoonk/utils';
 
 const useStyles = makeStyles((theme) => ({
   column: {
@@ -39,10 +39,6 @@ const GroupPage: NextPage<GroupPageProps> = ({ group }) => {
     topics,
   } = group;
   const author = { ...createdBy, id: createdById };
-
-  useEffect(() => {
-    analytics().setCurrentScreen('group');
-  }, []);
 
   return (
     <Container component="main">

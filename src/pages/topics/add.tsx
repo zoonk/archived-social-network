@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { CircularProgress, Container } from '@material-ui/core';
@@ -10,15 +10,14 @@ import TopicCreate from '@zoonk/components/TopicCreate';
 import TopicFormContainer from '@zoonk/components/TopicFormContainer';
 import TopicsBreadcrumb from '@zoonk/components/TopicsBreadcrumb';
 import useAuth from '@zoonk/components/useAuth';
+import { timestamp } from '@zoonk/firebase/db';
 import { SnackbarAction, Topic, WikipediaSearchItem } from '@zoonk/models';
 import { createTopic, getWikipediaPage, validateTopic } from '@zoonk/services';
 import {
-  analytics,
   appLanguage,
   firebaseError,
   GlobalContext,
   rootUrl,
-  timestamp,
 } from '@zoonk/utils';
 
 const CreateTopic: NextPage = () => {
@@ -26,10 +25,6 @@ const CreateTopic: NextPage = () => {
   const { profile, user } = useAuth();
   const { push } = useRouter();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
-
-  useEffect(() => {
-    analytics().setCurrentScreen('topics_create');
-  }, []);
 
   if (user === undefined) {
     return <CircularProgress />;

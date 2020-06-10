@@ -1,8 +1,9 @@
 import { useContext, useState } from 'react';
 import { Grid, TextField, Typography } from '@material-ui/core';
+import { timestamp } from '@zoonk/firebase/db';
 import { SnackbarAction, Topic } from '@zoonk/models';
 import { updateTopic } from '@zoonk/services';
-import { firebaseError, GlobalContext, imgSize, timestamp } from '@zoonk/utils';
+import { firebaseError, GlobalContext, imgSize } from '@zoonk/utils';
 import FormBase from './FormBase';
 import ImageUpload from './ImageUpload';
 import Snackbar from './Snackbar';

@@ -1,5 +1,5 @@
+import { db, timestamp } from '@zoonk/firebase/db';
 import { Follower } from '@zoonk/models';
-import { db, timestamp } from '@zoonk/utils';
 import { serializeFollower } from '../serializers';
 
 const followerConverter: firebase.firestore.FirestoreDataConverter<Follower.Get> = {

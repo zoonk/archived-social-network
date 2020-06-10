@@ -8,7 +8,7 @@ import PostCreate from '@zoonk/components/PostCreate';
 import PostsBreadcrumb from '@zoonk/components/PostsBreadcrumb';
 import useAuth from '@zoonk/components/useAuth';
 import { Post } from '@zoonk/models';
-import { analytics, GlobalContext, postCategories } from '@zoonk/utils';
+import { GlobalContext, postCategories } from '@zoonk/utils';
 
 const PostAddPage: NextPage = () => {
   const { translate } = useContext(GlobalContext);
@@ -18,10 +18,6 @@ const PostAddPage: NextPage = () => {
   const chapterId = query.chapterId ? String(query.chapterId) : undefined;
   const groupId = query.groupId ? String(query.groupId) : undefined;
   const topicId = query.topicId ? String(query.topicId) : undefined;
-
-  useEffect(() => {
-    analytics().setCurrentScreen('posts_add');
-  }, []);
 
   useEffect(() => {
     // Check if `query.category` is a valid post category

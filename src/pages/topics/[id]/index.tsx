@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { NextPage } from 'next';
 import { Container, Grid, makeStyles } from '@material-ui/core';
 import ChaptersCard from '@zoonk/components/ChaptersCard';
@@ -10,7 +10,7 @@ import TopicDetails from '@zoonk/components/TopicDetails';
 import TopicsBreadcrumb from '@zoonk/components/TopicsBreadcrumb';
 import { Topic } from '@zoonk/models';
 import { getTopic } from '@zoonk/services';
-import { analytics, appLanguage, GlobalContext, preRender } from '@zoonk/utils';
+import { appLanguage, GlobalContext, preRender } from '@zoonk/utils';
 
 const useStyles = makeStyles((theme) => ({
   column: {
@@ -28,10 +28,6 @@ const TopicPage: NextPage<TopicPageProps> = ({ topic }) => {
   const { translate } = useContext(GlobalContext);
   const classes = useStyles();
   const { chapterData, id, language, photo, title } = topic;
-
-  useEffect(() => {
-    analytics().setCurrentScreen('topic');
-  }, []);
 
   return (
     <Container component="main">

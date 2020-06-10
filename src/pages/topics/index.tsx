@@ -1,18 +1,14 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { NextPage } from 'next';
 import { Container } from '@material-ui/core';
 import Meta from '@zoonk/components/Meta';
 import SidebarPage from '@zoonk/components/SidebarPage';
 import TopicList from '@zoonk/components/TopicList';
 import TopicsHeader from '@zoonk/components/TopicsHeader';
-import { analytics, GlobalContext, rootUrl } from '@zoonk/utils';
+import { GlobalContext, rootUrl } from '@zoonk/utils';
 
 const Topics: NextPage = () => {
   const { translate } = useContext(GlobalContext);
-
-  useEffect(() => {
-    analytics().setCurrentScreen('topics');
-  }, []);
 
   return (
     <Container component="main">

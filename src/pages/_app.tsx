@@ -1,5 +1,5 @@
 /* eslint-disable global-require */
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
@@ -7,7 +7,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import ErrorBoundary from '@zoonk/components/ErrorBoundary';
 import Navbar from '@zoonk/components/Navbar';
 import { TranslationFn } from '@zoonk/models';
-import { appLanguage, GlobalContext, performance, theme } from '@zoonk/utils';
+import { appLanguage, GlobalContext, theme } from '@zoonk/utils';
 import '../quill.css';
 import '../styles.css';
 
@@ -37,10 +37,6 @@ const AppWrapper = ({ children }: AppWrapperProps) => {
 };
 
 const CustomApp = ({ Component, pageProps }: AppProps) => {
-  useEffect(() => {
-    performance();
-  }, []);
-
   return (
     <ThemeProvider theme={theme}>
       <Head>

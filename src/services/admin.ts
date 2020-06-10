@@ -1,5 +1,5 @@
+import { db } from '@zoonk/firebase/db';
 import { Admin } from '@zoonk/models';
-import { db } from '../utils';
 
 /**
  * Get some collection stats.

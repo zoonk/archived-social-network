@@ -10,7 +10,7 @@ import Meta from '@zoonk/components/Meta';
 import useAuth from '@zoonk/components/useAuth';
 import { Group } from '@zoonk/models';
 import { getGroup } from '@zoonk/services';
-import { analytics, GlobalContext } from '@zoonk/utils';
+import { GlobalContext } from '@zoonk/utils';
 
 const EditGroup: NextPage = () => {
   const { translate } = useContext(GlobalContext);
@@ -18,10 +18,6 @@ const EditGroup: NextPage = () => {
   const { query } = useRouter();
   const id = String(query.id);
   const [group, setGroup] = useState<Group.Get>();
-
-  useEffect(() => {
-    analytics().setCurrentScreen('group_edit');
-  }, []);
 
   useEffect(() => {
     if (query.id && user) {

@@ -9,17 +9,13 @@ import Meta from '@zoonk/components/Meta';
 import SearchCard from '@zoonk/components/SearchCard';
 import { ContentCategory, SearchResult } from '@zoonk/models';
 import { search } from '@zoonk/services';
-import { analytics, GlobalContext, rootUrl } from '@zoonk/utils';
+import { GlobalContext, rootUrl } from '@zoonk/utils';
 
 const Search: NextPage = () => {
   const { translate } = useContext(GlobalContext);
   const { query } = useRouter();
   const [results, setResults] = useState<SearchResponse<SearchResult>[]>([]);
   const searchTerm = String(query.q);
-
-  useEffect(() => {
-    analytics().setCurrentScreen('search');
-  }, []);
 
   useEffect(() => {
     if (query.q) {

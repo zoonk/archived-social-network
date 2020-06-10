@@ -1,6 +1,6 @@
+import firebase from '@zoonk/firebase';
 import { RawFirebaseTimestamp } from '@zoonk/models';
 import { appLanguage } from '@zoonk/utils';
-import firebase from '@zoonk/utils/firebase';
 
 /**
  * Convert a Firebase date to a string using the app's default locale.

@@ -9,17 +9,13 @@ import Meta from '@zoonk/components/Meta';
 import Snackbar from '@zoonk/components/Snackbar';
 import { Chapter, SnackbarAction } from '@zoonk/models';
 import { getChapter } from '@zoonk/services';
-import { analytics, firebaseError, GlobalContext } from '@zoonk/utils';
+import { firebaseError, GlobalContext } from '@zoonk/utils';
 
 const EditChapter: NextPage = () => {
   const { translate } = useContext(GlobalContext);
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const [data, setData] = useState<Chapter.Get>();
   const { query } = useRouter();
-
-  useEffect(() => {
-    analytics().setCurrentScreen('chapter_edit');
-  }, []);
 
   useEffect(() => {
     if (query.id) {

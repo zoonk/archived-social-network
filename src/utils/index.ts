@@ -2,7 +2,6 @@ export * from './content';
 export * from './context';
 export * from './diff';
 export * from './edits';
-export * from './firebase';
 export * from './i18n';
 export * from './links';
 export * from './logs';

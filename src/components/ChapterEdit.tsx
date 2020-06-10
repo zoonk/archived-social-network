@@ -1,8 +1,9 @@
 import { Fragment, useContext, useState } from 'react';
 import { useRouter } from 'next/router';
+import { timestamp } from '@zoonk/firebase/db';
 import { Chapter, SnackbarAction } from '@zoonk/models';
 import { deleteChapter, updateChapter } from '@zoonk/services';
-import { firebaseError, GlobalContext, timestamp } from '@zoonk/utils';
+import { firebaseError, GlobalContext } from '@zoonk/utils';
 import ChapterForm from './ChapterForm';
 import Snackbar from './Snackbar';
 import useAuth from './useAuth';

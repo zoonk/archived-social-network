@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { NextPage } from 'next';
 import { Container, Grid } from '@material-ui/core';
 import ChapterDetails from '@zoonk/components/ChapterDetails';
@@ -7,7 +6,7 @@ import Meta from '@zoonk/components/Meta';
 import TopicsBreadcrumb from '@zoonk/components/TopicsBreadcrumb';
 import { Chapter } from '@zoonk/models';
 import { getChapter } from '@zoonk/services';
-import { analytics, preRender } from '@zoonk/utils';
+import { preRender } from '@zoonk/utils';
 
 interface ChapterProps {
   data: Chapter.Get;
@@ -23,10 +22,6 @@ const ChapterPage: NextPage<ChapterProps> = ({ data }) => {
     title,
     topics,
   } = data;
-
-  useEffect(() => {
-    analytics().setCurrentScreen('chapter_view');
-  }, []);
 
   return (
     <Container component="main">

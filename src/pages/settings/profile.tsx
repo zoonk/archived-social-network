@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { NextPage } from 'next';
 import { CircularProgress, Container, Grid } from '@material-ui/core';
 import LoginForm from '@zoonk/components/LoginForm';
@@ -8,15 +8,11 @@ import ProfileUpdate from '@zoonk/components/ProfileUpdate';
 import UserBreadcrumb from '@zoonk/components/UserBreadcrumb';
 import UsernameUpdate from '@zoonk/components/UsernameUpdate';
 import useAuth from '@zoonk/components/useAuth';
-import { analytics, GlobalContext, theme } from '@zoonk/utils';
+import { GlobalContext, theme } from '@zoonk/utils';
 
 const Settings: NextPage = () => {
   const { translate } = useContext(GlobalContext);
   const { profile, user } = useAuth();
-
-  useEffect(() => {
-    analytics().setCurrentScreen('settings_profile');
-  }, []);
 
   if (user === null) {
     return <LoginForm />;

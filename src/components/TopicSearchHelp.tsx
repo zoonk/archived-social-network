@@ -1,6 +1,7 @@
 import { useContext, useEffect } from 'react';
 import { Container, Dialog, Typography } from '@material-ui/core';
-import { analytics, GlobalContext, theme } from '@zoonk/utils';
+import { analytics } from '@zoonk/firebase/analytics';
+import { GlobalContext, theme } from '@zoonk/utils';
 
 interface TopicSearchHelpProps {
   open: boolean;

@@ -1,5 +1,5 @@
+import { db } from '@zoonk/firebase/db';
 import { Leaderboard } from '@zoonk/models';
-import { db } from '@zoonk/utils';
 import { serializeLeaderboard } from '../serializers';
 
 const leaderboardConverter: firebase.firestore.FirestoreDataConverter<Leaderboard.Get> = {

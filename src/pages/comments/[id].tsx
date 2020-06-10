@@ -1,11 +1,11 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { NextPage } from 'next';
 import { Container, makeStyles, Typography } from '@material-ui/core';
 import DiscussionListItem from '@zoonk/components/DiscussionListItem';
 import Meta from '@zoonk/components/Meta';
 import { Comment } from '@zoonk/models';
 import { getComment, listReplies } from '@zoonk/services';
-import { analytics, GlobalContext, preRender } from '@zoonk/utils';
+import { GlobalContext, preRender } from '@zoonk/utils';
 
 interface CommentPageProps {
   comment: Comment.Get | undefined;
@@ -29,10 +29,6 @@ const CommentPage: NextPage<CommentPageProps> = ({
 }) => {
   const { translate } = useContext(GlobalContext);
   const classes = useStyles();
-
-  useEffect(() => {
-    analytics().setCurrentScreen('comment_view');
-  }, []);
 
   return (
     <Container component="main" className={classes.root}>

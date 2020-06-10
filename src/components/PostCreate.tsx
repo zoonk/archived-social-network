@@ -1,5 +1,6 @@
 import { Fragment, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { timestamp } from '@zoonk/firebase/db';
 import { Post, SnackbarAction } from '@zoonk/models';
 import { createPost, getChapter } from '@zoonk/services';
 import {
@@ -7,7 +8,6 @@ import {
   firebaseError,
   getPostLinks,
   GlobalContext,
-  timestamp,
 } from '@zoonk/utils';
 import CategorySelector from './CategorySelector';
 import PostForm from './PostForm';

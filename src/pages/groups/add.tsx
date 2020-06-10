@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { NextPage } from 'next';
 import { CircularProgress, Container } from '@material-ui/core';
 import GroupsBreadcrumb from '@zoonk/components/GroupsBreadcrumb';
@@ -7,15 +7,11 @@ import GroupFormContainer from '@zoonk/components/GroupFormContainer';
 import LoginForm from '@zoonk/components/LoginForm';
 import Meta from '@zoonk/components/Meta';
 import useAuth from '@zoonk/components/useAuth';
-import { analytics, GlobalContext } from '@zoonk/utils';
+import { GlobalContext } from '@zoonk/utils';
 
 const CreateGroup: NextPage = () => {
   const { translate } = useContext(GlobalContext);
   const { profile, user } = useAuth();
-
-  useEffect(() => {
-    analytics().setCurrentScreen('groups_create');
-  }, []);
 
   if (user === undefined) {
     return <CircularProgress />;

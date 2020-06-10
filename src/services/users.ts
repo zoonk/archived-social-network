@@ -1,9 +1,9 @@
+import firebase from '@zoonk/firebase';
+import { analytics } from '@zoonk/firebase/analytics';
+import { auth } from '@zoonk/firebase/auth';
+import { db } from '@zoonk/firebase/db';
+import { functions } from '@zoonk/firebase/functions';
 import { Notification, User } from '@zoonk/models';
-import { analytics, db, functions } from '@zoonk/utils';
-import firebase from '@zoonk/utils/firebase';
-import 'firebase/auth';
-
-const auth = firebase.auth();
 
 /**
  * Log a user's IP address to the database.

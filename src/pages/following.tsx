@@ -1,4 +1,4 @@
-import { useEffect, useContext } from 'react';
+import { useContext } from 'react';
 import { NextPage } from 'next';
 import { CircularProgress, Container } from '@material-ui/core';
 import LoginForm from '@zoonk/components/LoginForm';
@@ -7,15 +7,11 @@ import SidebarPage from '@zoonk/components/SidebarPage';
 import TimelineCard from '@zoonk/components/TimelineCard';
 import TimelineHeader from '@zoonk/components/TimelineHeader';
 import useAuth from '@zoonk/components/useAuth';
-import { analytics, GlobalContext } from '@zoonk/utils';
+import { GlobalContext } from '@zoonk/utils';
 
 const Following: NextPage = () => {
   const { translate } = useContext(GlobalContext);
   const { user } = useAuth();
-
-  useEffect(() => {
-    analytics().setCurrentScreen('following');
-  }, []);
 
   if (user === undefined) {
     return <CircularProgress />;

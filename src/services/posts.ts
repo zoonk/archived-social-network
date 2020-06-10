@@ -1,14 +1,8 @@
+import { analytics } from '@zoonk/firebase/analytics';
+import { arrayRemove, arrayUnion, db, timestamp } from '@zoonk/firebase/db';
+import { functions } from '@zoonk/firebase/functions';
 import { ChapterProgress, Dictionary, Post, Profile } from '@zoonk/models';
-import {
-  analytics,
-  appLanguage,
-  arrayRemove,
-  arrayUnion,
-  db,
-  functions,
-  generateRandomSlug,
-  timestamp,
-} from '@zoonk/utils';
+import { appLanguage, generateRandomSlug } from '@zoonk/utils';
 import { serializePost } from '../serializers';
 import { getChapter, updateChapter } from './chapters';
 import { getTopic } from './topics';

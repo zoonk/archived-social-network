@@ -1,18 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { analytics } from '@zoonk/firebase/analytics';
+import { auth } from '@zoonk/firebase/auth';
+import { db } from '@zoonk/firebase/db';
 import { User } from '@zoonk/models';
 import { logIPAddress } from '@zoonk/services/users';
-import {
-  AuthContext,
-  analytics,
-  appLanguage,
-  db,
-  isProduction,
-} from '@zoonk/utils';
-import firebase from '@zoonk/utils/firebase';
-import 'firebase/auth';
-
-const auth = firebase.auth();
-auth.languageCode = appLanguage;
+import { AuthContext, appLanguage, isProduction } from '@zoonk/utils';
 
 interface AuthProps {
   children: React.ReactNode;

@@ -1,7 +1,8 @@
 import algolia from 'algoliasearch';
 import { SearchResponse } from '@algolia/client-search';
+import { analytics } from '@zoonk/firebase/analytics';
 import { Chapter, Post, SearchResult } from '@zoonk/models';
-import { analytics, appLanguage } from '@zoonk/utils';
+import { appLanguage } from '@zoonk/utils';
 
 const NEXT_PUBLIC_ALGOLIA_APP_ID = process.env
   .NEXT_PUBLIC_ALGOLIA_APP_ID as string;

@@ -1,12 +1,7 @@
+import { analytics } from '@zoonk/firebase/analytics';
+import { db, timestamp } from '@zoonk/firebase/db';
 import { Group, Profile } from '@zoonk/models';
-import {
-  analytics,
-  appLanguage,
-  db,
-  getRandomId,
-  generateSlug,
-  timestamp,
-} from '@zoonk/utils';
+import { appLanguage, getRandomId, generateSlug } from '@zoonk/utils';
 import { serializeGroup } from '../serializers';
 
 const groupConverter: firebase.firestore.FirestoreDataConverter<Group.Get> = {

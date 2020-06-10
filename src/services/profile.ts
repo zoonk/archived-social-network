@@ -1,5 +1,5 @@
+import { db } from '@zoonk/firebase/db';
 import { Profile } from '@zoonk/models';
-import { db } from '@zoonk/utils';
 import { serializeProfile } from '../serializers';
 
 const profileConverter: firebase.firestore.FirestoreDataConverter<Profile.Get> = {

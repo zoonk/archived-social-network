@@ -2,6 +2,7 @@ import { useContext, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import Quill from 'quill';
 import { Button, makeStyles, Paper } from '@material-ui/core';
+import { timestamp } from '@zoonk/firebase/db';
 import { SnackbarAction } from '@zoonk/models';
 import { createComment } from '@zoonk/services';
 import {
@@ -9,7 +10,6 @@ import {
   firebaseError,
   GlobalContext,
   PostContext,
-  timestamp,
 } from '@zoonk/utils';
 import Snackbar from './Snackbar';
 import LoginRequired from './LoginRequired';

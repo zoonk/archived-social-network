@@ -1,11 +1,11 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { NextPage, NextPageContext } from 'next';
 import DiscussionList from '@zoonk/components/DiscussionList';
 import Meta from '@zoonk/components/Meta';
 import ProfileBase from '@zoonk/components/ProfileBase';
 import { Leaderboard } from '@zoonk/models';
 import { getUserLeaderboard } from '@zoonk/services';
-import { analytics, GlobalContext, preRender, rootUrl } from '@zoonk/utils';
+import { GlobalContext, preRender, rootUrl } from '@zoonk/utils';
 
 interface ProfileProps {
   profile: Leaderboard.Get;
@@ -14,10 +14,6 @@ interface ProfileProps {
 const ProfilePage: NextPage<ProfileProps> = ({ profile }: ProfileProps) => {
   const { translate } = useContext(GlobalContext);
   const { id, name, photo, username } = profile;
-
-  useEffect(() => {
-    analytics().setCurrentScreen('profile_comments');
-  }, []);
 
   return (
     <ProfileBase profile={profile}>

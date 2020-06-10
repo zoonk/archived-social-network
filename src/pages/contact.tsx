@@ -13,15 +13,10 @@ import { Mail } from '@material-ui/icons';
 import Meta from '@zoonk/components/Meta';
 import Snackbar from '@zoonk/components/Snackbar';
 import useAuth from '@zoonk/components/useAuth';
+import { timestamp } from '@zoonk/firebase/db';
 import { SnackbarAction } from '@zoonk/models';
 import { addFeedback } from '@zoonk/services';
-import {
-  analytics,
-  GlobalContext,
-  rootUrl,
-  theme,
-  timestamp,
-} from '@zoonk/utils';
+import { GlobalContext, rootUrl, theme } from '@zoonk/utils';
 
 const Contact: NextPage = () => {
   const { translate } = useContext(GlobalContext);
@@ -62,10 +57,6 @@ const Contact: NextPage = () => {
       setEmail(user.email);
     }
   }, [user]);
-
-  useEffect(() => {
-    analytics().setCurrentScreen('contact');
-  }, []);
 
   return (
     <Container

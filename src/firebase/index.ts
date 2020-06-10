@@ -1,12 +1,6 @@
 import firebase from 'firebase/app';
-import 'firebase/analytics';
-import 'firebase/firestore';
-import 'firebase/functions';
-import 'firebase/performance';
-import 'firebase/storage';
-
 import { FirebaseConfig } from '@zoonk/models';
-import { isProduction } from './settings';
+import { isProduction } from '@zoonk/utils';
 
 const firebaseConfig: FirebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY as string,
@@ -25,17 +19,5 @@ if (!firebase.apps.length) {
 }
 
 firebase.setLogLevel(isProduction ? 'silent' : 'info');
-
-export const db = firebase.firestore();
-export const functions = firebase.functions();
-export const storage = firebase.storage();
-
-db.settings({ ignoreUndefinedProperties: true });
-
-// These modules need to be imported on the client because they use `window`.
-export const { analytics, performance } = firebase;
-
-export const { arrayRemove, arrayUnion } = firebase.firestore.FieldValue;
-export const timestamp = firebase.firestore.FieldValue.serverTimestamp();
 
 export default firebase;

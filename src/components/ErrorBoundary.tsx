@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { analytics } from '@zoonk/utils';
+import { analytics } from '@zoonk/firebase/analytics';
 
 interface ErrorProps {
   children: React.ReactNode;

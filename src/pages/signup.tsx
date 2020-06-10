@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { NextPage } from 'next';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
@@ -19,7 +19,7 @@ import SocialSignin from '@zoonk/components/SocialSignin';
 import useAuth from '@zoonk/components/useAuth';
 import { SnackbarAction } from '@zoonk/models';
 import { signUp } from '@zoonk/services/users';
-import { analytics, GlobalContext, rootUrl, theme } from '@zoonk/utils';
+import { GlobalContext, rootUrl, theme } from '@zoonk/utils';
 
 const SignUp: NextPage = () => {
   const { translate } = useContext(GlobalContext);
@@ -54,10 +54,6 @@ const SignUp: NextPage = () => {
         });
       });
   };
-
-  useEffect(() => {
-    analytics().setCurrentScreen('signup');
-  }, []);
 
   if (user === undefined) {
     return null;

@@ -1,12 +1,8 @@
 import { Fragment, useContext, useState } from 'react';
+import { timestamp } from '@zoonk/firebase/db';
 import { Post, SnackbarAction } from '@zoonk/models';
 import { updatePost } from '@zoonk/services';
-import {
-  firebaseError,
-  getPostLinks,
-  GlobalContext,
-  timestamp,
-} from '@zoonk/utils';
+import { firebaseError, getPostLinks, GlobalContext } from '@zoonk/utils';
 import Snackbar from './Snackbar';
 import PostForm from './PostForm';
 import useAuth from './useAuth';

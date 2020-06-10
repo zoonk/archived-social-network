@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { NextPage } from 'next';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
@@ -18,7 +18,7 @@ import Snackbar from '@zoonk/components/Snackbar';
 import useAuth from '@zoonk/components/useAuth';
 import { SnackbarAction } from '@zoonk/models';
 import { resetPassword } from '@zoonk/services/users';
-import { analytics, GlobalContext, rootUrl, theme } from '@zoonk/utils';
+import { GlobalContext, rootUrl, theme } from '@zoonk/utils';
 
 const ResetPassword: NextPage = () => {
   const { translate } = useContext(GlobalContext);
@@ -45,10 +45,6 @@ const ResetPassword: NextPage = () => {
         });
       });
   };
-
-  useEffect(() => {
-    analytics().setCurrentScreen('reset_password');
-  }, []);
 
   if (user === undefined) {
     return null;

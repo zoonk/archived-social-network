@@ -2,9 +2,10 @@ import { useContext, useState } from 'react';
 import { useRouter } from 'next/router';
 import { IconButton, Menu, MenuItem } from '@material-ui/core';
 import { MoreVert } from '@material-ui/icons';
+import { timestamp } from '@zoonk/firebase/db';
 import { SnackbarAction } from '@zoonk/models';
 import { updatePost } from '@zoonk/services';
-import { firebaseError, GlobalContext, timestamp } from '@zoonk/utils';
+import { firebaseError, GlobalContext } from '@zoonk/utils';
 import Snackbar from './Snackbar';
 import useAuth from './useAuth';
 
