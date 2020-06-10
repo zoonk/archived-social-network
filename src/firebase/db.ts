@@ -1,5 +1,5 @@
 import firebase from './index';
-import 'firebase/firestore';
+import 'firebase/firestore/memory';
 
 export const db = firebase.firestore();
 db.settings({ ignoreUndefinedProperties: true });
