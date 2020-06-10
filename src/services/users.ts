@@ -1,6 +1,9 @@
 import { Notification, User } from '@zoonk/models';
-import { analytics, auth, db, functions } from '@zoonk/utils';
+import { analytics, db, functions } from '@zoonk/utils';
 import firebase from '@zoonk/utils/firebase';
+import 'firebase/auth';
+
+const auth = firebase.auth();
 
 /**
  * Log a user's IP address to the database.
@@ -18,6 +21,10 @@ export const signIn = (
 ): Promise<firebase.auth.UserCredential> => {
   analytics().logEvent('login', { method: 'password' });
   return auth.signInWithEmailAndPassword(email, password);
+};
+
+export const signOut = () => {
+  return auth.signOut();
 };
 
 /**
@@ -67,4 +74,12 @@ export const updateNotificationSettings = async (
 ) => {
   const changes = { [`notificationSettings.${field}`]: active };
   return db.doc(`users/${userId}`).update(changes);
+};
+
+export const resetPassword = async (email: string) => {
+  return auth.sendPasswordResetEmail(email);
+};
+
+export const signUp = (email: string, password: string) => {
+  return auth.signInWithEmailAndPassword(email, password);
 };

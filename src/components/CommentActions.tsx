@@ -8,6 +8,7 @@ import { firebaseError, GlobalContext, PostContext } from '@zoonk/utils';
 import LikeButton from './LikeButton';
 import MarkAsAnswer from './MarkAsAnswer';
 import Snackbar from './Snackbar';
+import useAuth from './useAuth';
 
 interface CommentActionsProps {
   data: Comment.Get;
@@ -24,7 +25,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CommentActions = ({ data, onReply }: CommentActionsProps) => {
-  const { translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { user } = useAuth();
   const { category: postCategory, createdById: postAuthor } = useContext(
     PostContext,
   );

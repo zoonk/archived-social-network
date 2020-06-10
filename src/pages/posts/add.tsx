@@ -6,11 +6,13 @@ import LoginForm from '@zoonk/components/LoginForm';
 import Meta from '@zoonk/components/Meta';
 import PostCreate from '@zoonk/components/PostCreate';
 import PostsBreadcrumb from '@zoonk/components/PostsBreadcrumb';
+import useAuth from '@zoonk/components/useAuth';
 import { Post } from '@zoonk/models';
 import { analytics, GlobalContext, postCategories } from '@zoonk/utils';
 
 const PostAddPage: NextPage = () => {
-  const { translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { user } = useAuth();
   const [category, setCategory] = useState<Post.Category | undefined>();
   const { query } = useRouter();
   const chapterId = query.chapterId ? String(query.chapterId) : undefined;

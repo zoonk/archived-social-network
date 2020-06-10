@@ -9,12 +9,14 @@ import LoginForm from '@zoonk/components/LoginForm';
 import Meta from '@zoonk/components/Meta';
 import PostEdit from '@zoonk/components/PostEdit';
 import Snackbar from '@zoonk/components/Snackbar';
+import useAuth from '@zoonk/components/useAuth';
 import { Post, SnackbarAction } from '@zoonk/models';
 import { deletePost, getPost } from '@zoonk/services';
 import { analytics, firebaseError, GlobalContext } from '@zoonk/utils';
 
 const EditPost: NextPage = () => {
-  const { translate, profile, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { profile, user } = useAuth();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const [data, setData] = useState<Post.Get>();
   const { query, push } = useRouter();

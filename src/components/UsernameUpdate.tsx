@@ -5,9 +5,11 @@ import { SnackbarAction } from '@zoonk/models';
 import { createUsername, validateUsername } from '@zoonk/services';
 import { firebaseError, GlobalContext, theme } from '@zoonk/utils';
 import Snackbar from './Snackbar';
+import useAuth from './useAuth';
 
 const UsernameUpdate = () => {
-  const { translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { user } = useAuth();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const [username, setUsername] = useState<string>(user?.username || '');
   const [valid, setValid] = useState<boolean>(true);

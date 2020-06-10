@@ -7,6 +7,7 @@ import { GlobalContext, theme } from '@zoonk/utils';
 import LanguageFilter from './LanguageFilter';
 import MenuPages from './MenuPages';
 import SocialLinks from './SocialLinks';
+import useAuth from './useAuth';
 
 const loading = { loading: () => <CircularProgress /> };
 const MenuUser = dynamic(() => import('./MenuUser'), loading);
@@ -15,7 +16,8 @@ const MenuUser = dynamic(() => import('./MenuUser'), loading);
  * Side-nav/menu containing a menu with all pages and user info.
  */
 const MenuDrawer = () => {
-  const { translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { user } = useAuth();
   const { asPath } = useRouter();
 
   return (

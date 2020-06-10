@@ -5,9 +5,11 @@ import { updateProfile } from '@zoonk/services';
 import { firebaseError, GlobalContext, imgSize, theme } from '@zoonk/utils';
 import Snackbar from './Snackbar';
 import ImageUpload from './ImageUpload';
+import useAuth from './useAuth';
 
 const ProfileUpdate = () => {
-  const { translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { user } = useAuth();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const [name, setName] = useState<string>('');
   const [bio, setBio] = useState<string>('');

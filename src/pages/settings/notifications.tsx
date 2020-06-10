@@ -5,10 +5,12 @@ import LoginForm from '@zoonk/components/LoginForm';
 import Meta from '@zoonk/components/Meta';
 import NotificationSettings from '@zoonk/components/NotificationSettings';
 import UserBreadcrumb from '@zoonk/components/UserBreadcrumb';
+import useAuth from '@zoonk/components/useAuth';
 import { analytics, GlobalContext } from '@zoonk/utils';
 
 const Settings: NextPage = () => {
-  const { translate, profile, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { profile, user } = useAuth();
 
   useEffect(() => {
     analytics().setCurrentScreen('settings');

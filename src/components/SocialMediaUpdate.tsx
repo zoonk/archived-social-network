@@ -20,9 +20,11 @@ import { SnackbarAction } from '@zoonk/models';
 import { updateProfile } from '@zoonk/services';
 import { firebaseError, GlobalContext, theme } from '@zoonk/utils';
 import Snackbar from './Snackbar';
+import useAuth from './useAuth';
 
 const SocialMediaUpdate = () => {
-  const { translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { user } = useAuth();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const [linkedin, setLinkedin] = useState<string>('');
   const [twitter, setTwitter] = useState<string>('');

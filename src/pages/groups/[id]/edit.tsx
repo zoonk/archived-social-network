@@ -7,12 +7,14 @@ import GroupFormContainer from '@zoonk/components/GroupFormContainer';
 import GroupsBreadcrumb from '@zoonk/components/GroupsBreadcrumb';
 import LoginForm from '@zoonk/components/LoginForm';
 import Meta from '@zoonk/components/Meta';
+import useAuth from '@zoonk/components/useAuth';
 import { Group } from '@zoonk/models';
 import { getGroup } from '@zoonk/services';
 import { analytics, GlobalContext } from '@zoonk/utils';
 
 const EditGroup: NextPage = () => {
-  const { translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { user } = useAuth();
   const { query } = useRouter();
   const id = String(query.id);
   const [group, setGroup] = useState<Group.Get>();

@@ -10,9 +10,11 @@ import {
 } from '@zoonk/utils';
 import GroupForm from './GroupForm';
 import Snackbar from './Snackbar';
+import useAuth from './useAuth';
 
 const GroupCreate = () => {
-  const { profile, translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { profile, user } = useAuth();
   const { push, query } = useRouter();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const { topicId } = query;

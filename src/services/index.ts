@@ -15,5 +15,4 @@ export * from './reports';
 export * from './search';
 export * from './topics';
 export * from './upload';
-export * from './users';
 export * from './wikipedia';

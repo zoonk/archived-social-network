@@ -5,6 +5,7 @@ import { SnackbarAction } from '@zoonk/models';
 import { getLikedStatus, toggleLike } from '@zoonk/services';
 import { GlobalContext } from '@zoonk/utils';
 import Snackbar from './Snackbar';
+import useAuth from './useAuth';
 
 interface LikeButtonProps {
   itemPath: string;
@@ -12,7 +13,8 @@ interface LikeButtonProps {
 }
 
 const LikeButton = ({ itemPath, likes }: LikeButtonProps) => {
-  const { translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { user } = useAuth();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const [saving, setSaving] = useState<boolean>(false);
   const [liked, setLiked] = useState<boolean>(false);

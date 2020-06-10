@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import { Button, Grid, Paper, TextField, Typography } from '@material-ui/core';
 import { SnackbarAction } from '@zoonk/models';
-import { updatePassword } from '@zoonk/services';
+import { updatePassword } from '@zoonk/services/users';
 import { firebaseError, GlobalContext, theme } from '@zoonk/utils';
 import Snackbar from './Snackbar';
 

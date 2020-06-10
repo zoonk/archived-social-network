@@ -14,9 +14,11 @@ import { liveUserXP } from '@zoonk/services';
 import { GlobalContext, UserContext } from '@zoonk/utils';
 import MenuDrawer from './MenuDrawer';
 import SearchBox from './SearchBox';
+import useAuth from './useAuth';
 
 const Navbar = () => {
-  const { translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { user } = useAuth();
   const [displayMenu, setMenu] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [xp, setXP] = useState<number>(1);

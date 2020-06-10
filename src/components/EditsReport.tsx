@@ -14,6 +14,7 @@ import { GlobalContext } from '@zoonk/utils';
 import ModalConfirmation from './ModalConfirmation';
 import ModalError from './ModalError';
 import ModalProgress from './ModalProgress';
+import useAuth from './useAuth';
 
 interface EditsReportProps {
   id: string;
@@ -23,7 +24,8 @@ interface EditsReportProps {
  * Report a page change violating our terms of service.
  */
 const EditsReport = ({ id }: EditsReportProps) => {
-  const { translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { user } = useAuth();
   const [open, setOpen] = useState<boolean>(false);
   const [comments, setComments] = useState<string>('');
   const [status, setStatus] = useState<RequestStatus>('idle');

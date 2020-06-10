@@ -6,10 +6,12 @@ import GroupCreate from '@zoonk/components/GroupCreate';
 import GroupFormContainer from '@zoonk/components/GroupFormContainer';
 import LoginForm from '@zoonk/components/LoginForm';
 import Meta from '@zoonk/components/Meta';
+import useAuth from '@zoonk/components/useAuth';
 import { analytics, GlobalContext } from '@zoonk/utils';
 
 const CreateGroup: NextPage = () => {
-  const { profile, translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { profile, user } = useAuth();
 
   useEffect(() => {
     analytics().setCurrentScreen('groups_create');

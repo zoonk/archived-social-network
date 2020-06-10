@@ -6,10 +6,12 @@ import Meta from '@zoonk/components/Meta';
 import SidebarPage from '@zoonk/components/SidebarPage';
 import TopicsFollowing from '@zoonk/components/TopicsFollowing';
 import TopicsHeader from '@zoonk/components/TopicsHeader';
+import useAuth from '@zoonk/components/useAuth';
 import { analytics, GlobalContext } from '@zoonk/utils';
 
 const TopicsFollowingPage: NextPage = () => {
-  const { translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { user } = useAuth();
 
   useEffect(() => {
     analytics().setCurrentScreen('topics_following');

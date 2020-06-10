@@ -6,6 +6,7 @@ import { firebaseError, GlobalContext, imgSize, timestamp } from '@zoonk/utils';
 import FormBase from './FormBase';
 import ImageUpload from './ImageUpload';
 import Snackbar from './Snackbar';
+import useAuth from './useAuth';
 
 interface TopicEditProps {
   topic: Topic.Get;
@@ -15,7 +16,8 @@ interface TopicEditProps {
  * Form for updating a topic's data.
  */
 const TopicEdit = ({ topic }: TopicEditProps) => {
-  const { profile, translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { profile, user } = useAuth();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const [description, setDescription] = useState<string>(topic.description);
   const [photo, setPhoto] = useState<string | null>(topic.photo);

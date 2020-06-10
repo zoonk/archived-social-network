@@ -8,6 +8,7 @@ import { getChapterLive, updatePost, updatePostOrder } from '@zoonk/services';
 import { firebaseError, GlobalContext, timestamp, theme } from '@zoonk/utils';
 import Snackbar from './Snackbar';
 import SortableList from './SortableList';
+import useAuth from './useAuth';
 
 interface LessonSortableListProps {
   category: 'examples' | 'lessons';
@@ -21,7 +22,8 @@ const LessonSortableList = ({
   category,
   chapterId,
 }: LessonSortableListProps) => {
-  const { profile, translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { profile, user } = useAuth();
   const { push } = useRouter();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const [loading, setLoading] = useState<boolean>(false);

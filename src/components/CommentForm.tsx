@@ -13,6 +13,7 @@ import {
 } from '@zoonk/utils';
 import Snackbar from './Snackbar';
 import LoginRequired from './LoginRequired';
+import useAuth from './useAuth';
 
 const Editor = dynamic(() => import('./rich-text/Editor'), { ssr: false });
 
@@ -34,7 +35,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CommentForm = ({ commentId, onCancel, onSave }: CommentFormProps) => {
-  const { translate, profile, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { profile, user } = useAuth();
   const editorRef = useRef<Quill>();
   const { category, groupId, id, topics } = useContext(PostContext);
   const classes = useStyles();

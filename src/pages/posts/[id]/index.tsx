@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { NextPage } from 'next';
 import { Container, Divider, makeStyles } from '@material-ui/core';
 import CommentList from '@zoonk/components/CommentList';
@@ -8,13 +8,13 @@ import PostBar from '@zoonk/components/PostBar';
 import PostFooter from '@zoonk/components/PostFooter';
 import PostHeader from '@zoonk/components/PostHeader';
 import Viewer from '@zoonk/components/rich-text/Viewer';
+import useAuth from '@zoonk/components/useAuth';
 import { Post } from '@zoonk/models';
 import { getPost, markPostAsRead, togglePostProgress } from '@zoonk/services';
 import {
   analytics,
   appLanguage,
   getPostImage,
-  GlobalContext,
   getPlainText,
   PostContext,
   preRender,
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const PostPage: NextPage<PostPageProps> = ({ data }) => {
-  const { user } = useContext(GlobalContext);
+  const { user } = useAuth();
   const classes = useStyles();
   const { category, chapterId, cover, html, id, language, sites, title } = data;
   const siteImg = sites.find((site) => Boolean(site.image));

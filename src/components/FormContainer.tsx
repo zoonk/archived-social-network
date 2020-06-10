@@ -1,7 +1,7 @@
-import { useContext } from 'react';
 import { Avatar, CircularProgress, Typography } from '@material-ui/core';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
 import LoginForm from './LoginForm';
+import useAuth from './useAuth';
 
 interface FormHeaderProps {
   children: React.ReactNode;
@@ -13,7 +13,7 @@ interface FormHeaderProps {
  * Container for wrapping a form for editing some content.
  */
 const FormContainer = ({ children, icon, title }: FormHeaderProps) => {
-  const { user } = useContext(GlobalContext);
+  const { user } = useAuth();
 
   // If the user isn't logged in, then display a login form.
   if (user === null) {

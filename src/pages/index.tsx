@@ -5,10 +5,12 @@ import Meta from '@zoonk/components/Meta';
 import PostsCard from '@zoonk/components/PostsCard';
 import SidebarPage from '@zoonk/components/SidebarPage';
 import TimelineHeader from '@zoonk/components/TimelineHeader';
+import useAuth from '@zoonk/components/useAuth';
 import { analytics, GlobalContext, rootUrl } from '@zoonk/utils';
 
 const Home: NextPage = () => {
-  const { translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { user } = useAuth();
 
   useEffect(() => {
     analytics().setCurrentScreen('home');

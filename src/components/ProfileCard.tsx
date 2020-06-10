@@ -12,6 +12,7 @@ import { Leaderboard } from '@zoonk/models';
 import { GlobalContext, theme } from '@zoonk/utils';
 import ProfileSocial from './ProfileSocial';
 import UserReputation from './UserReputation';
+import useAuth from './useAuth';
 
 interface ProfileCardProps {
   data: Leaderboard.Get;
@@ -21,7 +22,8 @@ interface ProfileCardProps {
  * Card for displaying a user's profile.
  */
 const ProfileCard = ({ data }: ProfileCardProps) => {
-  const { translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { user } = useAuth();
   const { bio, id, name, photo, xp } = data;
 
   return (

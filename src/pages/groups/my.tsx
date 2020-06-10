@@ -6,10 +6,12 @@ import GroupListHeader from '@zoonk/components/GroupListHeader';
 import LoginForm from '@zoonk/components/LoginForm';
 import Meta from '@zoonk/components/Meta';
 import SidebarPage from '@zoonk/components/SidebarPage';
+import useAuth from '@zoonk/components/useAuth';
 import { analytics, GlobalContext } from '@zoonk/utils';
 
 const MyGroups: NextPage = () => {
-  const { translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { user } = useAuth();
 
   useEffect(() => {
     analytics().setCurrentScreen('my_groups');

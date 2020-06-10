@@ -1,13 +1,14 @@
 import { Fragment, useContext } from 'react';
 import dynamic from 'next/dynamic';
-import { GlobalContext, PostContext } from '@zoonk/utils';
+import { PostContext } from '@zoonk/utils';
 import BottomBar from './BottomBar';
 import PostBarActions from './PostBarActions';
+import useAuth from './useAuth';
 
 const PostBarLessons = dynamic(() => import('./PostBarLessons'));
 
 const PostBar = () => {
-  const { user } = useContext(GlobalContext);
+  const { user } = useAuth();
   const { category, chapterId, createdById, id, likes, topics } = useContext(
     PostContext,
   );

@@ -11,6 +11,7 @@ import {
 import { firebaseError, GlobalContext, theme } from '@zoonk/utils';
 import Snackbar from './Snackbar';
 import SortableList from './SortableList';
+import useAuth from './useAuth';
 
 interface ChapterSortableListProps {
   topicId: string;
@@ -20,7 +21,8 @@ interface ChapterSortableListProps {
  * Sortable list of chapters.
  */
 const ChapterSortableList = ({ topicId }: ChapterSortableListProps) => {
-  const { profile, translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { profile, user } = useAuth();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [items, setItems] = useState<Chapter.Summary[]>([]);

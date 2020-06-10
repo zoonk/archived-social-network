@@ -5,13 +5,15 @@ import { deleteGroup, updateGroup } from '@zoonk/services';
 import { firebaseError, GlobalContext, timestamp } from '@zoonk/utils';
 import GroupForm from './GroupForm';
 import Snackbar from './Snackbar';
+import useAuth from './useAuth';
 
 interface GroupEditProps {
   data: Group.Get;
 }
 
 const GroupEdit = ({ data }: GroupEditProps) => {
-  const { translate, profile, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { profile, user } = useAuth();
   const { push } = useRouter();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const canDelete =

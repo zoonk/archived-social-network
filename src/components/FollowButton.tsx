@@ -5,6 +5,7 @@ import { PersonAdd, PersonAddDisabled } from '@material-ui/icons';
 import { Follower } from '@zoonk/models';
 import { follow, getFollowStatus, unfollow } from '@zoonk/services';
 import { GlobalContext } from '@zoonk/utils';
+import useAuth from './useAuth';
 
 interface FollowButtonProps {
   category: Follower.Collections;
@@ -12,7 +13,8 @@ interface FollowButtonProps {
 }
 
 const FollowButton = ({ category, categoryId }: FollowButtonProps) => {
-  const { translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { user } = useAuth();
   const { push } = useRouter();
   const [joined, setJoined] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);

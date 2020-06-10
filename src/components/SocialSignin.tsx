@@ -2,7 +2,7 @@ import { Fragment, useContext, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Button } from '@material-ui/core';
 import { SnackbarAction } from '@zoonk/models';
-import { signInWithFacebook, signInWithGoogle } from '@zoonk/services';
+import { signInWithFacebook, signInWithGoogle } from '@zoonk/services/users';
 import { firebaseError, GlobalContext, theme } from '@zoonk/utils';
 import Snackbar from './Snackbar';
 

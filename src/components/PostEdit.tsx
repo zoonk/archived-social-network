@@ -9,13 +9,15 @@ import {
 } from '@zoonk/utils';
 import Snackbar from './Snackbar';
 import PostForm from './PostForm';
+import useAuth from './useAuth';
 
 interface PostEditProps {
   data: Post.Get;
 }
 
 const PostEdit = ({ data }: PostEditProps) => {
-  const { profile, translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { profile, user } = useAuth();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
 
   if (!user || !profile) {

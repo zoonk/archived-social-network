@@ -16,11 +16,14 @@ import AlreadyLoggedin from '@zoonk/components/AlreadyLoggedin';
 import Meta from '@zoonk/components/Meta';
 import Snackbar from '@zoonk/components/Snackbar';
 import SocialSignin from '@zoonk/components/SocialSignin';
+import useAuth from '@zoonk/components/useAuth';
 import { SnackbarAction } from '@zoonk/models';
-import { analytics, auth, GlobalContext, rootUrl, theme } from '@zoonk/utils';
+import { signUp } from '@zoonk/services/users';
+import { analytics, GlobalContext, rootUrl, theme } from '@zoonk/utils';
 
 const SignUp: NextPage = () => {
-  const { translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { user } = useAuth();
   const { query, push } = useRouter();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const [email, setEmail] = useState<string>('');
@@ -30,8 +33,7 @@ const SignUp: NextPage = () => {
   const handleSubmit = () => {
     setSnackbar({ msg: translate('creating_account'), type: 'progress' });
 
-    auth
-      .createUserWithEmailAndPassword(email, password)
+    signUp(email, password)
       .then((res) => res.user?.sendEmailVerification())
       .then(() => {
         setSignup(true);

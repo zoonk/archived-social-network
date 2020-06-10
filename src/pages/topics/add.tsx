@@ -9,6 +9,7 @@ import Snackbar from '@zoonk/components/Snackbar';
 import TopicCreate from '@zoonk/components/TopicCreate';
 import TopicFormContainer from '@zoonk/components/TopicFormContainer';
 import TopicsBreadcrumb from '@zoonk/components/TopicsBreadcrumb';
+import useAuth from '@zoonk/components/useAuth';
 import { SnackbarAction, Topic, WikipediaSearchItem } from '@zoonk/models';
 import { createTopic, getWikipediaPage, validateTopic } from '@zoonk/services';
 import {
@@ -21,7 +22,8 @@ import {
 } from '@zoonk/utils';
 
 const CreateTopic: NextPage = () => {
-  const { profile, translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { profile, user } = useAuth();
   const { push } = useRouter();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
 

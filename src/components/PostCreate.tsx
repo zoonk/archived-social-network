@@ -12,6 +12,7 @@ import {
 import CategorySelector from './CategorySelector';
 import PostForm from './PostForm';
 import Snackbar from './Snackbar';
+import useAuth from './useAuth';
 
 interface PostCreateProps {
   category?: Post.Category;
@@ -30,7 +31,8 @@ const PostCreate = ({
   topicId,
   onCategoryChange,
 }: PostCreateProps) => {
-  const { profile, translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { profile, user } = useAuth();
   const { push } = useRouter();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const [topicIds, setTopics] = useState<string[]>(topicId ? [topicId] : []);

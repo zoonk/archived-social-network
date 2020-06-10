@@ -10,13 +10,15 @@ import {
 } from '@zoonk/utils';
 import ChapterForm from './ChapterForm';
 import Snackbar from './Snackbar';
+import useAuth from './useAuth';
 
 interface ChapterCreateProps {
   topicId: string;
 }
 
 const ChapterCreate = ({ topicId }: ChapterCreateProps) => {
-  const { profile, translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { profile, user } = useAuth();
   const { push } = useRouter();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
 

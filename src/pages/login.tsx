@@ -4,10 +4,12 @@ import { CircularProgress } from '@material-ui/core';
 import AlreadyLoggedin from '@zoonk/components/AlreadyLoggedin';
 import LoginForm from '@zoonk/components/LoginForm';
 import Meta from '@zoonk/components/Meta';
+import useAuth from '@zoonk/components/useAuth';
 import { analytics, GlobalContext, rootUrl } from '@zoonk/utils';
 
 const Login: NextPage = () => {
-  const { translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { user } = useAuth();
 
   useEffect(() => {
     analytics().setCurrentScreen('login');

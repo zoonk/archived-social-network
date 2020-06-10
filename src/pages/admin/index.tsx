@@ -11,10 +11,12 @@ import HomeBreadcrumb from '@zoonk/components/HomeBreadcrumb';
 import Meta from '@zoonk/components/Meta';
 import ReportsList from '@zoonk/components/ReportsList';
 import Stats from '@zoonk/components/Stats';
+import useAuth from '@zoonk/components/useAuth';
 import { GlobalContext } from '@zoonk/utils';
 
 const AdminPage = () => {
-  const { translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { user } = useAuth();
   const { push } = useRouter();
 
   if (user === undefined) {

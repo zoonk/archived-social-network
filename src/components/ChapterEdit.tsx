@@ -5,6 +5,7 @@ import { deleteChapter, updateChapter } from '@zoonk/services';
 import { firebaseError, GlobalContext, timestamp } from '@zoonk/utils';
 import ChapterForm from './ChapterForm';
 import Snackbar from './Snackbar';
+import useAuth from './useAuth';
 
 interface ChapterEditProps {
   data: Chapter.Get;
@@ -15,7 +16,8 @@ interface ChapterEditProps {
  * @property `data` - current chapter data.
  */
 const ChapterEdit = ({ data }: ChapterEditProps) => {
-  const { translate, profile, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { profile, user } = useAuth();
   const { push } = useRouter();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const isAuthor = user?.uid === data.createdById;

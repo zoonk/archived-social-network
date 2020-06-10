@@ -15,11 +15,14 @@ import { MailOutline } from '@material-ui/icons';
 import AlreadyLoggedin from '@zoonk/components/AlreadyLoggedin';
 import Meta from '@zoonk/components/Meta';
 import Snackbar from '@zoonk/components/Snackbar';
+import useAuth from '@zoonk/components/useAuth';
 import { SnackbarAction } from '@zoonk/models';
-import { auth, analytics, GlobalContext, rootUrl, theme } from '@zoonk/utils';
+import { resetPassword } from '@zoonk/services/users';
+import { analytics, GlobalContext, rootUrl, theme } from '@zoonk/utils';
 
 const ResetPassword: NextPage = () => {
-  const { translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { user } = useAuth();
   const { query } = useRouter();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const [email, setEmail] = useState<string>('');
@@ -27,8 +30,7 @@ const ResetPassword: NextPage = () => {
   const handleSubmit = () => {
     setSnackbar({ msg: translate('reset_password_sending'), type: 'progress' });
 
-    auth
-      .sendPasswordResetEmail(email)
+    resetPassword(email)
       .then(() => {
         setSnackbar({ type: 'success', msg: translate('reset_password_sent') });
       })

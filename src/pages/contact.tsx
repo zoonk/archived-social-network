@@ -12,6 +12,7 @@ import {
 import { Mail } from '@material-ui/icons';
 import Meta from '@zoonk/components/Meta';
 import Snackbar from '@zoonk/components/Snackbar';
+import useAuth from '@zoonk/components/useAuth';
 import { SnackbarAction } from '@zoonk/models';
 import { addFeedback } from '@zoonk/services';
 import {
@@ -23,7 +24,8 @@ import {
 } from '@zoonk/utils';
 
 const Contact: NextPage = () => {
-  const { translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { user } = useAuth();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const { query } = useRouter();
   const [name, setName] = useState<string>('');

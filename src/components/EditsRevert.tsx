@@ -13,6 +13,7 @@ import { GlobalContext } from '@zoonk/utils';
 import ModalConfirmation from './ModalConfirmation';
 import ModalError from './ModalError';
 import ModalProgress from './ModalProgress';
+import useAuth from './useAuth';
 
 interface EditsRevertProps {
   edits: Activity.Get;
@@ -22,7 +23,8 @@ interface EditsRevertProps {
  * Revert an edit made to a page.
  */
 const EditsRevert = ({ edits }: EditsRevertProps) => {
-  const { profile, translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { profile, user } = useAuth();
   const [status, setStatus] = useState<RequestStatus>('idle');
   const [open, setOpen] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);

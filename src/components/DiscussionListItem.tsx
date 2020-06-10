@@ -17,6 +17,7 @@ import { deleteComment } from '@zoonk/services';
 import { firebaseError, GlobalContext } from '@zoonk/utils';
 import Snackbar from './Snackbar';
 import Viewer from './rich-text/Viewer';
+import useAuth from './useAuth';
 
 interface DiscussionListItemProps {
   comment: Comment.Get;
@@ -27,7 +28,8 @@ const DiscussionListItem = ({
   comment,
   link = 'comments',
 }: DiscussionListItemProps) => {
-  const { translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { user } = useAuth();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const { createdAt, createdBy, createdById, html, id, postId } = comment;
   const isAuthor = createdById === user?.uid;

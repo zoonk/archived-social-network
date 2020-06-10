@@ -7,12 +7,14 @@ import Meta from '@zoonk/components/Meta';
 import TopicEdit from '@zoonk/components/TopicEdit';
 import TopicFormContainer from '@zoonk/components/TopicFormContainer';
 import TopicsBreadcrumb from '@zoonk/components/TopicsBreadcrumb';
+import useAuth from '@zoonk/components/useAuth';
 import { Topic } from '@zoonk/models';
 import { getTopic } from '@zoonk/services';
 import { analytics, GlobalContext } from '@zoonk/utils';
 
 const EditTopic: NextPage = () => {
-  const { translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { user } = useAuth();
   const { query } = useRouter();
   const id = String(query.id);
   const [topic, setTopic] = useState<Topic.Get>();

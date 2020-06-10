@@ -10,18 +10,21 @@ import {
   ListItemText,
   Typography,
 } from '@material-ui/core';
-import { auth, GlobalContext, UserContext, theme } from '@zoonk/utils';
+import { signOut } from '@zoonk/services/users';
+import { GlobalContext, UserContext, theme } from '@zoonk/utils';
 import UserReputation from './UserReputation';
+import useAuth from './useAuth';
 
 /**
  * Menu containing user information.
  */
 const MenuUser = () => {
-  const { translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { user } = useAuth();
   const { xp } = useContext(UserContext);
 
   const logout = () => {
-    auth.signOut();
+    signOut();
   };
 
   if (!user) {

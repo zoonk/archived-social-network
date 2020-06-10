@@ -6,6 +6,7 @@ import { SnackbarAction } from '@zoonk/models';
 import { updatePost } from '@zoonk/services';
 import { firebaseError, GlobalContext, timestamp } from '@zoonk/utils';
 import Snackbar from './Snackbar';
+import useAuth from './useAuth';
 
 interface ItemActionsMenuProps {
   groupId?: string | null;
@@ -24,7 +25,8 @@ const ItemActionsMenu = ({
   linkAs,
   postId,
 }: ItemActionsMenuProps) => {
-  const { translate, profile, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { profile, user } = useAuth();
   const { asPath, pathname, push } = useRouter();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);

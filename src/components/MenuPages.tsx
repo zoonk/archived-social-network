@@ -24,6 +24,7 @@ import {
   SupervisorAccount,
 } from '@material-ui/icons';
 import { getAboutId, GlobalContext } from '@zoonk/utils';
+import useAuth from './useAuth';
 
 const useStyles = makeStyles((theme) => ({
   active: {
@@ -35,7 +36,8 @@ const useStyles = makeStyles((theme) => ({
  * Menu containing all available pages.
  */
 const MenuPages = () => {
-  const { translate, user } = useContext(GlobalContext);
+  const { translate } = useContext(GlobalContext);
+  const { user } = useAuth();
   const { asPath } = useRouter();
   const classes = useStyles();
   const groupsLink = user ? '/groups/my' : '/groups';
