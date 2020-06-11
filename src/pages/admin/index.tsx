@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import {
   CircularProgress,
@@ -6,13 +7,18 @@ import {
   Grid,
   Typography,
 } from '@material-ui/core';
-import FeedbackList from '@zoonk/components/FeedbackList';
 import HomeBreadcrumb from '@zoonk/components/HomeBreadcrumb';
 import Meta from '@zoonk/components/Meta';
-import ReportsList from '@zoonk/components/ReportsList';
-import Stats from '@zoonk/components/Stats';
 import useAuth from '@zoonk/components/useAuth';
 import { GlobalContext } from '@zoonk/utils';
+
+const FeedbackList = dynamic(() => import('@zoonk/components/FeedbackList'), {
+  ssr: false,
+});
+const ReportsList = dynamic(() => import('@zoonk/components/ReportsList'), {
+  ssr: false,
+});
+const Stats = dynamic(() => import('@zoonk/components/Stats'), { ssr: false });
 
 const AdminPage = () => {
   const { translate } = useContext(GlobalContext);
