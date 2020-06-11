@@ -195,7 +195,11 @@ export const getNextLesson = async (
   topicId: string,
 ): Promise<Post.NextLesson | null> => {
   // Get the next lesson from this chapter.
-  const { lessons } = await getChapter(chapterId);
+  const chapter = await getChapter(chapterId);
+
+  if (!chapter) return null;
+
+  const { lessons } = chapter;
   const postOrder = lessons.findIndex((lesson) => lesson === postId);
   const nextPost = postOrder + 1;
 
@@ -210,7 +214,7 @@ export const getNextLesson = async (
 
   if (!chapters) return null;
 
-  const chapterOrder = chapters.findIndex((chapter) => chapter === chapterId);
+  const chapterOrder = chapters.findIndex((item) => item === chapterId);
   const nextChapter = chapterOrder + 1;
   const nextChapterId = chapters[nextChapter];
 
@@ -230,7 +234,11 @@ export const getPreviousLesson = async (
   topicId: string,
 ): Promise<Post.NextLesson | null> => {
   // Get the previous lesson from this chapter.
-  const { lessons } = await getChapter(chapterId);
+  const chapter = await getChapter(chapterId);
+
+  if (!chapter) return null;
+
+  const { lessons } = chapter;
 
   // If there's no post ID, then get the last lesson from this chapter.
   if (!postId) {
@@ -254,7 +262,7 @@ export const getPreviousLesson = async (
 
   if (!chapters) return null;
 
-  const chapterOrder = chapters.findIndex((chapter) => chapter === chapterId);
+  const chapterOrder = chapters.findIndex((item) => item === chapterId);
   const previousChapter = chapterOrder - 1;
   const previousChapterId = chapters[previousChapter];
 

@@ -56,16 +56,25 @@ export const updateChapterOrder = (
   return updateTopic(changes, topicId);
 };
 
-/**
- * Get a single chapter from the database.
- */
-export const getChapter = async (id: string): Promise<Chapter.Get> => {
+export const listChapters = async (limit = 10): Promise<Chapter.Get[]> => {
+  const snap = await db
+    .collection('chapters')
+    .orderBy('updatedAt', 'desc')
+    .limit(limit)
+    .withConverter(chapterConverter)
+    .get();
+
+  return snap.docs.map((doc) => doc.data());
+};
+
+export const getChapter = async (
+  id: string,
+): Promise<Chapter.Get | undefined> => {
   const snap = await db
     .doc(`chapters/${id}`)
     .withConverter(chapterConverter)
     .get();
   const data = snap.data();
-  if (!data) throw new Error('chapter_not_found');
   return data;
 };
 

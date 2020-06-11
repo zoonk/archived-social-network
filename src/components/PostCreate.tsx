@@ -39,7 +39,9 @@ const PostCreate = ({
 
   useEffect(() => {
     if (chapterId) {
-      getChapter(chapterId).then((res) => setTopics(res.topics));
+      getChapter(chapterId).then((res) => {
+        if (res) setTopics(res.topics);
+      });
     }
   }, [chapterId]);
 
