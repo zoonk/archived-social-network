@@ -1,10 +1,8 @@
-import dynamic from 'next/dynamic';
 import { Card, CardContent } from '@material-ui/core';
 import { Post } from '@zoonk/models';
 import LessonList from './LessonList';
 import LessonsHeader from './LessonsHeader';
-
-const NoLessons = dynamic(() => import('./NoLessons'));
+import NoLessons from './NoLessons';
 
 interface LessonsCardProps {
   category: 'examples' | 'lessons';

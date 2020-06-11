@@ -1,13 +1,11 @@
 import { useContext, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { IconButton, Menu, MenuItem } from '@material-ui/core';
 import { MoreVert } from '@material-ui/icons';
-import { timestamp } from '@zoonk/firebase/db';
-import { SnackbarAction } from '@zoonk/models';
-import { updatePost } from '@zoonk/services';
-import { firebaseError, GlobalContext } from '@zoonk/utils';
-import Snackbar from './Snackbar';
-import useAuth from './useAuth';
+import { GlobalContext } from '@zoonk/utils';
+
+const PinPost = dynamic(() => import('./PinPost'), { ssr: false });
 
 interface ItemActionsMenuProps {
   groupId?: string | null;
@@ -27,36 +25,13 @@ const ItemActionsMenu = ({
   postId,
 }: ItemActionsMenuProps) => {
   const { translate } = useContext(GlobalContext);
-  const { profile, user } = useAuth();
   const { asPath, pathname, push } = useRouter();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
 
   const handleClick = (action: 'edit' | 'edits') => {
     const url = href ? `${href}/${action}` : `${pathname}/${action}`;
     const as = linkAs ? `${linkAs}/${action}` : `${asPath}/${action}`;
     push(url, as);
-  };
-
-  const pinPost = () => {
-    if (!profile || !user || !groupId || !postId) {
-      setSnackbar({ type: 'error', msg: translate('need_to_be_loggedin') });
-      return;
-    }
-
-    setSnackbar({ type: 'progress', msg: translate('saving') });
-
-    updatePost(
-      {
-        updatedAt: timestamp,
-        updatedBy: profile,
-        updatedById: user.uid,
-        pinned: true,
-      },
-      postId,
-    )
-      .then(() => setSnackbar({ type: 'success', msg: translate('saved') }))
-      .catch((e) => setSnackbar(firebaseError(e, 'pin_post')));
   };
 
   return (
@@ -77,11 +52,7 @@ const ItemActionsMenu = ({
         open={Boolean(anchorEl)}
         onClose={() => setAnchorEl(null)}
       >
-        {groupId && postId && (
-          <MenuItem button onClick={pinPost}>
-            {translate('post_pin')}
-          </MenuItem>
-        )}
+        {groupId && postId && <PinPost postId={postId} />}
 
         {(isAuthor || !hideEdits) && (
           <MenuItem button onClick={() => handleClick('edit')}>
@@ -104,7 +75,6 @@ const ItemActionsMenu = ({
           {translate('report_issue')}
         </MenuItem>
       </Menu>
-      <Snackbar action={snackbar} />
     </div>
   );
 };

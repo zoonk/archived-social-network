@@ -1,6 +1,10 @@
+import dynamic from 'next/dynamic';
 import { Card, CardContent, Typography } from '@material-ui/core';
 import { Chapter } from '@zoonk/models';
-import ItemActionsMenu from './ItemActionsMenu';
+
+const ItemActionsMenu = dynamic(() => import('./ItemActionsMenu'), {
+  ssr: false,
+});
 
 interface ChapterDetailsProps {
   data: Chapter.Get;

@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core';
 import { LockOutlined } from '@material-ui/icons';
 import { SnackbarAction } from '@zoonk/models';
-import { signIn } from '@zoonk/services/users';
+import { signIn } from '@zoonk/services';
 import { firebaseError, GlobalContext, theme } from '@zoonk/utils';
 import SocialSignin from './SocialSignin';
 import Snackbar from './Snackbar';

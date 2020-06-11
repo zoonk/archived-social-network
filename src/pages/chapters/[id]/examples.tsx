@@ -1,11 +1,16 @@
 import { useContext } from 'react';
 import { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { Container } from '@material-ui/core';
 import ChaptersBreadcrumb from '@zoonk/components/ChaptersBreadcrumb';
-import LessonSortableList from '@zoonk/components/LessonSortableList';
 import Meta from '@zoonk/components/Meta';
 import { GlobalContext } from '@zoonk/utils';
+
+const LessonSortableList = dynamic(
+  () => import('@zoonk/components/LessonSortableList'),
+  { ssr: false },
+);
 
 const ChapterEdits: NextPage = () => {
   const { translate } = useContext(GlobalContext);

@@ -1,4 +1,4 @@
-import { NextPage } from 'next';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { Container, Grid } from '@material-ui/core';
 import ChapterDetails from '@zoonk/components/ChapterDetails';
 import LessonsCard from '@zoonk/components/LessonsCard';
@@ -12,7 +12,19 @@ interface ChapterProps {
   data: Chapter.Get;
 }
 
-const ChapterPage: NextPage<ChapterProps> = ({ data }) => {
+export const getServerSideProps: GetServerSideProps<ChapterProps> = async ({
+  query,
+  res,
+}) => {
+  const id = String(query.id);
+  const data = await getChapter(id);
+  preRender(res);
+  return { props: { data } };
+};
+
+const ChapterPage = ({
+  data,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const {
     id,
     description,
@@ -56,13 +68,6 @@ const ChapterPage: NextPage<ChapterProps> = ({ data }) => {
       </Grid>
     </Container>
   );
-};
-
-ChapterPage.getInitialProps = async ({ query }) => {
-  const id = String(query.id);
-  const data = await getChapter(id);
-  preRender();
-  return { data };
 };
 
 export default ChapterPage;

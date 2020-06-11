@@ -1,7 +1,9 @@
+import dynamic from 'next/dynamic';
 import { Avatar, CircularProgress, Typography } from '@material-ui/core';
 import { theme } from '@zoonk/utils';
-import LoginForm from './LoginForm';
 import useAuth from './useAuth';
+
+const LoginForm = dynamic(() => import('./LoginForm'), { ssr: false });
 
 interface FormHeaderProps {
   children: React.ReactNode;
