@@ -1,4 +1,5 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
+import dynamic from 'next/dynamic';
 import NextLink from 'next/link';
 import {
   Avatar,
@@ -7,17 +8,15 @@ import {
   CardContent,
   CardHeader,
   CardActions,
-  IconButton,
   Link,
   Typography,
 } from '@material-ui/core';
-import { Delete } from '@material-ui/icons';
-import { Comment, SnackbarAction } from '@zoonk/models';
-import { deleteComment } from '@zoonk/services';
-import { firebaseError, GlobalContext } from '@zoonk/utils';
-import Snackbar from './Snackbar';
+import { Comment } from '@zoonk/models';
+import { GlobalContext } from '@zoonk/utils';
 import Viewer from './rich-text/Viewer';
 import useAuth from './useAuth';
+
+const CommentRemove = dynamic(() => import('./CommentRemove'), { ssr: false });
 
 interface DiscussionListItemProps {
   comment: Comment.Get;
@@ -30,28 +29,11 @@ const DiscussionListItem = ({
 }: DiscussionListItemProps) => {
   const { translate } = useContext(GlobalContext);
   const { user } = useAuth();
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const { createdAt, createdBy, createdById, html, id, postId } = comment;
   const isAuthor = createdById === user?.uid;
   const isModerator = user?.role === 'moderator' || user?.role === 'admin';
+  const canDelete = isAuthor || isModerator;
   const linkId = link === 'posts' ? postId : id;
-
-  /**
-   * Delete current comment.
-   */
-  const remove = () => {
-    if (!user) {
-      setSnackbar({ type: 'error', msg: translate('need_to_be_loggedin') });
-      return;
-    }
-
-    if (window.confirm(translate('delete_confirmation'))) {
-      setSnackbar({ type: 'progress', msg: translate('deleting') });
-      deleteComment(id)
-        .then(() => setSnackbar({ type: 'success', msg: translate('deleted') }))
-        .catch((err) => setSnackbar(firebaseError(err, 'comment_delete')));
-    }
-  };
 
   return (
     <Card variant="outlined">
@@ -86,7 +68,6 @@ const DiscussionListItem = ({
       />
       <CardContent>
         <Viewer html={html} />
-        <Snackbar action={snackbar} />
       </CardContent>
       <CardActions disableSpacing>
         <NextLink href={`/${link}/[id]`} as={`/${link}/${linkId}`} passHref>
@@ -95,11 +76,7 @@ const DiscussionListItem = ({
           </Button>
         </NextLink>
 
-        {(isAuthor || isModerator) && (
-          <IconButton onClick={remove}>
-            <Delete />
-          </IconButton>
-        )}
+        {canDelete && <CommentRemove id={id} />}
       </CardActions>
     </Card>
   );
