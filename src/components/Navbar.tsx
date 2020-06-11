@@ -1,27 +1,26 @@
 import { useContext, useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import Router from 'next/router';
 import {
   AppBar,
   Badge,
-  Drawer,
   IconButton,
   LinearProgress,
   Toolbar,
 } from '@material-ui/core';
 import { Edit, Menu, Notifications } from '@material-ui/icons';
-import { liveUserXP } from '@zoonk/services';
-import { GlobalContext, UserContext } from '@zoonk/utils';
-import MenuDrawer from './MenuDrawer';
+import { GlobalContext } from '@zoonk/utils';
 import SearchBox from './SearchBox';
 import useAuth from './useAuth';
+
+const NavbarDrawer = dynamic(() => import('./NavbarDrawer'), { ssr: false });
 
 const Navbar = () => {
   const { translate } = useContext(GlobalContext);
   const { user } = useAuth();
   const [displayMenu, setMenu] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [xp, setXP] = useState<number>(1);
 
   // Hide the menu drawer when navigating to a different page.
   useEffect(() => {
@@ -34,13 +33,6 @@ const Navbar = () => {
     Router.events.on('routeChangeComplete', () => setLoading(false));
     Router.events.on('routeChangeError', () => setLoading(false));
   }, []);
-
-  // Get user's XP
-  useEffect(() => {
-    if (!user) return;
-    const unsubscribe = liveUserXP(user.uid, setXP);
-    return () => unsubscribe();
-  }, [user]);
 
   return (
     <AppBar position="sticky">
@@ -98,11 +90,7 @@ const Navbar = () => {
         </IconButton>
       </Toolbar>
 
-      <Drawer open={displayMenu} anchor="right" onClose={() => setMenu(false)}>
-        <UserContext.Provider value={{ xp }}>
-          <MenuDrawer />
-        </UserContext.Provider>
-      </Drawer>
+      <NavbarDrawer open={displayMenu} onClose={() => setMenu(false)} />
     </AppBar>
   );
 };

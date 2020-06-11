@@ -4,7 +4,6 @@ import { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { ThemeProvider } from '@material-ui/core/styles';
-import ErrorBoundary from '@zoonk/components/ErrorBoundary';
 import Navbar from '@zoonk/components/Navbar';
 import { TranslationFn } from '@zoonk/models';
 import { appLanguage, GlobalContext, theme } from '@zoonk/utils';
@@ -46,9 +45,7 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
       <AppWrapper>
         <GlobalContext.Provider value={{ translate: translation }}>
           <Navbar />
-          <ErrorBoundary>
-            <Component {...pageProps} />
-          </ErrorBoundary>
+          <Component {...pageProps} />
         </GlobalContext.Provider>
       </AppWrapper>
     </ThemeProvider>
