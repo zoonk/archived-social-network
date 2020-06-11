@@ -10,7 +10,8 @@ import {
 import * as Diff from 'diff';
 import { isEqual } from 'lodash';
 import { Activity } from '@zoonk/models';
-import { editableFields, getFieldDiff, GlobalContext } from '@zoonk/utils';
+import { editableFields, GlobalContext } from '@zoonk/utils';
+import { getFieldDiff } from '@zoonk/utils/diff';
 import EditsDiffBox from './EditsDiffBox';
 import EditsHeader from './EditsHeader';
 import EditsReport from './EditsReport';

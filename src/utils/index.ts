@@ -1,6 +1,5 @@
 export * from './content';
 export * from './context';
-export * from './diff';
 export * from './edits';
 export * from './i18n';
 export * from './links';
