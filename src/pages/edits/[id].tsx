@@ -1,30 +1,24 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { CircularProgress, Container } from '@material-ui/core';
+import { Container } from '@material-ui/core';
 import EditsBreadcrumb from '@zoonk/components/EditsBreadcrumb';
-import EditsItem from '@zoonk/components/EditsItem';
 import Meta from '@zoonk/components/Meta';
-import { Activity } from '@zoonk/models';
-import { getActivity } from '@zoonk/services';
 import { GlobalContext } from '@zoonk/utils';
+
+const EditGet = dynamic(() => import('@zoonk/components/EditGet'), {
+  ssr: false,
+});
 
 const EditPage = () => {
   const { translate } = useContext(GlobalContext);
   const { query } = useRouter();
-  const [activity, setActivity] = useState<Activity.Get>();
-
-  useEffect(() => {
-    if (query.id) {
-      getActivity(String(query.id)).then(setActivity);
-    }
-  }, [query]);
 
   return (
     <Container component="main">
       <Meta title={translate('page_edits')} noIndex />
       <EditsBreadcrumb />
-      {!activity && <CircularProgress />}
-      {activity && <EditsItem displayTitle edits={activity} />}
+      {query.id && <EditGet id={String(query.id)} />}
     </Container>
   );
 };
