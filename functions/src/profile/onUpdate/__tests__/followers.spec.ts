@@ -33,10 +33,11 @@ test('update the profile for every doc', async (done) => {
     bio: 'artist',
     name: 'Leo',
     photo: 'davinci.jpg',
+    username: 'newUsername',
   };
 
   const change = {
-    before: { data: () => ({}) },
+    before: { data: () => ({ username: 'oldUsername' }) },
     after: { data: () => data },
   };
   const wrapped = testEnv.wrap(onUpdateProfileUpdateFollowers);
@@ -57,6 +58,7 @@ test('update the profile for every doc', async (done) => {
 
   expect(req).toBe('updated');
   expect(db.collectionGroup).toHaveBeenCalledWith('followers');
+  expect(db.collectionGroup('').where('username', '==', 'oldUsername'));
   expect(spy1).toHaveBeenCalledWith(data);
   expect(spy2).toHaveBeenCalledWith(data);
   expect(Promise.all).toHaveBeenCalledWith(['doc1', 'doc2']);

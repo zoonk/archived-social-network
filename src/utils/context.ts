@@ -1,5 +1,6 @@
 import { createContext } from 'react';
-import { AuthState, GlobalState, Post, UserState } from '@zoonk/models';
+import { Post } from '@zoonk/models';
+import { AuthState, GlobalState, UserState } from '@zoonk/models/context';
 
 /**
  * This context is available throughout the whole app.

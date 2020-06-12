@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { AuthState } from '@zoonk/models';
+import { AuthState } from '@zoonk/models/context';
 import { AuthContext } from '@zoonk/utils';
 
 const useAuth = (): Omit<AuthState, 'setProfile' | 'setUser'> => {
