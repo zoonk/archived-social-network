@@ -42,7 +42,7 @@ export const getLeaderboard = async (
 
 export const getUserLeaderboard = async (
   username: string,
-): Promise<Leaderboard.Get> => {
+): Promise<Leaderboard.Get | undefined> => {
   const snap = await db
     .collection('leaderboard')
     .where('username', '==', username)
@@ -51,7 +51,7 @@ export const getUserLeaderboard = async (
     .get();
 
   if (snap.empty) {
-    throw new Error('profile_not_found');
+    return undefined;
   }
 
   return snap.docs[0].data();

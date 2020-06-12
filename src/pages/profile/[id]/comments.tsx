@@ -1,25 +1,49 @@
-import { useContext } from 'react';
-import { NextPage, NextPageContext } from 'next';
-import DiscussionList from '@zoonk/components/DiscussionList';
+import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
+import dynamic from 'next/dynamic';
+import Error from 'next/error';
+import { useRouter } from 'next/router';
+import { CircularProgress } from '@material-ui/core';
 import Meta from '@zoonk/components/Meta';
 import ProfileBase from '@zoonk/components/ProfileBase';
 import { Leaderboard } from '@zoonk/models';
 import { getUserLeaderboard } from '@zoonk/services';
-import { GlobalContext, preRender, rootUrl } from '@zoonk/utils';
+import { rootUrl } from '@zoonk/utils';
+
+const DiscussionList = dynamic(
+  () => import('@zoonk/components/DiscussionList'),
+  { ssr: false },
+);
 
 interface ProfileProps {
-  profile: Leaderboard.Get;
+  profile: Leaderboard.Get | undefined;
 }
 
-const ProfilePage: NextPage<ProfileProps> = ({ profile }: ProfileProps) => {
-  const { translate } = useContext(GlobalContext);
+export const getStaticPaths: GetStaticPaths = async () => {
+  return { paths: [], fallback: true };
+};
+
+export const getStaticProps: GetStaticProps<ProfileProps> = async ({
+  params,
+}) => {
+  const id = String(params?.id);
+  const profile = await getUserLeaderboard(id);
+  return { props: { profile }, unstable_revalidate: 1 };
+};
+
+const ProfileComments = ({
+  profile,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const { isFallback } = useRouter();
+
+  if (!profile && isFallback) return <CircularProgress />;
+  if (!profile) return <Error statusCode={404} />;
+
   const { id, name, photo, username } = profile;
 
   return (
     <ProfileBase profile={profile}>
       <Meta
         title={name}
-        description={translate('seo_profile_desc', { name })}
         image={photo}
         canonicalUrl={`${rootUrl}/profile/${username}`}
         noIndex
@@ -29,10 +53,4 @@ const ProfilePage: NextPage<ProfileProps> = ({ profile }: ProfileProps) => {
   );
 };
 
-ProfilePage.getInitialProps = async ({ query }: NextPageContext) => {
-  const profile = await getUserLeaderboard(String(query.id));
-  preRender();
-  return { profile };
-};
-
-export default ProfilePage;
+export default ProfileComments;

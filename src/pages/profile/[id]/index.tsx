@@ -1,18 +1,44 @@
 import { useContext } from 'react';
-import { NextPage, NextPageContext } from 'next';
+import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
+import dynamic from 'next/dynamic';
+import Error from 'next/error';
+import { useRouter } from 'next/router';
+import { CircularProgress } from '@material-ui/core';
 import Meta from '@zoonk/components/Meta';
-import PostsCard from '@zoonk/components/PostsCard';
 import ProfileBase from '@zoonk/components/ProfileBase';
 import { Leaderboard } from '@zoonk/models';
 import { getUserLeaderboard } from '@zoonk/services';
-import { GlobalContext, preRender, rootUrl } from '@zoonk/utils';
+import { GlobalContext, rootUrl } from '@zoonk/utils';
+
+const PostsCard = dynamic(() => import('@zoonk/components/PostsCard'), {
+  ssr: false,
+});
 
 interface ProfileProps {
-  profile: Leaderboard.Get;
+  profile: Leaderboard.Get | undefined;
 }
 
-const ProfilePage: NextPage<ProfileProps> = ({ profile }: ProfileProps) => {
+export const getStaticPaths: GetStaticPaths = async () => {
+  return { paths: [], fallback: true };
+};
+
+export const getStaticProps: GetStaticProps<ProfileProps> = async ({
+  params,
+}) => {
+  const id = String(params?.id);
+  const profile = await getUserLeaderboard(id);
+  return { props: { profile }, unstable_revalidate: 1 };
+};
+
+const ProfilePage = ({
+  profile,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { translate } = useContext(GlobalContext);
+  const { isFallback } = useRouter();
+
+  if (!profile && isFallback) return <CircularProgress />;
+  if (!profile) return <Error statusCode={404} />;
+
   const { id, name, photo, username } = profile;
 
   return (
@@ -26,12 +52,6 @@ const ProfilePage: NextPage<ProfileProps> = ({ profile }: ProfileProps) => {
       <PostsCard userId={id} limit={10} />
     </ProfileBase>
   );
-};
-
-ProfilePage.getInitialProps = async ({ query }: NextPageContext) => {
-  const profile = await getUserLeaderboard(String(query.id));
-  preRender();
-  return { profile };
 };
 
 export default ProfilePage;
