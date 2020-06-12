@@ -1,12 +1,12 @@
 /* eslint-disable global-require */
-import React, { Fragment } from 'react';
+import React, { useState } from 'react';
 import { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { ThemeProvider } from '@material-ui/core/styles';
 import Navbar from '@zoonk/components/Navbar';
-import { TranslationFn } from '@zoonk/models';
-import { appLanguage, GlobalContext, theme } from '@zoonk/utils';
+import { Profile, TranslationFn, User } from '@zoonk/models';
+import { appLanguage, AuthContext, GlobalContext, theme } from '@zoonk/utils';
 import '../quill.css';
 import '../styles.css';
 
@@ -22,32 +22,23 @@ interface AppWrapperProps {
   children: React.ReactNode;
 }
 
-/**
- * Include the auth provider on client-side only.
- */
-const AppWrapper = ({ children }: AppWrapperProps) => {
-  const isServer = typeof window === 'undefined';
-
-  if (isServer) {
-    return <Fragment>{children}</Fragment>;
-  }
-
-  return <Auth>{children}</Auth>;
-};
-
 const CustomApp = ({ Component, pageProps }: AppProps) => {
+  const [user, setUser] = useState<User.Get | null | undefined>(undefined);
+  const [profile, setProfile] = useState<Profile.Get | null>(null);
+
   return (
     <ThemeProvider theme={theme}>
       <Head>
         <title>Zoonk</title>
       </Head>
 
-      <AppWrapper>
+      <AuthContext.Provider value={{ profile, user, setProfile, setUser }}>
         <GlobalContext.Provider value={{ translate: translation }}>
+          <Auth />
           <Navbar />
           <Component {...pageProps} />
         </GlobalContext.Provider>
-      </AppWrapper>
+      </AuthContext.Provider>
     </ThemeProvider>
   );
 };

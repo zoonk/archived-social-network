@@ -22,6 +22,8 @@ export const AuthContext = createContext<AuthState>({
    * user.isTruthy means the user is logged in and we received its data.
    */
   user: undefined,
+  setProfile: () => {},
+  setUser: () => {},
 });
 
 export const UserContext = createContext<UserState>({

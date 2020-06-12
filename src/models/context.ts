@@ -9,6 +9,8 @@ export interface GlobalState {
 export interface AuthState {
   profile: Profile.Get | null;
   user: User.Get | null | undefined;
+  setProfile: React.Dispatch<React.SetStateAction<Profile.Get | null>>;
+  setUser: React.Dispatch<React.SetStateAction<User.Get | null | undefined>>;
 }
 
 export interface UserState {
