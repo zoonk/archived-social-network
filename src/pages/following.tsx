@@ -1,13 +1,20 @@
 import { useContext } from 'react';
 import { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import { CircularProgress, Container } from '@material-ui/core';
-import LoginForm from '@zoonk/components/LoginForm';
 import Meta from '@zoonk/components/Meta';
 import SidebarPage from '@zoonk/components/SidebarPage';
-import TimelineCard from '@zoonk/components/TimelineCard';
 import TimelineHeader from '@zoonk/components/TimelineHeader';
 import useAuth from '@zoonk/components/useAuth';
 import { GlobalContext } from '@zoonk/utils';
+
+const LoginForm = dynamic(() => import('@zoonk/components/LoginForm'), {
+  ssr: false,
+});
+
+const TimelineCard = dynamic(() => import('@zoonk/components/TimelineCard'), {
+  ssr: false,
+});
 
 const Following: NextPage = () => {
   const { translate } = useContext(GlobalContext);

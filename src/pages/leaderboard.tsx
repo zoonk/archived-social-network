@@ -1,10 +1,15 @@
 import { useContext } from 'react';
 import { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import { Container } from '@material-ui/core';
 import HomeBreadcrumb from '@zoonk/components/HomeBreadcrumb';
-import LeaderboardList from '@zoonk/components/LeaderboardList';
 import Meta from '@zoonk/components/Meta';
 import { GlobalContext } from '@zoonk/utils';
+
+const LeaderboardList = dynamic(
+  () => import('@zoonk/components/LeaderboardList'),
+  { ssr: false },
+);
 
 const Leaderboard: NextPage = () => {
   const { translate } = useContext(GlobalContext);
