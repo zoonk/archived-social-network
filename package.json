@@ -34,7 +34,7 @@
     "@material-ui/lab": "^4.0.0-alpha.52",
     "algoliasearch": "^4.0.3",
     "diff": "^4.0.2",
-    "firebase": "^7.14.6",
+    "firebase": "^7.15.1",
     "lodash": "^4.17.15",
     "next": "^9.4.4",
     "next-offline": "^5.0.2",
