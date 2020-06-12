@@ -1,11 +1,15 @@
 import { useContext } from 'react';
 import { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import { Container } from '@material-ui/core';
-import GroupList from '@zoonk/components/GroupList';
 import GroupListHeader from '@zoonk/components/GroupListHeader';
 import Meta from '@zoonk/components/Meta';
 import SidebarPage from '@zoonk/components/SidebarPage';
 import { GlobalContext, rootUrl } from '@zoonk/utils';
+
+const GroupList = dynamic(() => import('@zoonk/components/GroupList'), {
+  ssr: false,
+});
 
 const Groups: NextPage = () => {
   const { translate } = useContext(GlobalContext);

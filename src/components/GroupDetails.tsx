@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import dynamic from 'next/dynamic';
 import NextLink from 'next/link';
 import {
   Button,
@@ -10,8 +11,9 @@ import {
 } from '@material-ui/core';
 import { Group } from '@zoonk/models';
 import { GlobalContext } from '@zoonk/utils';
-import FollowButton from './FollowButton';
 import ItemActionsMenu from './ItemActionsMenu';
+
+const FollowButton = dynamic(() => import('./FollowButton'), { ssr: false });
 
 interface GroupDetailsProps {
   group: Group.Get;

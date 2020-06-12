@@ -1,69 +1,43 @@
-import { Fragment, useContext, useState } from 'react';
-import { useRouter } from 'next/router';
-import { timestamp } from '@zoonk/firebase/db';
-import { Group, SnackbarAction } from '@zoonk/models';
-import { deleteGroup, updateGroup } from '@zoonk/services';
-import { firebaseError, GlobalContext } from '@zoonk/utils';
-import GroupForm from './GroupForm';
-import Snackbar from './Snackbar';
-import useAuth from './useAuth';
+import { Fragment, useContext, useEffect, useState } from 'react';
+import Error from 'next/error';
+import { CircularProgress } from '@material-ui/core';
+import GroupEditForm from '@zoonk/components/GroupEditForm';
+import GroupFormContainer from '@zoonk/components/GroupFormContainer';
+import GroupsBreadcrumb from '@zoonk/components/GroupsBreadcrumb';
+import { Group } from '@zoonk/models';
+import { getGroup } from '@zoonk/services';
+import { GlobalContext } from '@zoonk/utils';
 
 interface GroupEditProps {
-  data: Group.Get;
+  id: string;
 }
 
-const GroupEdit = ({ data }: GroupEditProps) => {
+const GroupEdit = ({ id }: GroupEditProps) => {
   const { translate } = useContext(GlobalContext);
-  const { profile, user } = useAuth();
-  const { push } = useRouter();
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
-  const canDelete =
-    user?.role === 'admin' ||
-    user?.role === 'moderator' ||
-    data.createdById === user?.uid;
+  const [group, setGroup] = useState<Group.Get>();
+  const [loading, setLoading] = useState<boolean>(true);
 
-  if (!user || !profile) {
-    return null;
-  }
+  useEffect(() => {
+    getGroup(id).then((res) => {
+      setGroup(res);
+      setLoading(false);
+    });
+  }, [id]);
 
-  const handleDelete = () => {
-    if (window.confirm(translate('delete_confirmation'))) {
-      setSnackbar({ type: 'progress', msg: translate('deleting') });
-
-      deleteGroup(data.id)
-        .then(() => {
-          setSnackbar(null);
-          push('/topics/[id]', `/topics/${data.topics[0]}`);
-        })
-        .catch((e) => setSnackbar(firebaseError(e, 'groups_delete')));
-    }
-  };
-
-  const handleSubmit = (changes: Group.EditableFields) => {
-    setSnackbar({ type: 'progress', msg: translate('saving') });
-
-    updateGroup(
-      {
-        ...changes,
-        updatedAt: timestamp,
-        updatedBy: profile,
-        updatedById: user.uid,
-      },
-      data.id,
-    )
-      .then(() => setSnackbar({ type: 'success', msg: translate('saved') }))
-      .catch((e) => setSnackbar(firebaseError(e, 'group_edit')));
-  };
+  if (!group && loading) return <CircularProgress />;
+  if (!group) return <Error statusCode={404} />;
 
   return (
     <Fragment>
-      <GroupForm
-        saving={snackbar?.type === 'progress'}
-        data={data}
-        onDelete={canDelete ? handleDelete : undefined}
-        onSubmit={handleSubmit}
+      <GroupsBreadcrumb
+        topicId={group.topics[0]}
+        groupId={id}
+        groupName={group.title}
+        title={translate('group_edit')}
       />
-      <Snackbar action={snackbar} />
+      <GroupFormContainer type="edit">
+        <GroupEditForm data={group} />
+      </GroupFormContainer>
     </Fragment>
   );
 };

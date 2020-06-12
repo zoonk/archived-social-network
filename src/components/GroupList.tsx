@@ -29,11 +29,13 @@ const GroupList = ({
   >(limit);
 
   const loadMore = () => {
-    get({ data: listGroups(topicId, lastVisible, userId, limit) });
+    get({
+      data: listGroups({ topicId, startAfter: lastVisible, userId, limit }),
+    });
   };
 
   useEffect(() => {
-    get({ data: listGroups(topicId, undefined, userId, limit) });
+    get({ data: listGroups({ topicId, userId, limit }) });
   }, [get, limit, topicId, userId]);
 
   useEffect(() => {

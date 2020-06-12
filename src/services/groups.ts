@@ -23,9 +23,6 @@ export const validateGroup = async (id: string): Promise<boolean> => {
   return !group.exists;
 };
 
-/**
- * Add a new group to the database.
- */
 export const createGroup = async (group: Group.Create): Promise<string> => {
   let id = generateSlug(group.title);
   const isValidSlug = await validateGroup(id);
@@ -40,42 +37,24 @@ export const createGroup = async (group: Group.Create): Promise<string> => {
   return id;
 };
 
-/**
- * Update an existing group.
- */
 export const updateGroup = (group: Group.Update, id: string): Promise<void> => {
   return db.doc(`groups/${id}`).update(group);
 };
 
-/**
- * Delete an existing group.
- */
 export const deleteGroup = (id: string): Promise<void> => {
   analytics().logEvent('group_delete');
   return db.doc(`groups/${id}`).delete();
 };
 
-/**
- * Get a single group from the database.
- */
-export const getGroup = async (id: string): Promise<Group.Get> => {
+export const getGroup = async (id: string): Promise<Group.Get | undefined> => {
   const snap = await db
     .doc(`groups/${id}`)
     .withConverter(groupConverter)
     .get();
 
-  const data = snap.data();
-
-  if (!data) {
-    throw new Error('group_not_found');
-  }
-
-  return data;
+  return snap.data();
 };
 
-/**
- * Get real-time data from a group
- */
 export const getGroupLive = (
   id: string,
   onSnapshot: (snap: Group.Get) => void,
@@ -89,15 +68,19 @@ export const getGroupLive = (
     });
 };
 
-/**
- * Get a list of groups from the database.
- */
-export const listGroups = async (
-  topicId?: string,
-  startAfter?: firebase.firestore.DocumentSnapshot,
-  userId?: string,
-  limit: number = 12,
-): Promise<Group.Snapshot[]> => {
+interface ListGroupsArgs {
+  topicId?: string;
+  startAfter?: firebase.firestore.DocumentSnapshot;
+  userId?: string;
+  limit?: number;
+}
+
+export const listGroups = async ({
+  limit = 10,
+  startAfter,
+  topicId,
+  userId,
+}: ListGroupsArgs): Promise<Group.Snapshot[]> => {
   const collection = userId ? `users/${userId}/groups` : 'groups';
   let ref = db
     .collection(collection)

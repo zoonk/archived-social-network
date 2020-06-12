@@ -1,17 +1,28 @@
 import { useContext } from 'react';
-import { GetServerSideProps, NextPage } from 'next';
-import { Container, Grid, makeStyles } from '@material-ui/core';
+import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
+import dynamic from 'next/dynamic';
+import Error from 'next/error';
+import { useRouter } from 'next/router';
+import {
+  CircularProgress,
+  Container,
+  Grid,
+  makeStyles,
+} from '@material-ui/core';
 import GroupDetails from '@zoonk/components/GroupDetails';
 import GroupPinned from '@zoonk/components/GroupPinned';
 import GroupsBreadcrumb from '@zoonk/components/GroupsBreadcrumb';
 import ItemCredits from '@zoonk/components/ItemCredits';
 import MenuCommunity from '@zoonk/components/MenuCommunity';
 import Meta from '@zoonk/components/Meta';
-import PostsCard from '@zoonk/components/PostsCard';
 import PostShare from '@zoonk/components/PostShare';
 import { Group } from '@zoonk/models';
-import { getGroup } from '@zoonk/services';
-import { appLanguage, GlobalContext, preRender } from '@zoonk/utils';
+import { getGroup, listGroups } from '@zoonk/services';
+import { appLanguage, GlobalContext } from '@zoonk/utils';
+
+const PostsCard = dynamic(() => import('@zoonk/components/PostsCard'), {
+  ssr: false,
+});
 
 const useStyles = makeStyles((theme) => ({
   column: {
@@ -22,12 +33,33 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface GroupPageProps {
-  group: Group.Get;
+  group: Group.Get | undefined;
 }
 
-const GroupPage: NextPage<GroupPageProps> = ({ group }) => {
+export const getStaticPaths: GetStaticPaths = async () => {
+  const groups = await listGroups({ limit: 20 });
+  const paths = groups.map((group) => ({ params: { id: group.id } }));
+  return { paths, fallback: true };
+};
+
+export const getStaticProps: GetStaticProps<GroupPageProps> = async ({
+  params,
+}) => {
+  const id = String(params?.id);
+  const group = await getGroup(id);
+  return { props: { group }, unstable_revalidate: 1 };
+};
+
+const GroupPage = ({
+  group,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { translate } = useContext(GlobalContext);
   const classes = useStyles();
+  const { isFallback } = useRouter();
+
+  if (!group && isFallback) return <CircularProgress />;
+  if (!group) return <Error statusCode={404} />;
+
   const {
     createdBy,
     createdById,
@@ -67,12 +99,6 @@ const GroupPage: NextPage<GroupPageProps> = ({ group }) => {
       </Grid>
     </Container>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const group = await getGroup(String(query.id));
-  preRender();
-  return { props: { group } };
 };
 
 export default GroupPage;

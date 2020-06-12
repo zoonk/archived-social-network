@@ -1,11 +1,15 @@
 import { useContext } from 'react';
 import { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { Container } from '@material-ui/core';
-import EditsList from '@zoonk/components/EditsList';
 import Meta from '@zoonk/components/Meta';
 import GroupsBreadcrumb from '@zoonk/components/GroupsBreadcrumb';
-import { GlobalContext, rootUrl } from '@zoonk/utils';
+import { GlobalContext } from '@zoonk/utils';
+
+const EditsList = dynamic(() => import('@zoonk/components/EditsList'), {
+  ssr: false,
+});
 
 const GroupEdits: NextPage = () => {
   const { query } = useRouter();
@@ -14,12 +18,7 @@ const GroupEdits: NextPage = () => {
 
   return (
     <Container component="main">
-      <Meta
-        title={translate('page_edits')}
-        canonicalUrl={`${rootUrl}/groups/${id}/edits`}
-        noIndex
-      />
-
+      <Meta title={translate('page_edits')} noIndex />
       <GroupsBreadcrumb groupId={id} title={translate('see_all_edits')} />
       {query.id && <EditsList itemPath={`groups/${id}`} />}
     </Container>

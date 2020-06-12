@@ -1,11 +1,15 @@
 import { useContext } from 'react';
 import { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { Container } from '@material-ui/core';
-import FollowersList from '@zoonk/components/FollowersList';
 import GroupsBreadcrumb from '@zoonk/components/GroupsBreadcrumb';
 import Meta from '@zoonk/components/Meta';
 import { GlobalContext } from '@zoonk/utils';
+
+const FollowersList = dynamic(() => import('@zoonk/components/FollowersList'), {
+  ssr: false,
+});
 
 const GroupMembers: NextPage = () => {
   const { translate } = useContext(GlobalContext);
