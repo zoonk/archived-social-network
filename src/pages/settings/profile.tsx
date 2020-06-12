@@ -1,14 +1,29 @@
 import { useContext } from 'react';
 import { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import { CircularProgress, Container, Grid } from '@material-ui/core';
-import LoginForm from '@zoonk/components/LoginForm';
 import Meta from '@zoonk/components/Meta';
-import SocialMediaUpdate from '@zoonk/components/SocialMediaUpdate';
-import ProfileUpdate from '@zoonk/components/ProfileUpdate';
 import UserBreadcrumb from '@zoonk/components/UserBreadcrumb';
-import UsernameUpdate from '@zoonk/components/UsernameUpdate';
 import useAuth from '@zoonk/components/useAuth';
 import { GlobalContext, theme } from '@zoonk/utils';
+
+const LoginForm = dynamic(() => import('@zoonk/components/LoginForm'), {
+  ssr: false,
+});
+
+const SocialMediaUpdate = dynamic(
+  () => import('@zoonk/components/SocialMediaUpdate'),
+  { ssr: false },
+);
+
+const ProfileUpdate = dynamic(() => import('@zoonk/components/ProfileUpdate'), {
+  ssr: false,
+});
+
+const UsernameUpdate = dynamic(
+  () => import('@zoonk/components/UsernameUpdate'),
+  { ssr: false },
+);
 
 const Settings: NextPage = () => {
   const { translate } = useContext(GlobalContext);
