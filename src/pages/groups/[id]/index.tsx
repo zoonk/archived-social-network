@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface GroupPageProps {
-  group: Group.Get | undefined;
+  group: Group.Get | null;
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {

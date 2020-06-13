@@ -15,58 +15,36 @@ const topicConverter: firebase.firestore.FirestoreDataConverter<Topic.Get> = {
   },
 };
 
-/**
- * Add a new topic to the database.
- */
 export const createTopic = (topic: Topic.Create, id: string): Promise<void> => {
   analytics().logEvent('topic_add', { language: topic.language });
   return db.doc(`topics/${id}`).set(topic);
 };
 
-/**
- * Update an existing topic.
- */
 export const updateTopic = (topic: Topic.Update, id: string): Promise<void> => {
   return db.doc(`topics/${id}`).update(topic);
 };
 
-/**
- * Get a single topic from the database.
- */
-export const getTopic = async (id: string): Promise<Topic.Get> => {
+export const getTopic = async (id: string): Promise<Topic.Get | null> => {
   const snap = await db
     .doc(`topics/${id}`)
     .withConverter(topicConverter)
     .get();
 
-  const data = snap.data();
-
-  if (!data) {
-    throw new Error('topic_not_found');
-  }
-
-  return data;
+  return snap.data() || null;
 };
 
-/**
- * Get real-time data from a topic
- */
 export const getTopicLive = (
   id: string,
-  onSnapshot: (snap: Topic.Get) => void,
+  onSnapshot: (snap: Topic.Get | null) => void,
 ): firebase.Unsubscribe => {
   return db
     .doc(`topics/${id}`)
     .withConverter(topicConverter)
     .onSnapshot((snap) => {
-      if (!snap.data()) throw new Error('topic_not_found');
-      onSnapshot(snap.data()!);
+      onSnapshot(snap.data() || null);
     });
 };
 
-/**
- * Get a list of topics from the database.
- */
 export const listTopics = async (
   startAfter?: firebase.firestore.DocumentSnapshot,
   createdById?: string,

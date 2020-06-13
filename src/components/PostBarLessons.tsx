@@ -51,6 +51,7 @@ const PostBarLessons = ({
 
   useEffect(() => {
     const unsubscribe = getChapterLive(chapterId, (chapter) => {
+      if (!chapter) return;
       const items =
         category === 'examples' ? chapter.exampleData : chapter.lessonData;
       setLessons(items);

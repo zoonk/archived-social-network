@@ -14,9 +14,9 @@ import { getComment, listReplies } from '@zoonk/services';
 import { GlobalContext } from '@zoonk/utils';
 
 interface CommentPageProps {
-  comment: Comment.Get | undefined;
-  parent: Comment.Get | undefined;
-  replies: Comment.Get[] | undefined;
+  comment: Comment.Get | null;
+  parent?: Comment.Get | null;
+  replies?: Comment.Get[];
 }
 
 const useStyles = makeStyles((theme) => ({

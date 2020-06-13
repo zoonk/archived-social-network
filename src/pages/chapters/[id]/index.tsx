@@ -10,7 +10,7 @@ import { Chapter } from '@zoonk/models';
 import { getChapter, listChapters } from '@zoonk/services';
 
 interface ChapterProps {
-  data: Chapter.Get | undefined;
+  data: Chapter.Get | null;
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {

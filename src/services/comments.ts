@@ -16,9 +16,6 @@ const commentConverter: firebase.firestore.FirestoreDataConverter<Comment.Get> =
   },
 };
 
-/**
- * Add a new comment to the database.
- */
 export const createComment = (
   comment: Comment.Create,
 ): Promise<firebase.firestore.DocumentReference> => {
@@ -26,29 +23,18 @@ export const createComment = (
   return db.collection('comments').add(comment);
 };
 
-/**
- * Get a single comment from the database.
- */
-export const getComment = async (
-  id: string,
-): Promise<Comment.Get | undefined> => {
+export const getComment = async (id: string): Promise<Comment.Get | null> => {
   const snap = await db
     .doc(`comments/${id}`)
     .withConverter(commentConverter)
     .get();
-  return snap.data();
+  return snap.data() || null;
 };
 
-/**
- * Delete a comment from the database.
- */
 export const deleteComment = (id: string): Promise<void> => {
   return db.doc(`comments/${id}`).delete();
 };
 
-/**
- * Get a list of comments from the database.
- */
 export const listComments = async (
   startAfter?: firebase.firestore.DocumentSnapshot,
   createdById?: string,
@@ -89,9 +75,6 @@ export const listReplies = async (
   return snap.docs.map((item) => item.data());
 };
 
-/**
- * Get real-time updates for comments.
- */
 export const liveComments = (
   postId: string,
   onSnapshot: (snap: Comment.Get[]) => void,
@@ -109,9 +92,6 @@ export const liveComments = (
     });
 };
 
-/**
- * Get real-time updates for replies.
- */
 export const liveReplies = (
   commentId: string,
   onSnapshot: (snap: Comment.Get[]) => void,
@@ -128,9 +108,6 @@ export const liveReplies = (
     });
 };
 
-/**
- * Pin a comment to a post.
- */
 export const pinComment = (
   commentId: string,
   postId: string,
@@ -146,9 +123,6 @@ export const pinComment = (
   return updatePost(data, postId);
 };
 
-/**
- * Unpin a comment from a post.
- */
 export const unpinComment = (
   postId: string,
   profile: Profile.Response,

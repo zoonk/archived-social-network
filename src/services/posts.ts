@@ -18,9 +18,6 @@ const postConverter: firebase.firestore.FirestoreDataConverter<Post.Get> = {
   },
 };
 
-/**
- * Add a new post to the database.
- */
 export const createPost = async (data: Post.Create): Promise<string> => {
   const slug = generateRandomSlug(data.title);
   await db.doc(`posts/${slug}`).set(data);
@@ -28,31 +25,19 @@ export const createPost = async (data: Post.Create): Promise<string> => {
   return slug;
 };
 
-/**
- * Update an existing post.
- */
 export const updatePost = (data: Post.Update, id: string): Promise<void> => {
   return db.doc(`posts/${id}`).update(data);
 };
 
-/**
- * Get a single post from the database.
- */
-export const getPost = async (id: string): Promise<Post.Get> => {
+export const getPost = async (id: string): Promise<Post.Get | null> => {
   const snap = await db
     .doc(`posts/${id}`)
     .withConverter(postConverter)
     .get();
-  const post = snap.data();
 
-  if (!post) throw new Error('post_not_found');
-
-  return post;
+  return snap.data() || null;
 };
 
-/**
- * Delete a post from the database.
- */
 export const deletePost = async (
   id: string,
   profile: Profile.Response,
@@ -81,9 +66,6 @@ interface PostArgs {
   userId?: string;
 }
 
-/**
- * Get a list of posts from the database.
- */
 export const listPosts = async ({
   category,
   groupId,
@@ -135,9 +117,6 @@ export const listPosts = async ({
   return snap.docs.map((doc) => ({ ...doc.data(), snap: doc }));
 };
 
-/**
- * Update order.
- */
 export const updatePostOrder = (
   lessons: string[],
   category: 'examples' | 'lessons',
@@ -155,9 +134,6 @@ export const updatePostOrder = (
   return updateChapter(changes, chapterId);
 };
 
-/**
- * Toggle a post progress status.
- */
 export const togglePostProgress = (
   postId: string,
   chapterId: string,
@@ -174,9 +150,6 @@ export const togglePostProgress = (
     .set(data, { merge: true });
 };
 
-/**
- * Mark a post as read.
- */
 export const markPostAsRead = (
   postId: string,
   userId: string,
@@ -186,9 +159,6 @@ export const markPostAsRead = (
     .set({ read: true }, { merge: true });
 };
 
-/**
- * Get next lesson from a chapter.
- */
 export const getNextLesson = async (
   chapterId: string,
   postId: string | null,
@@ -210,13 +180,12 @@ export const getNextLesson = async (
    * If the current chapter doesn't have more lessons, then
    * get the next chapter for this topic.
    */
-  const { chapters } = await getTopic(topicId);
+  const topic = await getTopic(topicId);
+  if (!topic?.chapters) return null;
 
-  if (!chapters) return null;
-
-  const chapterOrder = chapters.findIndex((item) => item === chapterId);
+  const chapterOrder = topic.chapters.findIndex((item) => item === chapterId);
   const nextChapter = chapterOrder + 1;
-  const nextChapterId = chapters[nextChapter];
+  const nextChapterId = topic.chapters[nextChapter];
 
   // Return `null` when this is the last chapter.
   if (!nextChapterId) return null;
@@ -225,9 +194,6 @@ export const getNextLesson = async (
   return getNextLesson(nextChapterId, null, topicId);
 };
 
-/**
- * Get previous lesson from a chapter.
- */
 export const getPreviousLesson = async (
   chapterId: string,
   postId: string | null,
@@ -258,13 +224,12 @@ export const getPreviousLesson = async (
    * If the current chapter doesn't have a previous lesson, then
    * get the previous chapter for this topic.
    */
-  const { chapters } = await getTopic(topicId);
+  const topic = await getTopic(topicId);
+  if (!topic?.chapters) return null;
 
-  if (!chapters) return null;
-
-  const chapterOrder = chapters.findIndex((item) => item === chapterId);
+  const chapterOrder = topic.chapters.findIndex((item) => item === chapterId);
   const previousChapter = chapterOrder - 1;
-  const previousChapterId = chapters[previousChapter];
+  const previousChapterId = topic.chapters[previousChapter];
 
   // Return `null` when this is the last chapter.
   if (!previousChapterId) return null;
@@ -276,9 +241,6 @@ export const getPreviousLesson = async (
 // Create a cache for generated links.
 const linkCache: Dictionary<Post.Link> = {};
 
-/**
- * Get a website's metadata.
- */
 export const getLinkMetadata = async (url: string): Promise<Post.Link> => {
   // If the link already exists on cache, then return it.
   if (linkCache[url]) return linkCache[url];

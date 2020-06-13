@@ -15,7 +15,7 @@ const DiscussionList = dynamic(
 );
 
 interface ProfileProps {
-  profile: Leaderboard.Get | undefined;
+  profile: Leaderboard.Get | null;
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {

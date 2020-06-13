@@ -13,9 +13,6 @@ const leaderboardConverter: firebase.firestore.FirestoreDataConverter<Leaderboar
   },
 };
 
-/**
- * Get data for a leaderboard.
- */
 export const getLeaderboard = async (
   topicId?: string,
   startAfter?: firebase.firestore.DocumentSnapshot,
@@ -42,7 +39,7 @@ export const getLeaderboard = async (
 
 export const getUserLeaderboard = async (
   username: string,
-): Promise<Leaderboard.Get | undefined> => {
+): Promise<Leaderboard.Get | null> => {
   const snap = await db
     .collection('leaderboard')
     .where('username', '==', username)
@@ -51,15 +48,12 @@ export const getUserLeaderboard = async (
     .get();
 
   if (snap.empty) {
-    return undefined;
+    return null;
   }
 
   return snap.docs[0].data();
 };
 
-/**
- * Real-time updates for a user's XP.
- */
 export const liveUserXP = (
   id: string,
   onSnapshot: (xp: number) => void,

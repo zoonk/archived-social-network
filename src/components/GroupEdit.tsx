@@ -14,18 +14,14 @@ interface GroupEditProps {
 
 const GroupEdit = ({ id }: GroupEditProps) => {
   const { translate } = useContext(GlobalContext);
-  const [group, setGroup] = useState<Group.Get>();
-  const [loading, setLoading] = useState<boolean>(true);
+  const [group, setGroup] = useState<Group.Get | null | undefined>();
 
   useEffect(() => {
-    getGroup(id).then((res) => {
-      setGroup(res);
-      setLoading(false);
-    });
+    getGroup(id).then(setGroup);
   }, [id]);
 
-  if (!group && loading) return <CircularProgress />;
-  if (!group) return <Error statusCode={404} />;
+  if (group === undefined) return <CircularProgress />;
+  if (group === null) return <Error statusCode={404} />;
 
   return (
     <Fragment>

@@ -27,15 +27,14 @@ const LessonSortableList = ({
   const { profile, user } = useAuth();
   const { push } = useRouter();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [items, setItems] = useState<Post.Summary[]>([]);
 
   useEffect(() => {
-    setLoading(true);
-
     const unsubscribe = getChapterLive(chapterId, (snap) => {
-      setItems(category === 'lessons' ? snap.lessonData : snap.exampleData);
       setLoading(false);
+      if (!snap) return;
+      setItems(category === 'lessons' ? snap.lessonData : snap.exampleData);
     });
 
     return () => unsubscribe();

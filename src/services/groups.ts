@@ -46,25 +46,24 @@ export const deleteGroup = (id: string): Promise<void> => {
   return db.doc(`groups/${id}`).delete();
 };
 
-export const getGroup = async (id: string): Promise<Group.Get | undefined> => {
+export const getGroup = async (id: string): Promise<Group.Get | null> => {
   const snap = await db
     .doc(`groups/${id}`)
     .withConverter(groupConverter)
     .get();
 
-  return snap.data();
+  return snap.data() || null;
 };
 
 export const getGroupLive = (
   id: string,
-  onSnapshot: (snap: Group.Get) => void,
+  onSnapshot: (snap: Group.Get | null) => void,
 ): firebase.Unsubscribe => {
   return db
     .doc(`groups/${id}`)
     .withConverter(groupConverter)
     .onSnapshot((snap) => {
-      if (!snap.data()) throw new Error('group_not_found');
-      onSnapshot(snap.data()!);
+      onSnapshot(snap.data() || null);
     });
 };
 

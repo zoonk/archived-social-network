@@ -1,4 +1,5 @@
 import { Fragment, useContext, useEffect, useState } from 'react';
+import Error from 'next/error';
 import { useRouter } from 'next/router';
 import { CircularProgress, IconButton } from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
@@ -20,7 +21,7 @@ const PostEdit = ({ id }: PostEditProps) => {
   const { translate } = useContext(GlobalContext);
   const { profile, user } = useAuth();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
-  const [data, setData] = useState<Post.Get>();
+  const [data, setData] = useState<Post.Get | null | undefined>();
   const { push } = useRouter();
   const isAuthor = user?.uid === data?.createdById;
   const isPost = data?.category === 'posts';
@@ -28,6 +29,7 @@ const PostEdit = ({ id }: PostEditProps) => {
   const isEditable = !isPost && !isQuestion;
   const isModerator = user?.role === 'admin' || user?.role === 'moderator';
   const canDelete = isModerator || isAuthor;
+  const canEdit = isAuthor || isEditable || isModerator;
 
   useEffect(() => {
     getPost(id)
@@ -35,17 +37,10 @@ const PostEdit = ({ id }: PostEditProps) => {
       .catch((e) => setSnackbar(firebaseError(e, 'post_get')));
   }, [id]);
 
-  if (user === null) {
-    return <LoginForm />;
-  }
-
-  if (!data || user === undefined) {
-    return <CircularProgress />;
-  }
-
-  if (!isAuthor && !isEditable && !isModerator) {
-    return <EditNotAllowed />;
-  }
+  if (user === null) return <LoginForm />;
+  if (data === null) return <Error statusCode={404} />;
+  if (data === undefined || user === undefined) return <CircularProgress />;
+  if (!canEdit) return <EditNotAllowed />;
 
   const handleDelete = () => {
     if (profile && window.confirm(translate('post_delete_confirmation'))) {

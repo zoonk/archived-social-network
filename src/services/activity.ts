@@ -16,9 +16,6 @@ const activityConverter: firebase.firestore.FirestoreDataConverter<Activity.Get>
   },
 };
 
-/**
- * Get a list of activities from the database.
- */
 export const listActivities = async (
   itemPath?: string,
   startAfter?: firebase.firestore.DocumentSnapshot,
@@ -48,24 +45,15 @@ export const listActivities = async (
   });
 };
 
-export const getActivity = async (id: string): Promise<Activity.Get> => {
+export const getActivity = async (id: string): Promise<Activity.Get | null> => {
   const snap = await db
     .doc(`activity/${id}`)
     .withConverter(activityConverter)
     .get();
 
-  const data = snap.data();
-
-  if (!data) {
-    throw new Error('activity_not_found');
-  }
-
-  return data;
+  return snap.data() || null;
 };
 
-/**
- * Delete the document when reverting a recently created item.
- */
 export const deleteActivity = async (
   activity: Activity.Get,
   profile: Profile.Response,
@@ -83,9 +71,6 @@ export const deleteActivity = async (
   return ref.delete();
 };
 
-/**
- * Revert changes made to a document.
- */
 export const revertChanges = (
   activity: Activity.Get,
   profile: Profile.Response,
@@ -109,9 +94,6 @@ export const revertChanges = (
   return db.doc(activity.itemPath).set(changes, { merge: true });
 };
 
-/**
- * Restore a delete item.
- */
 export const restoreItem = (
   activityId: string,
 ): Promise<firebase.functions.HttpsCallableResult> => {

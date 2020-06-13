@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { NextPage } from 'next';
+import Error from 'next/error';
 import { Container, Divider, makeStyles } from '@material-ui/core';
 import CommentList from '@zoonk/components/CommentList';
 import LinkList from '@zoonk/components/LinkList';
@@ -20,7 +21,7 @@ import {
 } from '@zoonk/utils';
 
 interface PostPageProps {
-  data: Post.Get;
+  data: Post.Get | null;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -35,16 +36,13 @@ const useStyles = makeStyles((theme) => ({
 const PostPage: NextPage<PostPageProps> = ({ data }) => {
   const { user } = useAuth();
   const classes = useStyles();
-  const { category, chapterId, cover, html, id, language, sites, title } = data;
-  const siteImg = sites.find((site) => Boolean(site.image));
-  const image = cover || getPostImage(html) || siteImg?.image;
 
   // Mark a post as read when the page is loaded.
   useEffect(() => {
-    if (user) {
-      markPostAsRead(id, user.uid);
+    if (user && data) {
+      markPostAsRead(data.id, user.uid);
     }
-  }, [id, user]);
+  }, [data, user]);
 
   /**
    * Save the user progress for this chapter.
@@ -52,12 +50,25 @@ const PostPage: NextPage<PostPageProps> = ({ data }) => {
   useEffect(() => {
     if (
       user &&
-      chapterId &&
-      (category === 'examples' || category === 'lessons')
+      data &&
+      data.chapterId &&
+      (data.category === 'examples' || data.category === 'lessons')
     ) {
-      togglePostProgress(id, chapterId, category, false, user.uid);
+      togglePostProgress(
+        data.id,
+        data.chapterId,
+        data.category,
+        false,
+        user.uid,
+      );
     }
-  }, [category, chapterId, id, user]);
+  }, [data, user]);
+
+  if (!data) return <Error statusCode={404} />;
+
+  const { cover, html, id, language, sites, title } = data;
+  const siteImg = sites.find((site) => Boolean(site.image));
+  const image = cover || getPostImage(html) || siteImg?.image;
 
   return (
     <PostContext.Provider value={{ ...data }}>

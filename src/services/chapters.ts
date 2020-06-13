@@ -16,9 +16,6 @@ const chapterConverter: firebase.firestore.FirestoreDataConverter<Chapter.Get> =
   },
 };
 
-/**
- * Add a new chapter to the database.
- */
 export const createChapter = async (data: Chapter.Create): Promise<string> => {
   const { language, title } = data;
   const slug = generateRandomSlug(title);
@@ -27,9 +24,6 @@ export const createChapter = async (data: Chapter.Create): Promise<string> => {
   return slug;
 };
 
-/**
- * Update an existing chapter.
- */
 export const updateChapter = (
   data: Chapter.Update,
   id: string,
@@ -37,9 +31,6 @@ export const updateChapter = (
   return db.doc(`chapters/${id}`).update(data);
 };
 
-/**
- * Update chapter order.
- */
 export const updateChapterOrder = (
   chapters: string[],
   topicId: string,
@@ -67,36 +58,27 @@ export const listChapters = async (limit = 10): Promise<Chapter.Get[]> => {
   return snap.docs.map((doc) => doc.data());
 };
 
-export const getChapter = async (
-  id: string,
-): Promise<Chapter.Get | undefined> => {
+export const getChapter = async (id: string): Promise<Chapter.Get | null> => {
   const snap = await db
     .doc(`chapters/${id}`)
     .withConverter(chapterConverter)
     .get();
-  const data = snap.data();
-  return data;
+
+  return snap.data() || null;
 };
 
-/**
- * Get real-time data from a chapter
- */
 export const getChapterLive = (
   id: string,
-  onSnapshot: (snap: Chapter.Get) => void,
+  onSnapshot: (snap: Chapter.Get | null) => void,
 ): firebase.Unsubscribe => {
   return db
     .doc(`chapters/${id}`)
     .withConverter(chapterConverter)
     .onSnapshot((snap) => {
-      if (!snap.data()) throw new Error('chapter_not_found');
-      onSnapshot(snap.data()!);
+      onSnapshot(snap.data() || null);
     });
 };
 
-/**
- * Delete a chapter from the database.
- */
 export const deleteChapter = async (
   id: string,
   profile: Profile.Response,

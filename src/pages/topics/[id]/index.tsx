@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { NextPage } from 'next';
+import Error from 'next/error';
 import { Container, Grid, makeStyles } from '@material-ui/core';
 import ChaptersCard from '@zoonk/components/ChaptersCard';
 import Meta from '@zoonk/components/Meta';
@@ -21,12 +22,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface TopicPageProps {
-  topic: Topic.Get;
+  topic: Topic.Get | null;
 }
 
 const TopicPage: NextPage<TopicPageProps> = ({ topic }) => {
   const { translate } = useContext(GlobalContext);
   const classes = useStyles();
+
+  if (!topic) return <Error statusCode={404} />;
+
   const { chapterData, id, language, photo, title } = topic;
 
   return (

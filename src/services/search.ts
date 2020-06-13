@@ -14,9 +14,6 @@ const client = algolia(
   NEXT_PUBLIC_ALGOLIA_SEARCH_KEY,
 );
 
-/**
- * Full-text search across all collections.
- */
 export const search = async (
   query: string,
 ): Promise<SearchResponse<SearchResult>[]> => {
@@ -35,9 +32,6 @@ export const search = async (
   }));
 };
 
-/**
- * Search for an existing chapter.
- */
 export const searchChapter = async (
   query: string,
 ): Promise<ReadonlyArray<Chapter.Index>> => {
@@ -46,9 +40,6 @@ export const searchChapter = async (
   return req.hits;
 };
 
-/**
- * Search for an existing post.
- */
 export const searchPost = async (
   query: string,
   category?: Post.Category,

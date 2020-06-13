@@ -1,5 +1,5 @@
 import { Fragment, useContext, useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import Error from 'next/error';
 import { CircularProgress } from '@material-ui/core';
 import ChapterEditForm from '@zoonk/components/ChapterEditForm';
 import ChapterFormContainer from '@zoonk/components/ChapterFormContainer';
@@ -9,23 +9,23 @@ import { Chapter, SnackbarAction } from '@zoonk/models';
 import { getChapter } from '@zoonk/services';
 import { firebaseError, GlobalContext } from '@zoonk/utils';
 
-const ChapterEdit = () => {
+interface ChapterEditProps {
+  id: string;
+}
+
+const ChapterEdit = ({ id }: ChapterEditProps) => {
   const { translate } = useContext(GlobalContext);
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
-  const [data, setData] = useState<Chapter.Get>();
-  const { query } = useRouter();
+  const [data, setData] = useState<Chapter.Get | null | undefined>();
 
   useEffect(() => {
-    if (query.id) {
-      getChapter(String(query.id))
-        .then(setData)
-        .catch((e) => setSnackbar(firebaseError(e, 'chapter_get')));
-    }
-  }, [query.id]);
+    getChapter(id)
+      .then(setData)
+      .catch((e) => setSnackbar(firebaseError(e, 'chapter_get')));
+  }, [id]);
 
-  if (!data) {
-    return <CircularProgress />;
-  }
+  if (data === undefined) return <CircularProgress />;
+  if (data === null) return <Error statusCode={404} />;
 
   return (
     <Fragment>

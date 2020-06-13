@@ -14,16 +14,10 @@ const notificationConverter: firebase.firestore.FirestoreDataConverter<Notificat
   },
 };
 
-/**
- * Set the notification count to `0`.
- */
 export const resetNotificationCount = (uid: string) => {
   return db.doc(`users/${uid}`).update({ notifications: 0 });
 };
 
-/**
- * Get a list of notifications from the database.
- */
 export const listNotifications = async (
   uid: string,
   settings: User.NotificationSettings,

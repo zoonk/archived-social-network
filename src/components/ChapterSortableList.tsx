@@ -24,15 +24,13 @@ const ChapterSortableList = ({ topicId }: ChapterSortableListProps) => {
   const { translate } = useContext(GlobalContext);
   const { profile, user } = useAuth();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [items, setItems] = useState<Chapter.Summary[]>([]);
 
   useEffect(() => {
-    setLoading(true);
-
     const unsubscribe = getTopicLive(topicId, (snap) => {
-      setItems(snap.chapterData);
       setLoading(false);
+      setItems(snap?.chapterData || []);
     });
 
     return () => unsubscribe();

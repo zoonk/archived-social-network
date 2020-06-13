@@ -13,9 +13,6 @@ const reportConverter: firebase.firestore.FirestoreDataConverter<Report.Get> = {
   },
 };
 
-/**
- * Get a list of edit reports from the backend.
- */
 export const listReports = async (
   limit = 10,
   lastVisible?: firebase.firestore.DocumentSnapshot,
@@ -33,9 +30,6 @@ export const listReports = async (
   return req.docs.map((doc) => ({ ...doc.data(), snap: doc }));
 };
 
-/**
- * Report when an edit does not follow our terms of use.
- */
 export const reportEdit = (
   id: string,
   comments: string,

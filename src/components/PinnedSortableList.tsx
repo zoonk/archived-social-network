@@ -20,15 +20,14 @@ const PinnedSortableList = ({ groupId }: GroupSortableListProps) => {
   const { profile, user } = useAuth();
   const { push } = useRouter();
   const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [items, setItems] = useState<Post.Summary[]>([]);
 
   useEffect(() => {
-    setLoading(true);
-
     const unsubscribe = getGroupLive(groupId, (snap) => {
-      setItems(snap.pinnedPosts);
       setLoading(false);
+      if (!snap) return;
+      setItems(snap.pinnedPosts);
     });
 
     return () => unsubscribe();
