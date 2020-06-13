@@ -42,6 +42,8 @@ const translate: TranslationFn = (key, args) => {
     chapters: 'Chapters',
     choose_language: 'Choose a language',
     close: 'Close',
+    collaborative_helper: 'Others can improve your post.',
+    collaborative: 'Collaborative',
     collapse: 'Collapse',
     comment_leave: 'Leave a comment',
     comment_login_required: 'You need to be logged in to leave a comment.',

@@ -41,6 +41,8 @@ export type TranslationKeys =
   | 'chapters'
   | 'choose_language'
   | 'close'
+  | 'collaborative_helper'
+  | 'collaborative'
   | 'collapse'
   | 'comment_leave'
   | 'comment_login_required'

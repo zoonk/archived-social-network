@@ -10,12 +10,14 @@ import {
 } from '@material-ui/icons';
 import { Post } from '@zoonk/models';
 import { GlobalContext, theme } from '@zoonk/utils';
+import CollaborativeLabel from './CollaborativeLabel';
 
 interface CategorySelectorProps {
   onSelect: (category: Post.Category) => void;
 }
 
 interface CategoryList {
+  collaborative?: boolean;
   name: string;
   value: Post.Category;
   icon: React.ReactNode;
@@ -31,6 +33,7 @@ const CategorySelector = ({ onSelect }: CategorySelectorProps) => {
       name: translate('teach_ref_title'),
       value: 'references',
       icon: <Link />,
+      collaborative: true,
     },
     {
       name: translate('teach_article_title'),
@@ -41,12 +44,19 @@ const CategorySelector = ({ onSelect }: CategorySelectorProps) => {
       name: translate('teach_course_title'),
       value: 'courses',
       icon: <School />,
+      collaborative: true,
     },
-    { name: translate('teach_book_title'), value: 'books', icon: <MenuBook /> },
+    {
+      name: translate('teach_book_title'),
+      value: 'books',
+      icon: <MenuBook />,
+      collaborative: true,
+    },
     {
       name: translate('teach_example_title'),
       value: 'examples',
       icon: <Language />,
+      collaborative: true,
     },
     {
       name: translate('ask_question'),
@@ -59,7 +69,10 @@ const CategorySelector = ({ onSelect }: CategorySelectorProps) => {
     <Grid container spacing={2}>
       {categories.map((item) => (
         <Grid item xs={6} sm={4} key={item.value}>
-          <CardActionArea onClick={() => onSelect(item.value)}>
+          <CardActionArea
+            onClick={() => onSelect(item.value)}
+            style={{ height: '100%' }}
+          >
             <Card
               variant="outlined"
               style={{
@@ -67,20 +80,31 @@ const CategorySelector = ({ onSelect }: CategorySelectorProps) => {
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                height: '150px',
-                padding: theme.spacing(1),
+                padding: theme.spacing(4, 2),
                 textAlign: 'center',
-                backgroundColor: theme.palette.primary.main,
+                height: '100%',
               }}
             >
-              <div style={{ color: 'white' }}>{item.icon}</div>
-              <Typography variant="h5" style={{ color: 'white' }}>
+              <div>{item.icon}</div>
+              <Typography variant="h5" gutterBottom>
                 {item.name}
               </Typography>
+              {item.collaborative && <CollaborativeLabel />}
             </Card>
           </CardActionArea>
         </Grid>
       ))}
+
+      <Grid item xs={12} style={{ display: 'flex', alignItems: 'center' }}>
+        <CollaborativeLabel />
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          style={{ marginLeft: theme.spacing(1) }}
+        >
+          = {translate('collaborative_helper')}
+        </Typography>
+      </Grid>
     </Grid>
   );
 };
