@@ -1,12 +1,12 @@
-import { Fragment, useContext, useState } from 'react';
+import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import { timestamp } from '@zoonk/firebase/db';
-import { Group, SnackbarAction } from '@zoonk/models';
+import { Group } from '@zoonk/models';
 import { deleteGroup, updateGroup } from '@zoonk/services';
-import { firebaseError, GlobalContext } from '@zoonk/utils';
+import { GlobalContext } from '@zoonk/utils';
 import GroupForm from './GroupForm';
-import Snackbar from './Snackbar';
 import useAuth from './useAuth';
+import useSnackbar from './useSnackbar';
 
 interface GroupEditFormProps {
   data: Group.Get;
@@ -16,7 +16,7 @@ const GroupEditForm = ({ data }: GroupEditFormProps) => {
   const { translate } = useContext(GlobalContext);
   const { profile, user } = useAuth();
   const { push } = useRouter();
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
+  const { action, snackbar } = useSnackbar();
   const canDelete =
     user?.role === 'admin' ||
     user?.role === 'moderator' ||
@@ -28,19 +28,19 @@ const GroupEditForm = ({ data }: GroupEditFormProps) => {
 
   const handleDelete = () => {
     if (window.confirm(translate('delete_confirmation'))) {
-      setSnackbar({ type: 'progress', msg: translate('deleting') });
+      snackbar('progress', translate('deleting'));
 
       deleteGroup(data.id)
         .then(() => {
-          setSnackbar(null);
+          snackbar('dismiss');
           push('/topics/[id]', `/topics/${data.topics[0]}`);
         })
-        .catch((e) => setSnackbar(firebaseError(e, 'groups_delete')));
+        .catch((e) => snackbar('error', e.message));
     }
   };
 
   const handleSubmit = (changes: Group.EditableFields) => {
-    setSnackbar({ type: 'progress', msg: translate('saving') });
+    snackbar('progress');
 
     updateGroup(
       {
@@ -51,20 +51,17 @@ const GroupEditForm = ({ data }: GroupEditFormProps) => {
       },
       data.id,
     )
-      .then(() => setSnackbar({ type: 'success', msg: translate('saved') }))
-      .catch((e) => setSnackbar(firebaseError(e, 'group_edit')));
+      .then(() => snackbar('success'))
+      .catch((e) => snackbar('error', e.message));
   };
 
   return (
-    <Fragment>
-      <GroupForm
-        saving={snackbar?.type === 'progress'}
-        data={data}
-        onDelete={canDelete ? handleDelete : undefined}
-        onSubmit={handleSubmit}
-      />
-      <Snackbar action={snackbar} />
-    </Fragment>
+    <GroupForm
+      saving={action === 'progress'}
+      data={data}
+      onDelete={canDelete ? handleDelete : undefined}
+      onSubmit={handleSubmit}
+    />
   );
 };
 

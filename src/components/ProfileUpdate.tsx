@@ -1,29 +1,18 @@
 import { useContext, useEffect, useState } from 'react';
 import { Button, Grid, Paper, TextField, Typography } from '@material-ui/core';
-import { SnackbarAction } from '@zoonk/models';
 import { updateProfile } from '@zoonk/services';
-import { firebaseError, GlobalContext, imgSize, theme } from '@zoonk/utils';
-import Snackbar from './Snackbar';
+import { GlobalContext, imgSize, theme } from '@zoonk/utils';
 import ImageUpload from './ImageUpload';
 import useAuth from './useAuth';
+import useSnackbar from './useSnackbar';
 
 const ProfileUpdate = () => {
   const { translate } = useContext(GlobalContext);
   const { user } = useAuth();
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
+  const { action, snackbar } = useSnackbar();
   const [name, setName] = useState<string>('');
   const [bio, setBio] = useState<string>('');
   const [photo, setPhoto] = useState<string | null>(null);
-
-  const handleSubmit = () => {
-    setSnackbar({ type: 'progress', msg: translate('saving') });
-
-    if (user) {
-      updateProfile({ bio, name, photo }, user.uid)
-        .then(() => setSnackbar({ type: 'success', msg: translate('saved') }))
-        .catch((e) => setSnackbar(firebaseError(e, 'profile_update')));
-    }
-  };
 
   useEffect(() => {
     if (user) {
@@ -32,6 +21,15 @@ const ProfileUpdate = () => {
       setPhoto(user.photo);
     }
   }, [user]);
+
+  if (!user) return null;
+
+  const handleSubmit = () => {
+    snackbar('progress');
+    updateProfile({ bio, name, photo }, user.uid)
+      .then(() => snackbar('success'))
+      .catch((e) => snackbar('error', e.message));
+  };
 
   return (
     <Paper variant="outlined" style={{ padding: theme.spacing(3) }}>
@@ -93,12 +91,11 @@ const ProfileUpdate = () => {
           variant="contained"
           color="primary"
           style={{ marginTop: theme.spacing(2) }}
+          disabled={action === 'progress'}
         >
           {translate('save_changes')}
         </Button>
       </form>
-
-      <Snackbar action={snackbar} />
     </Paper>
   );
 };

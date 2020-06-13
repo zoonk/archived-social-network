@@ -1,12 +1,11 @@
-import { Fragment, useContext, useEffect, useState } from 'react';
+import { Fragment, useContext, useEffect } from 'react';
 import { Button, Grid } from '@material-ui/core';
-import { Comment, SnackbarAction } from '@zoonk/models';
+import { Comment } from '@zoonk/models';
 import { listComments } from '@zoonk/services';
-import { firebaseError, GlobalContext, theme } from '@zoonk/utils';
+import { GlobalContext, theme } from '@zoonk/utils';
 import DiscussionListItem from './DiscussionListItem';
 import ListSkeleton from './ListSkeleton';
 import NoItems from './NoItems';
-import Snackbar from './Snackbar';
 import useLoadMore from './useLoadMore';
 
 interface DiscussionListProps {
@@ -24,10 +23,9 @@ const DiscussionList = ({
   limit = 10,
 }: DiscussionListProps) => {
   const { translate } = useContext(GlobalContext);
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
-  const { error, get, items, lastVisible, loading } = useLoadMore<
-    Comment.Snapshot
-  >(limit);
+  const { get, items, lastVisible, loading } = useLoadMore<Comment.Snapshot>(
+    limit,
+  );
 
   const loadMore = () => {
     get({ data: listComments(lastVisible, createdById, limit) });
@@ -36,12 +34,6 @@ const DiscussionList = ({
   useEffect(() => {
     get({ data: listComments(undefined, createdById, limit) });
   }, [get, createdById, limit]);
-
-  useEffect(() => {
-    if (error) {
-      setSnackbar(firebaseError(error, 'discussion_list'));
-    }
-  }, [error]);
 
   if (items.length === 0 && loading === false) {
     return <NoItems />;
@@ -70,8 +62,6 @@ const DiscussionList = ({
           {translate('load_more')}
         </Button>
       )}
-
-      <Snackbar action={snackbar} />
     </Fragment>
   );
 };

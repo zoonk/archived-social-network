@@ -1,13 +1,12 @@
 import { Fragment, useContext, useEffect, useState } from 'react';
 import Error from 'next/error';
 import { CircularProgress } from '@material-ui/core';
-import ChapterEditForm from '@zoonk/components/ChapterEditForm';
-import ChapterFormContainer from '@zoonk/components/ChapterFormContainer';
-import ChaptersBreadcrumb from '@zoonk/components/ChaptersBreadcrumb';
-import Snackbar from '@zoonk/components/Snackbar';
-import { Chapter, SnackbarAction } from '@zoonk/models';
+import { Chapter } from '@zoonk/models';
 import { getChapter } from '@zoonk/services';
-import { firebaseError, GlobalContext } from '@zoonk/utils';
+import { GlobalContext } from '@zoonk/utils';
+import ChapterEditForm from './ChapterEditForm';
+import ChapterFormContainer from './ChapterFormContainer';
+import ChaptersBreadcrumb from './ChaptersBreadcrumb';
 
 interface ChapterEditProps {
   id: string;
@@ -15,13 +14,12 @@ interface ChapterEditProps {
 
 const ChapterEdit = ({ id }: ChapterEditProps) => {
   const { translate } = useContext(GlobalContext);
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const [data, setData] = useState<Chapter.Get | null | undefined>();
 
   useEffect(() => {
     getChapter(id)
       .then(setData)
-      .catch((e) => setSnackbar(firebaseError(e, 'chapter_get')));
+      .catch(() => setData(null));
   }, [id]);
 
   if (data === undefined) return <CircularProgress />;
@@ -38,7 +36,6 @@ const ChapterEdit = ({ id }: ChapterEditProps) => {
       <ChapterFormContainer>
         <ChapterEditForm data={data} />
       </ChapterFormContainer>
-      <Snackbar action={snackbar} />
     </Fragment>
   );
 };

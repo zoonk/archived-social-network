@@ -1,37 +1,26 @@
-import { Fragment, useContext, useState } from 'react';
+import { Fragment, useContext } from 'react';
 import { useRouter } from 'next/router';
 import { Button } from '@material-ui/core';
-import { SnackbarAction } from '@zoonk/models';
 import { signInWithFacebook, signInWithGoogle } from '@zoonk/services/users';
-import { firebaseError, GlobalContext, theme } from '@zoonk/utils';
-import Snackbar from './Snackbar';
+import { GlobalContext, theme } from '@zoonk/utils';
+import useSnackbar from './useSnackbar';
 
-/**
- * Login using social media accounts.
- */
 const SocialSignin = () => {
   const { translate } = useContext(GlobalContext);
   const { query, push } = useRouter();
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
+  const { action, snackbar } = useSnackbar();
 
-  const redirect = () => {
-    if (query.redirect) {
-      push(String(query.redirect));
-    }
-  };
+  const signIn = (method: 'facebook' | 'google') => {
+    snackbar('progress', translate('signing_in'));
 
-  const facebook = () => {
-    setSnackbar({ type: 'progress', msg: translate('signing_in') });
-    signInWithFacebook()
-      .then(redirect)
-      .catch((e) => setSnackbar(firebaseError(e, 'login')));
-  };
+    const fn = method === 'facebook' ? signInWithFacebook : signInWithGoogle;
 
-  const google = () => {
-    setSnackbar({ type: 'progress', msg: translate('signing_in') });
-    signInWithGoogle()
-      .then(redirect)
-      .catch((e) => setSnackbar(firebaseError(e, 'login')));
+    fn()
+      .then(() => {
+        snackbar('dismiss');
+        if (query.redirect) push(String(query.redirect));
+      })
+      .catch((e) => snackbar('error', e.message));
   };
 
   return (
@@ -39,7 +28,8 @@ const SocialSignin = () => {
       <Button
         fullWidth
         variant="contained"
-        onClick={facebook}
+        disabled={action === 'progress'}
+        onClick={() => signIn('facebook')}
         style={{
           backgroundColor: '#3b5998',
           color: 'white',
@@ -51,8 +41,9 @@ const SocialSignin = () => {
 
       <Button
         fullWidth
+        disabled={action === 'progress'}
         variant="contained"
-        onClick={google}
+        onClick={() => signIn('google')}
         style={{
           backgroundColor: '#cc3333',
           color: 'white',
@@ -60,8 +51,6 @@ const SocialSignin = () => {
       >
         {translate('signin_google')}
       </Button>
-
-      <Snackbar action={snackbar} />
     </Fragment>
   );
 };

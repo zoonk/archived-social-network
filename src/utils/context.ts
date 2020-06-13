@@ -1,11 +1,13 @@
 import { createContext } from 'react';
 import { Post } from '@zoonk/models';
 import { AuthState, GlobalState, UserState } from '@zoonk/models/context';
+import { SnackbarEmitter } from './snackbar';
 
 /**
  * This context is available throughout the whole app.
  */
 export const GlobalContext = createContext<GlobalState>({
+  snackbar: SnackbarEmitter,
   translate: () => '',
 });
 

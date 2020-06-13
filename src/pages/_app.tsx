@@ -5,8 +5,15 @@ import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { ThemeProvider } from '@material-ui/core/styles';
 import Navbar from '@zoonk/components/Navbar';
+import Snackbar from '@zoonk/components/Snackbar';
 import { Profile, TranslationFn, User } from '@zoonk/models';
-import { appLanguage, AuthContext, GlobalContext, theme } from '@zoonk/utils';
+import {
+  appLanguage,
+  AuthContext,
+  GlobalContext,
+  SnackbarEmitter,
+  theme,
+} from '@zoonk/utils';
 import '../quill.css';
 import '../styles.css';
 
@@ -33,10 +40,13 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
       </Head>
 
       <AuthContext.Provider value={{ profile, user, setProfile, setUser }}>
-        <GlobalContext.Provider value={{ translate: translation }}>
+        <GlobalContext.Provider
+          value={{ snackbar: SnackbarEmitter, translate: translation }}
+        >
           <Auth />
           <Navbar />
           <Component {...pageProps} />
+          <Snackbar />
         </GlobalContext.Provider>
       </AuthContext.Provider>
     </ThemeProvider>

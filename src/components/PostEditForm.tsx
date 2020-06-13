@@ -1,20 +1,18 @@
-import { Fragment, useContext, useState } from 'react';
 import { timestamp } from '@zoonk/firebase/db';
-import { Post, SnackbarAction } from '@zoonk/models';
+import { Post } from '@zoonk/models';
 import { updatePost } from '@zoonk/services';
-import { firebaseError, getPostLinks, GlobalContext } from '@zoonk/utils';
-import Snackbar from './Snackbar';
+import { getPostLinks } from '@zoonk/utils';
 import PostForm from './PostForm';
 import useAuth from './useAuth';
+import useSnackbar from './useSnackbar';
 
 interface PostEditFormProps {
   data: Post.Get;
 }
 
 const PostEditForm = ({ data }: PostEditFormProps) => {
-  const { translate } = useContext(GlobalContext);
   const { profile, user } = useAuth();
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
+  const { action, snackbar } = useSnackbar();
 
   if (!user || !profile) {
     return null;
@@ -24,7 +22,7 @@ const PostEditForm = ({ data }: PostEditFormProps) => {
     newData: Omit<Post.EditableFields, 'pinned'>,
     topics: string[],
   ) => {
-    setSnackbar({ type: 'progress', msg: translate('saving') });
+    snackbar('progress');
 
     const changes: Post.Update = {
       ...newData,
@@ -37,20 +35,17 @@ const PostEditForm = ({ data }: PostEditFormProps) => {
     };
 
     updatePost(changes, data.id)
-      .then(() => setSnackbar({ type: 'success', msg: translate('saved') }))
-      .catch((e) => setSnackbar(firebaseError(e, 'post_edit')));
+      .then(() => snackbar('success'))
+      .catch((e) => snackbar('error', e.message));
   };
 
   return (
-    <Fragment>
-      <PostForm
-        category={data.category}
-        data={data}
-        saving={snackbar?.type === 'progress'}
-        onSubmit={handleSubmit}
-      />
-      <Snackbar action={snackbar} />
-    </Fragment>
+    <PostForm
+      category={data.category}
+      data={data}
+      saving={action === 'progress'}
+      onSubmit={handleSubmit}
+    />
   );
 };
 

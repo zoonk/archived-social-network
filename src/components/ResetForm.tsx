@@ -3,34 +3,22 @@ import { NextPage } from 'next';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { Button, Grid, Link, TextField } from '@material-ui/core';
-import Snackbar from '@zoonk/components/Snackbar';
-import { SnackbarAction } from '@zoonk/models';
 import { resetPassword } from '@zoonk/services/users';
 import { GlobalContext, theme } from '@zoonk/utils';
+import useSnackbar from './useSnackbar';
 
 const ResetPassword: NextPage = () => {
   const { translate } = useContext(GlobalContext);
   const { query } = useRouter();
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
+  const { action, snackbar } = useSnackbar();
   const [email, setEmail] = useState<string>('');
 
   const handleSubmit = () => {
-    setSnackbar({ msg: translate('reset_password_sending'), type: 'progress' });
+    snackbar('progress', translate('reset_password_sending'));
 
     resetPassword(email)
-      .then(() => {
-        setSnackbar({ type: 'success', msg: translate('reset_password_sent') });
-      })
-      .catch((error) => {
-        setSnackbar({
-          msg: error.message,
-          type: 'error',
-          log: {
-            code: error.code,
-            description: 'reset_password',
-          },
-        });
-      });
+      .then(() => snackbar('success', translate('reset_password_sent')))
+      .catch((e) => snackbar('error', e.message));
   };
 
   return (
@@ -68,6 +56,7 @@ const ResetPassword: NextPage = () => {
         variant="contained"
         color="primary"
         style={{ margin: theme.spacing(3, 0, 2) }}
+        disabled={action === 'progress'}
       >
         {translate('reset_password')}
       </Button>
@@ -79,7 +68,6 @@ const ResetPassword: NextPage = () => {
           </NextLink>
         </Grid>
       </Grid>
-      <Snackbar action={snackbar} />
     </form>
   );
 };

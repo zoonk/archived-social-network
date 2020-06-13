@@ -1,17 +1,12 @@
-import { Fragment, useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { timestamp } from '@zoonk/firebase/db';
-import { Post, SnackbarAction } from '@zoonk/models';
+import { Post } from '@zoonk/models';
 import { createPost, getChapter } from '@zoonk/services';
-import {
-  appLanguage,
-  firebaseError,
-  getPostLinks,
-  GlobalContext,
-} from '@zoonk/utils';
+import { appLanguage, getPostLinks } from '@zoonk/utils';
 import CategorySelector from './CategorySelector';
 import PostForm from './PostForm';
-import Snackbar from './Snackbar';
+import useSnackbar from './useSnackbar';
 import useAuth from './useAuth';
 
 interface PostCreateProps {
@@ -31,10 +26,9 @@ const PostCreate = ({
   topicId,
   onCategoryChange,
 }: PostCreateProps) => {
-  const { translate } = useContext(GlobalContext);
   const { profile, user } = useAuth();
   const { push } = useRouter();
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
+  const { action, snackbar } = useSnackbar();
   const [topicIds, setTopics] = useState<string[]>(topicId ? [topicId] : []);
 
   useEffect(() => {
@@ -54,7 +48,7 @@ const PostCreate = ({
   }
 
   const redirect = (id: string) => {
-    setSnackbar({ type: 'success', msg: translate('saved') });
+    snackbar('success');
     push('/posts/[id]', `/posts/${id}`);
   };
 
@@ -62,7 +56,7 @@ const PostCreate = ({
     data: Omit<Post.EditableFields, 'pinned'>,
     topics: string[],
   ) => {
-    setSnackbar({ type: 'progress', msg: translate('saving') });
+    snackbar('progress');
     createPost({
       ...data,
       category,
@@ -83,19 +77,16 @@ const PostCreate = ({
       updatedById: user.uid,
     })
       .then(redirect)
-      .catch((e) => setSnackbar(firebaseError(e, 'post_add')));
+      .catch((e) => snackbar('error', e.message));
   };
 
   return (
-    <Fragment>
-      <PostForm
-        category={category}
-        topicIds={topicIds}
-        saving={snackbar?.type === 'progress' || snackbar?.type === 'success'}
-        onSubmit={handleSubmit}
-      />
-      <Snackbar action={snackbar} />
-    </Fragment>
+    <PostForm
+      category={category}
+      topicIds={topicIds}
+      saving={action === 'progress' || action === 'success'}
+      onSubmit={handleSubmit}
+    />
   );
 };
 

@@ -1,25 +1,21 @@
 import { useContext, useState } from 'react';
 import { Button, Grid, Paper, TextField, Typography } from '@material-ui/core';
-import { SnackbarAction } from '@zoonk/models';
 import { updatePassword } from '@zoonk/services/users';
-import { firebaseError, GlobalContext, theme } from '@zoonk/utils';
-import Snackbar from './Snackbar';
+import { GlobalContext, theme } from '@zoonk/utils';
+import useSnackbar from './useSnackbar';
 
-/**
- * Update a user's credentials.
- */
 const CredentialsUpdate = () => {
   const { translate } = useContext(GlobalContext);
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
+  const { snackbar } = useSnackbar();
   const [oldPassword, setOldPassword] = useState<string>('');
   const [newPassword, setNewPassword] = useState<string>('');
 
   const handleSubmit = () => {
-    setSnackbar({ type: 'progress', msg: translate('saving') });
+    snackbar('progress');
 
     updatePassword(oldPassword, newPassword)
-      .then(() => setSnackbar({ type: 'success', msg: translate('saved') }))
-      .catch((err) => setSnackbar(firebaseError(err, 'password_update')));
+      .then(() => snackbar('success'))
+      .catch((e) => snackbar('error', e.message));
   };
 
   return (
@@ -76,8 +72,6 @@ const CredentialsUpdate = () => {
           {translate('save_changes')}
         </Button>
       </form>
-
-      <Snackbar action={snackbar} />
     </Paper>
   );
 };

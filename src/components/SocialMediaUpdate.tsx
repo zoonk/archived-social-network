@@ -16,16 +16,15 @@ import {
   Web,
   YouTube,
 } from '@material-ui/icons';
-import { SnackbarAction } from '@zoonk/models';
 import { updateProfile } from '@zoonk/services';
-import { firebaseError, GlobalContext, theme } from '@zoonk/utils';
-import Snackbar from './Snackbar';
+import { GlobalContext, theme } from '@zoonk/utils';
+import useSnackbar from './useSnackbar';
 import useAuth from './useAuth';
 
 const SocialMediaUpdate = () => {
   const { translate } = useContext(GlobalContext);
   const { user } = useAuth();
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
+  const { action, snackbar } = useSnackbar();
   const [linkedin, setLinkedin] = useState<string>('');
   const [twitter, setTwitter] = useState<string>('');
   const [facebook, setFacebook] = useState<string>('');
@@ -33,19 +32,6 @@ const SocialMediaUpdate = () => {
   const [github, setGithub] = useState<string>('');
   const [youtube, setYoutube] = useState<string>('');
   const [web, setWeb] = useState<string>('');
-
-  const handleSubmit = () => {
-    setSnackbar({ type: 'progress', msg: translate('saving') });
-
-    if (user) {
-      updateProfile(
-        { linkedin, twitter, facebook, instagram, github, youtube, web },
-        user.uid,
-      )
-        .then(() => setSnackbar({ type: 'success', msg: translate('saved') }))
-        .catch((e) => setSnackbar(firebaseError(e, 'profile_update')));
-    }
-  };
 
   useEffect(() => {
     if (user) {
@@ -58,6 +44,18 @@ const SocialMediaUpdate = () => {
       setWeb(user.web || '');
     }
   }, [user]);
+
+  if (!user) return null;
+
+  const handleSubmit = () => {
+    snackbar('progress');
+    updateProfile(
+      { linkedin, twitter, facebook, instagram, github, youtube, web },
+      user.uid,
+    )
+      .then(() => snackbar('success'))
+      .catch((e) => snackbar('error', e.message));
+  };
 
   return (
     <Paper variant="outlined" style={{ padding: theme.spacing(3) }}>
@@ -235,12 +233,11 @@ const SocialMediaUpdate = () => {
           variant="contained"
           color="primary"
           style={{ marginTop: theme.spacing(2) }}
+          disabled={action === 'progress'}
         >
           {translate('save_changes')}
         </Button>
       </form>
-
-      <Snackbar action={snackbar} />
     </Paper>
   );
 };

@@ -1,12 +1,11 @@
-import { Fragment, useContext, useEffect, useState } from 'react';
+import { Fragment, useContext, useEffect } from 'react';
 import { Button, List } from '@material-ui/core';
-import { Leaderboard, SnackbarAction } from '@zoonk/models';
+import { Leaderboard } from '@zoonk/models';
 import { getLeaderboard } from '@zoonk/services';
-import { firebaseError, GlobalContext, theme } from '@zoonk/utils';
+import { GlobalContext, theme } from '@zoonk/utils';
 import LeaderboardListItem from './LeaderboardListItem';
 import ListSkeleton from './ListSkeleton';
 import NoItems from './NoItems';
-import Snackbar from './Snackbar';
 import useLoadMore from './useLoadMore';
 
 interface LeaderboardListProps {
@@ -15,20 +14,13 @@ interface LeaderboardListProps {
   topicId?: string;
 }
 
-/**
- * Display a list of leaderboard users.
- * @property `allowLoadMore` - display a "load more" button.
- * @property `limit` - # of users to show.
- * @property `topicId` - filter by topic.
- */
 const LeaderboardList = ({
   allowLoadMore,
   limit = 5,
   topicId,
 }: LeaderboardListProps) => {
   const { translate } = useContext(GlobalContext);
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
-  const { error, get, items, lastVisible, loading } = useLoadMore<
+  const { get, items, lastVisible, loading } = useLoadMore<
     Leaderboard.Snapshot
   >(limit);
 
@@ -39,12 +31,6 @@ const LeaderboardList = ({
   useEffect(() => {
     get({ data: getLeaderboard(topicId, undefined, limit) });
   }, [get, limit, topicId]);
-
-  useEffect(() => {
-    if (error) {
-      setSnackbar(firebaseError(error, 'leaderboard_list'));
-    }
-  }, [error]);
 
   if (items.length === 0 && loading === false) {
     return <NoItems />;
@@ -75,8 +61,6 @@ const LeaderboardList = ({
           {translate('load_more')}
         </Button>
       )}
-
-      <Snackbar action={snackbar} />
     </Fragment>
   );
 };

@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect, useState } from 'react';
+import { Fragment, useContext, useEffect } from 'react';
 import NextLink from 'next/link';
 import {
   Avatar,
@@ -9,11 +9,10 @@ import {
   Grid,
   Typography,
 } from '@material-ui/core';
-import { Report, SnackbarAction } from '@zoonk/models';
+import { Report } from '@zoonk/models';
 import { listReports } from '@zoonk/services';
 import { GlobalContext, theme } from '@zoonk/utils';
 import ListSkeleton from './ListSkeleton';
-import Snackbar from './Snackbar';
 import useLoadMore from './useLoadMore';
 
 interface ReportsListProps {
@@ -21,23 +20,15 @@ interface ReportsListProps {
   limit?: number;
 }
 
-/**
- * Display a list containing user reports.
- */
 const ReportsList = ({ allowLoadMore, limit }: ReportsListProps) => {
   const { translate } = useContext(GlobalContext);
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
-  const { error, get, items, lastVisible, loading } = useLoadMore<
-    Report.Snapshot
-  >(limit);
+  const { get, items, lastVisible, loading } = useLoadMore<Report.Snapshot>(
+    limit,
+  );
 
   useEffect(() => {
     get({ data: listReports(limit), replace: true });
   }, [get, limit]);
-
-  useEffect(() => {
-    if (error) setSnackbar({ type: 'error', msg: error.message });
-  }, [error]);
 
   const loadMore = () => {
     get({ data: listReports(limit, lastVisible) });
@@ -100,8 +91,6 @@ const ReportsList = ({ allowLoadMore, limit }: ReportsListProps) => {
           {translate('load_more')}
         </Button>
       )}
-
-      <Snackbar action={snackbar} />
     </Fragment>
   );
 };

@@ -1,24 +1,23 @@
 import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Button, Grid, TextField } from '@material-ui/core';
-import Snackbar from '@zoonk/components/Snackbar';
-import useAuth from '@zoonk/components/useAuth';
 import { timestamp } from '@zoonk/firebase/db';
-import { SnackbarAction } from '@zoonk/models';
 import { addFeedback } from '@zoonk/services';
 import { GlobalContext, theme } from '@zoonk/utils';
+import useAuth from './useAuth';
+import useSnackbar from './useSnackbar';
 
 const ContactForm = () => {
   const { translate } = useContext(GlobalContext);
   const { user } = useAuth();
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
+  const { snackbar } = useSnackbar();
   const { query } = useRouter();
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [message, setMessage] = useState<string>('');
 
   const handleSubmit = () => {
-    setSnackbar({ type: 'progress', msg: translate('sending') });
+    snackbar('progress', translate('sending'));
 
     addFeedback({
       createdAt: timestamp,
@@ -28,17 +27,8 @@ const ContactForm = () => {
       query: JSON.stringify(query),
       uid: user ? user.uid : null,
     })
-      .then(() => setSnackbar({ type: 'success', msg: translate('sent') }))
-      .catch((err) => {
-        setSnackbar({
-          type: 'error',
-          msg: err.message,
-          log: {
-            code: err.code,
-            description: 'contact_form',
-          },
-        });
-      });
+      .then(() => snackbar('success', translate('sent')))
+      .catch((e) => snackbar('error', e.message));
   };
 
   useEffect(() => {
@@ -120,8 +110,6 @@ const ContactForm = () => {
       >
         {translate('send')}
       </Button>
-
-      <Snackbar action={snackbar} />
     </form>
   );
 };

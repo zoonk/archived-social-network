@@ -1,12 +1,11 @@
-import { Fragment, useContext, useEffect, useState } from 'react';
+import { Fragment, useContext, useEffect } from 'react';
 import { Button, List } from '@material-ui/core';
-import { Notification, SnackbarAction, User } from '@zoonk/models';
+import { Notification, User } from '@zoonk/models';
 import { listNotifications, resetNotificationCount } from '@zoonk/services';
-import { firebaseError, GlobalContext, theme } from '@zoonk/utils';
+import { GlobalContext, theme } from '@zoonk/utils';
 import ListSkeleton from './ListSkeleton';
 import NoItems from './NoItems';
 import NotificationListItem from './NotificationListItem';
-import Snackbar from './Snackbar';
 import useLoadMore from './useLoadMore';
 
 interface NotificationListProps {
@@ -16,9 +15,6 @@ interface NotificationListProps {
   uid: string;
 }
 
-/**
- * Display a list of user notifications.
- */
 const NotificationList = ({
   allowLoadMore,
   limit = 10,
@@ -26,8 +22,7 @@ const NotificationList = ({
   uid,
 }: NotificationListProps) => {
   const { translate } = useContext(GlobalContext);
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
-  const { error, get, items, lastVisible, loading } = useLoadMore<
+  const { get, items, lastVisible, loading } = useLoadMore<
     Notification.Snapshot
   >(limit);
 
@@ -40,18 +35,13 @@ const NotificationList = ({
   useEffect(() => {
     get({
       data: listNotifications(uid, settings, undefined, limit),
+      replace: true,
     });
   }, [get, limit, settings, uid]);
 
   useEffect(() => {
     resetNotificationCount(uid);
   }, [uid]);
-
-  useEffect(() => {
-    if (error) {
-      setSnackbar(firebaseError(error, 'notifications_list'));
-    }
-  }, [error]);
 
   if (items.length === 0 && loading === false) {
     return <NoItems />;
@@ -82,8 +72,6 @@ const NotificationList = ({
           {translate('load_more')}
         </Button>
       )}
-
-      <Snackbar action={snackbar} />
     </Fragment>
   );
 };

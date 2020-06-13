@@ -1,11 +1,10 @@
-import { Fragment, useContext, useEffect, useState } from 'react';
+import { Fragment, useContext, useEffect } from 'react';
 import { Button, List } from '@material-ui/core';
-import { Topic, SnackbarAction } from '@zoonk/models';
+import { Topic } from '@zoonk/models';
 import { getFollowingTopics } from '@zoonk/services';
-import { firebaseError, GlobalContext, theme } from '@zoonk/utils';
+import { GlobalContext, theme } from '@zoonk/utils';
 import ListSkeleton from './ListSkeleton';
 import NoFollowing from './NoFollowing';
-import Snackbar from './Snackbar';
 import TopicListItem from './TopicListItem';
 import useLoadMore from './useLoadMore';
 
@@ -21,10 +20,9 @@ const TopicsFollowing = ({
   limit = 10,
 }: TopicsFollowingProps) => {
   const { translate } = useContext(GlobalContext);
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
-  const { error, get, items, lastVisible, loading } = useLoadMore<
-    Topic.Snapshot
-  >(limit);
+  const { get, items, lastVisible, loading } = useLoadMore<Topic.Snapshot>(
+    limit,
+  );
 
   const loadMore = () => {
     get({ data: getFollowingTopics(userId, lastVisible, limit) });
@@ -33,12 +31,6 @@ const TopicsFollowing = ({
   useEffect(() => {
     get({ data: getFollowingTopics(userId, undefined, limit), replace: true });
   }, [get, limit, userId]);
-
-  useEffect(() => {
-    if (error) {
-      setSnackbar(firebaseError(error, 'topics_following'));
-    }
-  }, [error]);
 
   if (items.length === 0 && loading === false) {
     return <NoFollowing />;
@@ -69,8 +61,6 @@ const TopicsFollowing = ({
           {translate('load_more')}
         </Button>
       )}
-
-      <Snackbar action={snackbar} />
     </Fragment>
   );
 };

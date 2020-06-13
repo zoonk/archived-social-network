@@ -1,8 +1,10 @@
 import { TranslationFn } from './i18n';
 import { Profile } from './profile';
+import { Emitter } from './snackbar';
 import { User } from './user';
 
 export interface GlobalState {
+  snackbar: Emitter;
   translate: TranslationFn;
 }
 

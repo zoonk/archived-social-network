@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect, useState } from 'react';
+import { Fragment, useContext, useEffect } from 'react';
 import {
   Button,
   Card,
@@ -7,11 +7,10 @@ import {
   Grid,
   Typography,
 } from '@material-ui/core';
-import { Feedback, SnackbarAction } from '@zoonk/models';
+import { Feedback } from '@zoonk/models';
 import { listFeedback } from '@zoonk/services';
 import { GlobalContext, theme } from '@zoonk/utils';
 import ListSkeleton from './ListSkeleton';
-import Snackbar from './Snackbar';
 import useLoadMore from './useLoadMore';
 
 interface FeedbackListProps {
@@ -24,18 +23,13 @@ interface FeedbackListProps {
  */
 const FeedbackList = ({ allowLoadMore, limit }: FeedbackListProps) => {
   const { translate } = useContext(GlobalContext);
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
-  const { error, get, items, lastVisible, loading } = useLoadMore<
-    Feedback.Snapshot
-  >(limit);
+  const { get, items, lastVisible, loading } = useLoadMore<Feedback.Snapshot>(
+    limit,
+  );
 
   useEffect(() => {
     get({ data: listFeedback(limit), replace: true });
   }, [get, limit]);
-
-  useEffect(() => {
-    if (error) setSnackbar({ type: 'error', msg: error.message });
-  }, [error]);
 
   const loadMore = () => {
     get({ data: listFeedback(limit, lastVisible) });
@@ -90,8 +84,6 @@ const FeedbackList = ({ allowLoadMore, limit }: FeedbackListProps) => {
           {translate('load_more')}
         </Button>
       )}
-
-      <Snackbar action={snackbar} />
     </Fragment>
   );
 };

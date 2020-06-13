@@ -1,19 +1,13 @@
-import { useContext, useRef, useState } from 'react';
+import { useContext, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import Quill from 'quill';
 import { Button, makeStyles, Paper } from '@material-ui/core';
 import { timestamp } from '@zoonk/firebase/db';
-import { SnackbarAction } from '@zoonk/models';
 import { createComment } from '@zoonk/services';
-import {
-  appLanguage,
-  firebaseError,
-  GlobalContext,
-  PostContext,
-} from '@zoonk/utils';
-import Snackbar from './Snackbar';
+import { appLanguage, GlobalContext, PostContext } from '@zoonk/utils';
 import LoginRequired from './LoginRequired';
 import useAuth from './useAuth';
+import useSnackbar from './useSnackbar';
 
 const Editor = dynamic(() => import('./rich-text/Editor'), { ssr: false });
 
@@ -40,14 +34,14 @@ const CommentForm = ({ commentId, onCancel, onSave }: CommentFormProps) => {
   const editorRef = useRef<Quill>();
   const { category, groupId, id, topics } = useContext(PostContext);
   const classes = useStyles();
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
+  const { snackbar } = useSnackbar();
 
   if (!user || !profile) {
     return <LoginRequired message={translate('comment_login_required')} />;
   }
 
   const handleSubmit = () => {
-    setSnackbar({ type: 'progress', msg: translate('saving') });
+    snackbar('progress');
 
     if (!editorRef.current) return;
 
@@ -73,14 +67,12 @@ const CommentForm = ({ commentId, onCancel, onSave }: CommentFormProps) => {
       updatedById: user.uid,
     })
       .then(() => {
-        setSnackbar({ type: 'success', msg: translate('saved') });
+        snackbar('success');
         // Reset the current content
         if (editorRef.current) editorRef.current.setText('');
         if (onSave) onSave();
       })
-      .catch((err) => {
-        setSnackbar(firebaseError(err, 'comment_save'));
-      });
+      .catch((e) => snackbar('error', e.message));
   };
 
   return (
@@ -112,7 +104,6 @@ const CommentForm = ({ commentId, onCancel, onSave }: CommentFormProps) => {
           </Button>
         </div>
       </form>
-      <Snackbar action={snackbar} />
     </Paper>
   );
 };

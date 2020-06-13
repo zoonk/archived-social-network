@@ -2,16 +2,16 @@ import { Fragment, useCallback, useContext, useEffect, useState } from 'react';
 import NextLink from 'next/link';
 import { Button, CircularProgress } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
-import { Chapter, SnackbarAction } from '@zoonk/models';
+import { Chapter } from '@zoonk/models';
 import {
   deleteChapter,
   getTopicLive,
   updateChapterOrder,
 } from '@zoonk/services';
-import { firebaseError, GlobalContext, theme } from '@zoonk/utils';
-import Snackbar from './Snackbar';
+import { GlobalContext, theme } from '@zoonk/utils';
 import SortableList from './SortableList';
 import useAuth from './useAuth';
+import useSnackbar from './useSnackbar';
 
 interface ChapterSortableListProps {
   topicId: string;
@@ -23,7 +23,7 @@ interface ChapterSortableListProps {
 const ChapterSortableList = ({ topicId }: ChapterSortableListProps) => {
   const { translate } = useContext(GlobalContext);
   const { profile, user } = useAuth();
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
+  const { action, snackbar } = useSnackbar();
   const [loading, setLoading] = useState<boolean>(true);
   const [items, setItems] = useState<Chapter.Summary[]>([]);
 
@@ -56,16 +56,16 @@ const ChapterSortableList = ({ topicId }: ChapterSortableListProps) => {
   }
 
   const save = () => {
-    setSnackbar({ type: 'progress', msg: translate('saving') });
+    snackbar('progress');
     const chapters = items.map((item) => item.id);
     updateChapterOrder(chapters, topicId, profile, user.uid)
-      .then(() => setSnackbar({ type: 'success', msg: translate('saved') }))
-      .catch((e) => setSnackbar(firebaseError(e, 'update_order')));
+      .then(() => snackbar('success'))
+      .catch((e) => snackbar('error', e.message));
   };
 
   const remove = (id: string) => {
     if (window.confirm(translate('chapter_delete_confirmation'))) {
-      setSnackbar({ type: 'progress', msg: translate('chapter_removing') });
+      snackbar('progress', translate('chapter_removing'));
 
       deleteChapter(id, profile, user.uid)
         .then(() => {
@@ -76,9 +76,9 @@ const ChapterSortableList = ({ topicId }: ChapterSortableListProps) => {
             const newItems = previous.filter((chapter) => chapter.id !== id);
             return newItems;
           });
-          setSnackbar({ type: 'success', msg: translate('chapter_removed') });
+          snackbar('success', translate('chapter_removed'));
         })
-        .catch((e) => setSnackbar(firebaseError(e, 'chapter_remove')));
+        .catch((e) => snackbar('error', e.message));
     }
   };
 
@@ -98,12 +98,11 @@ const ChapterSortableList = ({ topicId }: ChapterSortableListProps) => {
       <SortableList
         category="chapters"
         items={items}
-        saving={snackbar?.type === 'progress'}
+        saving={action === 'progress'}
         onMove={handleMove}
         onSave={save}
         onDelete={remove}
       />
-      <Snackbar action={snackbar} />
     </Fragment>
   );
 };

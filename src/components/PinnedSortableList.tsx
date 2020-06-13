@@ -4,12 +4,12 @@ import { useRouter } from 'next/router';
 import { Button, CircularProgress } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 import { timestamp } from '@zoonk/firebase/db';
-import { Post, SnackbarAction } from '@zoonk/models';
+import { Post } from '@zoonk/models';
 import { getGroupLive, updatePost, updatePinOrder } from '@zoonk/services';
-import { firebaseError, GlobalContext, theme } from '@zoonk/utils';
-import Snackbar from './Snackbar';
+import { GlobalContext, theme } from '@zoonk/utils';
 import SortableList from './SortableList';
 import useAuth from './useAuth';
+import useSnackbar from './useSnackbar';
 
 interface GroupSortableListProps {
   groupId: string;
@@ -19,7 +19,7 @@ const PinnedSortableList = ({ groupId }: GroupSortableListProps) => {
   const { translate } = useContext(GlobalContext);
   const { profile, user } = useAuth();
   const { push } = useRouter();
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
+  const { action, snackbar } = useSnackbar();
   const [loading, setLoading] = useState<boolean>(true);
   const [items, setItems] = useState<Post.Summary[]>([]);
 
@@ -53,15 +53,15 @@ const PinnedSortableList = ({ groupId }: GroupSortableListProps) => {
   }
 
   const save = () => {
-    setSnackbar({ type: 'progress', msg: translate('saving') });
+    snackbar('progress');
     const changes = items.map((item) => item.id);
     updatePinOrder(changes, groupId, profile, user.uid)
-      .then(() => setSnackbar({ type: 'success', msg: translate('saved') }))
-      .catch((e) => setSnackbar(firebaseError(e, 'update_order')));
+      .then(() => snackbar('success'))
+      .catch((e) => snackbar('error', e.message));
   };
 
   const remove = (id: string) => {
-    setSnackbar({ type: 'progress', msg: translate('pin_removing') });
+    snackbar('progress', translate('pin_removing'));
 
     const changes = {
       pinned: false,
@@ -76,9 +76,9 @@ const PinnedSortableList = ({ groupId }: GroupSortableListProps) => {
           const newItems = previous.filter((post) => post.id !== id);
           return newItems;
         });
-        setSnackbar({ type: 'success', msg: translate('pin_removed') });
+        snackbar('success', translate('pin_removed'));
       })
-      .catch((e) => setSnackbar(firebaseError(e, 'pin_remove')));
+      .catch((e) => snackbar('error', e.message));
   };
 
   return (
@@ -97,13 +97,12 @@ const PinnedSortableList = ({ groupId }: GroupSortableListProps) => {
       <SortableList
         category="posts"
         items={items}
-        saving={snackbar?.type === 'progress'}
+        saving={action === 'progress'}
         onCancel={() => push('/groups/[id]', `/groups/${groupId}`)}
         onDelete={remove}
         onMove={handleMove}
         onSave={save}
       />
-      <Snackbar action={snackbar} />
     </Fragment>
   );
 };

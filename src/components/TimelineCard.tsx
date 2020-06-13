@@ -1,11 +1,10 @@
-import { Fragment, useContext, useEffect, useState } from 'react';
+import { Fragment, useContext, useEffect } from 'react';
 import { Button, CircularProgress } from '@material-ui/core';
-import { Post, SnackbarAction } from '@zoonk/models';
+import { Post } from '@zoonk/models';
 import { getTimeline } from '@zoonk/services';
-import { firebaseError, GlobalContext, theme } from '@zoonk/utils';
+import { GlobalContext, theme } from '@zoonk/utils';
 import NoFollowing from './NoFollowing';
 import PostList from './PostList';
-import Snackbar from './Snackbar';
 import useLoadMore from './useLoadMore';
 
 interface TimelineCardProps {
@@ -15,10 +14,9 @@ interface TimelineCardProps {
 
 const TimelineCard = ({ limit, userId }: TimelineCardProps) => {
   const { translate } = useContext(GlobalContext);
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
-  const { error, get, items, lastVisible, loading } = useLoadMore<
-    Post.Snapshot
-  >(limit);
+  const { get, items, lastVisible, loading } = useLoadMore<Post.Snapshot>(
+    limit,
+  );
 
   const loadMore = () => {
     get({ data: getTimeline(userId, lastVisible, limit) });
@@ -30,12 +28,6 @@ const TimelineCard = ({ limit, userId }: TimelineCardProps) => {
       replace: true,
     });
   }, [get, limit, userId]);
-
-  useEffect(() => {
-    if (error) {
-      setSnackbar(firebaseError(error, 'timeline_list'));
-    }
-  }, [error]);
 
   return (
     <Fragment>
@@ -53,7 +45,6 @@ const TimelineCard = ({ limit, userId }: TimelineCardProps) => {
           {translate('load_more')}
         </Button>
       )}
-      <Snackbar action={snackbar} />
     </Fragment>
   );
 };

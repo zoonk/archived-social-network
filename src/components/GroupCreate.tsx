@@ -1,18 +1,16 @@
-import { Fragment, useContext, useState } from 'react';
 import { useRouter } from 'next/router';
 import { timestamp } from '@zoonk/firebase/db';
-import { Group, SnackbarAction } from '@zoonk/models';
+import { Group } from '@zoonk/models';
 import { createGroup } from '@zoonk/services';
-import { appLanguage, firebaseError, GlobalContext } from '@zoonk/utils';
+import { appLanguage } from '@zoonk/utils';
 import GroupForm from './GroupForm';
-import Snackbar from './Snackbar';
 import useAuth from './useAuth';
+import useSnackbar from './useSnackbar';
 
 const GroupCreate = () => {
-  const { translate } = useContext(GlobalContext);
   const { profile, user } = useAuth();
   const { push, query } = useRouter();
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
+  const { action, snackbar } = useSnackbar();
   const { topicId } = query;
 
   if (!user || !profile) {
@@ -20,7 +18,7 @@ const GroupCreate = () => {
   }
 
   const handleSubmit = async (data: Group.EditableFields, topics: string[]) => {
-    setSnackbar({ type: 'progress', msg: translate('saving') });
+    snackbar('progress');
 
     createGroup({
       ...data,
@@ -38,21 +36,18 @@ const GroupCreate = () => {
       updatedById: user.uid,
     })
       .then((id) => {
-        setSnackbar({ type: 'success', msg: translate('saved') });
+        snackbar('success');
         push('/groups/[id]', `/groups/${id}`);
       })
-      .catch((e) => setSnackbar(firebaseError(e, 'group_add')));
+      .catch((e) => snackbar('error', e.message));
   };
 
   return (
-    <Fragment>
-      <GroupForm
-        saving={snackbar?.type === 'progress' || snackbar?.type === 'success'}
-        topicIds={topicId ? [String(topicId)] : undefined}
-        onSubmit={handleSubmit}
-      />
-      <Snackbar action={snackbar} />
-    </Fragment>
+    <GroupForm
+      saving={action === 'progress' || action === 'success'}
+      topicIds={topicId ? [String(topicId)] : undefined}
+      onSubmit={handleSubmit}
+    />
   );
 };
 

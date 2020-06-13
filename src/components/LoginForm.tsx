@@ -11,32 +11,29 @@ import {
   Typography,
 } from '@material-ui/core';
 import { LockOutlined } from '@material-ui/icons';
-import { SnackbarAction } from '@zoonk/models';
 import { signIn } from '@zoonk/services';
-import { firebaseError, GlobalContext, theme } from '@zoonk/utils';
+import { GlobalContext, theme } from '@zoonk/utils';
 import SocialSignin from './SocialSignin';
-import Snackbar from './Snackbar';
+import useSnackbar from './useSnackbar';
 
-/**
- * Display a login form.
- */
 const LoginForm = () => {
   const { translate } = useContext(GlobalContext);
   const { push, query } = useRouter();
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
+  const { snackbar } = useSnackbar();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
   const handleSubmit = () => {
-    setSnackbar({ msg: translate('signing_in'), type: 'progress' });
+    snackbar('progress', translate('signing_in'));
 
     signIn(email, password)
       .then(() => {
+        snackbar('dismiss');
         if (query.redirect) {
           push(String(query.redirect));
         }
       })
-      .catch((e) => setSnackbar(firebaseError(e, 'login')));
+      .catch((e) => snackbar('error', e.message));
   };
 
   return (
@@ -126,8 +123,6 @@ const LoginForm = () => {
           <SocialSignin />
         </form>
       </div>
-
-      <Snackbar action={snackbar} />
     </Container>
   );
 };

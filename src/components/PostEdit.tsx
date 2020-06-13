@@ -3,15 +3,15 @@ import Error from 'next/error';
 import { useRouter } from 'next/router';
 import { CircularProgress, IconButton } from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
-import BackButton from '@zoonk/components/BackButton';
-import EditNotAllowed from '@zoonk/components/EditNotAllowed';
-import LoginForm from '@zoonk/components/LoginForm';
-import PostEditForm from '@zoonk/components/PostEditForm';
-import Snackbar from '@zoonk/components/Snackbar';
-import useAuth from '@zoonk/components/useAuth';
-import { Post, SnackbarAction } from '@zoonk/models';
+import { Post } from '@zoonk/models';
 import { deletePost, getPost } from '@zoonk/services';
-import { firebaseError, GlobalContext } from '@zoonk/utils';
+import { GlobalContext } from '@zoonk/utils';
+import BackButton from './BackButton';
+import EditNotAllowed from './EditNotAllowed';
+import LoginForm from './LoginForm';
+import PostEditForm from './PostEditForm';
+import useAuth from './useAuth';
+import useSnackbar from './useSnackbar';
 
 interface PostEditProps {
   id: string;
@@ -20,7 +20,7 @@ interface PostEditProps {
 const PostEdit = ({ id }: PostEditProps) => {
   const { translate } = useContext(GlobalContext);
   const { profile, user } = useAuth();
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
+  const { snackbar } = useSnackbar();
   const [data, setData] = useState<Post.Get | null | undefined>();
   const { push } = useRouter();
   const isAuthor = user?.uid === data?.createdById;
@@ -34,7 +34,7 @@ const PostEdit = ({ id }: PostEditProps) => {
   useEffect(() => {
     getPost(id)
       .then(setData)
-      .catch((e) => setSnackbar(firebaseError(e, 'post_get')));
+      .catch(() => setData(null));
   }, [id]);
 
   if (user === null) return <LoginForm />;
@@ -44,7 +44,7 @@ const PostEdit = ({ id }: PostEditProps) => {
 
   const handleDelete = () => {
     if (profile && window.confirm(translate('post_delete_confirmation'))) {
-      setSnackbar({ type: 'progress', msg: translate('deleting') });
+      snackbar('progress', translate('deleting'));
 
       const { chapterId, topics } = data;
       const linkPath = chapterId ? '/chapters/[id]' : '/topics/[id]';
@@ -54,10 +54,10 @@ const PostEdit = ({ id }: PostEditProps) => {
 
       deletePost(id, profile, user.uid)
         .then(() => {
-          setSnackbar(null);
+          snackbar('dismiss');
           push(linkPath, linkAs);
         })
-        .catch((e) => setSnackbar(firebaseError(e, 'post_delete')));
+        .catch((e) => snackbar('error', e.message));
     }
   };
 
@@ -84,7 +84,6 @@ const PostEdit = ({ id }: PostEditProps) => {
         )}
       </div>
       <PostEditForm data={data} />
-      <Snackbar action={snackbar} />
     </Fragment>
   );
 };

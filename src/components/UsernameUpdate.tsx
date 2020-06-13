@@ -1,16 +1,15 @@
 import { useCallback, useContext, useState } from 'react';
 import { debounce } from 'lodash';
 import { Button, Grid, Paper, TextField, Typography } from '@material-ui/core';
-import { SnackbarAction } from '@zoonk/models';
 import { createUsername, validateUsername } from '@zoonk/services';
-import { firebaseError, GlobalContext, theme } from '@zoonk/utils';
-import Snackbar from './Snackbar';
+import { GlobalContext, theme } from '@zoonk/utils';
+import useSnackbar from './useSnackbar';
 import useAuth from './useAuth';
 
 const UsernameUpdate = () => {
   const { translate } = useContext(GlobalContext);
   const { user } = useAuth();
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
+  const { action, snackbar } = useSnackbar();
   const [username, setUsername] = useState<string>(user?.username || '');
   const [valid, setValid] = useState<boolean>(true);
 
@@ -34,18 +33,18 @@ const UsernameUpdate = () => {
   };
 
   const handleSubmit = async () => {
-    setSnackbar({ type: 'progress', msg: translate('saving') });
+    snackbar('progress');
 
     const isValid = await validateUsername(username);
 
     if (!isValid) {
-      setSnackbar({ type: 'error', msg: translate('username_exists') });
+      snackbar('error', translate('username_exists'));
       return;
     }
 
     createUsername(username, user.uid)
-      .then(() => setSnackbar({ type: 'success', msg: translate('saved') }))
-      .catch((e) => setSnackbar(firebaseError(e, 'username_update')));
+      .then(() => snackbar('success'))
+      .catch((e) => snackbar('error', e.message));
   };
 
   return (
@@ -81,7 +80,7 @@ const UsernameUpdate = () => {
         </Grid>
 
         <Button
-          disabled={!valid}
+          disabled={!valid || action === 'progress'}
           type="submit"
           fullWidth
           variant="contained"
@@ -91,8 +90,6 @@ const UsernameUpdate = () => {
           {translate('save')}
         </Button>
       </form>
-
-      <Snackbar action={snackbar} />
     </Paper>
   );
 };

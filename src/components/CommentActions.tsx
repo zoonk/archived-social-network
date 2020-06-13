@@ -1,14 +1,14 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { Button, IconButton, makeStyles } from '@material-ui/core';
 import { Delete, Reply } from '@material-ui/icons';
 import { green } from '@material-ui/core/colors';
-import { Comment, SnackbarAction } from '@zoonk/models';
+import { Comment } from '@zoonk/models';
 import { deleteComment } from '@zoonk/services';
-import { firebaseError, GlobalContext, PostContext } from '@zoonk/utils';
+import { GlobalContext, PostContext } from '@zoonk/utils';
 import LikeButton from './LikeButton';
 import MarkAsAnswer from './MarkAsAnswer';
-import Snackbar from './Snackbar';
 import useAuth from './useAuth';
+import useSnackbar from './useSnackbar';
 
 interface CommentActionsProps {
   data: Comment.Get;
@@ -32,7 +32,7 @@ const CommentActions = ({ data, onReply }: CommentActionsProps) => {
   );
   const { category, createdById, id, likes, replies } = data;
   const classes = useStyles();
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
+  const { snackbar } = useSnackbar();
   const isAuthor = createdById === user?.uid;
   const isModerator = user?.role === 'moderator' || user?.role === 'admin';
   const isPostAuthor = postAuthor === user?.uid;
@@ -42,15 +42,13 @@ const CommentActions = ({ data, onReply }: CommentActionsProps) => {
 
   const remove = () => {
     if (!user) {
-      setSnackbar({ type: 'error', msg: translate('need_to_be_loggedin') });
+      snackbar('error', translate('need_to_be_loggedin'));
       return;
     }
 
     if (window.confirm(translate('delete_confirmation'))) {
-      setSnackbar({ type: 'progress', msg: translate('deleting') });
-      deleteComment(id).catch((err) =>
-        setSnackbar(firebaseError(err, 'comment_delete')),
-      );
+      snackbar('progress', translate('deleting'));
+      deleteComment(id).catch((e) => snackbar('error', e.message));
     }
   };
 
@@ -81,7 +79,6 @@ const CommentActions = ({ data, onReply }: CommentActionsProps) => {
 
       <div style={{ flexGrow: 1 }} />
       {canPin && <MarkAsAnswer commentId={id} />}
-      <Snackbar action={snackbar} />
     </div>
   );
 };

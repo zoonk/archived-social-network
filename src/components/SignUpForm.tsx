@@ -2,46 +2,38 @@ import { useContext, useState } from 'react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { Button, Grid, Link, TextField, Typography } from '@material-ui/core';
-import AlreadyLoggedin from '@zoonk/components/AlreadyLoggedin';
-import Snackbar from '@zoonk/components/Snackbar';
-import SocialSignin from '@zoonk/components/SocialSignin';
-import useAuth from '@zoonk/components/useAuth';
-import { SnackbarAction } from '@zoonk/models';
 import { signUp } from '@zoonk/services/users';
 import { GlobalContext, theme } from '@zoonk/utils';
+import AlreadyLoggedin from './AlreadyLoggedin';
+import SocialSignin from './SocialSignin';
+import useAuth from './useAuth';
+import useSnackbar from './useSnackbar';
 
 const SignUpForm = () => {
   const { translate } = useContext(GlobalContext);
   const { user } = useAuth();
   const { query, push } = useRouter();
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
+  const { action, snackbar } = useSnackbar();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [signupSuccess, setSignup] = useState<boolean>(false);
 
   const handleSubmit = () => {
-    setSnackbar({ msg: translate('creating_account'), type: 'progress' });
+    snackbar('progress', translate('creating_account'));
 
     signUp(email, password)
       .then((res) => res.user?.sendEmailVerification())
       .then(() => {
-        setSignup(true);
-        setSnackbar(null);
+        snackbar('dismiss');
 
         if (query.redirect) {
           push(String(query.redirect));
+          return;
         }
+
+        setSignup(true);
       })
-      .catch((error) => {
-        setSnackbar({
-          msg: error.message,
-          type: 'error',
-          log: {
-            code: error.code,
-            description: 'signup',
-          },
-        });
-      });
+      .catch((e) => snackbar('error', e.message));
   };
 
   if (user === undefined) {
@@ -116,6 +108,7 @@ const SignUpForm = () => {
         variant="contained"
         color="primary"
         style={{ margin: theme.spacing(3, 0, 2) }}
+        disabled={action === 'progress'}
       >
         {translate('signup')}
       </Button>
@@ -129,7 +122,6 @@ const SignUpForm = () => {
       </Grid>
 
       <SocialSignin />
-      <Snackbar action={snackbar} />
     </form>
   );
 };

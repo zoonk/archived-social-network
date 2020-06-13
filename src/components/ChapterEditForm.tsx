@@ -1,12 +1,12 @@
-import { Fragment, useContext, useState } from 'react';
+import { Fragment, useContext } from 'react';
 import { useRouter } from 'next/router';
 import { timestamp } from '@zoonk/firebase/db';
-import { Chapter, SnackbarAction } from '@zoonk/models';
+import { Chapter } from '@zoonk/models';
 import { deleteChapter, updateChapter } from '@zoonk/services';
-import { firebaseError, GlobalContext } from '@zoonk/utils';
+import { GlobalContext } from '@zoonk/utils';
 import ChapterForm from './ChapterForm';
-import Snackbar from './Snackbar';
 import useAuth from './useAuth';
+import useSnackbar from './useSnackbar';
 
 interface ChapterEditFormProps {
   data: Chapter.Get;
@@ -16,7 +16,7 @@ const ChapterEditForm = ({ data }: ChapterEditFormProps) => {
   const { translate } = useContext(GlobalContext);
   const { profile, user } = useAuth();
   const { push } = useRouter();
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
+  const { action, snackbar } = useSnackbar();
   const isAuthor = user?.uid === data.createdById;
   const canDelete =
     user?.role === 'admin' || user?.role === 'moderator' || isAuthor;
@@ -27,19 +27,19 @@ const ChapterEditForm = ({ data }: ChapterEditFormProps) => {
 
   const handleDelete = () => {
     if (window.confirm(translate('chapter_delete_confirmation'))) {
-      setSnackbar({ type: 'progress', msg: translate('deleting') });
+      snackbar('progress', translate('deleting'));
 
       deleteChapter(data.id, profile, user.uid)
         .then(() => {
-          setSnackbar(null);
+          snackbar('dismiss');
           push('/topics/[id]', `/topics/${data.topics[0]}`);
         })
-        .catch((e) => setSnackbar(firebaseError(e, 'chapter_delete')));
+        .catch((e) => snackbar('error', e.message));
     }
   };
 
   const handleSubmit = (changes: Chapter.EditableFields) => {
-    setSnackbar({ type: 'progress', msg: translate('saving') });
+    snackbar('progress');
 
     updateChapter(
       {
@@ -50,19 +50,18 @@ const ChapterEditForm = ({ data }: ChapterEditFormProps) => {
       },
       data.id,
     )
-      .then(() => setSnackbar({ type: 'success', msg: translate('saved') }))
-      .catch((e) => setSnackbar(firebaseError(e, 'chapter_edit')));
+      .then(() => snackbar('success'))
+      .catch((e) => snackbar('error', e.message));
   };
 
   return (
     <Fragment>
       <ChapterForm
-        saving={snackbar?.type === 'progress'}
+        saving={action === 'progress'}
         data={data}
         onDelete={canDelete ? handleDelete : undefined}
         onSubmit={handleSubmit}
       />
-      <Snackbar action={snackbar} />
     </Fragment>
   );
 };

@@ -1,10 +1,9 @@
-import { Fragment, useContext, useState } from 'react';
+import { useContext } from 'react';
 import { IconButton } from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
-import { SnackbarAction } from '@zoonk/models';
 import { deleteComment } from '@zoonk/services';
-import { firebaseError, GlobalContext } from '@zoonk/utils';
-import Snackbar from './Snackbar';
+import { GlobalContext } from '@zoonk/utils';
+import useSnackbar from './useSnackbar';
 
 interface CommentRemoveProps {
   id: string;
@@ -12,24 +11,21 @@ interface CommentRemoveProps {
 
 const CommentRemove = ({ id }: CommentRemoveProps) => {
   const { translate } = useContext(GlobalContext);
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
+  const { snackbar } = useSnackbar();
 
   const remove = () => {
     if (window.confirm(translate('delete_confirmation'))) {
-      setSnackbar({ type: 'progress', msg: translate('deleting') });
+      snackbar('progress', translate('deleting'));
       deleteComment(id)
-        .then(() => setSnackbar({ type: 'success', msg: translate('deleted') }))
-        .catch((err) => setSnackbar(firebaseError(err, 'comment_delete')));
+        .then(() => snackbar('success', translate('deleted')))
+        .catch((e) => snackbar('error', e.message));
     }
   };
 
   return (
-    <Fragment>
-      <IconButton onClick={remove}>
-        <Delete />
-      </IconButton>
-      <Snackbar action={snackbar} />
-    </Fragment>
+    <IconButton onClick={remove}>
+      <Delete />
+    </IconButton>
   );
 };
 

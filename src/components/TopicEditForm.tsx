@@ -1,13 +1,13 @@
 import { useContext, useState } from 'react';
 import { Grid, TextField, Typography } from '@material-ui/core';
 import { timestamp } from '@zoonk/firebase/db';
-import { SnackbarAction, Topic } from '@zoonk/models';
+import { Topic } from '@zoonk/models';
 import { updateTopic } from '@zoonk/services';
-import { firebaseError, GlobalContext, imgSize } from '@zoonk/utils';
+import { GlobalContext, imgSize } from '@zoonk/utils';
 import FormBase from './FormBase';
 import ImageUpload from './ImageUpload';
-import Snackbar from './Snackbar';
 import useAuth from './useAuth';
+import useSnackbar from './useSnackbar';
 
 interface TopicEditFormProps {
   topic: Topic.Get;
@@ -16,7 +16,7 @@ interface TopicEditFormProps {
 const TopicEditForm = ({ topic }: TopicEditFormProps) => {
   const { translate } = useContext(GlobalContext);
   const { profile, user } = useAuth();
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
+  const { action, snackbar } = useSnackbar();
   const [description, setDescription] = useState<string>(topic.description);
   const [photo, setPhoto] = useState<string | null>(topic.photo);
   const descriptionMax = 1000;
@@ -27,7 +27,7 @@ const TopicEditForm = ({ topic }: TopicEditFormProps) => {
   }
 
   const handleSubmit = () => {
-    setSnackbar({ type: 'progress', msg: translate('saving') });
+    snackbar('progress');
 
     updateTopic(
       {
@@ -39,14 +39,14 @@ const TopicEditForm = ({ topic }: TopicEditFormProps) => {
       },
       topic.id,
     )
-      .then(() => setSnackbar({ type: 'success', msg: translate('saved') }))
-      .catch((e) => setSnackbar(firebaseError(e, 'topic_edit')));
+      .then(() => snackbar('success'))
+      .catch((e) => snackbar('error', e.message));
   };
 
   return (
     <FormBase
       valid={isValid}
-      saving={snackbar?.type === 'progress'}
+      saving={action === 'progress'}
       onSubmit={handleSubmit}
     >
       <Grid container spacing={2}>
@@ -80,7 +80,6 @@ const TopicEditForm = ({ topic }: TopicEditFormProps) => {
           />
         </Grid>
       </Grid>
-      <Snackbar action={snackbar} />
     </FormBase>
   );
 };

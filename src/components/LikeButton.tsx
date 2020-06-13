@@ -1,10 +1,9 @@
-import { Fragment, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Button } from '@material-ui/core';
 import { Favorite, FavoriteBorder } from '@material-ui/icons';
-import { SnackbarAction } from '@zoonk/models';
 import { getLikedStatus, toggleLike } from '@zoonk/services';
 import { GlobalContext } from '@zoonk/utils';
-import Snackbar from './Snackbar';
+import useSnackbar from './useSnackbar';
 import useAuth from './useAuth';
 
 interface LikeButtonProps {
@@ -15,7 +14,7 @@ interface LikeButtonProps {
 const LikeButton = ({ itemPath, likes }: LikeButtonProps) => {
   const { translate } = useContext(GlobalContext);
   const { user } = useAuth();
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
+  const { snackbar } = useSnackbar();
   const [saving, setSaving] = useState<boolean>(false);
   const [liked, setLiked] = useState<boolean>(false);
   const [newLikes, setNewLikes] = useState(likes);
@@ -34,7 +33,7 @@ const LikeButton = ({ itemPath, likes }: LikeButtonProps) => {
 
   const like = () => {
     if (!user) {
-      setSnackbar({ type: 'error', msg: translate('need_to_be_loggedin') });
+      snackbar('error', translate('need_to_be_loggedin'));
       return;
     }
 
@@ -47,19 +46,16 @@ const LikeButton = ({ itemPath, likes }: LikeButtonProps) => {
   };
 
   return (
-    <Fragment>
-      <Button
-        aria-label={translate('like')}
-        variant="outlined"
-        color="secondary"
-        startIcon={liked ? <Favorite /> : <FavoriteBorder />}
-        onClick={like}
-        disabled={saving}
-      >
-        {newLikes}
-      </Button>
-      <Snackbar action={snackbar} />
-    </Fragment>
+    <Button
+      aria-label={translate('like')}
+      variant="outlined"
+      color="secondary"
+      startIcon={liked ? <Favorite /> : <FavoriteBorder />}
+      onClick={like}
+      disabled={saving}
+    >
+      {newLikes}
+    </Button>
   );
 };
 

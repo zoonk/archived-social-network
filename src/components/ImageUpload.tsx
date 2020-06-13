@@ -1,10 +1,10 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { Avatar, Button, Grid, Typography } from '@material-ui/core';
 import { AddAPhoto } from '@material-ui/icons';
-import { ContentCategory, SnackbarAction } from '@zoonk/models';
+import { ContentCategory } from '@zoonk/models';
 import { upload } from '@zoonk/services';
-import { firebaseError, GlobalContext, maxFileSize, theme } from '@zoonk/utils';
-import Snackbar from './Snackbar';
+import { GlobalContext, maxFileSize, theme } from '@zoonk/utils';
+import useSnackbar from './useSnackbar';
 
 interface ImageUploadProps {
   category: ContentCategory | 'users';
@@ -29,7 +29,7 @@ const ImageUpload = ({
   onSave,
 }: ImageUploadProps) => {
   const { translate } = useContext(GlobalContext);
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
+  const { snackbar } = useSnackbar();
 
   const uploadPhoto = (fileList: FileList | null) => {
     if (!fileList) {
@@ -39,26 +39,18 @@ const ImageUpload = ({
     const file = fileList[0];
 
     if (file.size > maxFileSize) {
-      setSnackbar({
-        msg: translate('file_too_big'),
-        type: 'error',
-        log: {
-          code: 'file_too_big',
-          description: 'upload',
-          opts: { category },
-        },
-      });
+      snackbar('error', translate('file_too_big'));
       return;
     }
 
-    setSnackbar({ msg: translate('uploading'), type: 'progress' });
+    snackbar('progress', translate('uploading'));
 
     upload(file, category)
       .then((photoURL) => {
         onSave(photoURL);
-        setSnackbar({ msg: translate('saved'), type: 'success' });
+        snackbar('success');
       })
-      .catch((e) => setSnackbar(firebaseError(e, 'photo_upload')));
+      .catch((e) => snackbar('error', e.message));
   };
 
   return (
@@ -98,8 +90,6 @@ const ImageUpload = ({
           </Typography>
         )}
       </label>
-
-      <Snackbar action={snackbar} />
     </Grid>
   );
 };

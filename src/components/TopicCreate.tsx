@@ -1,65 +1,82 @@
-import { useContext, useState } from 'react';
-import { Button, Grid, IconButton, Typography } from '@material-ui/core';
-import { Help } from '@material-ui/icons';
-import { WikipediaSearchItem } from '@zoonk/models';
-import { appLanguage, GlobalContext, theme } from '@zoonk/utils';
-import TopicSearch from './TopicSearch';
-import TopicSearchHelp from './TopicSearchHelp';
+import { Fragment } from 'react';
+import { useRouter } from 'next/router';
+import { CircularProgress } from '@material-ui/core';
+import { timestamp } from '@zoonk/firebase/db';
+import { Topic, WikipediaSearchItem } from '@zoonk/models';
+import { createTopic, getWikipediaPage, validateTopic } from '@zoonk/services';
+import { appLanguage } from '@zoonk/utils';
+import HavingIssuesLink from './HavingIssuesLink';
+import LoginForm from './LoginForm';
+import TopicCreateForm from './TopicCreateForm';
+import TopicFormContainer from './TopicFormContainer';
+import useAuth from './useAuth';
+import useSnackbar from './useSnackbar';
 
-interface TopicCreateProps {
-  onSubmit: (item: WikipediaSearchItem) => void;
-}
+const TopicCreate = () => {
+  const { profile, user } = useAuth();
+  const { push } = useRouter();
+  const { snackbar } = useSnackbar();
 
-/**
- * Form for creating a new topic.
- */
-const TopicCreate = ({ onSubmit }: TopicCreateProps) => {
-  const { translate } = useContext(GlobalContext);
-  const [help, setHelp] = useState<boolean>(false);
-  const [selected, setSelected] = useState<WikipediaSearchItem>();
+  if (user === undefined) {
+    return <CircularProgress />;
+  }
 
-  const handleSelect = (item: WikipediaSearchItem | null) => {
-    if (item) {
-      setSelected(item);
+  if (user === null || !profile) {
+    return <LoginForm />;
+  }
+
+  const goToTopic = (id: string) => {
+    push('/topics/[id]', `/topics/${id}`);
+  };
+
+  const handleSubmit = async (selected: WikipediaSearchItem) => {
+    snackbar('progress');
+
+    const page = await getWikipediaPage(selected.title, appLanguage);
+    const { description, photo, slug, title } = page;
+    const topicId = `${slug}_${appLanguage}`;
+    const isValid = await validateTopic(topicId);
+
+    if (!isValid) {
+      snackbar('dismiss');
+      goToTopic(topicId);
+      return;
     }
+
+    const topic: Topic.Create = {
+      chapters: [],
+      comments: 0,
+      createdAt: timestamp,
+      createdBy: profile,
+      createdById: user.uid,
+      description,
+      followers: 0,
+      language: appLanguage,
+      likes: 0,
+      photo,
+      posts: 0,
+      title,
+      topics: [topicId],
+      updatedAt: timestamp,
+      updatedBy: profile,
+      updatedById: user.uid,
+    };
+
+    createTopic(topic, topicId)
+      .then(() => {
+        snackbar('dismiss');
+        goToTopic(topicId);
+      })
+      .catch((e) => snackbar('error', e.message));
   };
 
   return (
-    <form
-      style={{
-        width: '100%',
-        marginTop: theme.spacing(3),
-      }}
-      noValidate
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (selected) onSubmit(selected);
-      }}
-    >
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Typography variant="body2" gutterBottom>
-            {translate('topic_create_desc')}{' '}
-            <IconButton onClick={() => setHelp(true)} size="small" edge="start">
-              <Help fontSize="small" style={{ verticalAlign: 'middle' }} />
-            </IconButton>
-          </Typography>
-          <TopicSearch language={appLanguage} onSelect={handleSelect} />
-          <TopicSearchHelp open={help} onClose={() => setHelp(false)} />
-        </Grid>
-      </Grid>
-
-      <Button
-        disabled={!selected}
-        type="submit"
-        fullWidth
-        variant="contained"
-        color="primary"
-        style={{ margin: theme.spacing(3, 0, 2) }}
-      >
-        {translate('topic_create')}
-      </Button>
-    </form>
+    <Fragment>
+      <TopicFormContainer type="add">
+        <TopicCreateForm onSubmit={handleSubmit} />
+        <HavingIssuesLink />
+      </TopicFormContainer>
+    </Fragment>
   );
 };
 

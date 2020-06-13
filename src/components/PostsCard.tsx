@@ -1,12 +1,11 @@
 import { Fragment, useContext, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { Button, CircularProgress } from '@material-ui/core';
-import { Post, SnackbarAction } from '@zoonk/models';
+import { Post } from '@zoonk/models';
 import { listPosts } from '@zoonk/services';
-import { firebaseError, GlobalContext, theme } from '@zoonk/utils';
+import { GlobalContext, theme } from '@zoonk/utils';
 import NoPosts from './NoPosts';
 import PostList from './PostList';
-import Snackbar from './Snackbar';
 import useLoadMore from './useLoadMore';
 
 const CategoryFilter = dynamic(() => import('./CategoryFilter'));
@@ -34,11 +33,10 @@ const PostsCard = ({
   userId,
 }: PostsCardProps) => {
   const { translate } = useContext(GlobalContext);
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
   const [filter, setFilter] = useState<Filter>(category?.[0] || 'timeline');
-  const { error, get, items, lastVisible, loading } = useLoadMore<
-    Post.Snapshot
-  >(limit);
+  const { get, items, lastVisible, loading } = useLoadMore<Post.Snapshot>(
+    limit,
+  );
   const listSlug = filter === 'timeline' ? undefined : filter;
 
   // useEffect doesn't compare arrays, so we need to stringify it.
@@ -83,12 +81,6 @@ const PostsCard = ({
     userId,
   ]);
 
-  useEffect(() => {
-    if (error) {
-      setSnackbar(firebaseError(error, 'post_list'));
-    }
-  }, [error]);
-
   return (
     <Fragment>
       {displayFilter && (
@@ -117,7 +109,6 @@ const PostsCard = ({
           {translate('load_more')}
         </Button>
       )}
-      <Snackbar action={snackbar} />
     </Fragment>
   );
 };

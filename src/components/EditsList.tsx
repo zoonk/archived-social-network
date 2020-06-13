@@ -1,11 +1,10 @@
-import { Fragment, useContext, useEffect, useState } from 'react';
+import { Fragment, useContext, useEffect } from 'react';
 import { Button } from '@material-ui/core';
-import { Activity, SnackbarAction } from '@zoonk/models';
+import { Activity } from '@zoonk/models';
 import { listActivities } from '@zoonk/services';
-import { firebaseError, GlobalContext, theme } from '@zoonk/utils';
+import { GlobalContext, theme } from '@zoonk/utils';
 import EditsItem from './EditsItem';
 import EditsSkeleton from './EditsSkeleton';
-import Snackbar from './Snackbar';
 import useLoadMore from './useLoadMore';
 
 interface EditsListProps {
@@ -14,31 +13,19 @@ interface EditsListProps {
   limit?: number;
 }
 
-/**
- * List all changes made to an item.
- * @property `itemPath` - document path in the database.
- * @property `limit` - # of items to be displayed.
- */
 const EditsList = ({ displayTitle, itemPath, limit = 10 }: EditsListProps) => {
   const { translate } = useContext(GlobalContext);
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
-  const { error, get, items, lastVisible, loading } = useLoadMore<
-    Activity.Snapshot
-  >(limit);
+  const { get, items, lastVisible, loading } = useLoadMore<Activity.Snapshot>(
+    limit,
+  );
 
   const loadMore = () => {
     get({ data: listActivities(itemPath, lastVisible, limit) });
   };
 
   useEffect(() => {
-    get({ data: listActivities(itemPath, undefined, limit) });
+    get({ data: listActivities(itemPath, undefined, limit), replace: true });
   }, [get, itemPath, limit]);
-
-  useEffect(() => {
-    if (error) {
-      setSnackbar(firebaseError(error, 'edits_list'));
-    }
-  }, [error]);
 
   return (
     <Fragment>
@@ -59,8 +46,6 @@ const EditsList = ({ displayTitle, itemPath, limit = 10 }: EditsListProps) => {
           {translate('load_more')}
         </Button>
       )}
-
-      <Snackbar action={snackbar} />
     </Fragment>
   );
 };

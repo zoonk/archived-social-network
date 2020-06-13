@@ -8,15 +8,11 @@ import {
 } from '@material-ui/core';
 import { green } from '@material-ui/core/colors';
 import { Close } from '@material-ui/icons';
-import { analytics } from '@zoonk/firebase/analytics';
-import { SnackbarAction } from '@zoonk/models';
 import { errorTimeout, successTimeout } from '@zoonk/utils';
-
-interface SnackbarProps {
-  action: SnackbarAction | null;
-}
+import useSnackbar from './useSnackbar';
 
 const useStyles = makeStyles((theme: Theme) => ({
+  dismiss: {},
   success: {
     backgroundColor: green[600],
   },
@@ -39,29 +35,15 @@ const useStyles = makeStyles((theme: Theme) => ({
  * Display a snackbar and log events in our analytics server
  * when you pass a `log` value to the action prop.
  */
-const CustomSnackbar = ({ action }: SnackbarProps) => {
+const CustomSnackbar = () => {
+  const { snackbar, action, message } = useSnackbar();
   const classes = useStyles();
   const [duration, setDuration] = useState<number | null>(null);
-  const [message, setMessage] = useState<string>();
 
   useEffect(() => {
-    if (action?.type === 'error') setDuration(errorTimeout);
-    if (action?.type === 'success') setDuration(successTimeout);
-    if (!action) setDuration(null);
-  }, [action]);
-
-  useEffect(() => {
-    setMessage(action?.msg);
-  }, [action]);
-
-  useEffect(() => {
-    if (action?.type === 'error' && action.log) {
-      analytics().logEvent('exception', {
-        ...action.log.opts,
-        description: action.log.description,
-        msg: action.msg,
-      });
-    }
+    if (action === 'error') setDuration(errorTimeout);
+    if (action === 'success') setDuration(successTimeout);
+    if (!action || action === 'dismiss') setDuration(null);
   }, [action]);
 
   return (
@@ -69,10 +51,10 @@ const CustomSnackbar = ({ action }: SnackbarProps) => {
       anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       open={Boolean(message)}
       autoHideDuration={duration}
-      onClose={() => setMessage(undefined)}
+      onClose={() => snackbar('dismiss')}
     >
       <SnackbarContent
-        className={action ? classes[action.type] : undefined}
+        className={action ? classes[action] : undefined}
         aria-describedby="snackbar"
         message={
           <span id="snackbar" className={classes.message}>
@@ -80,13 +62,13 @@ const CustomSnackbar = ({ action }: SnackbarProps) => {
           </span>
         }
         action={
-          action?.type === 'error'
+          action === 'error'
             ? [
                 <IconButton
                   key="close"
                   aria-label="close"
                   color="inherit"
-                  onClick={() => setMessage(undefined)}
+                  onClick={() => snackbar('dismiss')}
                 >
                   <Close className={classes.icon} />
                 </IconButton>,

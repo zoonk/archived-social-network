@@ -4,12 +4,12 @@ import { useRouter } from 'next/router';
 import { Button, CircularProgress } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 import { timestamp } from '@zoonk/firebase/db';
-import { Post, SnackbarAction } from '@zoonk/models';
+import { Post } from '@zoonk/models';
 import { getChapterLive, updatePost, updatePostOrder } from '@zoonk/services';
-import { firebaseError, GlobalContext, theme } from '@zoonk/utils';
-import Snackbar from './Snackbar';
+import { GlobalContext, theme } from '@zoonk/utils';
 import SortableList from './SortableList';
 import useAuth from './useAuth';
+import useSnackbar from './useSnackbar';
 
 interface LessonSortableListProps {
   category: 'examples' | 'lessons';
@@ -26,7 +26,7 @@ const LessonSortableList = ({
   const { translate } = useContext(GlobalContext);
   const { profile, user } = useAuth();
   const { push } = useRouter();
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
+  const { action, snackbar } = useSnackbar();
   const [loading, setLoading] = useState<boolean>(true);
   const [items, setItems] = useState<Post.Summary[]>([]);
 
@@ -60,16 +60,16 @@ const LessonSortableList = ({
   }
 
   const save = () => {
-    setSnackbar({ type: 'progress', msg: translate('saving') });
+    snackbar('progress');
     const changes = items.map((item) => item.id);
     updatePostOrder(changes, category, chapterId, profile, user.uid)
-      .then(() => setSnackbar({ type: 'success', msg: translate('saved') }))
-      .catch((e) => setSnackbar(firebaseError(e, 'update_order')));
+      .then(() => snackbar('success'))
+      .catch((e) => snackbar('error', e.message));
   };
 
   const remove = (id: string) => {
     if (window.confirm(translate('post_delete_confirmation'))) {
-      setSnackbar({ type: 'progress', msg: translate('post_removing') });
+      snackbar('progress', translate('post_removing'));
 
       const changes = {
         chapterId: null,
@@ -87,9 +87,9 @@ const LessonSortableList = ({
             const newItems = previous.filter((post) => post.id !== id);
             return newItems;
           });
-          setSnackbar({ type: 'success', msg: translate('post_removed') });
+          snackbar('success', translate('post_removed'));
         })
-        .catch((e) => setSnackbar(firebaseError(e, 'post_remove')));
+        .catch((e) => snackbar('error', e.message));
     }
   };
 
@@ -112,13 +112,12 @@ const LessonSortableList = ({
       <SortableList
         category="posts"
         items={items}
-        saving={snackbar?.type === 'progress'}
+        saving={action === 'progress'}
         onCancel={() => push('/chapters/[id]', `/chapters/${chapterId}`)}
         onDelete={remove}
         onMove={handleMove}
         onSave={save}
       />
-      <Snackbar action={snackbar} />
     </Fragment>
   );
 };

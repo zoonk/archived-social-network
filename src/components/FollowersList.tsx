@@ -1,10 +1,9 @@
-import { Fragment, useContext, useEffect, useState } from 'react';
+import { Fragment, useContext, useEffect } from 'react';
 import { Button, CircularProgress, Grid, makeStyles } from '@material-ui/core';
-import { Follower, SnackbarAction } from '@zoonk/models';
+import { Follower } from '@zoonk/models';
 import { getFollowers } from '@zoonk/services';
-import { firebaseError, GlobalContext } from '@zoonk/utils';
+import { GlobalContext } from '@zoonk/utils';
 import FollowerListItem from './FollowerListItem';
-import Snackbar from './Snackbar';
 import useLoadMore from './useLoadMore';
 
 interface FollowersListProps {
@@ -19,10 +18,9 @@ const useStyles = makeStyles((theme) => ({
 const FollowersList = ({ groupId, limit = 10 }: FollowersListProps) => {
   const { translate } = useContext(GlobalContext);
   const classes = useStyles();
-  const [snackbar, setSnackbar] = useState<SnackbarAction | null>(null);
-  const { error, get, items, lastVisible, loading } = useLoadMore<
-    Follower.Snapshot
-  >(limit);
+  const { get, items, lastVisible, loading } = useLoadMore<Follower.Snapshot>(
+    limit,
+  );
 
   const loadMore = () => {
     get({
@@ -36,12 +34,6 @@ const FollowersList = ({ groupId, limit = 10 }: FollowersListProps) => {
       replace: true,
     });
   }, [get, groupId, limit]);
-
-  useEffect(() => {
-    if (error) {
-      setSnackbar(firebaseError(error, 'followers_list'));
-    }
-  }, [error]);
 
   return (
     <Fragment>
@@ -64,7 +56,6 @@ const FollowersList = ({ groupId, limit = 10 }: FollowersListProps) => {
           {translate('load_more')}
         </Button>
       )}
-      <Snackbar action={snackbar} />
     </Fragment>
   );
 };
