@@ -25,10 +25,6 @@ if (appLanguage === 'pt') {
   translation = require('../locale/pt').default;
 }
 
-interface AppWrapperProps {
-  children: React.ReactNode;
-}
-
 const CustomApp = ({ Component, pageProps }: AppProps) => {
   const [user, setUser] = useState<User.Get | null | undefined>(undefined);
   const [profile, setProfile] = useState<Profile.Get | null>(null);
