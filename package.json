@@ -6,10 +6,10 @@
   "scripts": {
     "analyze": "ANALYZE=true next build",
     "build": "next build",
-    "deploy:now": "yarn now --prod --scope=zoonk",
     "deploy:firebase": "yarn firebase deploy",
     "deploy:firestore": "yarn firebase deploy --only firestore",
     "deploy:functions": "yarn firebase deploy --only functions",
+    "deploy:vercel": "yarn vercel --prod --scope=zoonk",
     "dev": "next dev",
     "eslint": "eslint",
     "firebase": "firebase",
@@ -17,7 +17,6 @@
     "install:deps": "yarn && yarn install:functions",
     "install:functions": "cd functions && yarn",
     "lint": "yarn eslint './**/*.{js,jsx,ts,tsx}'",
-    "now": "now",
     "prettier": "prettier",
     "start": "next start",
     "start:firestore": "firebase emulators:exec --only firestore",
@@ -26,7 +25,8 @@
     "test:watch": "yarn start:firestore 'jest --watch'",
     "tsc": "yarn tsc:app && yarn tsc:functions",
     "tsc:app": "tsc",
-    "tsc:functions": "cd functions && yarn build"
+    "tsc:functions": "cd functions && yarn build",
+    "vercel": "vercel"
   },
   "dependencies": {
     "@material-ui/core": "^4.9.13",
@@ -72,10 +72,10 @@
     "husky": "^4.2.5",
     "jest": "^25.5.4",
     "lint-staged": "^10.2.2",
-    "now": "^19.0.1",
     "prettier": "^1.19.1",
     "ts-jest": "^25.5.1",
-    "typescript": "^3.9.3"
+    "typescript": "^3.9.3",
+    "vercel": "^19.1.0"
   },
   "husky": {
     "hooks": {

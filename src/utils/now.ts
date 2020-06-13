@@ -1,8 +1,8 @@
 import { ServerResponse } from 'http';
 
 /**
- * Use Now's serverless pre-rendering (SPR) feature:
- * https://zeit.co/blog/serverless-pre-rendering
+ * Use Vercel's serverless pre-rendering (SPR) feature:
+ * https://vercel.com/blog/serverless-pre-rendering
  */
 export const preRender = (res?: ServerResponse) => {
   if (res) {

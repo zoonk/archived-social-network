@@ -83,7 +83,7 @@ const PrivacyEn = () => {
 
       <ul>
         <Typography component="li" variant="body1">
-          <Link href="https://zeit.co">Zeit</Link>
+          <Link href="https://vercel.com">Vercel</Link>
         </Typography>
       </ul>
 

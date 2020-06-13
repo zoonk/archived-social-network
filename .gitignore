@@ -6,9 +6,11 @@
 # testing
 /coverage
 
-# next.js
+# output
 /.next/
 /out/
+.now
+.vercel
 
 # production
 /build
@@ -27,7 +29,3 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-.now
-
-.vercel

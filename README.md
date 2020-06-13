@@ -25,7 +25,7 @@ In the long-term, **we should make learning as easy and fun as playing a video g
 
 - **Frontend:** [Next.js](http://nextjs.org/), [React](https://reactjs.org/)
 - **Backend:** [Firebase](http://firebase.google.com/)
-- **Hosting:** [Zeit](https://zeit.co/home)
+- **Hosting:** [Vercel](https://vercel.com)
 - **Search:** [Algolia](https://www.algolia.com)
 - **UI:** [Material-UI](https://material-ui.com/)
 
