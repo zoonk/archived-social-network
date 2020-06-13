@@ -1,17 +1,16 @@
-import { useContext } from 'react';
 import { MenuItem } from '@material-ui/core';
 import { timestamp } from '@zoonk/firebase/db';
 import { updatePost } from '@zoonk/services';
-import { GlobalContext } from '@zoonk/utils';
 import useSnackbar from './useSnackbar';
 import useAuth from './useAuth';
+import useTranslation from './useTranslation';
 
 interface PinPostProps {
   postId: string;
 }
 
 const PinPost = ({ postId }: PinPostProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { profile, user } = useAuth();
   const { snackbar } = useSnackbar();
 

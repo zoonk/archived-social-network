@@ -1,19 +1,18 @@
-import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import { timestamp } from '@zoonk/firebase/db';
 import { Group } from '@zoonk/models';
 import { deleteGroup, updateGroup } from '@zoonk/services';
-import { GlobalContext } from '@zoonk/utils';
 import GroupForm from './GroupForm';
 import useAuth from './useAuth';
 import useSnackbar from './useSnackbar';
+import useTranslation from './useTranslation';
 
 interface GroupEditFormProps {
   data: Group.Get;
 }
 
 const GroupEditForm = ({ data }: GroupEditFormProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { profile, user } = useAuth();
   const { push } = useRouter();
   const { action, snackbar } = useSnackbar();

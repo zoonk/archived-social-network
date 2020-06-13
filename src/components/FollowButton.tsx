@@ -1,11 +1,11 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Button, CircularProgress } from '@material-ui/core';
 import { PersonAdd, PersonAddDisabled } from '@material-ui/icons';
 import { Follower } from '@zoonk/models';
 import { follow, getFollowStatus, unfollow } from '@zoonk/services';
-import { GlobalContext } from '@zoonk/utils';
 import useAuth from './useAuth';
+import useTranslation from './useTranslation';
 
 interface FollowButtonProps {
   category: Follower.Collections;
@@ -13,7 +13,7 @@ interface FollowButtonProps {
 }
 
 const FollowButton = ({ category, categoryId }: FollowButtonProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { user } = useAuth();
   const { push } = useRouter();
   const [joined, setJoined] = useState<boolean>(false);

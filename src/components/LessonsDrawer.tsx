@@ -1,8 +1,8 @@
-import { Fragment, useContext } from 'react';
+import { Fragment } from 'react';
 import { Button, Grid, makeStyles } from '@material-ui/core';
 import { Post } from '@zoonk/models';
-import { GlobalContext } from '@zoonk/utils';
 import LessonListItem from './LessonListItem';
+import useTranslation from './useTranslation';
 
 interface LessonDrawerProps {
   lessons: Post.Summary[];
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LessonsDrawer = ({ lessons, onReturn }: LessonDrawerProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const classes = useStyles();
 
   return (

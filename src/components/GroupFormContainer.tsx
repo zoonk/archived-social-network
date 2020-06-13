@@ -1,7 +1,6 @@
-import { useContext } from 'react';
 import { GroupWork } from '@material-ui/icons';
-import { GlobalContext } from '@zoonk/utils';
 import FormContainer from './FormContainer';
+import useTranslation from './useTranslation';
 
 interface GroupFormContainerProps {
   children: React.ReactNode;
@@ -12,7 +11,7 @@ const GroupFormContainer = ({
   children,
   type = 'edit',
 }: GroupFormContainerProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const title = type === 'edit' ? 'group_edit' : 'group_create';
 
   return (

@@ -1,9 +1,9 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import Router from 'next/router';
 import { InputBase } from '@material-ui/core';
 import { Search } from '@material-ui/icons';
 import { fade, makeStyles, createStyles } from '@material-ui/core/styles';
-import { GlobalContext } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -46,11 +46,8 @@ const useStyles = makeStyles((theme) =>
   }),
 );
 
-/**
- * Display a search box.
- */
 const SearchBox = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const [query, setQuery] = useState<string>('');
   const classes = useStyles();
 

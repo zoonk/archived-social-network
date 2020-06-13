@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { NextPage } from 'next';
 import { CircularProgress, Container } from '@material-ui/core';
 import LoginForm from '@zoonk/components/LoginForm';
@@ -7,10 +6,10 @@ import SidebarPage from '@zoonk/components/SidebarPage';
 import TopicsFollowing from '@zoonk/components/TopicsFollowing';
 import TopicsHeader from '@zoonk/components/TopicsHeader';
 import useAuth from '@zoonk/components/useAuth';
-import { GlobalContext } from '@zoonk/utils';
+import useTranslation from '@zoonk/components/useTranslation';
 
 const TopicsFollowingPage: NextPage = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { user } = useAuth();
 
   if (user === undefined) {

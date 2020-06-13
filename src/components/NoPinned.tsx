@@ -1,7 +1,6 @@
-import { useContext } from 'react';
 import NextLink from 'next/link';
 import { Button, makeStyles, Typography } from '@material-ui/core';
-import { GlobalContext } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 interface NoPinnedProps {
   groupId: string;
@@ -12,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NoPinned = ({ groupId }: NoPinnedProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const classes = useStyles();
 
   return (

@@ -1,11 +1,12 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { Button, Grid, Paper, TextField, Typography } from '@material-ui/core';
 import { updatePassword } from '@zoonk/services/users';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
 import useSnackbar from './useSnackbar';
+import useTranslation from './useTranslation';
 
 const CredentialsUpdate = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { snackbar } = useSnackbar();
   const [oldPassword, setOldPassword] = useState<string>('');
   const [newPassword, setNewPassword] = useState<string>('');

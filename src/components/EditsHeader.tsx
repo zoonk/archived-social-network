@@ -1,23 +1,16 @@
-import { useContext } from 'react';
 import { ExpansionPanelSummary, Typography } from '@material-ui/core';
 import { ExpandMore } from '@material-ui/icons';
 import { Activity } from '@zoonk/models';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 interface EditsHeaderProps {
   displayTitle?: boolean;
   item: Activity.Get;
 }
 
-/**
- * Display a header containing the metadata for content changes.
- * E.g. `Mona Lisa: created by Leonardo da Vinci`
- *
- * @property `displayTitle` - `true` if this item's title should be displayed.
- * @property `item` - this item changes returned from the backend.
- */
 const EditsHeader = ({ displayTitle, item }: EditsHeaderProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
 
   return (
     <ExpansionPanelSummary

@@ -1,15 +1,15 @@
-import { useContext } from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { Container } from '@material-ui/core';
 import EditsList from '@zoonk/components/EditsList';
 import Meta from '@zoonk/components/Meta';
 import TopicsBreadcrumb from '@zoonk/components/TopicsBreadcrumb';
-import { getPageTitle, GlobalContext, rootUrl } from '@zoonk/utils';
+import useTranslation from '@zoonk/components/useTranslation';
+import { getPageTitle, rootUrl } from '@zoonk/utils';
 
 const TopicEdits: NextPage = () => {
   const { query } = useRouter();
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const id = String(query.id);
   const title = getPageTitle(id);
 

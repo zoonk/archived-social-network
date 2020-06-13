@@ -1,10 +1,10 @@
-import { Fragment, useContext, useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { CircularProgress, TextField } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import { debounce } from 'lodash';
 import { UILanguage, WikipediaSearchItem } from '@zoonk/models';
 import { searchTopic } from '@zoonk/services';
-import { GlobalContext } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 interface TopicSearchProps {
   error?: string | null;
@@ -13,20 +13,13 @@ interface TopicSearchProps {
   onSelect: (selected: WikipediaSearchItem | null) => void;
 }
 
-/**
- * Display an autocomplete search box for searching topics.
- * @property `error` - display error information.
- * @property `helperText` - display a helper text.
- * @property `language`
- * @property `onSelect(selected)` - fires an event when a topic is selected.
- */
 const TopicSearch = ({
   error,
   helperText,
   language,
   onSelect,
 }: TopicSearchProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const [open, setOpen] = useState<boolean>(false);
   const [topics, setTopics] = useState<WikipediaSearchItem[]>([]);
   const loading = useRef(false);

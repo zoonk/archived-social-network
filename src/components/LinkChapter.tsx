@@ -1,18 +1,14 @@
-import { useContext } from 'react';
 import NextLink from 'next/link';
 import { Link } from '@material-ui/core';
-import { GlobalContext } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 interface LinkChapterProps {
   id: string;
   title?: string;
 }
 
-/**
- * Default link to a single chapter.
- */
 const LinkChapter = ({ id, title }: LinkChapterProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const name = title || translate('chapter');
 
   return (

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { throttle } from 'lodash';
 import Quill from 'quill';
@@ -16,10 +16,10 @@ import {
   appLanguage,
   containsVimeoUrl,
   containsYoutubeUrl,
-  GlobalContext,
 } from '@zoonk/utils';
 import ImageUpload from './ImageUpload';
 import TopicSelector from './TopicSelector';
+import useTranslation from './useTranslation';
 
 const EditorFixed = dynamic(() => import('./rich-text/EditorFixed'), {
   ssr: false,
@@ -49,7 +49,7 @@ const ReferencesForm = ({
   topicIds,
   onSubmit,
 }: ReferencesFormProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const editorRef = useRef<Quill>();
   const classes = useStyles();
   const [content, setContent] = useState<Delta | undefined>(data?.delta);

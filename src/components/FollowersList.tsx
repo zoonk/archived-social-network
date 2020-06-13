@@ -1,10 +1,10 @@
-import { Fragment, useContext, useEffect } from 'react';
+import { Fragment, useEffect } from 'react';
 import { Button, CircularProgress, Grid, makeStyles } from '@material-ui/core';
 import { Follower } from '@zoonk/models';
 import { getFollowers } from '@zoonk/services';
-import { GlobalContext } from '@zoonk/utils';
 import FollowerListItem from './FollowerListItem';
 import useLoadMore from './useLoadMore';
+import useTranslation from './useTranslation';
 
 interface FollowersListProps {
   groupId: string;
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const FollowersList = ({ groupId, limit = 10 }: FollowersListProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const classes = useStyles();
   const { get, items, lastVisible, loading } = useLoadMore<Follower.Snapshot>(
     limit,

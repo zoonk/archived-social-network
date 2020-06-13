@@ -1,12 +1,13 @@
-import { Fragment, useContext, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { Button, CircularProgress } from '@material-ui/core';
 import { Post } from '@zoonk/models';
 import { listPosts } from '@zoonk/services';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
 import NoPosts from './NoPosts';
 import PostList from './PostList';
 import useLoadMore from './useLoadMore';
+import useTranslation from './useTranslation';
 
 const CategoryFilter = dynamic(() => import('./CategoryFilter'));
 
@@ -21,9 +22,6 @@ interface PostsCardProps {
   userId?: string;
 }
 
-/**
- * Cards for display a list of posts.
- */
 const PostsCard = ({
   category,
   displayFilter,
@@ -32,7 +30,7 @@ const PostsCard = ({
   topicId,
   userId,
 }: PostsCardProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const [filter, setFilter] = useState<Filter>(category?.[0] || 'timeline');
   const { get, items, lastVisible, loading } = useLoadMore<Post.Snapshot>(
     limit,

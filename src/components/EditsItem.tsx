@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import NextLink from 'next/link';
 import {
   Button,
@@ -10,12 +10,13 @@ import {
 import * as Diff from 'diff';
 import { isEqual } from 'lodash';
 import { Activity } from '@zoonk/models';
-import { editableFields, GlobalContext } from '@zoonk/utils';
+import { editableFields } from '@zoonk/utils';
 import { getFieldDiff } from '@zoonk/utils/diff';
 import EditsDiffBox from './EditsDiffBox';
 import EditsHeader from './EditsHeader';
 import EditsReport from './EditsReport';
 import EditsRevert from './EditsRevert';
+import useTranslation from './useTranslation';
 
 interface EditsItemProps {
   displayTitle?: boolean;
@@ -27,7 +28,7 @@ interface EditsItemProps {
  * made to an item.
  */
 const EditsItem = ({ displayTitle, edits }: EditsItemProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const [changes, setChanges] = useState<Diff.Change[][]>([[]]);
   const hrefLink = `/${edits.category}/[id]/edit`;
   const asLink = `/${edits.itemPath}/edit`;

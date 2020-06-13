@@ -1,20 +1,15 @@
-import { useContext } from 'react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { Link, Paper, Typography } from '@material-ui/core';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 interface LoginRequiredProps {
   message?: string;
 }
 
-/**
- * Message displayed to users warning they need
- * to login to perform an action.
- * @property `message` - custom message to display.
- */
 const LoginRequired = ({ message }: LoginRequiredProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { asPath } = useRouter();
 
   return (

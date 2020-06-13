@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import {
@@ -12,7 +11,8 @@ import {
   Typography,
 } from '@material-ui/core';
 import { ExpandMore } from '@material-ui/icons';
-import { appLanguage, getPageTitle, GlobalContext } from '@zoonk/utils';
+import { appLanguage, getPageTitle } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 const TeachArticleEn = dynamic(() => import('./Teach/en/Article'));
 const TeachArticlePt = dynamic(() => import('./Teach/pt/Article'));
@@ -61,7 +61,7 @@ const CustomPanel = ({ children }: CustomPanelProps) => (
 );
 
 const CustomSummary = ({ section }: CustomSummaryProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const classes = useStyles();
 
   return (
@@ -88,7 +88,7 @@ const CustomDetails = ({ children }: CustomDetailsProps) => {
 };
 
 const TeachGuide = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { query } = useRouter();
   const classes = useStyles();
   const id = String(query.id);

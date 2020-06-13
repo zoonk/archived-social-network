@@ -1,13 +1,13 @@
-import { Fragment, useContext, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import Router from 'next/router';
 import { Button, Drawer, Hidden, makeStyles } from '@material-ui/core';
 import { Apps } from '@material-ui/icons';
 import { Post } from '@zoonk/models';
 import { getChapterLive } from '@zoonk/services';
-import { GlobalContext } from '@zoonk/utils';
 import LessonsDrawer from './LessonsDrawer';
 import NextLesson from './NextLesson';
 import PreviousLesson from './PreviousLesson';
+import useTranslation from './useTranslation';
 
 interface PostBarLessonsProps {
   category: Post.Category;
@@ -43,7 +43,7 @@ const PostBarLessons = ({
   const classes = useStyles();
   const [drawer, setDrawer] = useState<boolean>(false);
   const [lessons, setLessons] = useState<Post.Summary[]>([]);
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
 
   useEffect(() => {
     Router.events.on('routeChangeStart', () => setDrawer(false));

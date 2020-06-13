@@ -1,16 +1,17 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { Button, Grid, Link, TextField, Typography } from '@material-ui/core';
 import { signUp } from '@zoonk/services/users';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
 import AlreadyLoggedin from './AlreadyLoggedin';
 import SocialSignin from './SocialSignin';
 import useAuth from './useAuth';
 import useSnackbar from './useSnackbar';
+import useTranslation from './useTranslation';
 
 const SignUpForm = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { user } = useAuth();
   const { query, push } = useRouter();
   const { action, snackbar } = useSnackbar();

@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import {
@@ -9,7 +8,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { Comment, Description } from '@material-ui/icons';
-import { GlobalContext } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 interface MenuCommunityProps {
   id: string;
@@ -22,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const MenuProfile = ({ id }: MenuCommunityProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { pathname } = useRouter();
   const classes = useStyles();
   const menu = [

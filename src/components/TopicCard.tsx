@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import NextLink from 'next/link';
 import {
   Card,
@@ -10,14 +9,14 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Topic } from '@zoonk/models';
-import { GlobalContext } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 interface TopicCardProps {
   topic: Topic.Get;
 }
 
 const TopicCard = ({ topic }: TopicCardProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { title, id, photo } = topic;
 
   return (

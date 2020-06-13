@@ -1,7 +1,7 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
 import { ExpertLevel, MaterialSelect } from '@zoonk/models';
-import { GlobalContext } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 interface LevelSelectorProps {
   active: ExpertLevel;
@@ -9,12 +9,8 @@ interface LevelSelectorProps {
   onSelect: (level: ExpertLevel) => void;
 }
 
-/**
- * Dropdown menu for selecting a level of expertise.
- * @property `active` - current level.
- */
 const LevelSelector = ({ active, style, onSelect }: LevelSelectorProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const [labelWidth, setLabelWidth] = useState(0);
   const inputLabel = useRef<HTMLLabelElement>(null);
   const levels = [

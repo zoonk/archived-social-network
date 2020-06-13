@@ -1,18 +1,14 @@
-import { useContext } from 'react';
 import NextLink from 'next/link';
 import { Button } from '@material-ui/core';
 import { Notification } from '@zoonk/models';
-import { GlobalContext } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 interface NotificationViewProps {
   item: Notification.Get;
 }
 
-/**
- * View a notification item
- */
 const NotificationView = ({ item }: NotificationViewProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { category, itemPath } = item;
 
   return (

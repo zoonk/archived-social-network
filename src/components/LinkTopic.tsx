@@ -1,17 +1,14 @@
-import { useContext } from 'react';
 import NextLink from 'next/link';
 import { Link } from '@material-ui/core';
-import { getPageTitle, GlobalContext } from '@zoonk/utils';
+import { getPageTitle } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 interface LinkTopicProps {
   id: string;
 }
 
-/**
- * Default link to a topic page.
- */
 const LinkTopic = ({ id }: LinkTopicProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const title = getPageTitle(id);
 
   return (

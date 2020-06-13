@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import {
   Button,
   Dialog,
@@ -8,10 +8,10 @@ import {
 } from '@material-ui/core';
 import { RequestStatus } from '@zoonk/models';
 import { restoreItem } from '@zoonk/services';
-import { GlobalContext } from '@zoonk/utils';
 import ModalConfirmation from './ModalConfirmation';
 import ModalError from './ModalError';
 import ModalProgress from './ModalProgress';
+import useTranslation from './useTranslation';
 
 interface NotificationRestoreProps {
   id: string;
@@ -21,7 +21,7 @@ interface NotificationRestoreProps {
  * Restore a deleted item.
  */
 const NotificationRestore = ({ id }: NotificationRestoreProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const [status, setStatus] = useState<RequestStatus>('idle');
   const [open, setOpen] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);

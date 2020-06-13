@@ -1,8 +1,8 @@
-import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import { Button, IconButton } from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 interface FormBaseProps {
   children: React.ReactNode;
@@ -13,9 +13,6 @@ interface FormBaseProps {
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
-/**
- * Reusable base for building forms.
- */
 const FormBase = ({
   children,
   valid,
@@ -24,7 +21,7 @@ const FormBase = ({
   onDelete,
   onSubmit,
 }: FormBaseProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { back } = useRouter();
 
   return (

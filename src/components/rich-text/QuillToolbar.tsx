@@ -1,6 +1,5 @@
-import { useContext } from 'react';
 import Quill from 'quill';
-import { GlobalContext } from '@zoonk/utils';
+import useTranslation from '../useTranslation';
 
 const icons = Quill.import('ui/icons');
 icons.code =
@@ -11,7 +10,7 @@ interface QuillToolbarProps {
 }
 
 const QuillToolbar = ({ id }: QuillToolbarProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const toolbarId = id ? `toolbar-${id}` : 'toolbar';
 
   return (

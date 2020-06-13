@@ -1,10 +1,10 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import NextLink from 'next/link';
 import { Button } from '@material-ui/core';
 import { ArrowBack } from '@material-ui/icons';
 import { Post } from '@zoonk/models';
 import { getPreviousLesson } from '@zoonk/services';
-import { GlobalContext } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 interface PreviousLessonProps {
   chapterId: string;
@@ -17,7 +17,7 @@ const PreviousLesson = ({
   postId,
   topicId,
 }: PreviousLessonProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const [previous, setPrevious] = useState<Post.NextLesson | null>(null);
 
   useEffect(() => {

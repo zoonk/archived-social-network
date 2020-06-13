@@ -1,18 +1,15 @@
-import { useContext } from 'react';
 import { Post } from '@zoonk/models';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
 import TopicLabel from './TopicLabel';
 import PostIcon from './PostIcon';
+import useTranslation from './useTranslation';
 
 interface PostListMetaProps {
   post: Post.Get;
 }
 
-/**
- * Metadata for a post list item.
- */
 const PostListMeta = ({ post }: PostListMetaProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { category, topics } = post;
 
   return (

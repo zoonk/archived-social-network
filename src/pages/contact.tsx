@@ -1,17 +1,17 @@
-import { useContext } from 'react';
 import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import { Avatar, Container, Typography } from '@material-ui/core';
 import { Mail } from '@material-ui/icons';
 import Meta from '@zoonk/components/Meta';
-import { GlobalContext, rootUrl, theme } from '@zoonk/utils';
+import useTranslation from '@zoonk/components/useTranslation';
+import { rootUrl, theme } from '@zoonk/utils';
 
 const ContactForm = dynamic(() => import('@zoonk/components/ContactForm'), {
   ssr: false,
 });
 
 const Contact: NextPage = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
 
   return (
     <Container

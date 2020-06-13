@@ -1,11 +1,12 @@
-import { Fragment, useContext, useEffect } from 'react';
+import { Fragment, useEffect } from 'react';
 import { Button, CircularProgress } from '@material-ui/core';
 import { Post } from '@zoonk/models';
 import { getTimeline } from '@zoonk/services';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
 import NoFollowing from './NoFollowing';
 import PostList from './PostList';
 import useLoadMore from './useLoadMore';
+import useTranslation from './useTranslation';
 
 interface TimelineCardProps {
   limit?: number;
@@ -13,7 +14,7 @@ interface TimelineCardProps {
 }
 
 const TimelineCard = ({ limit, userId }: TimelineCardProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { get, items, lastVisible, loading } = useLoadMore<Post.Snapshot>(
     limit,
   );

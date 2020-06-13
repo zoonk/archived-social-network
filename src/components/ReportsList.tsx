@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect } from 'react';
+import { Fragment, useEffect } from 'react';
 import NextLink from 'next/link';
 import {
   Avatar,
@@ -11,9 +11,10 @@ import {
 } from '@material-ui/core';
 import { Report } from '@zoonk/models';
 import { listReports } from '@zoonk/services';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
 import ListSkeleton from './ListSkeleton';
 import useLoadMore from './useLoadMore';
+import useTranslation from './useTranslation';
 
 interface ReportsListProps {
   allowLoadMore?: boolean;
@@ -21,7 +22,7 @@ interface ReportsListProps {
 }
 
 const ReportsList = ({ allowLoadMore, limit }: ReportsListProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { get, items, lastVisible, loading } = useLoadMore<Report.Snapshot>(
     limit,
   );

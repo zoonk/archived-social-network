@@ -1,14 +1,13 @@
-import { useContext } from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { Container } from '@material-ui/core';
 import ChapterSortableList from '@zoonk/components/ChapterSortableList';
 import Meta from '@zoonk/components/Meta';
 import TopicsBreadcrumb from '@zoonk/components/TopicsBreadcrumb';
-import { GlobalContext } from '@zoonk/utils';
+import useTranslation from '@zoonk/components/useTranslation';
 
 const TopicChapters: NextPage = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { query } = useRouter();
   const id = String(query.id);
 

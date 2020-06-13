@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Button,
   Grid,
@@ -17,12 +17,13 @@ import {
   YouTube,
 } from '@material-ui/icons';
 import { updateProfile } from '@zoonk/services';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
 import useSnackbar from './useSnackbar';
 import useAuth from './useAuth';
+import useTranslation from './useTranslation';
 
 const SocialMediaUpdate = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { user } = useAuth();
   const { action, snackbar } = useSnackbar();
   const [linkedin, setLinkedin] = useState<string>('');

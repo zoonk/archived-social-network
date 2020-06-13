@@ -1,9 +1,9 @@
-import { useContext } from 'react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { Link, Typography } from '@material-ui/core';
 import { Post } from '@zoonk/models';
-import { GlobalContext, getPageTitle, theme } from '@zoonk/utils';
+import { getPageTitle, theme } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 interface NoPostsProps {
   category: 'groups' | 'topics';
@@ -11,11 +11,8 @@ interface NoPostsProps {
   isUser?: boolean;
 }
 
-/**
- * Display a message when no posts are found for a request.
- */
 const NoPosts = ({ category, postCategory, isUser }: NoPostsProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { query } = useRouter();
   const topicId = String(query.id);
   const title = getPageTitle(topicId);

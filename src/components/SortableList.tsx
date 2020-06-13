@@ -1,10 +1,10 @@
-import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import { Button, List } from '@material-ui/core';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
 import { DndProvider } from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
 import SortableListItem from './SortableListItem';
+import useTranslation from './useTranslation';
 
 interface ListContent {
   id: string;
@@ -21,9 +21,6 @@ interface SortableListProps {
   onSave: () => void;
 }
 
-/**
- * Sortable list.
- */
 const SortableList = ({
   category,
   items,
@@ -33,7 +30,7 @@ const SortableList = ({
   onMove,
   onSave,
 }: SortableListProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { back } = useRouter();
 
   return (

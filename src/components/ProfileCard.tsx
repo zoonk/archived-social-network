@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import NextLink from 'next/link';
 import {
   Button,
@@ -9,20 +8,18 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Leaderboard } from '@zoonk/models';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
 import ProfileSocial from './ProfileSocial';
 import UserReputation from './UserReputation';
 import useAuth from './useAuth';
+import useTranslation from './useTranslation';
 
 interface ProfileCardProps {
   data: Leaderboard.Get;
 }
 
-/**
- * Card for displaying a user's profile.
- */
 const ProfileCard = ({ data }: ProfileCardProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { user } = useAuth();
   const { bio, id, name, photo, xp } = data;
 

@@ -1,15 +1,15 @@
-import { useContext } from 'react';
 import { Grid, Typography } from '@material-ui/core';
 import { Post } from '@zoonk/models';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
 import LinkCard from './LinkCard';
+import useTranslation from './useTranslation';
 
 interface LinkListProps {
   sites: Post.Link[];
 }
 
 const LinkList = ({ sites }: LinkListProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
 
   if (sites.length === 0) return null;
 

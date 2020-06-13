@@ -4,11 +4,12 @@ import { Delete, Reply } from '@material-ui/icons';
 import { green } from '@material-ui/core/colors';
 import { Comment } from '@zoonk/models';
 import { deleteComment } from '@zoonk/services';
-import { GlobalContext, PostContext } from '@zoonk/utils';
+import { PostContext } from '@zoonk/utils';
 import LikeButton from './LikeButton';
 import MarkAsAnswer from './MarkAsAnswer';
 import useAuth from './useAuth';
 import useSnackbar from './useSnackbar';
+import useTranslation from './useTranslation';
 
 interface CommentActionsProps {
   data: Comment.Get;
@@ -25,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CommentActions = ({ data, onReply }: CommentActionsProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { user } = useAuth();
   const { category: postCategory, createdById: postAuthor } = useContext(
     PostContext,

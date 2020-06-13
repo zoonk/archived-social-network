@@ -4,10 +4,11 @@ import Quill from 'quill';
 import { Button, makeStyles, Paper } from '@material-ui/core';
 import { timestamp } from '@zoonk/firebase/db';
 import { createComment } from '@zoonk/services';
-import { appLanguage, GlobalContext, PostContext } from '@zoonk/utils';
+import { appLanguage, PostContext } from '@zoonk/utils';
 import LoginRequired from './LoginRequired';
 import useAuth from './useAuth';
 import useSnackbar from './useSnackbar';
+import useTranslation from './useTranslation';
 
 const Editor = dynamic(() => import('./rich-text/Editor'), { ssr: false });
 
@@ -29,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CommentForm = ({ commentId, onCancel, onSave }: CommentFormProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { profile, user } = useAuth();
   const editorRef = useRef<Quill>();
   const { category, groupId, id, topics } = useContext(PostContext);

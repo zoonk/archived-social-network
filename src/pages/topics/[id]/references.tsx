@@ -1,17 +1,11 @@
-import { useContext } from 'react';
 import { NextPage } from 'next';
 import { Container } from '@material-ui/core';
 import PostsCard from '@zoonk/components/PostsCard';
 import PostShare from '@zoonk/components/PostShare';
 import Meta from '@zoonk/components/Meta';
 import TopicsBreadcrumb from '@zoonk/components/TopicsBreadcrumb';
-import {
-  getPageTitle,
-  GlobalContext,
-  preRender,
-  rootUrl,
-  theme,
-} from '@zoonk/utils';
+import useTranslation from '@zoonk/components/useTranslation';
+import { getPageTitle, preRender, rootUrl, theme } from '@zoonk/utils';
 
 interface TopicReferencesProps {
   topicId: string;
@@ -22,7 +16,7 @@ const TopicReferences: NextPage<TopicReferencesProps> = ({
   title,
   topicId,
 }) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
 
   return (
     <Container component="main">

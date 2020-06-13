@@ -1,10 +1,10 @@
-import { useContext } from 'react';
 import { Avatar, Button, Grid, Typography } from '@material-ui/core';
 import { AddAPhoto } from '@material-ui/icons';
 import { ContentCategory } from '@zoonk/models';
 import { upload } from '@zoonk/services';
-import { GlobalContext, maxFileSize, theme } from '@zoonk/utils';
+import { maxFileSize, theme } from '@zoonk/utils';
 import useSnackbar from './useSnackbar';
+import useTranslation from './useTranslation';
 
 interface ImageUploadProps {
   category: ContentCategory | 'users';
@@ -16,9 +16,6 @@ interface ImageUploadProps {
   onSave: (url: string) => void;
 }
 
-/**
- * Upload an image to the backend storage.
- */
 const ImageUpload = ({
   category,
   hideImg,
@@ -28,7 +25,7 @@ const ImageUpload = ({
   size,
   onSave,
 }: ImageUploadProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { snackbar } = useSnackbar();
 
   const uploadPhoto = (fileList: FileList | null) => {

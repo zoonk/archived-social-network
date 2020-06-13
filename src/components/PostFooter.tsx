@@ -1,8 +1,7 @@
-import { useContext } from 'react';
 import NextLink from 'next/link';
 import { Button, makeStyles } from '@material-ui/core';
 import { History, ReportProblem } from '@material-ui/icons';
-import { GlobalContext } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 interface PostFooterProps {
   id: string;
@@ -21,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const PostFooter = ({ id }: PostFooterProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const classes = useStyles();
 
   return (

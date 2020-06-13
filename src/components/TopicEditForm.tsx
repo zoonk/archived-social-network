@@ -1,20 +1,21 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { Grid, TextField, Typography } from '@material-ui/core';
 import { timestamp } from '@zoonk/firebase/db';
 import { Topic } from '@zoonk/models';
 import { updateTopic } from '@zoonk/services';
-import { GlobalContext, imgSize } from '@zoonk/utils';
+import { imgSize } from '@zoonk/utils';
 import FormBase from './FormBase';
 import ImageUpload from './ImageUpload';
 import useAuth from './useAuth';
 import useSnackbar from './useSnackbar';
+import useTranslation from './useTranslation';
 
 interface TopicEditFormProps {
   topic: Topic.Get;
 }
 
 const TopicEditForm = ({ topic }: TopicEditFormProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { profile, user } = useAuth();
   const { action, snackbar } = useSnackbar();
   const [description, setDescription] = useState<string>(topic.description);

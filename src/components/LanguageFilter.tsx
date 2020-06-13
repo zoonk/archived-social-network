@@ -1,19 +1,16 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
 import { MaterialSelect, UILanguage } from '@zoonk/models';
-import { appLanguage, GlobalContext, languageList } from '@zoonk/utils';
+import { appLanguage, languageList } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 interface LanguageFilterProps {
   active?: UILanguage;
   style?: React.CSSProperties;
 }
 
-/**
- * Dropdown menu for selecting a language.
- * @property `active` - current language.
- */
 const LanguageFilter = ({ active, style }: LanguageFilterProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const [labelWidth, setLabelWidth] = useState(0);
   const inputLabel = useRef<HTMLLabelElement>(null);
 

@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import dynamic from 'next/dynamic';
 import NextLink from 'next/link';
 import {
@@ -10,8 +9,8 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Group } from '@zoonk/models';
-import { GlobalContext } from '@zoonk/utils';
 import ItemActionsMenu from './ItemActionsMenu';
+import useTranslation from './useTranslation';
 
 const FollowButton = dynamic(() => import('./FollowButton'), { ssr: false });
 
@@ -34,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const GroupDetails = ({ group }: GroupDetailsProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const classes = useStyles();
   const { description, id, photo, title } = group;
 

@@ -1,10 +1,9 @@
-import { useContext } from 'react';
 import { Chip } from '@material-ui/core';
 import { GroupWork } from '@material-ui/icons';
-import { GlobalContext } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 const CollaborativeLabel = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
 
   return (
     <Chip

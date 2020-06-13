@@ -1,4 +1,4 @@
-import { Fragment, useContext } from 'react';
+import { Fragment } from 'react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import {
@@ -23,8 +23,9 @@ import {
   Subject,
   SupervisorAccount,
 } from '@material-ui/icons';
-import { getAboutId, GlobalContext } from '@zoonk/utils';
+import { getAboutId } from '@zoonk/utils';
 import useAuth from './useAuth';
+import useTranslation from './useTranslation';
 
 const useStyles = makeStyles((theme) => ({
   active: {
@@ -32,11 +33,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-/**
- * Menu containing all available pages.
- */
 const MenuPages = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { user } = useAuth();
   const { asPath } = useRouter();
   const classes = useStyles();

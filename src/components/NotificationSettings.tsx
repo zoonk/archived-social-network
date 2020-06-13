@@ -1,7 +1,6 @@
-import { useContext } from 'react';
 import { makeStyles, Paper, Typography } from '@material-ui/core';
-import { GlobalContext } from '@zoonk/utils';
 import NotificationControl from './NotificationControl';
+import useTranslation from './useTranslation';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NotificationSettings = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const classes = useStyles();
 
   return (

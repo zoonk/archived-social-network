@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import {
   Button,
   Dialog,
@@ -9,21 +9,18 @@ import {
 } from '@material-ui/core';
 import { Activity, RequestStatus } from '@zoonk/models';
 import { deleteActivity, restoreItem, revertChanges } from '@zoonk/services';
-import { GlobalContext } from '@zoonk/utils';
 import ModalConfirmation from './ModalConfirmation';
 import ModalError from './ModalError';
 import ModalProgress from './ModalProgress';
 import useAuth from './useAuth';
+import useTranslation from './useTranslation';
 
 interface EditsRevertProps {
   edits: Activity.Get;
 }
 
-/**
- * Revert an edit made to a page.
- */
 const EditsRevert = ({ edits }: EditsRevertProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { profile, user } = useAuth();
   const [status, setStatus] = useState<RequestStatus>('idle');
   const [open, setOpen] = useState<boolean>(false);

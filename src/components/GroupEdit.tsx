@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import Error from 'next/error';
 import { CircularProgress } from '@material-ui/core';
 import GroupEditForm from '@zoonk/components/GroupEditForm';
@@ -6,14 +6,14 @@ import GroupFormContainer from '@zoonk/components/GroupFormContainer';
 import GroupsBreadcrumb from '@zoonk/components/GroupsBreadcrumb';
 import { Group } from '@zoonk/models';
 import { getGroup } from '@zoonk/services';
-import { GlobalContext } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 interface GroupEditProps {
   id: string;
 }
 
 const GroupEdit = ({ id }: GroupEditProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const [group, setGroup] = useState<Group.Get | null | undefined>();
 
   useEffect(() => {

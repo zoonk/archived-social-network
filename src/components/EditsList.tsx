@@ -1,11 +1,12 @@
-import { Fragment, useContext, useEffect } from 'react';
+import { Fragment, useEffect } from 'react';
 import { Button } from '@material-ui/core';
 import { Activity } from '@zoonk/models';
 import { listActivities } from '@zoonk/services';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
 import EditsItem from './EditsItem';
 import EditsSkeleton from './EditsSkeleton';
 import useLoadMore from './useLoadMore';
+import useTranslation from './useTranslation';
 
 interface EditsListProps {
   displayTitle?: boolean;
@@ -14,7 +15,7 @@ interface EditsListProps {
 }
 
 const EditsList = ({ displayTitle, itemPath, limit = 10 }: EditsListProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { get, items, lastVisible, loading } = useLoadMore<Activity.Snapshot>(
     limit,
   );

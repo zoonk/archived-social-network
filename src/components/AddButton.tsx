@@ -1,20 +1,17 @@
-import { useContext } from 'react';
 import NextLink from 'next/link';
 import { Button } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 import { ContentCategory } from '@zoonk/models';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 interface AddButtonProps {
   category: ContentCategory | 'leaderboard';
   query?: any;
 }
 
-/**
- * Button for navigating to an "add page".
- */
 const AddButton = ({ category, query }: AddButtonProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
 
   return (
     <NextLink href={{ pathname: `/${category}/add`, query }} passHref>

@@ -8,9 +8,10 @@ import {
 import { Comment as CommentIcon } from '@material-ui/icons';
 import { Comment } from '@zoonk/models';
 import { liveComments } from '@zoonk/services';
-import { GlobalContext, PostContext } from '@zoonk/utils';
+import { PostContext } from '@zoonk/utils';
 import CommentCard from './CommentCard';
 import CommentForm from './CommentForm';
+import useTranslation from './useTranslation';
 
 const useStyles = makeStyles((theme) => ({
   container: { margin: theme.spacing(5, 0) },
@@ -19,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CommentList = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { category, id, pinnedComment } = useContext(PostContext);
   const classes = useStyles();
   const [loading, setLoading] = useState<boolean>(false);

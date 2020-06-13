@@ -1,18 +1,17 @@
-import { useContext } from 'react';
 import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { Container } from '@material-ui/core';
 import BackButton from '@zoonk/components/BackButton';
 import Meta from '@zoonk/components/Meta';
-import { GlobalContext } from '@zoonk/utils';
+import useTranslation from '@zoonk/components/useTranslation';
 
 const EditsList = dynamic(() => import('@zoonk/components/EditsList'), {
   ssr: false,
 });
 
 const LessonEdits: NextPage = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { query } = useRouter();
 
   return (

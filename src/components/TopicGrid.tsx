@@ -1,16 +1,17 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Button, Grid } from '@material-ui/core';
 import { Topic } from '@zoonk/models';
 import { listTopics } from '@zoonk/services';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
 import GridSkeleton from './GridSkeleton';
 import TopicCard from './TopicCard';
 import useLoadMore from './useLoadMore';
+import useTranslation from './useTranslation';
 
 const limit = 12;
 
 const TopicGrid = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { get, items, lastVisible, loading } = useLoadMore<Topic.Snapshot>(
     limit,
   );

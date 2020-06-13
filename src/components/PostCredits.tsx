@@ -1,8 +1,8 @@
-import { Fragment, useContext } from 'react';
+import { Fragment } from 'react';
 import NextLink from 'next/link';
 import { Link, makeStyles } from '@material-ui/core';
 import { Profile } from '@zoonk/models';
-import { GlobalContext } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 interface PostCreditsProps {
   author: Profile.Get;
@@ -16,7 +16,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const PostCredits = ({ author, editors }: PostCreditsProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const classes = useStyles();
   const editedBy = editors.filter((editor) => editor.id !== author.id);
 

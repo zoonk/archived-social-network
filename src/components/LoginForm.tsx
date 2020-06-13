@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import {
@@ -12,12 +12,13 @@ import {
 } from '@material-ui/core';
 import { LockOutlined } from '@material-ui/icons';
 import { signIn } from '@zoonk/services';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
 import SocialSignin from './SocialSignin';
 import useSnackbar from './useSnackbar';
+import useTranslation from './useTranslation';
 
 const LoginForm = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { push, query } = useRouter();
   const { snackbar } = useSnackbar();
   const [email, setEmail] = useState<string>('');

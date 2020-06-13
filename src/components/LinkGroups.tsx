@@ -1,14 +1,14 @@
-import { useContext } from 'react';
 import NextLink from 'next/link';
 import { Link } from '@material-ui/core';
-import { GlobalContext, getPageTitle } from '@zoonk/utils';
+import { getPageTitle } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 interface LinkGroupsProps {
   topicId?: string;
 }
 
 const LinkGroups = ({ topicId }: LinkGroupsProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const title = topicId
     ? translate('groups_about', { title: getPageTitle(topicId) })
     : translate('groups');

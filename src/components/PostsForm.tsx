@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import Quill from 'quill';
 import {
@@ -10,10 +10,11 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Post } from '@zoonk/models';
-import { appLanguage, GlobalContext } from '@zoonk/utils';
+import { appLanguage } from '@zoonk/utils';
 import ImageUpload from './ImageUpload';
 import ShowCard from './ShowCard';
 import TopicSelector from './TopicSelector';
+import useTranslation from './useTranslation';
 
 const EditorFixed = dynamic(() => import('./rich-text/EditorFixed'), {
   ssr: false,
@@ -48,7 +49,7 @@ interface PostsFormProps {
 }
 
 const PostsForm = ({ data, saving, topicIds, onSubmit }: PostsFormProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const editorRef = useRef<Quill>();
   const classes = useStyles();
   const [settings, setSettings] = useState<boolean>(!data);

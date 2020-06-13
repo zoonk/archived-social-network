@@ -1,9 +1,9 @@
-import { Fragment, useContext } from 'react';
+import { Fragment } from 'react';
 import NextLink from 'next/link';
 import { Button, makeStyles, Typography } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
-import { GlobalContext } from '@zoonk/utils';
 import PinIcon from './PinIcon';
+import useTranslation from './useTranslation';
 
 interface PinnedHeaderProps {
   groupId: string;
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const PinnedHeader = ({ groupId, hideButtons, topicId }: PinnedHeaderProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const classes = useStyles();
 
   return (

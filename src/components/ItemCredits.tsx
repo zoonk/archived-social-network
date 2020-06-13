@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import NextLink from 'next/link';
 import {
   Avatar,
@@ -10,18 +9,15 @@ import {
   Paper,
 } from '@material-ui/core';
 import { Profile } from '@zoonk/models';
-import { GlobalContext } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 interface ItemCreditsProps {
   editors: Profile.Get[];
   title?: string;
 }
 
-/**
- * Display credits for an item (all editors).
- */
 const ItemCredits = ({ editors, title }: ItemCreditsProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
 
   if (editors.length === 0) {
     return null;

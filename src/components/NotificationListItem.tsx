@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import NextLink from 'next/link';
 import {
   Avatar,
@@ -8,20 +7,17 @@ import {
   ListItemSecondaryAction,
 } from '@material-ui/core';
 import { Notification } from '@zoonk/models';
-import { GlobalContext } from '@zoonk/utils';
 import NotificationRestore from './NotificationRestore';
 import NotificationView from './NotificationView';
+import useTranslation from './useTranslation';
 
 interface NotificationListItemProps {
   item: Notification.Get;
   divider?: boolean;
 }
 
-/**
- * Display a single item for a notification list.
- */
 const NotificationListItem = ({ item, divider }: NotificationListItemProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { action, activityId, category, title, updatedAt, user } = item;
   const editableText = `${user.name} ${translate(action)} ${title}.`;
   const commentText = translate('comment_notification', { name: user.name });

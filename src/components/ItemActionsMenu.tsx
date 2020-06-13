@@ -1,9 +1,9 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { IconButton, Menu, MenuItem } from '@material-ui/core';
 import { MoreVert } from '@material-ui/icons';
-import { GlobalContext } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 const PinPost = dynamic(() => import('./PinPost'), { ssr: false });
 
@@ -24,7 +24,7 @@ const ItemActionsMenu = ({
   linkAs,
   postId,
 }: ItemActionsMenuProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { asPath, pathname, push } = useRouter();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 

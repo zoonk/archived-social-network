@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import dynamic from 'next/dynamic';
 import NextLink from 'next/link';
 import {
@@ -12,9 +11,9 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Comment } from '@zoonk/models';
-import { GlobalContext } from '@zoonk/utils';
 import Viewer from './rich-text/Viewer';
 import useAuth from './useAuth';
+import useTranslation from './useTranslation';
 
 const CommentRemove = dynamic(() => import('./CommentRemove'), { ssr: false });
 
@@ -27,7 +26,7 @@ const DiscussionListItem = ({
   comment,
   link = 'comments',
 }: DiscussionListItemProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { user } = useAuth();
   const { createdAt, createdBy, createdById, html, id, postId } = comment;
   const isAuthor = createdById === user?.uid;

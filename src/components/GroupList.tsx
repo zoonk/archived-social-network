@@ -1,12 +1,13 @@
-import { Fragment, useContext, useEffect } from 'react';
+import { Fragment, useEffect } from 'react';
 import { Button, List } from '@material-ui/core';
 import { Group } from '@zoonk/models';
 import { listGroups } from '@zoonk/services';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
 import GroupListItem from './GroupListItem';
 import ListSkeleton from './ListSkeleton';
 import NoItems from './NoItems';
 import useLoadMore from './useLoadMore';
+import useTranslation from './useTranslation';
 
 interface GroupListProps {
   allowLoadMore?: boolean;
@@ -21,7 +22,7 @@ const GroupList = ({
   topicId,
   userId,
 }: GroupListProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { get, items, lastVisible, loading } = useLoadMore<Group.Snapshot>(
     limit,
   );

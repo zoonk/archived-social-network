@@ -1,6 +1,5 @@
-import { useContext } from 'react';
 import { Button, makeStyles, Paper, Typography } from '@material-ui/core';
-import { GlobalContext } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -17,7 +16,7 @@ interface ShowCardProps {
 }
 
 const ShowCard = ({ title, onShow }: ShowCardProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const classes = useStyles();
 
   return (

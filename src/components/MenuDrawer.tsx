@@ -1,22 +1,20 @@
-import { Fragment, memo, useContext } from 'react';
+import { Fragment, memo } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Button, CircularProgress, Divider } from '@material-ui/core';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
 import LanguageFilter from './LanguageFilter';
 import MenuPages from './MenuPages';
 import SocialLinks from './SocialLinks';
 import useAuth from './useAuth';
+import useTranslation from './useTranslation';
 
 const loading = { loading: () => <CircularProgress /> };
 const MenuUser = dynamic(() => import('./MenuUser'), loading);
 
-/**
- * Side-nav/menu containing a menu with all pages and user info.
- */
 const MenuDrawer = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { user } = useAuth();
   const { asPath } = useRouter();
 

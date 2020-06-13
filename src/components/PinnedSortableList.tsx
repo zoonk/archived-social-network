@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useContext, useEffect, useState } from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { Button, CircularProgress } from '@material-ui/core';
@@ -6,17 +6,18 @@ import { Add } from '@material-ui/icons';
 import { timestamp } from '@zoonk/firebase/db';
 import { Post } from '@zoonk/models';
 import { getGroupLive, updatePost, updatePinOrder } from '@zoonk/services';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
 import SortableList from './SortableList';
 import useAuth from './useAuth';
 import useSnackbar from './useSnackbar';
+import useTranslation from './useTranslation';
 
 interface GroupSortableListProps {
   groupId: string;
 }
 
 const PinnedSortableList = ({ groupId }: GroupSortableListProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { profile, user } = useAuth();
   const { push } = useRouter();
   const { action, snackbar } = useSnackbar();

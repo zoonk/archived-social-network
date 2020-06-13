@@ -1,12 +1,8 @@
-import { useContext } from 'react';
 import { Card, CardContent, Typography } from '@material-ui/core';
-import { GlobalContext } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
-/**
- * Display a message when the user does not have permissions to edit something.
- */
 const EditNotAllowed = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
 
   return (
     <Card>

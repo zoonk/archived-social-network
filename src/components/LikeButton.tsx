@@ -1,10 +1,10 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@material-ui/core';
 import { Favorite, FavoriteBorder } from '@material-ui/icons';
 import { getLikedStatus, toggleLike } from '@zoonk/services';
-import { GlobalContext } from '@zoonk/utils';
 import useSnackbar from './useSnackbar';
 import useAuth from './useAuth';
+import useTranslation from './useTranslation';
 
 interface LikeButtonProps {
   itemPath: string;
@@ -12,7 +12,7 @@ interface LikeButtonProps {
 }
 
 const LikeButton = ({ itemPath, likes }: LikeButtonProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { user } = useAuth();
   const { snackbar } = useSnackbar();
   const [saving, setSaving] = useState<boolean>(false);

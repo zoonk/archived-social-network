@@ -1,10 +1,11 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { Grid, TextField, Typography } from '@material-ui/core';
 import { Group } from '@zoonk/models';
-import { appLanguage, GlobalContext } from '@zoonk/utils';
+import { appLanguage } from '@zoonk/utils';
 import FormBase from './FormBase';
 import ImageUpload from './ImageUpload';
 import TopicSelector from './TopicSelector';
+import useTranslation from './useTranslation';
 
 interface GroupFormProps {
   data?: Group.Get;
@@ -21,7 +22,7 @@ const GroupForm = ({
   onDelete,
   onSubmit,
 }: GroupFormProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const [title, setTitle] = useState<string>(data?.title || '');
   const [description, setDescription] = useState<string>(
     data?.description || '',

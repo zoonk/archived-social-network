@@ -1,8 +1,8 @@
-import { useContext } from 'react';
 import NextLink from 'next/link';
 import { Link, Typography } from '@material-ui/core';
 import { Post } from '@zoonk/models';
-import { GlobalContext, getPageTitle, theme } from '@zoonk/utils';
+import { getPageTitle, theme } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 interface NoLessonsProps {
   category: Post.Category;
@@ -10,11 +10,8 @@ interface NoLessonsProps {
   topicId: string;
 }
 
-/**
- * Display a message when no lessons are found for a request.
- */
 const NoLessons = ({ category, chapterId, topicId }: NoLessonsProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const title = getPageTitle(topicId);
 
   return (

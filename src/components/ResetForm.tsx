@@ -1,14 +1,14 @@
-import { useContext, useState } from 'react';
-import { NextPage } from 'next';
+import { useState } from 'react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { Button, Grid, Link, TextField } from '@material-ui/core';
 import { resetPassword } from '@zoonk/services/users';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
 import useSnackbar from './useSnackbar';
+import useTranslation from './useTranslation';
 
-const ResetPassword: NextPage = () => {
-  const { translate } = useContext(GlobalContext);
+const ResetPassword = () => {
+  const translate = useTranslation();
   const { query } = useRouter();
   const { action, snackbar } = useSnackbar();
   const [email, setEmail] = useState<string>('');

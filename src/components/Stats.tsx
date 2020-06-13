@@ -1,8 +1,8 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CircularProgress, Grid, Paper, Typography } from '@material-ui/core';
 import { Admin } from '@zoonk/models';
 import { getStats } from '@zoonk/services';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
 import {
   AllInclusive,
   Book,
@@ -16,6 +16,7 @@ import {
   Subject,
   SupervisorAccount,
 } from '@material-ui/icons';
+import useTranslation from './useTranslation';
 
 interface Item {
   key: keyof Admin.Stats;
@@ -38,7 +39,7 @@ const items: Item[] = [
 ];
 
 const Stats = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const [stats, setStats] = useState<Admin.Stats | null>(null);
 
   useEffect(() => {

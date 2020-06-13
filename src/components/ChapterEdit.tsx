@@ -1,19 +1,19 @@
-import { Fragment, useContext, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import Error from 'next/error';
 import { CircularProgress } from '@material-ui/core';
 import { Chapter } from '@zoonk/models';
 import { getChapter } from '@zoonk/services';
-import { GlobalContext } from '@zoonk/utils';
 import ChapterEditForm from './ChapterEditForm';
 import ChapterFormContainer from './ChapterFormContainer';
 import ChaptersBreadcrumb from './ChaptersBreadcrumb';
+import useTranslation from './useTranslation';
 
 interface ChapterEditProps {
   id: string;
 }
 
 const ChapterEdit = ({ id }: ChapterEditProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const [data, setData] = useState<Chapter.Get | null | undefined>();
 
   useEffect(() => {

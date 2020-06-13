@@ -1,17 +1,16 @@
-import { useContext } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { Container } from '@material-ui/core';
 import EditsBreadcrumb from '@zoonk/components/EditsBreadcrumb';
 import Meta from '@zoonk/components/Meta';
-import { GlobalContext } from '@zoonk/utils';
+import useTranslation from '@zoonk/components/useTranslation';
 
 const EditGet = dynamic(() => import('@zoonk/components/EditGet'), {
   ssr: false,
 });
 
 const EditPage = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { query } = useRouter();
 
   return (

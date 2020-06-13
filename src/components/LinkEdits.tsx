@@ -1,10 +1,9 @@
-import { useContext } from 'react';
 import NextLink from 'next/link';
 import { Link } from '@material-ui/core';
-import { GlobalContext } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 const LinkEdits = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
 
   return (
     <NextLink href="/edits" passHref>

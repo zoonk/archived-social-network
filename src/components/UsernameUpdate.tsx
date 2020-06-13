@@ -1,13 +1,14 @@
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { debounce } from 'lodash';
 import { Button, Grid, Paper, TextField, Typography } from '@material-ui/core';
 import { createUsername, validateUsername } from '@zoonk/services';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
 import useSnackbar from './useSnackbar';
 import useAuth from './useAuth';
+import useTranslation from './useTranslation';
 
 const UsernameUpdate = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { user } = useAuth();
   const { action, snackbar } = useSnackbar();
   const [username, setUsername] = useState<string>(user?.username || '');

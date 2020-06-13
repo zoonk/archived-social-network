@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
@@ -6,8 +6,9 @@ import { CircularProgress, Container } from '@material-ui/core';
 import Meta from '@zoonk/components/Meta';
 import PostsBreadcrumb from '@zoonk/components/PostsBreadcrumb';
 import useAuth from '@zoonk/components/useAuth';
+import useTranslation from '@zoonk/components/useTranslation';
 import { Post } from '@zoonk/models';
-import { GlobalContext, postCategories } from '@zoonk/utils';
+import { postCategories } from '@zoonk/utils';
 
 const LoginForm = dynamic(() => import('@zoonk/components/LoginForm'), {
   ssr: false,
@@ -18,7 +19,7 @@ const PostCreate = dynamic(() => import('@zoonk/components/PostCreate'), {
 });
 
 const PostAddPage: NextPage = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { user } = useAuth();
   const [category, setCategory] = useState<Post.Category | undefined>();
   const { query } = useRouter();

@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import NextLink from 'next/link';
 import {
   Button,
@@ -9,18 +8,15 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Topic } from '@zoonk/models';
-import { GlobalContext } from '@zoonk/utils';
 import TopicActions from './TopicActions';
+import useTranslation from './useTranslation';
 
 interface TopicDetailsProps {
   topic: Topic.Get;
 }
 
-/**
- * Card containing details about a topic.
- */
 const TopicDetails = ({ topic }: TopicDetailsProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { description, id, language, likes, photo, title } = topic;
   const descriptionWithLineBreak = description.split('\n').filter(Boolean);
   const wikiId = id.slice(0, id.length - 3);

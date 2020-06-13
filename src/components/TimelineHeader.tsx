@@ -1,14 +1,13 @@
-import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import { Button, ButtonGroup } from '@material-ui/core';
-import { GlobalContext } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 interface TimelineHeaderProps {
   active: 'all' | 'following';
 }
 
 const TimelineHeader = ({ active }: TimelineHeaderProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { push } = useRouter();
 
   return (

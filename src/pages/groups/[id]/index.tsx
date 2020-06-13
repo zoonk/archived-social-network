@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
 import dynamic from 'next/dynamic';
 import Error from 'next/error';
@@ -16,9 +15,10 @@ import ItemCredits from '@zoonk/components/ItemCredits';
 import MenuCommunity from '@zoonk/components/MenuCommunity';
 import Meta from '@zoonk/components/Meta';
 import PostShare from '@zoonk/components/PostShare';
+import useTranslation from '@zoonk/components/useTranslation';
 import { Group } from '@zoonk/models';
 import { getGroup, listGroups } from '@zoonk/services';
-import { appLanguage, GlobalContext } from '@zoonk/utils';
+import { appLanguage } from '@zoonk/utils';
 
 const PostsCard = dynamic(() => import('@zoonk/components/PostsCard'), {
   ssr: false,
@@ -53,7 +53,7 @@ export const getStaticProps: GetStaticProps<GroupPageProps> = async ({
 const GroupPage = ({
   group,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const classes = useStyles();
   const { isFallback } = useRouter();
 

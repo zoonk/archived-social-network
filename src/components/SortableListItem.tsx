@@ -1,4 +1,4 @@
-import { useContext, useRef } from 'react';
+import { useRef } from 'react';
 import NextLink from 'next/link';
 import {
   IconButton,
@@ -10,7 +10,7 @@ import {
 import { Delete, Edit, Reorder } from '@material-ui/icons';
 import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd';
 import { ContentCategory } from '@zoonk/models';
-import { GlobalContext } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 interface SortableListItemProps {
   category: ContentCategory;
@@ -28,9 +28,6 @@ interface DragItem {
   type: string;
 }
 
-/**
- * Sortable list item.
- */
 const SortableListItem = ({
   category,
   divider,
@@ -40,7 +37,7 @@ const SortableListItem = ({
   onDelete,
   title,
 }: SortableListItemProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const ref = useRef<HTMLDivElement>(null);
   const [, drop] = useDrop({
     accept: 'list',

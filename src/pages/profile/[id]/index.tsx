@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
 import dynamic from 'next/dynamic';
 import Error from 'next/error';
@@ -6,9 +5,10 @@ import { useRouter } from 'next/router';
 import { CircularProgress } from '@material-ui/core';
 import Meta from '@zoonk/components/Meta';
 import ProfileBase from '@zoonk/components/ProfileBase';
+import useTranslation from '@zoonk/components/useTranslation';
 import { Leaderboard } from '@zoonk/models';
 import { getUserLeaderboard } from '@zoonk/services';
-import { GlobalContext, rootUrl } from '@zoonk/utils';
+import { rootUrl } from '@zoonk/utils';
 
 const PostsCard = dynamic(() => import('@zoonk/components/PostsCard'), {
   ssr: false,
@@ -33,7 +33,7 @@ export const getStaticProps: GetStaticProps<ProfileProps> = async ({
 const ProfilePage = ({
   profile,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { isFallback } = useRouter();
 
   if (!profile && isFallback) return <CircularProgress />;

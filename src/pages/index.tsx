@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import { Container } from '@material-ui/core';
@@ -6,14 +5,15 @@ import Meta from '@zoonk/components/Meta';
 import SidebarPage from '@zoonk/components/SidebarPage';
 import TimelineHeader from '@zoonk/components/TimelineHeader';
 import useAuth from '@zoonk/components/useAuth';
-import { GlobalContext, rootUrl } from '@zoonk/utils';
+import useTranslation from '@zoonk/components/useTranslation';
+import { rootUrl } from '@zoonk/utils';
 
 const PostsCard = dynamic(() => import('@zoonk/components/PostsCard'), {
   ssr: false,
 });
 
 const Home: NextPage = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { user } = useAuth();
 
   return (

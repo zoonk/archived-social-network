@@ -1,13 +1,14 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Grid, Paper, TextField, Typography } from '@material-ui/core';
 import { updateProfile } from '@zoonk/services';
-import { GlobalContext, imgSize, theme } from '@zoonk/utils';
+import { imgSize, theme } from '@zoonk/utils';
 import ImageUpload from './ImageUpload';
 import useAuth from './useAuth';
 import useSnackbar from './useSnackbar';
+import useTranslation from './useTranslation';
 
 const ProfileUpdate = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { user } = useAuth();
   const { action, snackbar } = useSnackbar();
   const [name, setName] = useState<string>('');

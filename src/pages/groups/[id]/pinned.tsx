@@ -1,11 +1,10 @@
-import { useContext } from 'react';
 import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { Container } from '@material-ui/core';
 import GroupsBreadcrumb from '@zoonk/components/GroupsBreadcrumb';
 import Meta from '@zoonk/components/Meta';
-import { GlobalContext } from '@zoonk/utils';
+import useTranslation from '@zoonk/components/useTranslation';
 
 const PinnedSortableList = dynamic(
   () => import('@zoonk/components/PinnedSortableList'),
@@ -13,7 +12,7 @@ const PinnedSortableList = dynamic(
 );
 
 const PinnedPage: NextPage = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { query } = useRouter();
   const groupId = String(query.id);
 

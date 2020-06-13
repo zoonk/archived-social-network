@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
 import { useRouter } from 'next/router';
 import {
@@ -9,9 +8,9 @@ import {
 } from '@material-ui/core';
 import DiscussionListItem from '@zoonk/components/DiscussionListItem';
 import Meta from '@zoonk/components/Meta';
+import useTranslation from '@zoonk/components/useTranslation';
 import { Comment } from '@zoonk/models';
 import { getComment, listReplies } from '@zoonk/services';
-import { GlobalContext } from '@zoonk/utils';
 
 interface CommentPageProps {
   comment: Comment.Get | null;
@@ -56,7 +55,7 @@ const CommentPage = ({
   parent,
   replies,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { isFallback } = useRouter();
   const classes = useStyles();
   const isLoading = isFallback && !comment;

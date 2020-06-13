@@ -1,18 +1,18 @@
-import { useContext } from 'react';
 import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { Container } from '@material-ui/core';
 import HomeBreadcrumb from '@zoonk/components/HomeBreadcrumb';
 import Meta from '@zoonk/components/Meta';
-import { GlobalContext, rootUrl } from '@zoonk/utils';
+import useTranslation from '@zoonk/components/useTranslation';
+import { rootUrl } from '@zoonk/utils';
 
 const SearchResults = dynamic(() => import('@zoonk/components/SearchResults'), {
   ssr: false,
 });
 
 const Search: NextPage = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { query } = useRouter();
   const searchTerm = String(query.q);
 

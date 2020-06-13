@@ -1,19 +1,19 @@
-import { Fragment, useContext } from 'react';
+import { Fragment } from 'react';
 import { useRouter } from 'next/router';
 import { timestamp } from '@zoonk/firebase/db';
 import { Chapter } from '@zoonk/models';
 import { deleteChapter, updateChapter } from '@zoonk/services';
-import { GlobalContext } from '@zoonk/utils';
 import ChapterForm from './ChapterForm';
 import useAuth from './useAuth';
 import useSnackbar from './useSnackbar';
+import useTranslation from './useTranslation';
 
 interface ChapterEditFormProps {
   data: Chapter.Get;
 }
 
 const ChapterEditForm = ({ data }: ChapterEditFormProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { profile, user } = useAuth();
   const { push } = useRouter();
   const { action, snackbar } = useSnackbar();

@@ -1,16 +1,13 @@
-import { useContext } from 'react';
 import { CircularProgress, Typography } from '@material-ui/core';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 interface ModalProgressProps {
   title?: string;
 }
 
-/**
- * Display a loading state for a modal component.
- */
 const ModalProgress = ({ title }: ModalProgressProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
 
   return (
     <div

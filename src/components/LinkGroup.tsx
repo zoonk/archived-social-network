@@ -1,7 +1,6 @@
-import { useContext } from 'react';
 import NextLink from 'next/link';
 import { Link } from '@material-ui/core';
-import { GlobalContext } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 interface LinkGroupProps {
   id: string;
@@ -9,7 +8,7 @@ interface LinkGroupProps {
 }
 
 const LinkGroup = ({ id, title }: LinkGroupProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const groupTitle = title || translate('group');
 
   return (

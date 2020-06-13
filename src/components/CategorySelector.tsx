@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { Card, CardActionArea, Grid, Typography } from '@material-ui/core';
 import {
   Description,
@@ -9,8 +8,9 @@ import {
   School,
 } from '@material-ui/icons';
 import { Post } from '@zoonk/models';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
 import CollaborativeLabel from './CollaborativeLabel';
+import useTranslation from './useTranslation';
 
 interface CategorySelectorProps {
   onSelect: (category: Post.Category) => void;
@@ -23,11 +23,8 @@ interface CategoryList {
   icon: React.ReactNode;
 }
 
-/**
- * Dropdown menu for selecting a post category.
- */
 const CategorySelector = ({ onSelect }: CategorySelectorProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const categories: CategoryList[] = [
     {
       name: translate('teach_ref_title'),

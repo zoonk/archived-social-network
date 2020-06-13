@@ -1,8 +1,8 @@
-import { useContext } from 'react';
 import NextLink from 'next/link';
 import { Button, Typography } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 interface CategoryCardHeaderProps {
   category: 'examples' | 'lessons';
@@ -10,7 +10,7 @@ interface CategoryCardHeaderProps {
 }
 
 const LessonsHeader = ({ category, chapterId }: CategoryCardHeaderProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
 
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>

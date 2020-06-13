@@ -1,19 +1,15 @@
-import { useContext } from 'react';
 import NextLink from 'next/link';
 import { Link } from '@material-ui/core';
-import { GlobalContext } from '@zoonk/utils';
 import useAuth from './useAuth';
+import useTranslation from './useTranslation';
 
-/**
- * Default link to the homepage
- */
 const LinkHome = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { user } = useAuth();
 
   return (
     <NextLink href={user ? '/following' : '/'} passHref>
-      <Link color="inherit" title="Free learning app">
+      <Link color="inherit" title={translate('seo_home_title')}>
         {translate('home')}
       </Link>
     </NextLink>

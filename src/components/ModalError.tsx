@@ -1,18 +1,15 @@
-import { useContext } from 'react';
 import { Button, Typography } from '@material-ui/core';
 import { ErrorOutline } from '@material-ui/icons';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 interface ModalErrorProps {
   msg?: string | null;
   onReturn?: () => void;
 }
 
-/**
- * Display an error message for a modal component.
- */
 const ModalError = ({ msg, onReturn }: ModalErrorProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
 
   return (
     <div

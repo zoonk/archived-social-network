@@ -1,24 +1,24 @@
-import { Fragment, useContext, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import Error from 'next/error';
 import { useRouter } from 'next/router';
 import { CircularProgress, IconButton } from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
 import { Post } from '@zoonk/models';
 import { deletePost, getPost } from '@zoonk/services';
-import { GlobalContext } from '@zoonk/utils';
 import BackButton from './BackButton';
 import EditNotAllowed from './EditNotAllowed';
 import LoginForm from './LoginForm';
 import PostEditForm from './PostEditForm';
 import useAuth from './useAuth';
 import useSnackbar from './useSnackbar';
+import useTranslation from './useTranslation';
 
 interface PostEditProps {
   id: string;
 }
 
 const PostEdit = ({ id }: PostEditProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { profile, user } = useAuth();
   const { snackbar } = useSnackbar();
   const [data, setData] = useState<Post.Get | null | undefined>();

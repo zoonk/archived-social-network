@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import {
   Button,
   Dialog,
@@ -10,21 +10,18 @@ import {
 } from '@material-ui/core';
 import { RequestStatus } from '@zoonk/models';
 import { reportEdit } from '@zoonk/services';
-import { GlobalContext } from '@zoonk/utils';
 import ModalConfirmation from './ModalConfirmation';
 import ModalError from './ModalError';
 import ModalProgress from './ModalProgress';
 import useAuth from './useAuth';
+import useTranslation from './useTranslation';
 
 interface EditsReportProps {
   id: string;
 }
 
-/**
- * Report a page change violating our terms of service.
- */
 const EditsReport = ({ id }: EditsReportProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { user } = useAuth();
   const [open, setOpen] = useState<boolean>(false);
   const [comments, setComments] = useState<string>('');

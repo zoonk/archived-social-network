@@ -1,6 +1,6 @@
-import { useContext } from 'react';
 import Head from 'next/head';
-import { GlobalContext, rootUrl, socialIcon } from '@zoonk/utils';
+import { rootUrl, socialIcon } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 interface MetaProps {
   canonicalUrl?: string;
@@ -12,9 +12,6 @@ interface MetaProps {
   title: string;
 }
 
-/**
- * Add some meta-tags to the page's `head`.
- */
 const Meta = ({
   canonicalUrl,
   children,
@@ -24,7 +21,7 @@ const Meta = ({
   noIndex,
   title,
 }: MetaProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const pageDescription = description || translate('social_description');
   const pageImage = image || socialIcon;
   const displayTitle = noAppName ? title : `${title} | Zoonk`;

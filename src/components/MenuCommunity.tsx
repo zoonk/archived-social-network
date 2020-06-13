@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import NextLink from 'next/link';
 import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import {
@@ -10,7 +9,7 @@ import {
   QuestionAnswer,
   School,
 } from '@material-ui/icons';
-import { GlobalContext } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 interface MenuCommunityProps {
   category: 'groups' | 'topics';
@@ -18,7 +17,7 @@ interface MenuCommunityProps {
 }
 
 const MenuCommunity = ({ category, id }: MenuCommunityProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
 
   return (
     <List component="nav" disablePadding>

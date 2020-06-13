@@ -1,9 +1,8 @@
-import { useContext } from 'react';
 import NextLink from 'next/link';
 import { Button, Hidden, makeStyles } from '@material-ui/core';
 import { Edit } from '@material-ui/icons';
-import { GlobalContext } from '@zoonk/utils';
 import LikeButton from './LikeButton';
+import useTranslation from './useTranslation';
 
 interface PostBarActionsProps {
   canEdit: boolean;
@@ -27,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const PostBarActions = ({ canEdit, id, likes }: PostBarActionsProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const classes = useStyles();
 
   return (

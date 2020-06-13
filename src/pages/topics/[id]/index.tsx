@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { NextPage } from 'next';
 import Error from 'next/error';
 import { Container, Grid, makeStyles } from '@material-ui/core';
@@ -9,9 +8,10 @@ import PostsCard from '@zoonk/components/PostsCard';
 import PostShare from '@zoonk/components/PostShare';
 import TopicDetails from '@zoonk/components/TopicDetails';
 import TopicsBreadcrumb from '@zoonk/components/TopicsBreadcrumb';
+import useTranslation from '@zoonk/components/useTranslation';
 import { Topic } from '@zoonk/models';
 import { getTopic } from '@zoonk/services';
-import { appLanguage, GlobalContext, preRender } from '@zoonk/utils';
+import { appLanguage, preRender } from '@zoonk/utils';
 
 const useStyles = makeStyles((theme) => ({
   column: {
@@ -26,7 +26,7 @@ interface TopicPageProps {
 }
 
 const TopicPage: NextPage<TopicPageProps> = ({ topic }) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const classes = useStyles();
 
   if (!topic) return <Error statusCode={404} />;

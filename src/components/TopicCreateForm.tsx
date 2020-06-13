@@ -1,17 +1,18 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { Button, Grid, IconButton, Typography } from '@material-ui/core';
 import { Help } from '@material-ui/icons';
 import { WikipediaSearchItem } from '@zoonk/models';
-import { appLanguage, GlobalContext, theme } from '@zoonk/utils';
+import { appLanguage, theme } from '@zoonk/utils';
 import TopicSearch from './TopicSearch';
 import TopicSearchHelp from './TopicSearchHelp';
+import useTranslation from './useTranslation';
 
 interface TopicCreateFormProps {
   onSubmit: (item: WikipediaSearchItem) => void;
 }
 
 const TopicCreateForm = ({ onSubmit }: TopicCreateFormProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const [help, setHelp] = useState<boolean>(false);
   const [selected, setSelected] = useState<WikipediaSearchItem>();
 

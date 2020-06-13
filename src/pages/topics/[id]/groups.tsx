@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { NextPage } from 'next';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
@@ -6,10 +5,11 @@ import { Button, Container } from '@material-ui/core';
 import GroupList from '@zoonk/components/GroupList';
 import Meta from '@zoonk/components/Meta';
 import TopicsBreadcrumb from '@zoonk/components/TopicsBreadcrumb';
-import { GlobalContext, rootUrl, theme } from '@zoonk/utils';
+import useTranslation from '@zoonk/components/useTranslation';
+import { rootUrl, theme } from '@zoonk/utils';
 
 const TopicGroups: NextPage = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { query } = useRouter();
   const topicId = String(query.id);
 

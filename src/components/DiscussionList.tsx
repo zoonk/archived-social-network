@@ -1,12 +1,13 @@
-import { Fragment, useContext, useEffect } from 'react';
+import { Fragment, useEffect } from 'react';
 import { Button, Grid } from '@material-ui/core';
 import { Comment } from '@zoonk/models';
 import { listComments } from '@zoonk/services';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
 import DiscussionListItem from './DiscussionListItem';
 import ListSkeleton from './ListSkeleton';
 import NoItems from './NoItems';
 import useLoadMore from './useLoadMore';
+import useTranslation from './useTranslation';
 
 interface DiscussionListProps {
   allowLoadMore?: boolean;
@@ -14,15 +15,12 @@ interface DiscussionListProps {
   limit?: number;
 }
 
-/**
- * Display a list of comments.
- */
 const DiscussionList = ({
   allowLoadMore,
   createdById,
   limit = 10,
 }: DiscussionListProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { get, items, lastVisible, loading } = useLoadMore<Comment.Snapshot>(
     limit,
   );

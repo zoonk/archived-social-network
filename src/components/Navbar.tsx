@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import Router from 'next/router';
@@ -10,14 +10,14 @@ import {
   Toolbar,
 } from '@material-ui/core';
 import { Edit, Menu, Notifications } from '@material-ui/icons';
-import { GlobalContext } from '@zoonk/utils';
 import SearchBox from './SearchBox';
 import useAuth from './useAuth';
+import useTranslation from './useTranslation';
 
 const NavbarDrawer = dynamic(() => import('./NavbarDrawer'), { ssr: false });
 
 const Navbar = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { user } = useAuth();
   const [displayMenu, setMenu] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);

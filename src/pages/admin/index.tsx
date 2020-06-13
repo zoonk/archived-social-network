@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import {
@@ -10,7 +9,7 @@ import {
 import HomeBreadcrumb from '@zoonk/components/HomeBreadcrumb';
 import Meta from '@zoonk/components/Meta';
 import useAuth from '@zoonk/components/useAuth';
-import { GlobalContext } from '@zoonk/utils';
+import useTranslation from '@zoonk/components/useTranslation';
 
 const FeedbackList = dynamic(() => import('@zoonk/components/FeedbackList'), {
   ssr: false,
@@ -21,7 +20,7 @@ const ReportsList = dynamic(() => import('@zoonk/components/ReportsList'), {
 const Stats = dynamic(() => import('@zoonk/components/Stats'), { ssr: false });
 
 const AdminPage = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { user } = useAuth();
   const { push } = useRouter();
 

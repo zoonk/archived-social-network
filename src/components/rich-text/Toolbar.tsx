@@ -1,7 +1,6 @@
-import { useContext } from 'react';
 import { Button, CircularProgress, makeStyles, Paper } from '@material-ui/core';
-import { GlobalContext } from '@zoonk/utils';
 import QuillToolbar from './QuillToolbar';
+import useTranslation from '../useTranslation';
 
 interface ToolbarProps {
   valid: boolean;
@@ -29,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Toolbar = ({ valid, saving, onSave }: ToolbarProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const classes = useStyles();
 
   return (

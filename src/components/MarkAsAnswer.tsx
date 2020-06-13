@@ -3,8 +3,9 @@ import { IconButton, makeStyles } from '@material-ui/core';
 import { CheckCircle, CheckCircleOutline } from '@material-ui/icons';
 import { green } from '@material-ui/core/colors';
 import { pinComment, unpinComment } from '@zoonk/services';
-import { GlobalContext, PostContext } from '@zoonk/utils';
+import { PostContext } from '@zoonk/utils';
 import useAuth from './useAuth';
+import useTranslation from './useTranslation';
 
 interface CommentActionsProps {
   commentId: string;
@@ -15,7 +16,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const MarkAsAnswer = ({ commentId }: CommentActionsProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { profile, user } = useAuth();
   const { id, pinnedComment } = useContext(PostContext);
   const [saving, setSaving] = useState<boolean>(false);

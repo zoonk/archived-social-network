@@ -1,8 +1,8 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { Grid, TextField } from '@material-ui/core';
 import { Chapter } from '@zoonk/models';
-import { GlobalContext } from '@zoonk/utils';
 import FormBase from './FormBase';
+import useTranslation from './useTranslation';
 
 interface ChapterFormProps {
   data?: Chapter.Get;
@@ -20,7 +20,7 @@ const ChapterForm = ({
   onDelete,
   onSubmit,
 }: ChapterFormProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const [title, setTitle] = useState<string>(data?.title || '');
   const [description, setDescription] = useState<string>(
     data?.description || '',

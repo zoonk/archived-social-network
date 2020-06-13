@@ -1,12 +1,13 @@
-import { Fragment, useContext } from 'react';
+import { Fragment } from 'react';
 import { useRouter } from 'next/router';
 import { Button } from '@material-ui/core';
 import { signInWithFacebook, signInWithGoogle } from '@zoonk/services/users';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
 import useSnackbar from './useSnackbar';
+import useTranslation from './useTranslation';
 
 const SocialSignin = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { query, push } = useRouter();
   const { action, snackbar } = useSnackbar();
 

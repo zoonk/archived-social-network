@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import { Avatar, Container, Typography } from '@material-ui/core';
@@ -6,14 +5,15 @@ import { MailOutline } from '@material-ui/icons';
 import AlreadyLoggedin from '@zoonk/components/AlreadyLoggedin';
 import Meta from '@zoonk/components/Meta';
 import useAuth from '@zoonk/components/useAuth';
-import { GlobalContext, rootUrl, theme } from '@zoonk/utils';
+import useTranslation from '@zoonk/components/useTranslation';
+import { rootUrl, theme } from '@zoonk/utils';
 
 const ResetForm = dynamic(() => import('@zoonk/components/ResetForm'), {
   ssr: false,
 });
 
 const ResetPassword: NextPage = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { user } = useAuth();
 
   if (user === undefined) {

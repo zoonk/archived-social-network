@@ -1,15 +1,15 @@
-import { useContext } from 'react';
 import { Breadcrumbs, Paper, Typography } from '@material-ui/core';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
 import LinkEdits from './LinkEdits';
 import LinkHome from './LinkHome';
+import useTranslation from './useTranslation';
 
 interface EditsBreadcrumbProps {
   title?: string;
 }
 
 const EditsBreadcrumb = ({ title }: EditsBreadcrumbProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
 
   return (
     <Paper elevation={0} style={{ padding: theme.spacing(2, 0) }}>

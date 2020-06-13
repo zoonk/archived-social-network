@@ -1,12 +1,13 @@
-import { Fragment, useContext, useEffect } from 'react';
+import { Fragment, useEffect } from 'react';
 import { Button, List } from '@material-ui/core';
 import { Leaderboard } from '@zoonk/models';
 import { getLeaderboard } from '@zoonk/services';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
 import LeaderboardListItem from './LeaderboardListItem';
 import ListSkeleton from './ListSkeleton';
 import NoItems from './NoItems';
 import useLoadMore from './useLoadMore';
+import useTranslation from './useTranslation';
 
 interface LeaderboardListProps {
   allowLoadMore?: boolean;
@@ -19,7 +20,7 @@ const LeaderboardList = ({
   limit = 5,
   topicId,
 }: LeaderboardListProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { get, items, lastVisible, loading } = useLoadMore<
     Leaderboard.Snapshot
   >(limit);

@@ -1,8 +1,7 @@
-import { useContext } from 'react';
 import NextLink from 'next/link';
 import { makeStyles } from '@material-ui/core';
 import { Dictionary, Post } from '@zoonk/models';
-import { GlobalContext } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -27,7 +26,7 @@ interface PostShareProps {
 }
 
 const PostShare = ({ category, groupId, title, topicId }: PostShareProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const classes = useStyles();
   const query: Dictionary<string> = {};
 

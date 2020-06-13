@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { makeStyles } from '@material-ui/core';
 import {
   AllInclusive,
@@ -11,7 +10,7 @@ import {
 } from '@material-ui/icons';
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
 import { Post } from '@zoonk/models';
-import { GlobalContext } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 const useStyles = makeStyles((theme) => ({
   toggleContainer: {
@@ -27,7 +26,7 @@ interface CategoryFilterProps {
 }
 
 const CategoryFilter = ({ filterBy, onSelect }: CategoryFilterProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const classes = useStyles();
 
   return (

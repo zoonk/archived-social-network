@@ -1,20 +1,16 @@
-import { useContext } from 'react';
 import { Card, CardContent, Typography } from '@material-ui/core';
 import { ContentCategory, SearchResult } from '@zoonk/models';
-import { GlobalContext } from '@zoonk/utils';
 import AddButton from './AddButton';
 import SearchList from './SearchList';
+import useTranslation from './useTranslation';
 
 interface SearchCardProps {
   category: ContentCategory;
   items: ReadonlyArray<SearchResult>;
 }
 
-/**
- * Cards containing a list of search results for a category.
- */
 const SearchCard = ({ category, items }: SearchCardProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
 
   return (
     <Card variant="outlined" style={{ height: '100%' }}>

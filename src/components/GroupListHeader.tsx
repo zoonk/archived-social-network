@@ -1,9 +1,8 @@
-import { useContext } from 'react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { Button, ButtonGroup, makeStyles } from '@material-ui/core';
-import { GlobalContext } from '@zoonk/utils';
 import useAuth from './useAuth';
+import useTranslation from './useTranslation';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,7 +18,7 @@ interface GroupListHeaderProps {
 }
 
 const GroupListHeader = ({ active }: GroupListHeaderProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { user } = useAuth();
   const { push } = useRouter();
   const classes = useStyles();

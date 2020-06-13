@@ -1,19 +1,15 @@
-import { useContext } from 'react';
 import { List, Typography } from '@material-ui/core';
 import { ContentCategory, SearchResult } from '@zoonk/models';
-import { GlobalContext } from '@zoonk/utils';
 import SearchListItem from './SearchListItem';
+import useTranslation from './useTranslation';
 
 interface SearchListProps {
   category: ContentCategory;
   items: ReadonlyArray<SearchResult>;
 }
 
-/**
- * Display a list of search results.
- */
 const SearchList = ({ category, items }: SearchListProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
 
   if (items.length === 0) {
     return <Typography gutterBottom>{translate('items_empty')}</Typography>;

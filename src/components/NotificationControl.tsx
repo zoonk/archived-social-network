@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   FormControl,
   FormControlLabel,
@@ -9,8 +9,8 @@ import {
 } from '@material-ui/core';
 import { Notification, User } from '@zoonk/models';
 import { updateNotificationSettings } from '@zoonk/services/users';
-import { GlobalContext } from '@zoonk/utils';
 import useAuth from './useAuth';
+import useTranslation from './useTranslation';
 
 interface NotificationControlProps {
   content: Notification.Type;
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NotificationControl = ({ content, label }: NotificationControlProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { user } = useAuth();
   const classes = useStyles();
   const [active, setActive] = useState<User.NotificationType[]>([]);

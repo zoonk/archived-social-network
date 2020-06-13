@@ -1,14 +1,13 @@
-import { useContext } from 'react';
 import NextLink from 'next/link';
 import { Link, Paper, makeStyles, Typography } from '@material-ui/core';
-import { GlobalContext } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 const useStyles = makeStyles((theme) => ({
   root: { padding: theme.spacing(2) },
 }));
 
 const NoFollowing = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const classes = useStyles();
 
   return (

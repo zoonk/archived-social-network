@@ -1,14 +1,11 @@
-import { useContext } from 'react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { Link, Typography } from '@material-ui/core';
-import { GlobalContext, getPageTitle, theme } from '@zoonk/utils';
+import { getPageTitle, theme } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
-/**
- * Display a message when no chapters are found for a request.
- */
 const NoChapters = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { query } = useRouter();
   const id = String(query.id);
   const title = getPageTitle(id);

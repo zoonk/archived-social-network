@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useContext, useEffect, useState } from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 import NextLink from 'next/link';
 import { Button, CircularProgress } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
@@ -8,20 +8,18 @@ import {
   getTopicLive,
   updateChapterOrder,
 } from '@zoonk/services';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
 import SortableList from './SortableList';
 import useAuth from './useAuth';
 import useSnackbar from './useSnackbar';
+import useTranslation from './useTranslation';
 
 interface ChapterSortableListProps {
   topicId: string;
 }
 
-/**
- * Sortable list of chapters.
- */
 const ChapterSortableList = ({ topicId }: ChapterSortableListProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { profile, user } = useAuth();
   const { action, snackbar } = useSnackbar();
   const [loading, setLoading] = useState<boolean>(true);

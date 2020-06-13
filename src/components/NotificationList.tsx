@@ -1,12 +1,13 @@
-import { Fragment, useContext, useEffect } from 'react';
+import { Fragment, useEffect } from 'react';
 import { Button, List } from '@material-ui/core';
 import { Notification, User } from '@zoonk/models';
 import { listNotifications, resetNotificationCount } from '@zoonk/services';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
 import ListSkeleton from './ListSkeleton';
 import NoItems from './NoItems';
 import NotificationListItem from './NotificationListItem';
 import useLoadMore from './useLoadMore';
+import useTranslation from './useTranslation';
 
 interface NotificationListProps {
   allowLoadMore?: boolean;
@@ -21,7 +22,7 @@ const NotificationList = ({
   settings,
   uid,
 }: NotificationListProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { get, items, lastVisible, loading } = useLoadMore<
     Notification.Snapshot
   >(limit);

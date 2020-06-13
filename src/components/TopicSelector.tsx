@@ -1,8 +1,9 @@
-import { Fragment, useContext } from 'react';
+import { Fragment } from 'react';
 import { Chip, Typography } from '@material-ui/core';
 import { UILanguage, WikipediaSearchItem } from '@zoonk/models';
-import { getPageTitle, GlobalContext, theme } from '@zoonk/utils';
+import { getPageTitle, theme } from '@zoonk/utils';
 import TopicSearch from './TopicSearch';
+import useTranslation from './useTranslation';
 
 interface TopicSelectorProps {
   active?: string;
@@ -12,14 +13,6 @@ interface TopicSelectorProps {
   onChange: (topics: string[]) => void;
 }
 
-/**
- * Select (and display) topics.
- * @property `active` - an active item which cannot be deleted.
- * @property `error` - display an error message.
- * @property `items` - a list of selected topics.
- * @property `language`
- * @property `onChange(topics)` - fires an event when the topics list is updated.
- */
 const TopicSelector = ({
   active,
   error,
@@ -27,7 +20,7 @@ const TopicSelector = ({
   language,
   onChange,
 }: TopicSelectorProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
 
   // Remove a topic from the list.
   const deleteTopic = (item: string) => {

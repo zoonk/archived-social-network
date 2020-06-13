@@ -1,18 +1,16 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Container, Dialog, Typography } from '@material-ui/core';
 import { analytics } from '@zoonk/firebase/analytics';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 interface TopicSearchHelpProps {
   open: boolean;
   onClose: () => void;
 }
 
-/**
- * Dialog containing a helper info about searching topics.
- */
 const TopicSearchHelp = ({ open, onClose }: TopicSearchHelpProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
 
   useEffect(() => {
     if (open) {

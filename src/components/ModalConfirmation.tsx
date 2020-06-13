@@ -1,19 +1,16 @@
-import { useContext } from 'react';
 import { Button, Typography } from '@material-ui/core';
 import { CheckCircleOutline } from '@material-ui/icons';
 import { green } from '@material-ui/core/colors';
-import { GlobalContext, theme } from '@zoonk/utils';
+import { theme } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 interface ModalConfirmationProps {
   msg?: string;
   onReturn?: () => void;
 }
 
-/**
- * Display a confirmation message for a modal component.
- */
 const ModalConfirmation = ({ msg, onReturn }: ModalConfirmationProps) => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
 
   return (
     <div

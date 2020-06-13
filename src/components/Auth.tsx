@@ -26,7 +26,7 @@ const Auth = () => {
         if (snap && snap.data()) {
           const fbUser = snap.data() as User.Response;
 
-          // Store the user data to be saved in the GlobalContext.
+          // Store the user data to be saved in the AuthContext.
           setUser({ ...fbUser, uid: authState.uid });
 
           // Disable analytics for admins.

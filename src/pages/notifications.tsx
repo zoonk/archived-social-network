@@ -1,11 +1,10 @@
-import { useContext } from 'react';
 import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import { CircularProgress, Container } from '@material-ui/core';
 import HomeBreadcrumb from '@zoonk/components/HomeBreadcrumb';
 import Meta from '@zoonk/components/Meta';
 import useAuth from '@zoonk/components/useAuth';
-import { GlobalContext } from '@zoonk/utils';
+import useTranslation from '@zoonk/components/useTranslation';
 
 const LoginForm = dynamic(() => import('@zoonk/components/LoginForm'), {
   ssr: false,
@@ -17,7 +16,7 @@ const NotificationList = dynamic(
 );
 
 const Notifications: NextPage = () => {
-  const { translate } = useContext(GlobalContext);
+  const translate = useTranslation();
   const { user } = useAuth();
 
   if (user === undefined) {
