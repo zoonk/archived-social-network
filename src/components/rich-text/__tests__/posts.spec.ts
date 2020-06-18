@@ -93,7 +93,7 @@ describe('getPostLinks', () => {
           { text: 'An opening paragraph with a ' },
           {
             type: 'link',
-            href: 'https://zoonk.org',
+            url: 'https://zoonk.org',
             children: [{ text: 'link' }],
           },
           { text: ' in it.' },
@@ -116,7 +116,7 @@ describe('getPostLinks', () => {
               { text: 'A nested item with a ' },
               {
                 type: 'link',
-                href: '/test',
+                url: '/test',
                 children: [{ text: 'link' }],
               },
               { text: ' in it.' },
@@ -130,7 +130,7 @@ describe('getPostLinks', () => {
           { text: 'Now we have the same ' },
           {
             type: 'link',
-            href: 'https://zoonk.org',
+            url: 'https://zoonk.org',
             children: [{ text: 'link' }],
           },
           { text: ', which should be deleted.' },

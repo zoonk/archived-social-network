@@ -27,8 +27,8 @@ const getLinks = (node: Node): string[] => {
 
   const children = node.children
     .map((n) => {
-      if (n.href) {
-        const link = n.href as string;
+      if (n.url) {
+        const link = n.url as string;
         return link.startsWith('/') ? `${rootUrl}${link}` : link;
       }
       if (n.children) return getLinks(n);
