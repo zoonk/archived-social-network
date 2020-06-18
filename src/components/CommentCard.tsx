@@ -7,7 +7,7 @@ import CommentActions from './CommentActions';
 import CommentForm from './CommentForm';
 import CommentUser from './CommentUser';
 import ReplyList from './ReplyList';
-import Viewer from './rich-text/Viewer';
+import EditorRead from './rich-text/EditorRead';
 
 interface CommentCardProps {
   data: Comment.Get;
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 
 const CommentCard = ({ data }: CommentCardProps) => {
   const { pinnedComment } = useContext(PostContext);
-  const { category, createdBy, html, id, replies } = data;
+  const { category, content, createdBy, id, replies } = data;
   const [expanded, setExpanded] = useState<boolean>(false);
   const classes = useStyles();
   const isReply = category === 'replies';
@@ -36,7 +36,7 @@ const CommentCard = ({ data }: CommentCardProps) => {
     >
       <CommentUser user={createdBy} />
       <div className={classes.content}>
-        <Viewer html={html} />
+        <EditorRead content={content} />
       </div>
       <CommentActions
         data={data}

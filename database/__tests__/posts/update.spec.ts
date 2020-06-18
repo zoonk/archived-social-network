@@ -21,15 +21,14 @@ const add = {
   chapterData: { title: 'chapter name' },
   chapterId: 'valid',
   comments: 0,
+  content: 'some content',
   cover: 'test.png',
   createdAt: firebase.firestore.FieldValue.serverTimestamp(),
   createdBy: profile,
   createdById: 'currentUser',
-  delta: 'delta content',
   editors: ['otherUser'],
   editorsData: { otherUser: profile },
   groupId: null,
-  html: 'html content',
   language: 'en',
   links: null,
   likes: 0,
@@ -233,6 +232,16 @@ test('comments cannot be changed', async (done) => {
   done();
 });
 
+test('content is a string', async (done) => {
+  await firebase.assertSucceeds(ref.update({ ...edit, content: 'new' }));
+  await firebase.assertFails(ref.update({ ...edit, content: 123 }));
+  await firebase.assertFails(ref.update({ ...edit, content: true }));
+  await firebase.assertFails(ref.update({ ...edit, content: {} }));
+  await firebase.assertFails(ref.update({ ...edit, content: ['test'] }));
+  await firebase.assertFails(ref.update({ ...edit, content: null }));
+  done();
+});
+
 test('createdAt cannot be changed', async (done) => {
   const changes = {
     ...edit,
@@ -249,16 +258,6 @@ test('createdBy cannot be changed', async (done) => {
 
 test('createdById cannot be changed', async (done) => {
   await firebase.assertFails(ref.update({ ...edit, createdById: 'other' }));
-  done();
-});
-
-test('delta is a string', async (done) => {
-  await firebase.assertSucceeds(ref.update({ ...edit, delta: 'new' }));
-  await firebase.assertFails(ref.update({ ...edit, delta: 123 }));
-  await firebase.assertFails(ref.update({ ...edit, delta: true }));
-  await firebase.assertFails(ref.update({ ...edit, delta: {} }));
-  await firebase.assertFails(ref.update({ ...edit, delta: ['test'] }));
-  await firebase.assertFails(ref.update({ ...edit, delta: null }));
   done();
 });
 
@@ -290,16 +289,6 @@ test('groupData cannot be changed', async (done) => {
 test('groupId cannot be changed', async (done) => {
   await admin.doc('groups/valid').set({});
   await firebase.assertFails(ref.update({ ...edit, groupId: 'valid' }));
-  done();
-});
-
-test('html is a string', async (done) => {
-  await firebase.assertSucceeds(ref.update({ ...edit, html: 'new' }));
-  await firebase.assertFails(ref.update({ ...edit, html: 123 }));
-  await firebase.assertFails(ref.update({ ...edit, html: true }));
-  await firebase.assertFails(ref.update({ ...edit, html: {} }));
-  await firebase.assertFails(ref.update({ ...edit, html: ['test'] }));
-  await firebase.assertFails(ref.update({ ...edit, html: null }));
   done();
 });
 

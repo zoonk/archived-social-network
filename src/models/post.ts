@@ -1,4 +1,4 @@
-import Delta from 'quill-delta';
+import { Node } from 'slate';
 import { Chapter } from './chapter';
 import { ContentMetadata } from './content';
 import { Group } from './group';
@@ -6,9 +6,6 @@ import { Dictionary } from './misc';
 import { Profile } from './profile';
 import { SearchIndex } from './search';
 
-/**
- * Posts model.
- */
 export namespace Post {
   export interface Link {
     description: string | null;
@@ -40,41 +37,29 @@ export namespace Post {
   }
 
   export interface EditableFields {
+    content: string;
     cover: string | null;
-    delta: Delta;
-    html: string;
     links: string[] | null;
     pinned: boolean;
     subtitle: string;
     title: string;
   }
 
-  export interface Fields extends Omit<EditableFields, 'delta'> {
-    pinnedComment?: string | null;
+  export interface Fields extends EditableFields {
     category: Category;
-    delta: string;
     chapterId: string | null;
     groupId: string | null;
+    pinnedComment?: string | null;
   }
 
-  /**
-   * Required fields for creating an item.
-   */
   export interface Create extends Fields, ContentMetadata.Create {}
 
-  /**
-   * Required fields for updating an item.
-   */
   export interface Update
-    extends Partial<Omit<EditableFields, 'delta'>>,
+    extends Partial<EditableFields>,
       ContentMetadata.Update {
-    delta?: string;
     topics?: string[];
   }
 
-  /**
-   * Fields returned from the backend.
-   */
   export interface Response extends Fields, ContentMetadata.Response {
     chapterData?: Chapter.Summary | null;
     groupData?: Group.Summary | null;
@@ -83,13 +68,10 @@ export namespace Post {
     sites?: Link[];
   }
 
-  /**
-   * Serialized fields.
-   */
-  export interface Get extends Omit<Fields, 'delta'>, ContentMetadata.Get {
+  export interface Get extends Omit<Fields, 'content'>, ContentMetadata.Get {
     chapterData?: Chapter.Summary | null;
+    content: Node[];
     createdBy: Profile.Get;
-    delta: Delta;
     groupData?: Group.Summary | null;
     editors: Profile.Get[];
     editorsData: Dictionary<Profile.Get>;
@@ -97,16 +79,10 @@ export namespace Post {
     sites: Link[];
   }
 
-  /**
-   * Keep Firebase snapshot
-   */
   export interface Snapshot extends Get {
     snap: firebase.firestore.DocumentSnapshot;
   }
 
-  /**
-   * Search index fields.
-   */
   export interface Index extends SearchIndex {
     category: Category;
     description: string;

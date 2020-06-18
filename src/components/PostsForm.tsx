@@ -1,6 +1,6 @@
-import { Fragment, useEffect, useRef, useState } from 'react';
-import dynamic from 'next/dynamic';
-import Quill from 'quill';
+import { useEffect, useMemo, useState } from 'react';
+import { Node } from 'slate';
+import { Slate } from 'slate-react';
 import {
   Button,
   Grid,
@@ -10,15 +10,14 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Post } from '@zoonk/models';
-import { appLanguage } from '@zoonk/utils';
+import { appLanguage, getEmptyEditor } from '@zoonk/utils';
 import ImageUpload from './ImageUpload';
+import Editor from './rich-text/Editor';
+import ToolbarFixed from './rich-text/ToolbarFixed';
+import { withEditor } from './rich-text/utils';
 import ShowCard from './ShowCard';
 import TopicSelector from './TopicSelector';
 import useTranslation from './useTranslation';
-
-const EditorFixed = dynamic(() => import('./rich-text/EditorFixed'), {
-  ssr: false,
-});
 
 const useStyles = makeStyles((theme) => ({
   paper: { padding: theme.spacing(2) },
@@ -50,8 +49,11 @@ interface PostsFormProps {
 
 const PostsForm = ({ data, saving, topicIds, onSubmit }: PostsFormProps) => {
   const translate = useTranslation();
-  const editorRef = useRef<Quill>();
   const classes = useStyles();
+  const [content, setContent] = useState<Node[]>(
+    data?.content || getEmptyEditor(),
+  );
+  const editor = useMemo(() => withEditor(), []);
   const [settings, setSettings] = useState<boolean>(!data);
   const [cover, setCover] = useState<string | null>(data?.cover || null);
   const [subtitle, setSubtitle] = useState<string>(data?.subtitle || '');
@@ -67,16 +69,20 @@ const PostsForm = ({ data, saving, topicIds, onSubmit }: PostsFormProps) => {
   }, [data, topicIds]);
 
   const handleSubmit = () => {
-    const delta = editorRef.current?.getContents();
-    const html = editorRef.current?.root.innerHTML;
-
-    if (delta && html) {
-      onSubmit({ cover, delta, html, links: null, subtitle, title }, topics);
-    }
+    onSubmit(
+      {
+        content: JSON.stringify(content),
+        cover,
+        links: null,
+        subtitle,
+        title,
+      },
+      topics,
+    );
   };
 
   return (
-    <Fragment>
+    <Slate editor={editor} value={content} onChange={setContent}>
       {!settings && (
         <ShowCard
           title={title || translate('settings')}
@@ -144,15 +150,9 @@ const PostsForm = ({ data, saving, topicIds, onSubmit }: PostsFormProps) => {
         </Paper>
       )}
 
-      <EditorFixed
-        initialData={data?.delta}
-        editorRef={editorRef}
-        placeholder={translate('post_share')}
-        valid={valid}
-        saving={saving}
-        onSave={handleSubmit}
-      />
-    </Fragment>
+      <ToolbarFixed valid={valid} saving={saving} onSave={handleSubmit} />
+      <Editor placeholder={translate('post_share')} fixed />
+    </Slate>
   );
 };
 

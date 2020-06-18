@@ -1,6 +1,3 @@
-import Delta from 'quill-delta';
-import { rootUrl } from './settings';
-
 /**
  * JavaScript function to match (and return) the video Id
  * of any valid Youtube Url, given as input string.
@@ -41,18 +38,4 @@ export const getDomainFromUrl = (url: string): string => {
  */
 export const isInternal = (url: string): boolean => {
   return url.includes('zoonk.org') || url.startsWith('/');
-};
-
-/**
- * Get links from post.
- */
-export const getPostLinks = (post?: Delta): string[] => {
-  const links = post?.ops
-    .map((item) => {
-      const link = item.attributes?.link;
-      if (link?.startsWith('mailto')) return null;
-      return link?.startsWith('/') ? `${rootUrl}${link}` : link;
-    })
-    .filter(Boolean);
-  return [...new Set(links)];
 };

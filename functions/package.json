@@ -20,7 +20,8 @@
     "firebase-admin": "^8.12.1",
     "firebase-functions": "^3.6.1",
     "lodash": "^4.17.15",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.0",
+    "slate": "^0.58.3"
   },
   "devDependencies": {
     "@types/cheerio": "^0.22.18",

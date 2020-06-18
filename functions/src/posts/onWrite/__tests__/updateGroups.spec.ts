@@ -92,7 +92,8 @@ test('add post to group when pinned becomes true', async (done) => {
   spyOn(db.doc(''), 'update').and.returnValue('updated');
 
   const data = {
-    html: '<h1>title</h1><p>text.</p>',
+    content:
+      '[{ "type": "paragraph", "children": [{ "text": "title text." }] }]',
     cover: 'photo.png',
     title: 'name',
   };

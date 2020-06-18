@@ -1,12 +1,13 @@
 import { useContext } from 'react';
 import { Grid, makeStyles } from '@material-ui/core';
 import { Post } from '@zoonk/models';
-import { getPostImage, PostContext } from '@zoonk/utils';
+import { PostContext } from '@zoonk/utils';
 import PostsBreadcrumb from './PostsBreadcrumb';
 import PostCredits from './PostCredits';
 import PostLinks from './PostLinks';
 import PostTitle from './PostTitle';
 import PostTopics from './PostTopics';
+import { getPostImage } from './rich-text/posts';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,18 +60,18 @@ const PostHeader = () => {
     chapterData,
     chapterId,
     createdBy,
+    content,
     cover,
     editors,
     groupId,
     groupData,
-    html,
     sites,
     subtitle,
     title,
     topics,
   } = useContext(PostContext);
   const siteImg = sites.find((site) => Boolean(site.image));
-  const image = cover || getPostImage(html) || siteImg?.image;
+  const image = cover || getPostImage(content) || siteImg?.image;
   const classes = useStyles({ cover: image });
 
   return (

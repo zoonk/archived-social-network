@@ -1,5 +1,8 @@
 import dynamic from 'next/dynamic';
+import { CircularProgress } from '@material-ui/core';
 import { Post } from '@zoonk/models';
+import { editorEnabled } from '@zoonk/utils';
+import EditorDisabled from './EditorDisabled';
 
 const PostsForm = dynamic(() => import('./PostsForm'));
 const ReferencesForm = dynamic(() => import('./ReferencesForm'));
@@ -15,11 +18,11 @@ interface PostFormProps {
   ) => void;
 }
 
-/**
- * Form for editing a post.
- */
 const PostForm = (props: PostFormProps) => {
   const { category } = props;
+
+  if (editorEnabled() === undefined) return <CircularProgress />;
+  if (editorEnabled() === false) return <EditorDisabled />;
 
   switch (category) {
     case 'posts':

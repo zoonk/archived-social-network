@@ -15,39 +15,22 @@
 
 ul,
 ol {
-  padding: 4px 16px;
+  padding: 16px;
 }
 
-.image-uploading {
-  position: relative;
-  display: inline-block;
+pre,
+code {
+  background-color: black;
+  color: #f8f8f2;
+  border-radius: 3px;
+  font-size: 1.1rem;
+  overflow: visible;
 }
 
-.image-uploading img {
-  max-width: 98% !important;
-  filter: blur(5px);
-  opacity: 0.3;
+pre {
+  padding: 8px;
 }
 
-.image-uploading::before {
-  content: '';
-  box-sizing: border-box;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 30px;
-  height: 30px;
-  margin-top: -15px;
-  margin-left: -15px;
-  border-radius: 50%;
-  border: 3px solid #ccc;
-  border-top-color: #1e986c;
-  z-index: 1;
-  animation: spinner 0.6s linear infinite;
-}
-
-@keyframes spinner {
-  to {
-    transform: rotate(360deg);
-  }
+code {
+  padding: 4px;
 }

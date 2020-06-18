@@ -3,11 +3,12 @@ import { useRouter } from 'next/router';
 import { timestamp } from '@zoonk/firebase/db';
 import { Post } from '@zoonk/models';
 import { createPost, getChapter } from '@zoonk/services';
-import { appLanguage, getPostLinks } from '@zoonk/utils';
+import { appLanguage } from '@zoonk/utils';
 import CategorySelector from './CategorySelector';
 import PostForm from './PostForm';
 import useSnackbar from './useSnackbar';
 import useAuth from './useAuth';
+import { getPostLinks } from './rich-text/posts';
 
 interface PostCreateProps {
   category?: Post.Category;
@@ -65,11 +66,10 @@ const PostCreate = ({
       createdAt: timestamp,
       createdBy: profile,
       createdById: user.uid,
-      delta: JSON.stringify(data.delta),
       groupId: groupId || null,
       language: appLanguage,
       likes: 0,
-      links: data.links || getPostLinks(data.delta),
+      links: data.links || getPostLinks(JSON.parse(data.content)),
       pinned: Boolean(pinned),
       topics,
       updatedAt: timestamp,

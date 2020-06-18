@@ -2,7 +2,6 @@ import {
   containsVimeoUrl,
   containsYoutubeUrl,
   getDomainFromUrl,
-  getPostLinks,
 } from '../links';
 
 describe('getDomainFromUrl', () => {
@@ -292,22 +291,5 @@ describe('containsVimeoUrl', () => {
   test('return null when the link is not a valid Vimeo url', () => {
     expect(containsVimeoUrl('https://zoonk.org')).toBe(null);
     expect(containsVimeoUrl('https://vimeo.com/invalid')).toBe(null);
-  });
-});
-
-describe('getPostLinks', () => {
-  test('return all unique links from a post', () => {
-    const delta: any = {
-      ops: [
-        { insert: 'text' },
-        { attributes: { link: 'https://zoonk.org' } },
-        { attributes: { link: '/test' } },
-        { attributes: { link: 'https://zoonk.org' } },
-        { attributes: { link: 'mailto://support@zoonk.org' } },
-      ],
-    };
-    const links = ['https://zoonk.org', 'https://en.zoonk.org/test'];
-
-    expect(getPostLinks(delta)).toEqual(links);
   });
 });

@@ -2,13 +2,9 @@
 import { Post } from '@zoonk/models';
 import NextLink from 'next/link';
 import { Link, makeStyles, Paper, Typography } from '@material-ui/core';
-import {
-  getDomainFromUrl,
-  getPostImage,
-  isInternal,
-  getPlainText,
-} from '@zoonk/utils';
+import { getDomainFromUrl, isInternal } from '@zoonk/utils';
 import PostListMeta from './PostListMeta';
+import { getPlainText, getPostImage } from './rich-text/posts';
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -35,9 +31,9 @@ interface PostListItemProps {
 
 const PostListItem = ({ item }: PostListItemProps) => {
   const classes = useStyles();
-  const { cover, html, id, sites, title } = item;
+  const { content, cover, id, sites, title } = item;
   const siteImg = sites.find((site) => Boolean(site.image));
-  const image = cover || getPostImage(html) || siteImg?.image;
+  const image = cover || getPostImage(content) || siteImg?.image;
 
   return (
     <Paper variant="outlined">
@@ -78,7 +74,7 @@ const PostListItem = ({ item }: PostListItemProps) => {
           </div>
 
           <Typography variant="body2" gutterBottom>
-            {getPlainText(html).slice(0, 200)}
+            {getPlainText(content).slice(0, 200)}
           </Typography>
 
           <PostListMeta post={item} />

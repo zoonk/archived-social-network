@@ -1,10 +1,10 @@
 import { timestamp } from '@zoonk/firebase/db';
 import { Post } from '@zoonk/models';
 import { updatePost } from '@zoonk/services';
-import { getPostLinks } from '@zoonk/utils';
 import PostForm from './PostForm';
 import useAuth from './useAuth';
 import useSnackbar from './useSnackbar';
+import { getPostLinks } from './rich-text/posts';
 
 interface PostEditFormProps {
   data: Post.Get;
@@ -26,8 +26,7 @@ const PostEditForm = ({ data }: PostEditFormProps) => {
 
     const changes: Post.Update = {
       ...newData,
-      delta: JSON.stringify(newData.delta),
-      links: newData.links || getPostLinks(newData.delta),
+      links: newData.links || getPostLinks(JSON.parse(newData.content)),
       topics,
       updatedAt: timestamp,
       updatedBy: profile,

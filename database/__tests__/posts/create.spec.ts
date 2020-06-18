@@ -20,13 +20,12 @@ const data = {
   category: 'posts',
   chapterId: null,
   comments: 0,
+  content: 'some content',
   cover: null,
   createdAt: firebase.firestore.FieldValue.serverTimestamp(),
   createdBy: profile,
   createdById: 'currentUser',
-  delta: 'delta content',
   groupId: null,
-  html: 'html content',
   language: 'en',
   links: null,
   likes: 0,
@@ -123,6 +122,15 @@ test('comments is set to 0', async (done) => {
   done();
 });
 
+test('content is a string', async (done) => {
+  await firebase.assertFails(ref.add({ ...data, content: 123 }));
+  await firebase.assertFails(ref.add({ ...data, content: true }));
+  await firebase.assertFails(ref.add({ ...data, content: { 1: true } }));
+  await firebase.assertFails(ref.add({ ...data, content: ['test'] }));
+  await firebase.assertFails(ref.add({ ...data, content: null }));
+  done();
+});
+
 test('createdAt has a valid timestamp', async (done) => {
   await firebase.assertFails(ref.add({ ...data, createdAt: '1452-10-01' }));
   await firebase.assertFails(ref.add({ ...data, createdAt: new Date() }));
@@ -158,15 +166,6 @@ test('createdById has the current user UID', async (done) => {
   done();
 });
 
-test('delta is a string', async (done) => {
-  await firebase.assertFails(ref.add({ ...data, delta: 123 }));
-  await firebase.assertFails(ref.add({ ...data, delta: true }));
-  await firebase.assertFails(ref.add({ ...data, delta: { 1: true } }));
-  await firebase.assertFails(ref.add({ ...data, delta: ['test'] }));
-  await firebase.assertFails(ref.add({ ...data, delta: null }));
-  done();
-});
-
 test('editors are not included', async (done) => {
   await firebase.assertFails(ref.add({ ...data, editors: [] }));
   done();
@@ -183,15 +182,6 @@ test('groupId is valid or null', async (done) => {
   await firebase.assertSucceeds(ref.add({ ...data, groupId: null }));
   await firebase.assertSucceeds(ref.add({ ...data, groupId: 'valid' }));
   await firebase.assertFails(ref.add({ ...data, groupId: 'invalid' }));
-  done();
-});
-
-test('html is a string', async (done) => {
-  await firebase.assertFails(ref.add({ ...data, html: 123 }));
-  await firebase.assertFails(ref.add({ ...data, html: true }));
-  await firebase.assertFails(ref.add({ ...data, html: { 1: true } }));
-  await firebase.assertFails(ref.add({ ...data, html: ['test'] }));
-  await firebase.assertFails(ref.add({ ...data, html: null }));
   done();
 });
 

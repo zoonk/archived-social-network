@@ -31,7 +31,7 @@ export const onWritePostUpdateTopicTimeline = functions.firestore
 
     if (!after) return false;
 
-    const fieldsToTrack = ['html', 'subtitle', 'title', 'topics'];
+    const fieldsToTrack = ['content', 'subtitle', 'title', 'topics'];
     const beforeChanges = pick(before, fieldsToTrack);
     const afterChanges = pick(after, fieldsToTrack);
     const noChanges = isEqual(beforeChanges, afterChanges);

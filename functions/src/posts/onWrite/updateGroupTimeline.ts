@@ -15,7 +15,7 @@ export const onWritePostUpdateGroupTimeline = functions.firestore
 
     if (!groupId || !after) return false;
 
-    const fieldsToTrack = ['html', 'subtitle', 'title', 'topics'];
+    const fieldsToTrack = ['content', 'subtitle', 'title', 'topics'];
     const beforeChanges = pick(before, fieldsToTrack);
     const afterChanges = pick(after, fieldsToTrack);
     const noChanges = isEqual(beforeChanges, afterChanges);

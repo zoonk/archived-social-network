@@ -14,7 +14,6 @@ import {
   SnackbarEmitter,
   theme,
 } from '@zoonk/utils';
-import '../quill.css';
 import '../styles.css';
 
 const Auth = dynamic(() => import('@zoonk/components/Auth'), { ssr: false });

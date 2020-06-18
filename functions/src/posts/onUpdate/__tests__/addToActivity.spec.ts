@@ -8,7 +8,7 @@ import { onUpdatePostAddToActivity } from '../addToActivity';
 
 test('return when there are no changes', async (done) => {
   const data = {
-    html: '<h1>test</h1>',
+    content: '<h1>test</h1>',
     language: 'en',
     order: {},
     photo: 'photo.jpg',
@@ -48,13 +48,13 @@ test('send a request to add a new item to activities', async (done) => {
   };
   const beforeData = {
     ...data,
-    html: 'old content',
+    content: 'old content',
     links: ['link 1'],
     title: 'old title',
   };
   const afterData = {
     ...data,
-    html: 'new content',
+    content: 'new content',
     links: ['link1', 'link2'],
     title: 'new title',
     updatedAt: 'today',

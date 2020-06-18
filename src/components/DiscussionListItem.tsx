@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Comment } from '@zoonk/models';
-import Viewer from './rich-text/Viewer';
+import EditorRead from './rich-text/EditorRead';
 import useAuth from './useAuth';
 import useTranslation from './useTranslation';
 
@@ -28,7 +28,7 @@ const DiscussionListItem = ({
 }: DiscussionListItemProps) => {
   const translate = useTranslation();
   const { user } = useAuth();
-  const { createdAt, createdBy, createdById, html, id, postId } = comment;
+  const { content, createdAt, createdBy, createdById, id, postId } = comment;
   const isAuthor = createdById === user?.uid;
   const isModerator = user?.role === 'moderator' || user?.role === 'admin';
   const canDelete = isAuthor || isModerator;
@@ -66,7 +66,7 @@ const DiscussionListItem = ({
         subheader={createdAt}
       />
       <CardContent>
-        <Viewer html={html} />
+        <EditorRead content={content} />
       </CardContent>
       <CardActions disableSpacing>
         <NextLink href={`/${link}/[id]`} as={`/${link}/${linkId}`} passHref>
