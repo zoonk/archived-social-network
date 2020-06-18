@@ -5,6 +5,7 @@ export namespace Admin {
     comments: number;
     courses: number;
     examples: number;
+    groups: number;
     lessons: number;
     posts: number;
     questions: number;

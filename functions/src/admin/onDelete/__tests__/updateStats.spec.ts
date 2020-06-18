@@ -30,6 +30,17 @@ test('update the chapters count', async (done) => {
   done();
 });
 
+test('update the groups count', async (done) => {
+  const context = { params: { collection: 'groups' } };
+  const wrapped = testEnv.wrap(onDeleteDocUpdateStats);
+  const req = await wrapped({}, context);
+
+  expect(req).toBe('updated');
+  expect(db.doc).toHaveBeenCalledWith('admin/stats');
+  expect(db.doc('').update).toHaveBeenCalledWith({ groups: -1 });
+  done();
+});
+
 test('update the comments count', async (done) => {
   const context = { params: { collection: 'comments' } };
   const wrapped = testEnv.wrap(onDeleteDocUpdateStats);
