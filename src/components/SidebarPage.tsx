@@ -6,7 +6,12 @@ import PostShare from './PostShare';
 import SocialLinks from './SocialLinks';
 
 const useStyles = makeStyles((theme) => ({
-  container: { padding: theme.spacing(2, 0) },
+  container: {
+    padding: theme.spacing(0),
+    [theme.breakpoints.up('sm')]: {
+      padding: theme.spacing(2, 0),
+    },
+  },
   column: {
     '& > *': {
       margin: theme.spacing(2, 0),
@@ -26,15 +31,15 @@ const SidebarPage = ({ category, children, title }: SidebarPageProps) => {
 
   return (
     <Grid container spacing={2} className={classes.container}>
-      <Hidden xsDown>
-        <Grid item sm={3}>
+      <Grid item sm={3} xs={12}>
+        <Hidden implementation="css" xsDown>
           <MenuPages />
           <SocialLinks />
           <div className={classes.filter}>
             <LanguageFilter />
           </div>
-        </Grid>
-      </Hidden>
+        </Hidden>
+      </Grid>
       <Grid item xs={12} sm={9} className={classes.column}>
         <PostShare category={category} title={title} />
         {children}
