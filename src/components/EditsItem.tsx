@@ -16,6 +16,7 @@ import EditsDiffBox from './EditsDiffBox';
 import EditsHeader from './EditsHeader';
 import EditsReport from './EditsReport';
 import EditsRevert from './EditsRevert';
+import { getPlainText } from './rich-text/posts';
 import useTranslation from './useTranslation';
 
 interface EditsItemProps {
@@ -41,8 +42,14 @@ const EditsItem = ({ displayTitle, edits }: EditsItemProps) => {
     });
 
     const fields = changedFields.map((field) => {
-      const before = (edits.before as any)?.[field];
-      const after = (edits.after as any)?.[field];
+      let before = (edits.before as any)?.[field];
+      let after = (edits.after as any)?.[field];
+
+      if (edits.category === 'posts' && field === 'content') {
+        before = getPlainText(JSON.parse(before || '[]'));
+        after = getPlainText(JSON.parse(after || '[]'));
+      }
+
       return getFieldDiff(before, after);
     });
 

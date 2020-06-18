@@ -1,9 +1,6 @@
 import { Activity } from '@zoonk/models';
 import { serializeFirebaseDate } from './date';
 
-/**
- * Serialize a single activity.
- */
 export const serializeActivity = (
   snap: firebase.firestore.DocumentSnapshot<Activity.Response>,
 ): Activity.Get => {
