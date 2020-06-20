@@ -1,18 +1,27 @@
-import { NextPage } from 'next';
-import dynamic from 'next/dynamic';
+import { GetStaticProps, InferGetStaticPropsType } from 'next';
 import { Container } from '@material-ui/core';
 import Meta from '@zoonk/components/Meta';
+import PostsList from '@zoonk/components/PostsList';
 import SidebarPage from '@zoonk/components/SidebarPage';
 import TimelineHeader from '@zoonk/components/TimelineHeader';
 import useAuth from '@zoonk/components/useAuth';
 import useTranslation from '@zoonk/components/useTranslation';
+import { Post } from '@zoonk/models';
+import { getPosts } from '@zoonk/services';
 import { rootUrl } from '@zoonk/utils';
 
-const PostsCard = dynamic(() => import('@zoonk/components/PostsCard'), {
-  ssr: false,
-});
+interface HomeProps {
+  posts: Post.Get[];
+}
 
-const Home: NextPage = () => {
+const limit = 10;
+
+export const getStaticProps: GetStaticProps<HomeProps> = async () => {
+  const posts = await getPosts({ limit });
+  return { props: { posts }, unstable_revalidate: 1 };
+};
+
+const Home = ({ posts }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const translate = useTranslation();
   const { user } = useAuth();
 
@@ -26,7 +35,7 @@ const Home: NextPage = () => {
       />
       <SidebarPage title={translate('post_share')}>
         {user && <TimelineHeader active="all" />}
-        <PostsCard limit={10} />
+        <PostsList data={posts} limit={limit} />
       </SidebarPage>
     </Container>
   );

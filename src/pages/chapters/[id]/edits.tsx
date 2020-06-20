@@ -1,30 +1,50 @@
-import { NextPage } from 'next';
-import dynamic from 'next/dynamic';
+import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
 import { useRouter } from 'next/router';
-import { Container } from '@material-ui/core';
+import { CircularProgress, Container } from '@material-ui/core';
 import ChaptersBreadcrumb from '@zoonk/components/ChaptersBreadcrumb';
+import EditsList from '@zoonk/components/EditsList';
 import Meta from '@zoonk/components/Meta';
 import useTranslation from '@zoonk/components/useTranslation';
+import { Activity } from '@zoonk/models';
+import { getActivities } from '@zoonk/services';
 
-const EditsList = dynamic(() => import('@zoonk/components/EditsList'), {
-  ssr: false,
-});
+const limit = 10;
 
-const ChapterEdits: NextPage = () => {
+interface ChapterEditsProps {
+  chapterId: string;
+  data: Activity.Get[];
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return { paths: [], fallback: true };
+};
+
+export const getStaticProps: GetStaticProps<ChapterEditsProps> = async ({
+  params,
+}) => {
+  const chapterId = String(params?.id);
+  const data = await getActivities(limit, `chapters/${chapterId}`);
+  return { props: { chapterId, data }, unstable_revalidate: 1 };
+};
+
+const ChapterEdits = ({
+  chapterId,
+  data,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   const translate = useTranslation();
-  const { query } = useRouter();
+  const { isFallback } = useRouter();
 
-  if (!query.id) return null;
+  if (isFallback) return <CircularProgress />;
 
   return (
     <Container component="main">
       <Meta title={translate('page_edits')} noIndex />
       <ChaptersBreadcrumb
-        chapterId={String(query.id)}
+        chapterId={chapterId}
         title={translate('chapter')}
         page={translate('page_edits')}
       />
-      <EditsList itemPath={`chapters/${query.id}`} />
+      <EditsList data={data} itemPath={`chapters/${chapterId}`} limit={limit} />
     </Container>
   );
 };

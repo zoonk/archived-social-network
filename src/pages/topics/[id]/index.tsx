@@ -1,35 +1,49 @@
-import { NextPage } from 'next';
+import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
 import Error from 'next/error';
-import { Container, Grid, makeStyles } from '@material-ui/core';
+import { useRouter } from 'next/router';
+import { CircularProgress, Container } from '@material-ui/core';
 import ChaptersCard from '@zoonk/components/ChaptersCard';
 import Meta from '@zoonk/components/Meta';
-import MenuCommunity from '@zoonk/components/MenuCommunity';
-import PostsCard from '@zoonk/components/PostsCard';
+import PostsList from '@zoonk/components/PostsList';
 import PostShare from '@zoonk/components/PostShare';
-import TopicDetails from '@zoonk/components/TopicDetails';
+import TopicBase from '@zoonk/components/TopicBase';
 import TopicsBreadcrumb from '@zoonk/components/TopicsBreadcrumb';
 import useTranslation from '@zoonk/components/useTranslation';
-import { Topic } from '@zoonk/models';
-import { getTopic } from '@zoonk/services';
-import { appLanguage, preRender } from '@zoonk/utils';
-
-const useStyles = makeStyles((theme) => ({
-  column: {
-    '& > *': {
-      marginBottom: theme.spacing(2),
-    },
-  },
-}));
+import { Post, Topic } from '@zoonk/models';
+import { getPosts, getTopic, getTopics } from '@zoonk/services';
 
 interface TopicPageProps {
+  posts: Post.Get[];
   topic: Topic.Get | null;
 }
 
-const TopicPage: NextPage<TopicPageProps> = ({ topic }) => {
-  const translate = useTranslation();
-  const classes = useStyles();
+const limit = 10;
 
-  if (!topic) return <Error statusCode={404} />;
+export const getStaticPaths: GetStaticPaths = async () => {
+  const topics = await getTopics({ limit: 20 });
+  const paths = topics.map((topic) => ({ params: { id: topic.id } }));
+  return { paths, fallback: true };
+};
+
+export const getStaticProps: GetStaticProps<TopicPageProps> = async ({
+  params,
+}) => {
+  const topicId = String(params?.id);
+  const topicReq = getTopic(topicId);
+  const postsReq = getPosts({ topicId, limit });
+  const [topic, posts] = await Promise.all([topicReq, postsReq]);
+  return { props: { posts, topic }, unstable_revalidate: 1 };
+};
+
+const TopicPage = ({
+  posts,
+  topic,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const translate = useTranslation();
+  const { isFallback } = useRouter();
+
+  if (!topic && !isFallback) return <Error statusCode={404} />;
+  if (!topic) return <CircularProgress />;
 
   const { chapterData, id, language, photo, title } = topic;
 
@@ -40,34 +54,20 @@ const TopicPage: NextPage<TopicPageProps> = ({ topic }) => {
         description={translate('seo_topic_desc', { title })}
         image={photo}
         canonicalUrl={`https://${language}.zoonk.org/topics/${id}`}
-        noIndex={appLanguage !== language}
       />
 
       <TopicsBreadcrumb title={title} />
 
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6} md={4} className={classes.column}>
-          <TopicDetails topic={topic} />
-          <MenuCommunity category="topics" id={id} />
-        </Grid>
-
-        <Grid item xs={12} sm={6} md={8} className={classes.column}>
-          <PostShare
-            title={translate('post_share_topic', { title })}
-            topicId={id}
-          />
-          <ChaptersCard chapters={chapterData} />
-          <PostsCard topicId={id} limit={10} displayFilter />
-        </Grid>
-      </Grid>
+      <TopicBase topic={topic}>
+        <PostShare
+          title={translate('post_share_topic', { title })}
+          topicId={id}
+        />
+        <ChaptersCard chapters={chapterData} />
+        <PostsList data={posts} topicId={id} limit={10} />
+      </TopicBase>
     </Container>
   );
-};
-
-TopicPage.getInitialProps = async ({ query }) => {
-  const topic = await getTopic(String(query.id));
-  preRender();
-  return { topic };
 };
 
 export default TopicPage;

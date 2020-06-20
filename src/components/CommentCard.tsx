@@ -7,7 +7,7 @@ import CommentActions from './CommentActions';
 import CommentForm from './CommentForm';
 import CommentUser from './CommentUser';
 import ReplyList from './ReplyList';
-import EditorRead from './rich-text/EditorRead';
+import RichTextViewer from './rich-text/RichTextViewer';
 
 interface CommentCardProps {
   data: Comment.Get;
@@ -36,7 +36,7 @@ const CommentCard = ({ data }: CommentCardProps) => {
     >
       <CommentUser user={createdBy} />
       <div className={classes.content}>
-        <EditorRead content={content} />
+        <RichTextViewer content={content} />
       </div>
       <CommentActions
         data={data}

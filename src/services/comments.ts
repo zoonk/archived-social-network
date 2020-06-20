@@ -35,11 +35,10 @@ export const deleteComment = (id: string): Promise<void> => {
   return db.doc(`comments/${id}`).delete();
 };
 
-export const listComments = async (
-  startAfter?: firebase.firestore.DocumentSnapshot,
-  createdById?: string,
-  limit: number = 10,
-): Promise<Comment.Snapshot[]> => {
+const commentsQuery = (
+  limit = 10,
+  userId?: string,
+): firebase.firestore.Query<Comment.Get> => {
   let ref = db
     .collection('comments')
     .withConverter(commentConverter)
@@ -47,23 +46,33 @@ export const listComments = async (
     .where('language', '==', appLanguage)
     .limit(limit);
 
-  if (createdById) {
-    ref = ref.where('createdById', '==', createdById);
+  if (userId) {
+    ref = ref.where('createdById', '==', userId);
   }
 
-  if (startAfter) {
-    ref = ref.startAfter(startAfter);
-  }
-
-  const snap = await ref.get();
-  return snap.docs.map((item) => {
-    return { ...item.data(), snap: item };
-  });
+  return ref;
 };
 
-export const listReplies = async (
-  commentId: string,
+export const getComments = async (
+  limit?: number,
+  userId?: string,
 ): Promise<Comment.Get[]> => {
+  const ref = await commentsQuery(limit, userId).get();
+  return ref.docs.map((doc) => doc.data());
+};
+
+export const getCommentsSnapshot = async (
+  last: firebase.firestore.DocumentSnapshot,
+  limit?: number,
+  userId?: string,
+): Promise<Comment.Snapshot[]> => {
+  const ref = await commentsQuery(limit, userId)
+    .startAfter(last)
+    .get();
+  return ref.docs.map((snap) => ({ ...snap.data(), snap }));
+};
+
+export const getReplies = async (commentId: string): Promise<Comment.Get[]> => {
   const snap = await db
     .collection('comments')
     .withConverter(commentConverter)

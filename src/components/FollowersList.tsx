@@ -1,61 +1,50 @@
-import { Fragment, useEffect } from 'react';
-import { Button, CircularProgress, Grid, makeStyles } from '@material-ui/core';
+import { Fragment, useState } from 'react';
+import dynamic from 'next/dynamic';
+import { Grid } from '@material-ui/core';
 import { Follower } from '@zoonk/models';
-import { getFollowers } from '@zoonk/services';
 import FollowerListItem from './FollowerListItem';
-import useLoadMore from './useLoadMore';
-import useTranslation from './useTranslation';
+import NoItems from './NoItems';
 
-interface FollowersListProps {
-  groupId: string;
+const FollowersLoadMore = dynamic(() => import('./FollowersLoadMore'), {
+  ssr: false,
+});
+
+interface DiscussionListProps {
+  collection: Follower.Collections;
+  data: Follower.Get[];
+  doc: string;
   limit?: number;
+  userId?: string;
 }
 
-const useStyles = makeStyles((theme) => ({
-  loadMore: { margin: theme.spacing(3, 0, 2) },
-}));
+const FollowersList = ({
+  collection,
+  data,
+  doc,
+  limit = 10,
+}: DiscussionListProps) => {
+  const [items, setItems] = useState<Follower.Get[]>(data);
 
-const FollowersList = ({ groupId, limit = 10 }: FollowersListProps) => {
-  const translate = useTranslation();
-  const classes = useStyles();
-  const { get, items, lastVisible, loading } = useLoadMore<Follower.Snapshot>(
-    limit,
-  );
-
-  const loadMore = () => {
-    get({
-      data: getFollowers('groups', groupId, lastVisible, limit),
-    });
-  };
-
-  useEffect(() => {
-    get({
-      data: getFollowers('groups', groupId, undefined, limit),
-      replace: true,
-    });
-  }, [get, groupId, limit]);
+  if (items.length === 0) return <NoItems />;
 
   return (
     <Fragment>
       <Grid container spacing={2}>
         {items.map((user) => (
-          <Grid item key={user.username} xs={12} sm={6} md={4}>
+          <Grid item key={user.username} xs={12} sm={6}>
             <FollowerListItem item={user} />
           </Grid>
         ))}
       </Grid>
-      {loading && <CircularProgress />}
-      {lastVisible && (
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          onClick={loadMore}
-          className={classes.loadMore}
-        >
-          {translate('load_more')}
-        </Button>
-      )}
+
+      <FollowersLoadMore
+        collection={collection}
+        doc={doc}
+        lastItem={items[items.length - 1].id}
+        length={items.length}
+        limit={limit}
+        onLoadMore={(res) => setItems([...items, ...res])}
+      />
     </Fragment>
   );
 };

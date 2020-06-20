@@ -12,12 +12,17 @@ import useAuth from '@zoonk/components/useAuth';
 import useTranslation from '@zoonk/components/useTranslation';
 
 const FeedbackList = dynamic(() => import('@zoonk/components/FeedbackList'), {
+  loading: () => <CircularProgress />,
   ssr: false,
 });
 const ReportsList = dynamic(() => import('@zoonk/components/ReportsList'), {
+  loading: () => <CircularProgress />,
   ssr: false,
 });
-const Stats = dynamic(() => import('@zoonk/components/Stats'), { ssr: false });
+const Stats = dynamic(() => import('@zoonk/components/Stats'), {
+  loading: () => <CircularProgress />,
+  ssr: false,
+});
 
 const AdminPage = () => {
   const translate = useTranslation();
@@ -58,7 +63,7 @@ const AdminPage = () => {
           >
             {translate('feedback')}
           </Typography>
-          <FeedbackList allowLoadMore />
+          <FeedbackList />
         </Grid>
 
         <Grid item xs={12} sm={6}>
@@ -70,7 +75,7 @@ const AdminPage = () => {
           >
             {translate('reports')}
           </Typography>
-          <ReportsList allowLoadMore />
+          <ReportsList />
         </Grid>
       </Grid>
     </Container>

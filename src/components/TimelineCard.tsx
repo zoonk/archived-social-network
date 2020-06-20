@@ -1,51 +1,43 @@
-import { Fragment, useEffect } from 'react';
-import { Button, CircularProgress } from '@material-ui/core';
+import { Fragment, useEffect, useState } from 'react';
+import { CircularProgress } from '@material-ui/core';
 import { Post } from '@zoonk/models';
 import { getTimeline } from '@zoonk/services';
-import { theme } from '@zoonk/utils';
+import LoadMore from './LoadMore';
 import NoFollowing from './NoFollowing';
 import PostList from './PostList';
-import useLoadMore from './useLoadMore';
-import useTranslation from './useTranslation';
 
 interface TimelineCardProps {
   limit?: number;
   userId: string;
 }
 
-const TimelineCard = ({ limit, userId }: TimelineCardProps) => {
-  const translate = useTranslation();
-  const { get, items, lastVisible, loading } = useLoadMore<Post.Snapshot>(
-    limit,
-  );
-
-  const loadMore = () => {
-    get({ data: getTimeline(userId, lastVisible, limit) });
-  };
+const TimelineCard = ({ limit = 10, userId }: TimelineCardProps) => {
+  const [items, setItems] = useState<Post.Snapshot[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    get({
-      data: getTimeline(userId, undefined, limit),
-      replace: true,
+    getTimeline(userId, undefined, limit).then((res) => {
+      setItems(res);
+      setLoading(false);
     });
-  }, [get, limit, userId]);
+  }, [limit, userId]);
+
+  if (loading) return <CircularProgress />;
+
+  if (items.length === 0 && !loading) {
+    return <NoFollowing />;
+  }
 
   return (
     <Fragment>
-      {items.length === 0 && !loading && <NoFollowing />}
-      {items.length > 0 && <PostList items={items} />}
-      {loading && <CircularProgress />}
-      {lastVisible && (
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          onClick={loadMore}
-          style={{ margin: theme.spacing(3, 0, 2) }}
-        >
-          {translate('load_more')}
-        </Button>
-      )}
+      <PostList items={items} />
+      <LoadMore<Post.Snapshot>
+        lastPath={items[items.length - 1].snap}
+        length={items.length}
+        limit={limit}
+        request={(last) => getTimeline(userId, last, limit)}
+        onLoadMore={(newData) => setItems([...items, ...newData])}
+      />
     </Fragment>
   );
 };

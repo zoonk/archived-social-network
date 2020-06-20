@@ -2,6 +2,7 @@ import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import { Avatar, Container, Typography } from '@material-ui/core';
 import { LockOutlined } from '@material-ui/icons';
+import HomeBreadcrumb from '@zoonk/components/HomeBreadcrumb';
 import Meta from '@zoonk/components/Meta';
 import useTranslation from '@zoonk/components/useTranslation';
 import { rootUrl, theme } from '@zoonk/utils';
@@ -20,6 +21,8 @@ const SignUp: NextPage = () => {
         description={translate('seo_signup_desc')}
         canonicalUrl={`${rootUrl}/signup`}
       />
+
+      <HomeBreadcrumb title={translate('signup')} />
 
       <div
         style={{

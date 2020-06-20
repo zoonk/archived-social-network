@@ -7,7 +7,7 @@ import { serializePost } from '../serializers';
 import { getChapter, updateChapter } from './chapters';
 import { getTopic } from './topics';
 
-const postConverter: firebase.firestore.FirestoreDataConverter<Post.Get> = {
+export const postConverter: firebase.firestore.FirestoreDataConverter<Post.Get> = {
   toFirestore(data: Post.Get) {
     return data;
   },
@@ -55,25 +55,23 @@ export const deletePost = async (
   return db.doc(`posts/${id}`).delete();
 };
 
-interface PostArgs {
+interface PostQuery {
   category?: Post.Category[];
-  chapterId?: string;
   groupId?: string;
-  lastVisible?: firebase.firestore.DocumentSnapshot;
+  last?: firebase.firestore.DocumentSnapshot;
   limit?: number;
-  orderBy?: Post.OrderBy[];
   topicId?: string;
   userId?: string;
 }
 
-export const listPosts = async ({
+const postsQuery = ({
   category,
   groupId,
-  lastVisible,
+  last,
   limit = 10,
   topicId,
   userId,
-}: PostArgs): Promise<Post.Snapshot[]> => {
+}: PostQuery): firebase.firestore.Query<Post.Get> => {
   let ref = db
     .collection('posts')
     .withConverter(postConverter)
@@ -109,12 +107,23 @@ export const listPosts = async ({
     ref = ref.where('language', '==', appLanguage);
   }
 
-  if (lastVisible) {
-    ref = ref.startAfter(lastVisible);
+  if (last) {
+    ref = ref.startAfter(last);
   }
 
-  const snap = await ref.get();
-  return snap.docs.map((doc) => ({ ...doc.data(), snap: doc }));
+  return ref;
+};
+
+export const getPosts = async (query: PostQuery): Promise<Post.Get[]> => {
+  const ref = await postsQuery(query).get();
+  return ref.docs.map((doc) => doc.data());
+};
+
+export const getPostsSnapshot = async (
+  query: PostQuery,
+): Promise<Post.Snapshot[]> => {
+  const ref = await postsQuery(query).get();
+  return ref.docs.map((snap) => ({ ...snap.data(), snap }));
 };
 
 export const updatePostOrder = (

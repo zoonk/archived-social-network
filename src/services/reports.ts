@@ -20,6 +20,7 @@ export const listReports = async (
   let ref = db
     .collection('reports')
     .withConverter(reportConverter)
+    .orderBy('createdAt', 'desc')
     .limit(limit);
 
   if (lastVisible) {

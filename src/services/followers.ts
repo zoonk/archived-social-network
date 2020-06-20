@@ -13,26 +13,44 @@ const followerConverter: firebase.firestore.FirestoreDataConverter<Follower.Get>
   },
 };
 
-export const getFollowers = async (
-  collection: Follower.Collections,
-  doc: string,
-  startAfter?: firebase.firestore.DocumentSnapshot,
-  limit: number = 10,
-): Promise<Follower.Snapshot[]> => {
+interface FollowersQuery {
+  collection: Follower.Collections;
+  doc: string;
+  last?: firebase.firestore.DocumentSnapshot;
+  limit?: number;
+}
+
+const followersQuery = ({
+  collection,
+  doc,
+  last,
+  limit = 10,
+}: FollowersQuery): firebase.firestore.Query<Follower.Get> => {
   let ref = db
     .collection(`${collection}/${doc}/followers`)
     .withConverter(followerConverter)
     .orderBy('xp', 'desc')
     .limit(limit);
 
-  if (startAfter) {
-    ref = ref.startAfter(startAfter);
+  if (last) {
+    ref = ref.startAfter(last);
   }
 
-  const snap = await ref.get();
-  return snap.docs.map((item) => {
-    return { ...item.data(), snap: item };
-  });
+  return ref;
+};
+
+export const getFollowers = async (
+  query: FollowersQuery,
+): Promise<Follower.Get[]> => {
+  const ref = await followersQuery(query).get();
+  return ref.docs.map((doc) => doc.data());
+};
+
+export const getFollowersSnapshot = async (
+  query: FollowersQuery,
+): Promise<Follower.Snapshot[]> => {
+  const ref = await followersQuery(query).get();
+  return ref.docs.map((snap) => ({ ...snap.data(), snap }));
 };
 
 export const follow = (

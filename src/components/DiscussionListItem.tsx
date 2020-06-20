@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Comment } from '@zoonk/models';
-import EditorRead from './rich-text/EditorRead';
+import RichTextViewer from './rich-text/RichTextViewer';
 import useAuth from './useAuth';
 import useTranslation from './useTranslation';
 
@@ -66,7 +66,7 @@ const DiscussionListItem = ({
         subheader={createdAt}
       />
       <CardContent>
-        <EditorRead content={content} />
+        <RichTextViewer content={content} />
       </CardContent>
       <CardActions disableSpacing>
         <NextLink href={`/${link}/[id]`} as={`/${link}/${linkId}`} passHref>

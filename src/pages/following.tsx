@@ -12,6 +12,7 @@ const LoginForm = dynamic(() => import('@zoonk/components/LoginForm'), {
 });
 
 const TimelineCard = dynamic(() => import('@zoonk/components/TimelineCard'), {
+  loading: () => <CircularProgress />,
   ssr: false,
 });
 

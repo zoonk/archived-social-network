@@ -7,7 +7,7 @@ import SidebarPage from '@zoonk/components/SidebarPage';
 import useAuth from '@zoonk/components/useAuth';
 import useTranslation from '@zoonk/components/useTranslation';
 
-const GroupList = dynamic(() => import('@zoonk/components/GroupList'), {
+const UserGroups = dynamic(() => import('@zoonk/components/UserGroups'), {
   ssr: false,
 });
 
@@ -32,7 +32,7 @@ const MyGroups: NextPage = () => {
       <Meta title={translate('groups_my')} noIndex />
       <SidebarPage title={translate('post_share')}>
         <GroupListHeader active="myGroups" />
-        <GroupList allowLoadMore userId={user.uid} />
+        <UserGroups id={user.uid} />
       </SidebarPage>
     </Container>
   );

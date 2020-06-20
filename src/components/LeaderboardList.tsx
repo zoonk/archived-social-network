@@ -1,39 +1,30 @@
-import { Fragment, useEffect } from 'react';
-import { Button, List } from '@material-ui/core';
+import { Fragment, useEffect, useState } from 'react';
+import { CircularProgress, List } from '@material-ui/core';
 import { Leaderboard } from '@zoonk/models';
 import { getLeaderboard } from '@zoonk/services';
-import { theme } from '@zoonk/utils';
 import LeaderboardListItem from './LeaderboardListItem';
-import ListSkeleton from './ListSkeleton';
+import LoadMore from './LoadMore';
 import NoItems from './NoItems';
-import useLoadMore from './useLoadMore';
-import useTranslation from './useTranslation';
 
 interface LeaderboardListProps {
-  allowLoadMore?: boolean;
   limit?: number;
   topicId?: string;
 }
 
-const LeaderboardList = ({
-  allowLoadMore,
-  limit = 5,
-  topicId,
-}: LeaderboardListProps) => {
-  const translate = useTranslation();
-  const { get, items, lastVisible, loading } = useLoadMore<
-    Leaderboard.Snapshot
-  >(limit);
-
-  const loadMore = () => {
-    get({ data: getLeaderboard(topicId, lastVisible, limit) });
-  };
+const LeaderboardList = ({ limit = 5, topicId }: LeaderboardListProps) => {
+  const [items, setItems] = useState<Leaderboard.Snapshot[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    get({ data: getLeaderboard(topicId, undefined, limit) });
-  }, [get, limit, topicId]);
+    getLeaderboard(topicId, undefined, limit).then((res) => {
+      setItems(res);
+      setLoading(false);
+    });
+  }, [limit, topicId]);
 
-  if (items.length === 0 && loading === false) {
+  if (loading) return <CircularProgress />;
+
+  if (items.length === 0 && !loading) {
     return <NoItems />;
   }
 
@@ -48,20 +39,13 @@ const LeaderboardList = ({
           />
         ))}
       </List>
-
-      {loading && <ListSkeleton items={limit} />}
-
-      {allowLoadMore && lastVisible && (
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          onClick={loadMore}
-          style={{ margin: theme.spacing(3, 0, 2) }}
-        >
-          {translate('load_more')}
-        </Button>
-      )}
+      <LoadMore<Leaderboard.Snapshot>
+        lastPath={items[items.length - 1].snap}
+        length={items.length}
+        limit={limit}
+        request={(last) => getLeaderboard(topicId, last, limit)}
+        onLoadMore={(newData) => setItems([...items, ...newData])}
+      />
     </Fragment>
   );
 };

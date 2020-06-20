@@ -26,6 +26,7 @@ export const listFeedback = async (
   let ref = db
     .collection('feedback')
     .withConverter(feedbackConverter)
+    .orderBy('createdAt', 'desc')
     .limit(limit);
 
   if (lastVisible) {

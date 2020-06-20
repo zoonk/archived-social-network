@@ -12,7 +12,7 @@ const LoginForm = dynamic(() => import('@zoonk/components/LoginForm'), {
 
 const NotificationList = dynamic(
   () => import('@zoonk/components/NotificationList'),
-  { ssr: false },
+  { loading: () => <CircularProgress />, ssr: false },
 );
 
 const Notifications: NextPage = () => {
@@ -32,7 +32,6 @@ const Notifications: NextPage = () => {
       <Meta title={translate('notifications')} noIndex />
       <HomeBreadcrumb title={translate('notifications')} />
       <NotificationList
-        allowLoadMore
         limit={20}
         uid={user.uid}
         settings={user.notificationSettings}

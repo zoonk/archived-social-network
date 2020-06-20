@@ -1,17 +1,26 @@
-import { NextPage } from 'next';
-import dynamic from 'next/dynamic';
+import { GetStaticProps, InferGetStaticPropsType } from 'next';
 import { Container } from '@material-ui/core';
+import GroupList from '@zoonk/components/GroupList';
 import GroupListHeader from '@zoonk/components/GroupListHeader';
 import Meta from '@zoonk/components/Meta';
 import SidebarPage from '@zoonk/components/SidebarPage';
 import useTranslation from '@zoonk/components/useTranslation';
+import { Group } from '@zoonk/models';
+import { getGroups } from '@zoonk/services';
 import { rootUrl } from '@zoonk/utils';
 
-const GroupList = dynamic(() => import('@zoonk/components/GroupList'), {
-  ssr: false,
-});
+const limit = 10;
 
-const Groups: NextPage = () => {
+interface GroupsProps {
+  data: Group.Get[];
+}
+
+export const getStaticProps: GetStaticProps<GroupsProps> = async () => {
+  const data = await getGroups({ limit });
+  return { props: { data }, unstable_revalidate: 1 };
+};
+
+const Groups = ({ data }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const translate = useTranslation();
 
   return (
@@ -23,7 +32,7 @@ const Groups: NextPage = () => {
       />
       <SidebarPage title={translate('post_share')}>
         <GroupListHeader active="all" />
-        <GroupList allowLoadMore />
+        <GroupList data={data} limit={limit} />
       </SidebarPage>
     </Container>
   );

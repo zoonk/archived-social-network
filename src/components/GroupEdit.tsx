@@ -1,11 +1,11 @@
 import { Fragment, useEffect, useState } from 'react';
 import Error from 'next/error';
 import { CircularProgress } from '@material-ui/core';
-import GroupEditForm from '@zoonk/components/GroupEditForm';
-import GroupFormContainer from '@zoonk/components/GroupFormContainer';
-import GroupsBreadcrumb from '@zoonk/components/GroupsBreadcrumb';
 import { Group } from '@zoonk/models';
 import { getGroup } from '@zoonk/services';
+import GroupEditForm from './GroupEditForm';
+import GroupFormContainer from './GroupFormContainer';
+import GroupsBreadcrumb from './GroupsBreadcrumb';
 import useTranslation from './useTranslation';
 
 interface GroupEditProps {

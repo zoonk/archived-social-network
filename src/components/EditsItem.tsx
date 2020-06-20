@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import NextLink from 'next/link';
 import {
   Button,
@@ -14,10 +15,11 @@ import { editableFields } from '@zoonk/utils';
 import { getFieldDiff } from '@zoonk/utils/diff';
 import EditsDiffBox from './EditsDiffBox';
 import EditsHeader from './EditsHeader';
-import EditsReport from './EditsReport';
-import EditsRevert from './EditsRevert';
 import { getPlainText } from './rich-text/posts';
 import useTranslation from './useTranslation';
+
+const EditsReport = dynamic(() => import('./EditsReport'), { ssr: false });
+const EditsRevert = dynamic(() => import('./EditsRevert'), { ssr: false });
 
 interface EditsItemProps {
   displayTitle?: boolean;

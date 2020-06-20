@@ -1,19 +1,31 @@
-import { useEffect } from 'react';
-import { NextPage } from 'next';
+import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
+import dynamic from 'next/dynamic';
 import Error from 'next/error';
-import { Container, Divider, makeStyles } from '@material-ui/core';
-import CommentList from '@zoonk/components/CommentList';
+import { useRouter } from 'next/router';
+import {
+  CircularProgress,
+  Container,
+  Divider,
+  makeStyles,
+} from '@material-ui/core';
 import LinkList from '@zoonk/components/LinkList';
 import Meta from '@zoonk/components/Meta';
 import PostBar from '@zoonk/components/PostBar';
 import PostFooter from '@zoonk/components/PostFooter';
 import PostHeader from '@zoonk/components/PostHeader';
-import EditorRead from '@zoonk/components/rich-text/EditorRead';
+import RichTextViewer from '@zoonk/components/rich-text/RichTextViewer';
 import { getPlainText, getPostImage } from '@zoonk/components/rich-text/posts';
-import useAuth from '@zoonk/components/useAuth';
 import { Post } from '@zoonk/models';
-import { getPost, markPostAsRead, togglePostProgress } from '@zoonk/services';
-import { appLanguage, PostContext, preRender } from '@zoonk/utils';
+import { getPost, getPosts } from '@zoonk/services';
+import { appLanguage, PostContext } from '@zoonk/utils';
+
+const CommentList = dynamic(() => import('@zoonk/components/CommentList'), {
+  ssr: false,
+});
+
+const MarkAsRead = dynamic(() => import('@zoonk/components/MarkAsRead'), {
+  ssr: false,
+});
 
 interface PostPageProps {
   data: Post.Get | null;
@@ -28,37 +40,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PostPage: NextPage<PostPageProps> = ({ data }) => {
-  const { user } = useAuth();
+export const getStaticPaths: GetStaticPaths = async () => {
+  const posts = await getPosts({ limit: 50 });
+  const paths = posts.map((post) => ({ params: { id: post.id } }));
+  return { paths, fallback: true };
+};
+
+export const getStaticProps: GetStaticProps<PostPageProps> = async ({
+  params,
+}) => {
+  const id = String(params?.id);
+  const data = await getPost(id);
+  return { props: { data }, unstable_revalidate: 1 };
+};
+
+const PostPage = ({ data }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const { isFallback } = useRouter();
   const classes = useStyles();
 
-  // Mark a post as read when the page is loaded.
-  useEffect(() => {
-    if (user && data) {
-      markPostAsRead(data.id, user.uid);
-    }
-  }, [data, user]);
-
-  /**
-   * Save the user progress for this chapter.
-   */
-  useEffect(() => {
-    if (
-      user &&
-      data &&
-      data.chapterId &&
-      (data.category === 'examples' || data.category === 'lessons')
-    ) {
-      togglePostProgress(
-        data.id,
-        data.chapterId,
-        data.category,
-        false,
-        user.uid,
-      );
-    }
-  }, [data, user]);
-
+  if (!data && isFallback) return <CircularProgress />;
   if (!data) return <Error statusCode={404} />;
 
   const { content, cover, id, language, sites, title } = data;
@@ -75,9 +75,10 @@ const PostPage: NextPage<PostPageProps> = ({ data }) => {
           image={image}
           noIndex={language !== appLanguage}
         />
+        <MarkAsRead data={data} />
         <PostHeader />
         <Container maxWidth="md" className={classes.container}>
-          <EditorRead content={content} />
+          <RichTextViewer content={content} />
           <LinkList sites={sites} />
           <PostFooter id={id} />
           <Divider />
@@ -87,13 +88,6 @@ const PostPage: NextPage<PostPageProps> = ({ data }) => {
       </main>
     </PostContext.Provider>
   );
-};
-
-PostPage.getInitialProps = async ({ query }) => {
-  const postId = String(query.id);
-  const data = await getPost(postId);
-  preRender();
-  return { data };
 };
 
 export default PostPage;

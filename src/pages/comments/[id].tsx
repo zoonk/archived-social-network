@@ -10,7 +10,7 @@ import DiscussionListItem from '@zoonk/components/DiscussionListItem';
 import Meta from '@zoonk/components/Meta';
 import useTranslation from '@zoonk/components/useTranslation';
 import { Comment } from '@zoonk/models';
-import { getComment, listReplies } from '@zoonk/services';
+import { getComment, getReplies } from '@zoonk/services';
 
 interface CommentPageProps {
   comment: Comment.Get | null;
@@ -44,7 +44,7 @@ export const getStaticProps: GetStaticProps<CommentPageProps> = async ({
   }
 
   if (comment?.replies) {
-    replies = await listReplies(id);
+    replies = await getReplies(id);
   }
 
   return { props: { comment, parent, replies }, unstable_revalidate: 1 };

@@ -1,37 +1,31 @@
-import { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import {
   Button,
   Card,
   CardContent,
   CardHeader,
+  CircularProgress,
   Grid,
   Typography,
 } from '@material-ui/core';
 import { Feedback } from '@zoonk/models';
 import { listFeedback } from '@zoonk/services';
-import { theme } from '@zoonk/utils';
-import ListSkeleton from './ListSkeleton';
-import useLoadMore from './useLoadMore';
+import LoadMore from './LoadMore';
 import useTranslation from './useTranslation';
 
 interface FeedbackListProps {
-  allowLoadMore?: boolean;
   limit?: number;
 }
 
-const FeedbackList = ({ allowLoadMore, limit }: FeedbackListProps) => {
+const FeedbackList = ({ limit = 10 }: FeedbackListProps) => {
   const translate = useTranslation();
-  const { get, items, lastVisible, loading } = useLoadMore<Feedback.Snapshot>(
-    limit,
-  );
+  const [items, setItems] = useState<Feedback.Snapshot[]>();
 
   useEffect(() => {
-    get({ data: listFeedback(limit), replace: true });
-  }, [get, limit]);
+    listFeedback(limit).then(setItems);
+  }, [limit]);
 
-  const loadMore = () => {
-    get({ data: listFeedback(limit, lastVisible) });
-  };
+  if (!items) return <CircularProgress />;
 
   return (
     <Fragment>
@@ -68,20 +62,13 @@ const FeedbackList = ({ allowLoadMore, limit }: FeedbackListProps) => {
           </Grid>
         ))}
       </Grid>
-
-      {loading && <ListSkeleton items={limit} />}
-
-      {allowLoadMore && lastVisible && (
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          onClick={loadMore}
-          style={{ margin: theme.spacing(3, 0, 2) }}
-        >
-          {translate('load_more')}
-        </Button>
-      )}
+      <LoadMore<Feedback.Snapshot>
+        lastPath={items[items.length - 1].snap}
+        length={items.length}
+        limit={limit}
+        request={(last) => listFeedback(limit, last)}
+        onLoadMore={(newData) => setItems([...items, ...newData])}
+      />
     </Fragment>
   );
 };

@@ -45,11 +45,17 @@ export const getTopicLive = (
     });
 };
 
-export const listTopics = async (
-  startAfter?: firebase.firestore.DocumentSnapshot,
-  createdById?: string,
-  limit: number = 12,
-): Promise<Topic.Snapshot[]> => {
+interface TopicsQuery {
+  last?: firebase.firestore.DocumentSnapshot;
+  limit?: number;
+  userId?: string;
+}
+
+const topicsQuery = ({
+  last,
+  limit = 10,
+  userId,
+}: TopicsQuery): firebase.firestore.Query<Topic.Get> => {
   let ref = db
     .collection('topics')
     .withConverter(topicConverter)
@@ -59,18 +65,27 @@ export const listTopics = async (
     .where('language', '==', appLanguage)
     .limit(limit);
 
-  if (createdById) {
-    ref = ref.where('createdById', '==', createdById);
+  if (userId) {
+    ref = ref.where('createdById', '==', userId);
   }
 
-  if (startAfter) {
-    ref = ref.startAfter(startAfter);
+  if (last) {
+    ref = ref.startAfter(last);
   }
 
-  const snap = await ref.get();
-  return snap.docs.map((item) => {
-    return { ...item.data(), snap: item };
-  });
+  return ref;
+};
+
+export const getTopics = async (query: TopicsQuery): Promise<Topic.Get[]> => {
+  const ref = await topicsQuery(query).get();
+  return ref.docs.map((snap) => snap.data());
+};
+
+export const getTopicsSnapshot = async (
+  query: TopicsQuery,
+): Promise<Topic.Snapshot[]> => {
+  const ref = await topicsQuery(query).get();
+  return ref.docs.map((snap) => ({ ...snap.data(), snap }));
 };
 
 /**

@@ -1,41 +1,23 @@
-import { Fragment, useEffect } from 'react';
-import { Button, List } from '@material-ui/core';
+import { Fragment, useState } from 'react';
+import dynamic from 'next/dynamic';
+import { List } from '@material-ui/core';
 import { Topic } from '@zoonk/models';
-import { listTopics } from '@zoonk/services';
-import { theme } from '@zoonk/utils';
-import ListSkeleton from './ListSkeleton';
 import NoItems from './NoItems';
 import TopicListItem from './TopicListItem';
-import useLoadMore from './useLoadMore';
-import useTranslation from './useTranslation';
+
+const TopicLoadMore = dynamic(() => import('./TopicLoadMore'), { ssr: false });
 
 interface TopicListProps {
-  allowLoadMore?: boolean;
-  createdById?: string;
+  data: Topic.Get[];
+  last?: firebase.firestore.DocumentSnapshot;
   limit?: number;
+  userId?: string;
 }
 
-const TopicList = ({
-  allowLoadMore,
-  createdById,
-  limit = 10,
-}: TopicListProps) => {
-  const translate = useTranslation();
-  const { get, items, lastVisible, loading } = useLoadMore<Topic.Snapshot>(
-    limit,
-  );
+const TopicList = ({ data, last, limit = 10, userId }: TopicListProps) => {
+  const [items, setItems] = useState<Topic.Get[]>(data);
 
-  const loadMore = () => {
-    get({ data: listTopics(lastVisible, createdById, limit) });
-  };
-
-  useEffect(() => {
-    get({ data: listTopics(undefined, createdById, limit), replace: true });
-  }, [get, createdById, limit]);
-
-  if (items.length === 0 && loading === false) {
-    return <NoItems />;
-  }
+  if (items.length === 0) return <NoItems />;
 
   return (
     <Fragment>
@@ -49,19 +31,13 @@ const TopicList = ({
         ))}
       </List>
 
-      {loading && <ListSkeleton items={limit} />}
-
-      {allowLoadMore && lastVisible && (
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          onClick={loadMore}
-          style={{ margin: theme.spacing(3, 0, 2) }}
-        >
-          {translate('load_more')}
-        </Button>
-      )}
+      <TopicLoadMore
+        lastItem={last || items[items.length - 1].id}
+        length={items.length}
+        limit={limit}
+        userId={userId}
+        onLoadMore={(res) => setItems([...items, ...res])}
+      />
     </Fragment>
   );
 };

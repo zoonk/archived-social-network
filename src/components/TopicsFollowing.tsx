@@ -1,39 +1,31 @@
-import { Fragment, useEffect } from 'react';
-import { Button, List } from '@material-ui/core';
+import { Fragment, useEffect, useState } from 'react';
+import { CircularProgress, List } from '@material-ui/core';
 import { Topic } from '@zoonk/models';
 import { getFollowingTopics } from '@zoonk/services';
-import { theme } from '@zoonk/utils';
-import ListSkeleton from './ListSkeleton';
+import LoadMore from './LoadMore';
 import NoFollowing from './NoFollowing';
 import TopicListItem from './TopicListItem';
-import useLoadMore from './useLoadMore';
-import useTranslation from './useTranslation';
 
 interface TopicsFollowingProps {
-  allowLoadMore?: boolean;
   userId: string;
-  limit?: number;
 }
 
-const TopicsFollowing = ({
-  allowLoadMore,
-  userId,
-  limit = 10,
-}: TopicsFollowingProps) => {
-  const translate = useTranslation();
-  const { get, items, lastVisible, loading } = useLoadMore<Topic.Snapshot>(
-    limit,
-  );
+const limit = 10;
 
-  const loadMore = () => {
-    get({ data: getFollowingTopics(userId, lastVisible, limit) });
-  };
+const TopicsFollowing = ({ userId }: TopicsFollowingProps) => {
+  const [items, setItems] = useState<Topic.Snapshot[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    get({ data: getFollowingTopics(userId, undefined, limit), replace: true });
-  }, [get, limit, userId]);
+    getFollowingTopics(userId, undefined, limit).then((res) => {
+      setLoading(false);
+      setItems(res);
+    });
+  }, [userId]);
 
-  if (items.length === 0 && loading === false) {
+  if (loading) return <CircularProgress />;
+
+  if (items.length === 0 && !loading) {
     return <NoFollowing />;
   }
 
@@ -48,20 +40,13 @@ const TopicsFollowing = ({
           />
         ))}
       </List>
-
-      {loading && <ListSkeleton items={limit} />}
-
-      {allowLoadMore && lastVisible && (
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          onClick={loadMore}
-          style={{ margin: theme.spacing(3, 0, 2) }}
-        >
-          {translate('load_more')}
-        </Button>
-      )}
+      <LoadMore<Topic.Snapshot>
+        lastPath={items[items.length - 1].snap}
+        length={items.length}
+        limit={limit}
+        request={(last) => getFollowingTopics(userId, last, limit)}
+        onLoadMore={(newData) => setItems([...items, ...newData])}
+      />
     </Fragment>
   );
 };

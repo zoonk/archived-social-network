@@ -18,6 +18,7 @@ export namespace Follower {
   }
 
   export interface Get extends Omit<Response, 'joined'> {
+    id: string;
     joined: string;
   }
 

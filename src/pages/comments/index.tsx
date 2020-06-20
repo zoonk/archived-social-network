@@ -1,26 +1,32 @@
-import { NextPage } from 'next';
-import dynamic from 'next/dynamic';
+import { GetStaticProps, InferGetStaticPropsType } from 'next';
 import { Container } from '@material-ui/core';
+import DiscussionList from '@zoonk/components/DiscussionList';
 import Meta from '@zoonk/components/Meta';
 import SidebarPage from '@zoonk/components/SidebarPage';
 import useTranslation from '@zoonk/components/useTranslation';
+import { Comment } from '@zoonk/models';
+import { getComments } from '@zoonk/services';
 
-const DiscussionList = dynamic(
-  () => import('@zoonk/components/DiscussionList'),
-  { ssr: false },
-);
+interface CommentsProps {
+  data: Comment.Get[];
+}
 
-const CommentsPage: NextPage = () => {
+export const getStaticProps: GetStaticProps<CommentsProps> = async () => {
+  const data = await getComments();
+  return { props: { data }, unstable_revalidate: 1 };
+};
+
+const Comments = ({ data }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const translate = useTranslation();
 
   return (
     <Container component="main">
       <Meta title={translate('comments')} noIndex />
       <SidebarPage title={translate('post_share')}>
-        <DiscussionList allowLoadMore />
+        <DiscussionList data={data} />
       </SidebarPage>
     </Container>
   );
 };
 
-export default CommentsPage;
+export default Comments;

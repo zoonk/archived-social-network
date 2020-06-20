@@ -5,11 +5,11 @@ import Element from './Element';
 import Leaf from './Leaf';
 import { editorStyles, withEditor } from './utils';
 
-interface EditorReadProps {
+interface RichTextViewerProps {
   content: Node[];
 }
 
-const EditorRead = ({ content }: EditorReadProps) => {
+const RichTextViewer = ({ content }: RichTextViewerProps) => {
   const renderElement = useCallback((props) => <Element {...props} />, []);
   const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
   const editor = useMemo(() => withEditor(), []);
@@ -27,4 +27,4 @@ const EditorRead = ({ content }: EditorReadProps) => {
   );
 };
 
-export default EditorRead;
+export default RichTextViewer;

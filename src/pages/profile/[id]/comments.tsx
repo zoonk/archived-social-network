@@ -1,22 +1,20 @@
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
-import dynamic from 'next/dynamic';
 import Error from 'next/error';
 import { useRouter } from 'next/router';
 import { CircularProgress } from '@material-ui/core';
+import DiscussionList from '@zoonk/components/DiscussionList';
 import Meta from '@zoonk/components/Meta';
 import ProfileBase from '@zoonk/components/ProfileBase';
-import { Leaderboard } from '@zoonk/models';
-import { getUserLeaderboard } from '@zoonk/services';
+import { Comment, Leaderboard } from '@zoonk/models';
+import { getComments, getUserLeaderboard } from '@zoonk/services';
 import { rootUrl } from '@zoonk/utils';
 
-const DiscussionList = dynamic(
-  () => import('@zoonk/components/DiscussionList'),
-  { ssr: false },
-);
-
 interface ProfileProps {
+  comments: Comment.Get[];
   profile: Leaderboard.Get | null;
 }
+
+const limit = 10;
 
 export const getStaticPaths: GetStaticPaths = async () => {
   return { paths: [], fallback: true };
@@ -27,10 +25,12 @@ export const getStaticProps: GetStaticProps<ProfileProps> = async ({
 }) => {
   const id = String(params?.id);
   const profile = await getUserLeaderboard(id);
-  return { props: { profile }, unstable_revalidate: 1 };
+  const comments = await getComments(limit, profile?.id);
+  return { props: { comments, profile }, unstable_revalidate: 1 };
 };
 
 const ProfileComments = ({
+  comments,
   profile,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { isFallback } = useRouter();
@@ -48,7 +48,7 @@ const ProfileComments = ({
         canonicalUrl={`${rootUrl}/profile/${username}`}
         noIndex
       />
-      <DiscussionList createdById={id} limit={10} allowLoadMore />
+      <DiscussionList data={comments} userId={id} limit={limit} />
     </ProfileBase>
   );
 };

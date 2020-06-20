@@ -1,15 +1,24 @@
-import { NextPage } from 'next';
-import dynamic from 'next/dynamic';
+import { GetStaticProps, InferGetStaticPropsType } from 'next';
 import { Container } from '@material-ui/core';
+import EditsList from '@zoonk/components/EditsList';
 import Meta from '@zoonk/components/Meta';
 import SidebarPage from '@zoonk/components/SidebarPage';
 import useTranslation from '@zoonk/components/useTranslation';
+import { Activity } from '@zoonk/models';
+import { getActivities } from '@zoonk/services';
 
-const EditsList = dynamic(() => import('@zoonk/components/EditsList'), {
-  ssr: false,
-});
+const limit = 10;
 
-const Edits: NextPage = () => {
+interface EditsProps {
+  data: Activity.Get[];
+}
+
+export const getStaticProps: GetStaticProps<EditsProps> = async () => {
+  const data = await getActivities(limit);
+  return { props: { data }, unstable_revalidate: 1 };
+};
+
+const Edits = ({ data }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const translate = useTranslation();
 
   return (
@@ -21,7 +30,7 @@ const Edits: NextPage = () => {
       />
       <SidebarPage title={translate('post_share')}>
         <div>
-          <EditsList displayTitle />
+          <EditsList data={data} displayTitle limit={limit} />
         </div>
       </SidebarPage>
     </Container>

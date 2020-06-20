@@ -1,8 +1,8 @@
 import { Container, Grid, makeStyles } from '@material-ui/core';
-import HomeBreadcrumb from '@zoonk/components/HomeBreadcrumb';
-import MenuProfile from '@zoonk/components/MenuProfile';
-import ProfileCard from '@zoonk/components/ProfileCard';
 import { Leaderboard } from '@zoonk/models';
+import HomeBreadcrumb from './HomeBreadcrumb';
+import MenuProfile from './MenuProfile';
+import ProfileCard from './ProfileCard';
 
 const useStyles = makeStyles((theme) => ({
   column: {

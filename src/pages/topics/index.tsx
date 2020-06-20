@@ -1,13 +1,26 @@
-import { NextPage } from 'next';
+import { GetStaticProps, InferGetStaticPropsType } from 'next';
 import { Container } from '@material-ui/core';
 import Meta from '@zoonk/components/Meta';
 import SidebarPage from '@zoonk/components/SidebarPage';
 import TopicList from '@zoonk/components/TopicList';
 import TopicsHeader from '@zoonk/components/TopicsHeader';
 import useTranslation from '@zoonk/components/useTranslation';
+import { Topic } from '@zoonk/models';
+import { getTopics } from '@zoonk/services';
 import { rootUrl } from '@zoonk/utils';
 
-const Topics: NextPage = () => {
+const limit = 10;
+
+interface TopicsProps {
+  data: Topic.Get[];
+}
+
+export const getStaticProps: GetStaticProps<TopicsProps> = async () => {
+  const data = await getTopics({ limit });
+  return { props: { data }, unstable_revalidate: 1 };
+};
+
+const Topics = ({ data }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const translate = useTranslation();
 
   return (
@@ -19,7 +32,7 @@ const Topics: NextPage = () => {
       />
       <SidebarPage title={translate('post_share')}>
         <TopicsHeader active="all" />
-        <TopicList allowLoadMore limit={10} />
+        <TopicList data={data} limit={limit} />
       </SidebarPage>
     </Container>
   );

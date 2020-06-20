@@ -8,6 +8,7 @@ export const serializeFollower = (
 
   return {
     ...data,
+    id: snap.id,
     joined: serializeFirebaseDate(data.joined),
   };
 };

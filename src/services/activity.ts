@@ -16,11 +16,10 @@ const activityConverter: firebase.firestore.FirestoreDataConverter<Activity.Get>
   },
 };
 
-export const listActivities = async (
+const activitiesQuery = (
+  limit = 10,
   itemPath?: string,
-  startAfter?: firebase.firestore.DocumentSnapshot,
-  limit: number = 10,
-): Promise<Activity.Snapshot[]> => {
+): firebase.firestore.Query<Activity.Get> => {
   let ref = db
     .collection('activity')
     .withConverter(activityConverter)
@@ -35,14 +34,27 @@ export const listActivities = async (
     ref = ref.where('language', '==', appLanguage);
   }
 
-  if (startAfter) {
-    ref = ref.startAfter(startAfter);
-  }
+  return ref;
+};
 
-  const snap = await ref.get();
-  return snap.docs.map((item) => {
-    return { ...item.data(), snap: item };
-  });
+export const getActivities = async (
+  limit?: number,
+  itemPath?: string,
+): Promise<Activity.Get[]> => {
+  const snap = await activitiesQuery(limit, itemPath).get();
+  return snap.docs.map((doc) => doc.data());
+};
+
+export const getActivitiesSnapshot = async (
+  limit: number,
+  last: firebase.firestore.DocumentSnapshot,
+  itemPath?: string,
+): Promise<Activity.Snapshot[]> => {
+  const ref = await activitiesQuery(limit, itemPath)
+    .startAfter(last)
+    .get();
+
+  return ref.docs.map((snap) => ({ ...snap.data(), snap }));
 };
 
 export const getActivity = async (id: string): Promise<Activity.Get | null> => {

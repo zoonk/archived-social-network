@@ -4,7 +4,6 @@ export * from './edits';
 export * from './i18n';
 export * from './links';
 export * from './misc';
-export * from './now';
 export * from './posts';
 export * from './routing';
 export * from './settings';

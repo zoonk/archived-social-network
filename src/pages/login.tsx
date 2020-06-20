@@ -3,6 +3,7 @@ import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import { CircularProgress } from '@material-ui/core';
 import AlreadyLoggedin from '@zoonk/components/AlreadyLoggedin';
+import HomeBreadcrumb from '@zoonk/components/HomeBreadcrumb';
 import Meta from '@zoonk/components/Meta';
 import useAuth from '@zoonk/components/useAuth';
 import useTranslation from '@zoonk/components/useTranslation';
@@ -31,6 +32,7 @@ const Login: NextPage = () => {
         description={translate('seo_login_desc')}
         canonicalUrl={`${rootUrl}/login`}
       />
+      <HomeBreadcrumb title={translate('login')} />
       <LoginForm />
     </Fragment>
   );

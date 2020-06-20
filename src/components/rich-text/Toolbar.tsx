@@ -5,9 +5,9 @@ import { useSlate } from 'slate-react';
 import { Divider, makeStyles } from '@material-ui/core';
 import BlockButtons from './BlockButtons';
 import FormatButtons from './FormatButtons';
-import MediaButtons from './MediaButtons';
 
 const ImageToolbar = dynamic(() => import('./ImageToolbar'));
+const MediaButtons = dynamic(() => import('./MediaButtons'), { ssr: false });
 const TableActions = dynamic(() => import('./TableToolbar'));
 
 const useStyles = makeStyles((theme) => ({

@@ -1,32 +1,25 @@
-import { Fragment, useEffect } from 'react';
-import { Button } from '@material-ui/core';
+import { Fragment, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { Activity } from '@zoonk/models';
-import { listActivities } from '@zoonk/services';
-import { theme } from '@zoonk/utils';
 import EditsItem from './EditsItem';
-import EditsSkeleton from './EditsSkeleton';
-import useLoadMore from './useLoadMore';
-import useTranslation from './useTranslation';
+import NoItems from './NoItems';
+
+// Dynamically loading this component to reduce the first load size.
+const EditsLoadMore = dynamic(() => import('./EditsLoadMore'), {
+  ssr: false,
+});
 
 interface EditsListProps {
+  data: Activity.Get[];
   displayTitle?: boolean;
   itemPath?: string;
-  limit?: number;
+  limit: number;
 }
 
-const EditsList = ({ displayTitle, itemPath, limit = 10 }: EditsListProps) => {
-  const translate = useTranslation();
-  const { get, items, lastVisible, loading } = useLoadMore<Activity.Snapshot>(
-    limit,
-  );
+const EditsList = ({ data, displayTitle, itemPath, limit }: EditsListProps) => {
+  const [items, setItems] = useState<Activity.Get[]>(data);
 
-  const loadMore = () => {
-    get({ data: listActivities(itemPath, lastVisible, limit) });
-  };
-
-  useEffect(() => {
-    get({ data: listActivities(itemPath, undefined, limit), replace: true });
-  }, [get, itemPath, limit]);
+  if (items.length === 0) return <NoItems />;
 
   return (
     <Fragment>
@@ -34,19 +27,13 @@ const EditsList = ({ displayTitle, itemPath, limit = 10 }: EditsListProps) => {
         <EditsItem displayTitle={displayTitle} edits={item} key={item.id} />
       ))}
 
-      {loading && <EditsSkeleton />}
-
-      {lastVisible && (
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          onClick={loadMore}
-          style={{ margin: theme.spacing(3, 0, 2) }}
-        >
-          {translate('load_more')}
-        </Button>
-      )}
+      <EditsLoadMore
+        itemPath={itemPath}
+        lastItem={items[items.length - 1].id}
+        length={items.length}
+        limit={limit}
+        onLoadMore={(res) => setItems([...items, ...res])}
+      />
     </Fragment>
   );
 };

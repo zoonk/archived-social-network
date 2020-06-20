@@ -34,7 +34,7 @@
     "@material-ui/lab": "^4.0.0-alpha.52",
     "algoliasearch": "^4.0.3",
     "diff": "^4.0.2",
-    "firebase": "^7.15.1",
+    "firebase": "^7.15.2",
     "is-hotkey": "^0.1.6",
     "lodash": "^4.17.15",
     "mitt": "^2.0.1",

@@ -67,19 +67,19 @@ export const getGroupLive = (
     });
 };
 
-interface ListGroupsArgs {
+interface GroupQuery {
   topicId?: string;
-  startAfter?: firebase.firestore.DocumentSnapshot;
+  last?: firebase.firestore.DocumentSnapshot;
   userId?: string;
   limit?: number;
 }
 
-export const listGroups = async ({
+const groupsQuery = ({
   limit = 10,
-  startAfter,
+  last,
   topicId,
   userId,
-}: ListGroupsArgs): Promise<Group.Snapshot[]> => {
+}: GroupQuery): firebase.firestore.Query<Group.Get> => {
   const collection = userId ? `users/${userId}/groups` : 'groups';
   let ref = db
     .collection(collection)
@@ -96,14 +96,23 @@ export const listGroups = async ({
     ref = ref.where('language', '==', appLanguage);
   }
 
-  if (startAfter) {
-    ref = ref.startAfter(startAfter);
+  if (last) {
+    ref = ref.startAfter(last);
   }
 
-  const snap = await ref.get();
-  return snap.docs.map((item) => {
-    return { ...item.data(), snap: item };
-  });
+  return ref;
+};
+
+export const getGroups = async (query: GroupQuery): Promise<Group.Get[]> => {
+  const ref = await groupsQuery(query).get();
+  return ref.docs.map((doc) => doc.data());
+};
+
+export const getGroupsSnapshot = async (
+  query: GroupQuery,
+): Promise<Group.Snapshot[]> => {
+  const ref = await groupsQuery(query).get();
+  return ref.docs.map((snap) => ({ ...snap.data(), snap }));
 };
 
 export const updatePinOrder = (

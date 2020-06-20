@@ -1,33 +1,79 @@
-import { NextPage } from 'next';
-import dynamic from 'next/dynamic';
+import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
+import Error from 'next/error';
 import { useRouter } from 'next/router';
-import { Container } from '@material-ui/core';
-import PostShare from '@zoonk/components/PostShare';
+import { CircularProgress, Container } from '@material-ui/core';
+import PostsList from '@zoonk/components/PostsList';
 import Meta from '@zoonk/components/Meta';
+import GroupBase from '@zoonk/components/GroupBase';
 import GroupsBreadcrumb from '@zoonk/components/GroupsBreadcrumb';
+import PostShare from '@zoonk/components/PostShare';
 import useTranslation from '@zoonk/components/useTranslation';
-import { theme } from '@zoonk/utils';
+import { Group, Post } from '@zoonk/models';
+import { getGroup, getGroups, getPosts } from '@zoonk/services';
 
-const PostsCard = dynamic(() => import('@zoonk/components/PostsCard'), {
-  ssr: false,
-});
+interface GroupCoursesProps {
+  courses: Post.Get[];
+  group: Group.Get | null;
+}
 
-const GroupCourses: NextPage = () => {
+const limit = 10;
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const groups = await getGroups({ limit: 20 });
+  const paths = groups.map((group) => ({ params: { id: group.id } }));
+  return { paths, fallback: true };
+};
+
+export const getStaticProps: GetStaticProps<GroupCoursesProps> = async ({
+  params,
+}) => {
+  const groupId = String(params?.id);
+  const groupReq = getGroup(groupId);
+  const coursesReq = getPosts({ category: ['courses'], groupId, limit });
+  const [group, courses] = await Promise.all([groupReq, coursesReq]);
+  return { props: { courses, group }, unstable_revalidate: 1 };
+};
+
+const GroupCourses = ({
+  courses,
+  group,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   const translate = useTranslation();
-  const { query } = useRouter();
-  const groupId = String(query.id);
+
+  const { isFallback } = useRouter();
+
+  if (!group && isFallback) return <CircularProgress />;
+  if (!group) return <Error statusCode={404} />;
+
+  const { id, language, photo, title, topics } = group;
 
   return (
     <Container component="main">
-      <Meta title={translate('courses')} noIndex />
-      <GroupsBreadcrumb groupId={groupId} title={translate('courses')} />
-      <PostShare
-        category="courses"
-        title={translate('teach_course_title')}
-        groupId={groupId}
+      <Meta
+        title={translate('seo_topic_courses_title', { title })}
+        description={translate('seo_topic_courses_desc', { title })}
+        image={photo}
+        canonicalUrl={`https://${language}.zoonk.org/groups/${id}/courses`}
       />
-      <div style={{ margin: theme.spacing(1, 0) }} />
-      <PostsCard category={['courses']} groupId={groupId} limit={10} />
+      <GroupsBreadcrumb
+        groupId={id}
+        groupName={title}
+        topicId={topics[0]}
+        title={translate('courses')}
+      />
+      <GroupBase group={group}>
+        <PostShare
+          category="courses"
+          title={translate('teach_course_title')}
+          groupId={id}
+        />
+        <PostsList
+          data={courses}
+          category={['courses']}
+          groupId={id}
+          limit={10}
+        />
+      </GroupBase>
     </Container>
   );
 };

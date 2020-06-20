@@ -1,45 +1,32 @@
-import { Fragment, useEffect } from 'react';
-import { Button, List } from '@material-ui/core';
+import { Fragment, useState } from 'react';
+import dynamic from 'next/dynamic';
+import { List } from '@material-ui/core';
 import { Group } from '@zoonk/models';
-import { listGroups } from '@zoonk/services';
-import { theme } from '@zoonk/utils';
 import GroupListItem from './GroupListItem';
-import ListSkeleton from './ListSkeleton';
 import NoItems from './NoItems';
-import useLoadMore from './useLoadMore';
-import useTranslation from './useTranslation';
+
+const GroupLoadMore = dynamic(() => import('./GroupLoadMore'), {
+  ssr: false,
+});
 
 interface GroupListProps {
-  allowLoadMore?: boolean;
+  data: Group.Get[];
+  last?: firebase.firestore.DocumentSnapshot;
   limit?: number;
   topicId?: string;
   userId?: string;
 }
 
 const GroupList = ({
-  allowLoadMore,
+  data,
+  last,
   limit = 10,
   topicId,
   userId,
 }: GroupListProps) => {
-  const translate = useTranslation();
-  const { get, items, lastVisible, loading } = useLoadMore<Group.Snapshot>(
-    limit,
-  );
+  const [items, setItems] = useState<Group.Get[]>(data);
 
-  const loadMore = () => {
-    get({
-      data: listGroups({ topicId, startAfter: lastVisible, userId, limit }),
-    });
-  };
-
-  useEffect(() => {
-    get({ data: listGroups({ topicId, userId, limit }) });
-  }, [get, limit, topicId, userId]);
-
-  if (items.length === 0 && loading === false) {
-    return <NoItems />;
-  }
+  if (items.length === 0) return <NoItems />;
 
   return (
     <Fragment>
@@ -53,19 +40,14 @@ const GroupList = ({
         ))}
       </List>
 
-      {loading && <ListSkeleton items={limit} />}
-
-      {allowLoadMore && lastVisible && (
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          onClick={loadMore}
-          style={{ margin: theme.spacing(3, 0, 2) }}
-        >
-          {translate('load_more')}
-        </Button>
-      )}
+      <GroupLoadMore
+        lastItem={last || items[items.length - 1].id}
+        length={items.length}
+        limit={limit}
+        topicId={topicId}
+        userId={userId}
+        onLoadMore={(res) => setItems([...items, ...res])}
+      />
     </Fragment>
   );
 };

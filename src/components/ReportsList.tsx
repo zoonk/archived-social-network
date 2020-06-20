@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import NextLink from 'next/link';
 import {
   Avatar,
@@ -6,34 +6,28 @@ import {
   Card,
   CardContent,
   CardHeader,
+  CircularProgress,
   Grid,
   Typography,
 } from '@material-ui/core';
 import { Report } from '@zoonk/models';
 import { listReports } from '@zoonk/services';
-import { theme } from '@zoonk/utils';
-import ListSkeleton from './ListSkeleton';
-import useLoadMore from './useLoadMore';
+import LoadMore from './LoadMore';
 import useTranslation from './useTranslation';
 
 interface ReportsListProps {
-  allowLoadMore?: boolean;
   limit?: number;
 }
 
-const ReportsList = ({ allowLoadMore, limit }: ReportsListProps) => {
+const ReportsList = ({ limit = 10 }: ReportsListProps) => {
   const translate = useTranslation();
-  const { get, items, lastVisible, loading } = useLoadMore<Report.Snapshot>(
-    limit,
-  );
+  const [items, setItems] = useState<Report.Snapshot[]>();
 
   useEffect(() => {
-    get({ data: listReports(limit), replace: true });
-  }, [get, limit]);
+    listReports(limit).then(setItems);
+  }, [limit]);
 
-  const loadMore = () => {
-    get({ data: listReports(limit, lastVisible) });
-  };
+  if (!items) return <CircularProgress />;
 
   return (
     <Fragment>
@@ -79,19 +73,13 @@ const ReportsList = ({ allowLoadMore, limit }: ReportsListProps) => {
         ))}
       </Grid>
 
-      {loading && <ListSkeleton items={limit} />}
-
-      {allowLoadMore && lastVisible && (
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          onClick={loadMore}
-          style={{ margin: theme.spacing(3, 0, 2) }}
-        >
-          {translate('load_more')}
-        </Button>
-      )}
+      <LoadMore<Report.Snapshot>
+        lastPath={items[items.length - 1].snap}
+        length={items.length}
+        limit={limit}
+        request={(last) => listReports(limit, last)}
+        onLoadMore={(newData) => setItems([...items, ...newData])}
+      />
     </Fragment>
   );
 };

@@ -1,22 +1,21 @@
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
-import dynamic from 'next/dynamic';
 import Error from 'next/error';
 import { useRouter } from 'next/router';
 import { CircularProgress } from '@material-ui/core';
 import Meta from '@zoonk/components/Meta';
+import PostsList from '@zoonk/components/PostsList';
 import ProfileBase from '@zoonk/components/ProfileBase';
 import useTranslation from '@zoonk/components/useTranslation';
-import { Leaderboard } from '@zoonk/models';
-import { getUserLeaderboard } from '@zoonk/services';
+import { Leaderboard, Post } from '@zoonk/models';
+import { getPosts, getUserLeaderboard } from '@zoonk/services';
 import { rootUrl } from '@zoonk/utils';
 
-const PostsCard = dynamic(() => import('@zoonk/components/PostsCard'), {
-  ssr: false,
-});
-
 interface ProfileProps {
+  posts: Post.Get[];
   profile: Leaderboard.Get | null;
 }
+
+const limit = 10;
 
 export const getStaticPaths: GetStaticPaths = async () => {
   return { paths: [], fallback: true };
@@ -27,10 +26,12 @@ export const getStaticProps: GetStaticProps<ProfileProps> = async ({
 }) => {
   const id = String(params?.id);
   const profile = await getUserLeaderboard(id);
-  return { props: { profile }, unstable_revalidate: 1 };
+  const posts = await getPosts({ userId: profile?.id, limit });
+  return { props: { posts, profile }, unstable_revalidate: 1 };
 };
 
 const ProfilePage = ({
+  posts,
   profile,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const translate = useTranslation();
@@ -49,7 +50,7 @@ const ProfilePage = ({
         image={photo}
         canonicalUrl={`${rootUrl}/profile/${username}`}
       />
-      <PostsCard userId={id} limit={10} />
+      <PostsList data={posts} userId={id} limit={limit} />
     </ProfileBase>
   );
 };

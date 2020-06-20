@@ -1,41 +1,24 @@
-import { Fragment, useEffect } from 'react';
-import { Button, Grid } from '@material-ui/core';
+import { Fragment, useState } from 'react';
+import dynamic from 'next/dynamic';
+import { Grid } from '@material-ui/core';
 import { Comment } from '@zoonk/models';
-import { listComments } from '@zoonk/services';
-import { theme } from '@zoonk/utils';
 import DiscussionListItem from './DiscussionListItem';
-import ListSkeleton from './ListSkeleton';
 import NoItems from './NoItems';
-import useLoadMore from './useLoadMore';
-import useTranslation from './useTranslation';
+
+const DiscussionLoadMore = dynamic(() => import('./DiscussionLoadMore'), {
+  ssr: false,
+});
 
 interface DiscussionListProps {
-  allowLoadMore?: boolean;
-  createdById?: string;
+  data: Comment.Get[];
   limit?: number;
+  userId?: string;
 }
 
-const DiscussionList = ({
-  allowLoadMore,
-  createdById,
-  limit = 10,
-}: DiscussionListProps) => {
-  const translate = useTranslation();
-  const { get, items, lastVisible, loading } = useLoadMore<Comment.Snapshot>(
-    limit,
-  );
+const DiscussionList = ({ data, limit = 10, userId }: DiscussionListProps) => {
+  const [items, setItems] = useState<Comment.Get[]>(data);
 
-  const loadMore = () => {
-    get({ data: listComments(lastVisible, createdById, limit) });
-  };
-
-  useEffect(() => {
-    get({ data: listComments(undefined, createdById, limit) });
-  }, [get, createdById, limit]);
-
-  if (items.length === 0 && loading === false) {
-    return <NoItems />;
-  }
+  if (items.length === 0) return <NoItems />;
 
   return (
     <Fragment>
@@ -47,19 +30,13 @@ const DiscussionList = ({
         ))}
       </Grid>
 
-      {loading && <ListSkeleton items={limit} />}
-
-      {allowLoadMore && lastVisible && (
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          onClick={loadMore}
-          style={{ margin: theme.spacing(3, 0, 2) }}
-        >
-          {translate('load_more')}
-        </Button>
-      )}
+      <DiscussionLoadMore
+        lastItem={items[items.length - 1].id}
+        length={items.length}
+        limit={limit}
+        userId={userId}
+        onLoadMore={(res) => setItems([...items, ...res])}
+      />
     </Fragment>
   );
 };

@@ -1,16 +1,25 @@
-import { NextPage } from 'next';
-import dynamic from 'next/dynamic';
+import { GetStaticProps, InferGetStaticPropsType } from 'next';
 import { Container } from '@material-ui/core';
 import Meta from '@zoonk/components/Meta';
+import PostsList from '@zoonk/components/PostsList';
 import SidebarPage from '@zoonk/components/SidebarPage';
 import useTranslation from '@zoonk/components/useTranslation';
+import { Post } from '@zoonk/models';
+import { getPosts } from '@zoonk/services';
 import { rootUrl } from '@zoonk/utils';
 
-const PostsCard = dynamic(() => import('@zoonk/components/PostsCard'), {
-  ssr: false,
-});
+interface CoursesProps {
+  data: Post.Get[];
+}
 
-const Courses: NextPage = () => {
+const limit = 10;
+
+export const getStaticProps: GetStaticProps<CoursesProps> = async () => {
+  const data = await getPosts({ category: ['courses'], limit });
+  return { props: { data }, unstable_revalidate: 1 };
+};
+
+const Courses = ({ data }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const translate = useTranslation();
 
   return (
@@ -21,7 +30,7 @@ const Courses: NextPage = () => {
         canonicalUrl={`${rootUrl}/courses`}
       />
       <SidebarPage category="courses" title={translate('teach_course_title')}>
-        <PostsCard category={['courses']} limit={10} />
+        <PostsList data={data} limit={limit} category={['courses']} />
       </SidebarPage>
     </Container>
   );

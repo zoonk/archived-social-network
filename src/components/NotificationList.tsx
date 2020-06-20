@@ -1,50 +1,39 @@
-import { Fragment, useEffect } from 'react';
-import { Button, List } from '@material-ui/core';
+import { Fragment, useEffect, useState } from 'react';
+import { CircularProgress, List } from '@material-ui/core';
 import { Notification, User } from '@zoonk/models';
 import { listNotifications, resetNotificationCount } from '@zoonk/services';
-import { theme } from '@zoonk/utils';
-import ListSkeleton from './ListSkeleton';
+import LoadMore from './LoadMore';
 import NoItems from './NoItems';
 import NotificationListItem from './NotificationListItem';
-import useLoadMore from './useLoadMore';
-import useTranslation from './useTranslation';
 
 interface NotificationListProps {
-  allowLoadMore?: boolean;
   limit?: number;
   settings: User.NotificationSettings;
   uid: string;
 }
 
 const NotificationList = ({
-  allowLoadMore,
   limit = 10,
   settings,
   uid,
 }: NotificationListProps) => {
-  const translate = useTranslation();
-  const { get, items, lastVisible, loading } = useLoadMore<
-    Notification.Snapshot
-  >(limit);
-
-  const loadMore = () => {
-    get({
-      data: listNotifications(uid, settings, lastVisible, limit),
-    });
-  };
+  const [items, setItems] = useState<Notification.Snapshot[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    get({
-      data: listNotifications(uid, settings, undefined, limit),
-      replace: true,
+    listNotifications(uid, settings, undefined, limit).then((res) => {
+      setItems(res);
+      setLoading(false);
     });
-  }, [get, limit, settings, uid]);
+  }, [limit, settings, uid]);
 
   useEffect(() => {
     resetNotificationCount(uid);
   }, [uid]);
 
-  if (items.length === 0 && loading === false) {
+  if (loading) return <CircularProgress />;
+
+  if (items.length === 0 && !loading) {
     return <NoItems />;
   }
 
@@ -59,20 +48,13 @@ const NotificationList = ({
           />
         ))}
       </List>
-
-      {loading && <ListSkeleton items={limit} />}
-
-      {allowLoadMore && lastVisible && (
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          onClick={loadMore}
-          style={{ margin: theme.spacing(3, 0, 2) }}
-        >
-          {translate('load_more')}
-        </Button>
-      )}
+      <LoadMore<Notification.Snapshot>
+        lastPath={items[items.length - 1].snap}
+        length={items.length}
+        limit={limit}
+        request={(last) => listNotifications(uid, settings, last, limit)}
+        onLoadMore={(newData) => setItems([...items, ...newData])}
+      />
     </Fragment>
   );
 };

@@ -1,7 +1,9 @@
+import dynamic from 'next/dynamic';
 import { CardActions, makeStyles } from '@material-ui/core';
-import FollowButton from './FollowButton';
 import ItemActionsMenu from './ItemActionsMenu';
-import LikeButton from './LikeButton';
+
+const FollowButton = dynamic(() => import('./FollowButton'), { ssr: false });
+const LikeButton = dynamic(() => import('./LikeButton'), { ssr: false });
 
 interface TopicActionsProps {
   id: string;

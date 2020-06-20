@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { SearchResponse } from '@algolia/client-search';
 import { Grid } from '@material-ui/core';
-import AlgoliaLogo from '@zoonk/components/AlgoliaLogo';
-import SearchCard from '@zoonk/components/SearchCard';
 import { ContentCategory, SearchResult } from '@zoonk/models';
 import { search } from '@zoonk/services';
+import AlgoliaLogo from './AlgoliaLogo';
+import SearchCard from './SearchCard';
 
 interface SearchResultsProps {
   searchTerm: string;

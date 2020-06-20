@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import { Avatar, Container, Typography } from '@material-ui/core';
 import { MailOutline } from '@material-ui/icons';
 import AlreadyLoggedin from '@zoonk/components/AlreadyLoggedin';
+import HomeBreadcrumb from '@zoonk/components/HomeBreadcrumb';
 import Meta from '@zoonk/components/Meta';
 import useAuth from '@zoonk/components/useAuth';
 import useTranslation from '@zoonk/components/useTranslation';
@@ -31,6 +32,8 @@ const ResetPassword: NextPage = () => {
         description={translate('seo_reset_password_desc')}
         canonicalUrl={`${rootUrl}/reset-password`}
       />
+
+      <HomeBreadcrumb title={translate('reset_password')} />
 
       <div
         style={{
