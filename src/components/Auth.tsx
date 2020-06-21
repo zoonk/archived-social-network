@@ -93,6 +93,8 @@ const Auth = () => {
 
   useEffect(() => {
     const handleRouteChange = (url: string) => {
+      // Don't log data when the user is an admin.
+      if (user?.role === 'admin' || !isProduction) return;
       pageview(url);
       logEvent({
         action: 'view',
@@ -106,7 +108,7 @@ const Auth = () => {
     return () => {
       Router.events.off('routeChangeComplete', handleRouteChange);
     };
-  }, []);
+  }, [user]);
 
   return null;
 };
