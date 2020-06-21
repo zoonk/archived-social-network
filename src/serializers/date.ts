@@ -10,6 +10,7 @@ export const serializeFirebaseDate = (
   options: Intl.DateTimeFormatOptions = {
     month: 'short',
     day: 'numeric',
+    year: '2-digit',
   },
 ): string => {
   const { Timestamp } = firebase.firestore;

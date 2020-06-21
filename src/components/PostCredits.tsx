@@ -6,7 +6,9 @@ import useTranslation from './useTranslation';
 
 interface PostCreditsProps {
   author: Profile.Get;
+  createdAt: string;
   editors: Profile.Get[];
+  updatedAt: string;
 }
 
 const useStyles = makeStyles(() => ({
@@ -15,7 +17,12 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const PostCredits = ({ author, editors }: PostCreditsProps) => {
+const PostCredits = ({
+  author,
+  createdAt,
+  editors,
+  updatedAt,
+}: PostCreditsProps) => {
   const translate = useTranslation();
   const classes = useStyles();
   const editedBy = editors.filter((editor) => editor.id !== author.id);
@@ -54,6 +61,11 @@ const PostCredits = ({ author, editors }: PostCreditsProps) => {
           ))}
         </h5>
       )}
+
+      <h5 className={classes.author}>
+        {translate('created_on', { date: createdAt })} -{' '}
+        <strong>{translate('updated_on', { date: updatedAt })}</strong>
+      </h5>
     </Fragment>
   );
 };

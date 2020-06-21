@@ -59,6 +59,7 @@ const PostHeader = () => {
   const {
     chapterData,
     chapterId,
+    createdAt,
     createdBy,
     content,
     cover,
@@ -69,6 +70,7 @@ const PostHeader = () => {
     subtitle,
     title,
     topics,
+    updatedAt,
   } = useContext(PostContext);
   const siteImg = sites.find((site) => Boolean(site.image));
   const image = cover || getPostImage(content) || siteImg?.image;
@@ -90,7 +92,12 @@ const PostHeader = () => {
             <PostTitle title={title} subtitle={subtitle} />
             <PostTopics topics={topics} />
             <PostLinks links={sites} />
-            <PostCredits author={createdBy} editors={editors} />
+            <PostCredits
+              author={createdBy}
+              editors={editors}
+              createdAt={createdAt}
+              updatedAt={updatedAt}
+            />
           </div>
         </Grid>
       </Grid>
