@@ -15,6 +15,7 @@ export * from './notifications';
 export * from './posts';
 export * from './profile';
 export * from './progress';
+export * from './reports';
 export * from './topics';
 export * from './usernames';
 export * from './users';
