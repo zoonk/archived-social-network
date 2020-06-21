@@ -77,6 +77,7 @@
     "typescript": "^3.9.3",
     "vercel": "^19.1.0"
   },
+  "sideEffects": false,
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
