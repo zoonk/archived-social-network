@@ -1,6 +1,5 @@
 import algolia from 'algoliasearch';
 import { SearchResponse } from '@algolia/client-search';
-import { analytics } from '@zoonk/firebase/analytics';
 import { Chapter, Post, SearchResult } from '@zoonk/models';
 import { appLanguage } from '@zoonk/utils';
 
@@ -23,7 +22,6 @@ export const search = async (
     query,
     params: { hitsPerPage: 5 },
   }));
-  analytics().logEvent('search', { search_term: query });
   const res = await client.multipleQueries<SearchResult>(queries);
   return res.results.map((item) => ({
     ...item,

@@ -1,4 +1,3 @@
-import { analytics } from '@zoonk/firebase/analytics';
 import { db, timestamp } from '@zoonk/firebase/db';
 import { Group, Profile } from '@zoonk/models';
 import { appLanguage, getRandomId, generateSlug } from '@zoonk/utils';
@@ -32,7 +31,6 @@ export const createGroup = async (group: Group.Create): Promise<string> => {
     id = `${id}-${getRandomId()}`;
   }
 
-  analytics().logEvent('group_add', { language: group.language });
   await db.doc(`groups/${id}`).set(group);
   return id;
 };
@@ -42,7 +40,6 @@ export const updateGroup = (group: Group.Update, id: string): Promise<void> => {
 };
 
 export const deleteGroup = (id: string): Promise<void> => {
-  analytics().logEvent('group_delete');
   return db.doc(`groups/${id}`).delete();
 };
 

@@ -1,4 +1,3 @@
-import { analytics } from '@zoonk/firebase/analytics';
 import { db, timestamp } from '@zoonk/firebase/db';
 import { Comment, Profile } from '@zoonk/models';
 import { appLanguage } from '@zoonk/utils';
@@ -19,7 +18,6 @@ const commentConverter: firebase.firestore.FirestoreDataConverter<Comment.Get> =
 export const createComment = (
   comment: Comment.Create,
 ): Promise<firebase.firestore.DocumentReference> => {
-  analytics().logEvent('comment_add', { language: comment.language });
   return db.collection('comments').add(comment);
 };
 

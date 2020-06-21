@@ -1,4 +1,3 @@
-import { analytics } from '@zoonk/firebase/analytics';
 import { db } from '@zoonk/firebase/db';
 import { Topic } from '@zoonk/models';
 import { appLanguage } from '@zoonk/utils';
@@ -16,7 +15,6 @@ const topicConverter: firebase.firestore.FirestoreDataConverter<Topic.Get> = {
 };
 
 export const createTopic = (topic: Topic.Create, id: string): Promise<void> => {
-  analytics().logEvent('topic_add', { language: topic.language });
   return db.doc(`topics/${id}`).set(topic);
 };
 

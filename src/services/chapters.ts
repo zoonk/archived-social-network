@@ -1,4 +1,3 @@
-import { analytics } from '@zoonk/firebase/analytics';
 import { db, timestamp } from '@zoonk/firebase/db';
 import { Chapter, Profile } from '@zoonk/models';
 import { generateRandomSlug } from '@zoonk/utils';
@@ -17,10 +16,9 @@ const chapterConverter: firebase.firestore.FirestoreDataConverter<Chapter.Get> =
 };
 
 export const createChapter = async (data: Chapter.Create): Promise<string> => {
-  const { language, title } = data;
+  const { title } = data;
   const slug = generateRandomSlug(title);
   await db.doc(`chapters/${slug}`).set(data);
-  analytics().logEvent('chapter_add', { language });
   return slug;
 };
 

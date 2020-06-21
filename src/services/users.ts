@@ -1,5 +1,4 @@
 import firebase from '@zoonk/firebase';
-import { analytics } from '@zoonk/firebase/analytics';
 import { auth } from '@zoonk/firebase/auth';
 import { db } from '@zoonk/firebase/db';
 import { functions } from '@zoonk/firebase/functions';
@@ -19,7 +18,6 @@ export const signIn = (
   email: string,
   password: string,
 ): Promise<firebase.auth.UserCredential> => {
-  analytics().logEvent('login', { method: 'password' });
   return auth.signInWithEmailAndPassword(email, password);
 };
 
@@ -32,7 +30,6 @@ export const signOut = () => {
  */
 export const signInWithFacebook = (): Promise<firebase.auth.UserCredential> => {
   const provider = new firebase.auth.FacebookAuthProvider();
-  analytics().logEvent('login', { method: 'facebook' });
   return auth.signInWithPopup(provider);
 };
 
@@ -41,7 +38,6 @@ export const signInWithFacebook = (): Promise<firebase.auth.UserCredential> => {
  */
 export const signInWithGoogle = (): Promise<firebase.auth.UserCredential> => {
   const provider = new firebase.auth.GoogleAuthProvider();
-  analytics().logEvent('login', { method: 'google' });
   return auth.signInWithPopup(provider);
 };
 

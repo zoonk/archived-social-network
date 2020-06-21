@@ -7,7 +7,7 @@ import Document, {
   NextScript,
 } from 'next/document';
 import { ServerStyleSheets } from '@material-ui/core/styles';
-import { appLanguage, isProduction, theme } from '@zoonk/utils';
+import { appLanguage, GA_TRACKING_ID, isProduction, theme } from '@zoonk/utils';
 
 interface CustomDocumentProps {
   styleTags: ReactElement<{}>[];
@@ -84,6 +84,22 @@ class CustomDocument extends Document<CustomDocumentProps> {
           />
 
           {this.props.styleTags}
+
+          <script
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
+          />
+          <script
+            // eslint-disable-next-line react/no-danger
+            dangerouslySetInnerHTML={{
+              __html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+        
+          gtag('config', ${GA_TRACKING_ID});`,
+            }}
+          />
         </Head>
         <body
           style={{

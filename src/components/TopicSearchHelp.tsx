@@ -1,6 +1,4 @@
-import { useEffect } from 'react';
 import { Container, Dialog, Typography } from '@material-ui/core';
-import { analytics } from '@zoonk/firebase/analytics';
 import { theme } from '@zoonk/utils';
 import useTranslation from './useTranslation';
 
@@ -11,14 +9,6 @@ interface TopicSearchHelpProps {
 
 const TopicSearchHelp = ({ open, onClose }: TopicSearchHelpProps) => {
   const translate = useTranslation();
-
-  useEffect(() => {
-    if (open) {
-      analytics().logEvent('help_tooltip', {
-        section: 'topic_add',
-      });
-    }
-  }, [open]);
 
   return (
     <Dialog open={open} onClose={onClose}>

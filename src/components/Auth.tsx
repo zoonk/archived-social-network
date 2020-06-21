@@ -1,10 +1,18 @@
 import { useContext, useEffect, useState } from 'react';
-import { analytics } from '@zoonk/firebase/analytics';
+import Router from 'next/router';
 import { auth } from '@zoonk/firebase/auth';
 import { db } from '@zoonk/firebase/db';
+import { performance } from '@zoonk/firebase/performance';
 import { User } from '@zoonk/models';
 import { logIPAddress } from '@zoonk/services/users';
-import { AuthContext, appLanguage, isProduction } from '@zoonk/utils';
+import {
+  appLanguage,
+  AuthContext,
+  isProduction,
+  logEvent,
+  pageview,
+  setUserID,
+} from '@zoonk/utils';
 
 const Auth = () => {
   const { user, setProfile, setUser } = useContext(AuthContext);
@@ -28,15 +36,7 @@ const Auth = () => {
 
           // Store the user data to be saved in the AuthContext.
           setUser({ ...fbUser, uid: authState.uid });
-
-          // Disable analytics for admins.
-          analytics().setAnalyticsCollectionEnabled(fbUser.role !== 'admin');
-          analytics().setUserProperties({
-            emailVerified: authState.emailVerified,
-            role: fbUser.role,
-            appLanguage,
-          });
-          analytics().setUserId(authState.uid);
+          setUserID(authState.uid);
         }
       });
     }
@@ -86,6 +86,27 @@ const Auth = () => {
       logIPAddress();
     }
   }, [authState]);
+
+  useEffect(() => {
+    performance();
+  }, []);
+
+  useEffect(() => {
+    const handleRouteChange = (url: string) => {
+      pageview(url);
+      logEvent({
+        action: 'view',
+        category: 'app_language',
+        label: appLanguage,
+        value: 1,
+      });
+    };
+
+    Router.events.on('routeChangeComplete', handleRouteChange);
+    return () => {
+      Router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, []);
 
   return null;
 };

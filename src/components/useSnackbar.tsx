@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { SnackbarAction } from '@zoonk/models';
-import { GlobalContext } from '@zoonk/utils';
+import { GlobalContext, logError } from '@zoonk/utils';
 
 const useSnackbar = () => {
   const { snackbar, translate } = useContext(GlobalContext);
@@ -26,6 +26,7 @@ const useSnackbar = () => {
     const handler = (type: SnackbarAction, msg?: string) => {
       setAction(type);
       setMessage(msg || defaultMessage(type));
+      if (type === 'error' && msg) logError(msg);
     };
 
     snackbar.on('*', handler);

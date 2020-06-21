@@ -1,4 +1,3 @@
-import { analytics } from '@zoonk/firebase/analytics';
 import { arrayRemove, arrayUnion, db, timestamp } from '@zoonk/firebase/db';
 import { functions } from '@zoonk/firebase/functions';
 import { ChapterProgress, Dictionary, Post, Profile } from '@zoonk/models';
@@ -21,7 +20,6 @@ export const postConverter: firebase.firestore.FirestoreDataConverter<Post.Get> 
 export const createPost = async (data: Post.Create): Promise<string> => {
   const slug = generateRandomSlug(data.title);
   await db.doc(`posts/${slug}`).set(data);
-  analytics().logEvent('post_add', { language: data.language });
   return slug;
 };
 

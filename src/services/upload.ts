@@ -1,4 +1,3 @@
-import { analytics } from '@zoonk/firebase/analytics';
 import { storage } from '@zoonk/firebase/storage';
 
 /**
@@ -13,8 +12,6 @@ export const upload = async (file: File, folder: string): Promise<string> => {
 
   // It uses the current timestamp to make sure we're creating a unique file.
   const fileUpload = ref.child(`${folder}/${file.name}-${now}`).put(file);
-  analytics().logEvent('upload_file', { folder });
-
   const snap = await fileUpload;
 
   // Return a string containing the file URL.
