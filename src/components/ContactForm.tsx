@@ -28,7 +28,10 @@ const ContactForm = () => {
       query: JSON.stringify(query),
       uid: user ? user.uid : null,
     })
-      .then(() => snackbar('success', translate('sent')))
+      .then(() => {
+        setMessage('');
+        snackbar('success', translate('sent'));
+      })
       .catch((e) => snackbar('error', e.message));
   };
 

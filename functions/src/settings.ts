@@ -16,3 +16,5 @@ export const xpActions = {
   updated_posts: 2,
   updated_topics: 1,
 };
+
+export const supportEmail = 'support@zoonk.org';

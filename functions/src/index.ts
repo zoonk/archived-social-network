@@ -6,6 +6,7 @@ export * from './activity';
 export * from './admin';
 export * from './chapters';
 export * from './comments';
+export * from './feedback';
 export * from './followers';
 export * from './groups';
 export * from './leaderboard';
