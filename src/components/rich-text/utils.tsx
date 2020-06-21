@@ -7,10 +7,6 @@ import { withPDF } from './pdf';
 import { withTables } from './tables';
 import { withVideos } from './videos';
 
-export const editorStyles = {
-  fontFamily: "'Raleway', sans-serif",
-};
-
 export const withEditor = () =>
   withTables(
     withPDF(

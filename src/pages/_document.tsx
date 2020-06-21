@@ -45,17 +45,6 @@ class CustomDocument extends Document<CustomDocumentProps> {
             content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
           />
 
-          <link
-            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700"
-            rel="stylesheet"
-            type="text/css"
-          />
-
-          <link
-            href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;400;700&display=swap"
-            rel="stylesheet"
-          />
-
           <link rel="manifest" href="/manifest.json" />
           <link rel="shortcut icon" href="/favicon.ico" />
           <link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png" />
@@ -106,7 +95,6 @@ class CustomDocument extends Document<CustomDocumentProps> {
             margin: 0,
             padding: 0,
             background: theme.palette.background.default,
-            fontFamily: theme.typography.fontFamily,
             fontWeight: theme.typography.fontWeightRegular,
           }}
         >

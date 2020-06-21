@@ -13,6 +13,10 @@
   color: white;
 }
 
+body {
+  font-family: 'Segoe UI', Roboto, Tahoma, Geneva, Verdana, sans-serif;
+}
+
 ul,
 ol {
   padding: 16px;

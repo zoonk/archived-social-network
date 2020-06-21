@@ -3,7 +3,7 @@ import { Node } from 'slate';
 import { Editable, Slate } from 'slate-react';
 import Element from './Element';
 import Leaf from './Leaf';
-import { editorStyles, withEditor } from './utils';
+import { withEditor } from './utils';
 
 interface RichTextViewerProps {
   content: Node[];
@@ -21,7 +21,6 @@ const RichTextViewer = ({ content }: RichTextViewerProps) => {
         renderElement={renderElement}
         autoFocus={false}
         renderLeaf={renderLeaf}
-        style={editorStyles}
       />
     </Slate>
   );

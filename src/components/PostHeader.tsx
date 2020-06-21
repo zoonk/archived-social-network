@@ -11,7 +11,6 @@ import { getPostImage } from './rich-text/posts';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    fontFamily: "'Raleway', sans-serif",
     borderBottom: `1px dashed ${theme.palette.primary.light}`,
     padding: 0,
     minHeight: 'calc(100vh - 48px - 69px)',

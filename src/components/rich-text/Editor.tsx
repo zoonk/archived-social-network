@@ -6,7 +6,6 @@ import Leaf from './Leaf';
 import { editorHotkeys } from './blocks';
 import { insertLink } from './links';
 import { toggleMark } from './marks';
-import { editorStyles } from './utils';
 import useTranslation from '../useTranslation';
 
 interface EditorProps {
@@ -41,7 +40,7 @@ const Editor = ({ placeholder, fixed }: EditorProps) => {
       placeholder={placeholder || translate('post_share')}
       spellCheck
       onKeyDown={handleKeyDown}
-      style={{ ...editorStyles, marginBottom: fixed ? '68px' : 0 }}
+      style={{ marginBottom: fixed ? '68px' : 0 }}
     />
   );
 };
