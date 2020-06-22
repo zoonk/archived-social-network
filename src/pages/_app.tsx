@@ -1,5 +1,5 @@
 /* eslint-disable global-require */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
@@ -27,6 +27,14 @@ if (appLanguage === 'pt') {
 const CustomApp = ({ Component, pageProps }: AppProps) => {
   const [user, setUser] = useState<User.Get | null | undefined>(undefined);
   const [profile, setProfile] = useState<Profile.Get | null>(null);
+
+  useEffect(() => {
+    // Remove the server-side injected CSS.
+    const jssStyles = document.querySelector('#jss-server-side');
+    if (jssStyles) {
+      jssStyles.parentElement!.removeChild(jssStyles);
+    }
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
