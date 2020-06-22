@@ -19,7 +19,7 @@
     "lint": "yarn eslint './**/*.{js,jsx,ts,tsx}'",
     "prettier": "prettier",
     "start": "next start",
-    "start:firestore": "firebase emulators:exec --only firestore",
+    "start:firestore": "yarn firebase emulators:exec --only firestore",
     "test": "FIRESTORE_EMULATOR_HOST=localhost:8080 yarn start:firestore 'jest'",
     "test:coverage": "yarn start:firestore 'jest --coverage'",
     "test:watch": "yarn start:firestore 'jest --watch'",
