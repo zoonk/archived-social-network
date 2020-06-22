@@ -22,16 +22,25 @@ const Navbar = () => {
   const [displayMenu, setMenu] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
-  // Hide the menu drawer when navigating to a different page.
+  // Handle visual effects when the navigation starts.
   useEffect(() => {
-    Router.events.on('routeChangeStart', () => setMenu(false));
+    const handleRouterChange = () => {
+      setMenu(false);
+      setLoading(true);
+    };
+    Router.events.on('routeChangeStart', handleRouterChange);
+    return () => Router.events.off('routeChangeStart', handleRouterChange);
   }, []);
 
-  // Add a loading effect when navigating to a different page.
+  // Handle visual effects when the navigation ends or has an error.
   useEffect(() => {
-    Router.events.on('routeChangeStart', () => setLoading(true));
-    Router.events.on('routeChangeComplete', () => setLoading(false));
-    Router.events.on('routeChangeError', () => setLoading(false));
+    const handleRouterChange = () => setLoading(false);
+    Router.events.on('routeChangeComplete', handleRouterChange);
+    Router.events.on('routeChangeError', handleRouterChange);
+    return () => {
+      Router.events.off('routeChangeComplete', handleRouterChange);
+      Router.events.off('routeChangeError', handleRouterChange);
+    };
   }, []);
 
   return (

@@ -46,7 +46,9 @@ const PostBarLessons = ({
   const translate = useTranslation();
 
   useEffect(() => {
-    Router.events.on('routeChangeStart', () => setDrawer(false));
+    const handleRouteChange = () => setDrawer(false);
+    Router.events.on('routeChangeStart', handleRouteChange);
+    return () => Router.events.off('routeChangeStart', handleRouteChange);
   }, []);
 
   useEffect(() => {
