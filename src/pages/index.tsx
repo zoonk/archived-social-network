@@ -4,7 +4,6 @@ import Meta from '@zoonk/components/Meta';
 import PostsList from '@zoonk/components/PostsList';
 import SidebarPage from '@zoonk/components/SidebarPage';
 import TimelineHeader from '@zoonk/components/TimelineHeader';
-import useAuth from '@zoonk/components/useAuth';
 import useTranslation from '@zoonk/components/useTranslation';
 import { Post } from '@zoonk/models';
 import { getPosts } from '@zoonk/services';
@@ -23,7 +22,6 @@ export const getStaticProps: GetStaticProps<HomeProps> = async () => {
 
 const Home = ({ posts }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const translate = useTranslation();
-  const { user } = useAuth();
 
   return (
     <Container component="main">
@@ -34,7 +32,7 @@ const Home = ({ posts }: InferGetStaticPropsType<typeof getStaticProps>) => {
         noAppName
       />
       <SidebarPage title={translate('post_share')}>
-        {user && <TimelineHeader active="all" />}
+        <TimelineHeader active="all" />
         <PostsList data={posts} limit={limit} />
       </SidebarPage>
     </Container>
