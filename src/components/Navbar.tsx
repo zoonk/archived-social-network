@@ -61,24 +61,22 @@ const Navbar = () => {
           </IconButton>
         </Link>
 
-        {user && (
-          <Link href="/notifications" passHref>
-            <IconButton
-              aria-label={translate('notifications')}
-              color="inherit"
-              edge="end"
+        <Link href="/notifications" passHref>
+          <IconButton
+            aria-label={translate('notifications')}
+            color="inherit"
+            edge="end"
+          >
+            <Badge
+              variant="dot"
+              overlap="circle"
+              color="secondary"
+              invisible={!user?.notifications}
             >
-              <Badge
-                variant="dot"
-                overlap="circle"
-                color="secondary"
-                invisible={!user.notifications}
-              >
-                <Notifications />
-              </Badge>
-            </IconButton>
-          </Link>
-        )}
+              <Notifications />
+            </Badge>
+          </IconButton>
+        </Link>
 
         <IconButton
           edge="end"
