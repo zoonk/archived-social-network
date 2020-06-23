@@ -1,8 +1,7 @@
-import { Grid, makeStyles } from '@material-ui/core';
+import { Grid, Hidden, makeStyles } from '@material-ui/core';
 import { Post } from '@zoonk/models';
 import HomeSidebar from './HomeSidebar';
 import PostShare from './PostShare';
-import useIsMobile from './useIsMobile';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -27,15 +26,15 @@ interface SidebarPageProps {
 
 const SidebarPage = ({ category, children, title }: SidebarPageProps) => {
   const classes = useStyles();
-  const isMobile = useIsMobile();
 
   return (
     <Grid container spacing={2} className={classes.container}>
-      {!isMobile && (
-        <Grid item sm={3} xs={12}>
+      <Grid item sm={3} xs={12}>
+        <Hidden implementation="css" xsDown>
           <HomeSidebar />
-        </Grid>
-      )}
+        </Hidden>
+      </Grid>
+
       <Grid item xs={12} sm={9} className={classes.column}>
         <PostShare category={category} title={title} />
         {children}
