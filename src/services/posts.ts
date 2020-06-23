@@ -1,7 +1,12 @@
 import { arrayRemove, arrayUnion, db, timestamp } from '@zoonk/firebase/db';
 import { functions } from '@zoonk/firebase/functions';
 import { ChapterProgress, Dictionary, Post, Profile } from '@zoonk/models';
-import { appLanguage, generateRandomSlug } from '@zoonk/utils';
+import {
+  appLanguage,
+  generateRandomSlug,
+  logEdit,
+  logPostCreation,
+} from '@zoonk/utils';
 import { serializePost } from '../serializers';
 import { getChapter, updateChapter } from './chapters';
 import { getTopic } from './topics';
@@ -20,10 +25,21 @@ export const postConverter: firebase.firestore.FirestoreDataConverter<Post.Get> 
 export const createPost = async (data: Post.Create): Promise<string> => {
   const slug = generateRandomSlug(data.title);
   await db.doc(`posts/${slug}`).set(data);
+  logEdit(data.category, 'add', data.createdById);
+
+  // Log how long a user took to create a post. This is used to improve the UX.
+  const start = localStorage.getItem('postStart');
+  if (start) {
+    const end = new Date().getTime();
+    const time = end - Number(start);
+    logPostCreation(time, data.category);
+  }
+
   return slug;
 };
 
 export const updatePost = (data: Post.Update, id: string): Promise<void> => {
+  logEdit('posts', 'edit', data.updatedById);
   return db.doc(`posts/${id}`).update(data);
 };
 
@@ -50,6 +66,7 @@ export const deletePost = async (
     },
     id,
   );
+  logEdit('posts', 'delete', editorId);
   return db.doc(`posts/${id}`).delete();
 };
 

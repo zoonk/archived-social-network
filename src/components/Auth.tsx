@@ -5,14 +5,7 @@ import { db } from '@zoonk/firebase/db';
 import { performance } from '@zoonk/firebase/performance';
 import { User } from '@zoonk/models';
 import { logIPAddress } from '@zoonk/services/users';
-import {
-  appLanguage,
-  AuthContext,
-  isProduction,
-  logEvent,
-  pageview,
-  setUserID,
-} from '@zoonk/utils';
+import { AuthContext, pageview } from '@zoonk/utils';
 
 const Auth = () => {
   const { user, setProfile, setUser } = useContext(AuthContext);
@@ -36,7 +29,6 @@ const Auth = () => {
 
           // Store the user data to be saved in the AuthContext.
           setUser({ ...fbUser, uid: authState.uid });
-          setUserID(authState.uid);
         }
       });
     }
@@ -82,7 +74,7 @@ const Auth = () => {
    * IP address in case of multiple violations.
    */
   useEffect(() => {
-    if (authState && isProduction) {
+    if (authState) {
       logIPAddress();
     }
   }, [authState]);
@@ -94,14 +86,8 @@ const Auth = () => {
   useEffect(() => {
     const handleRouteChange = (url: string) => {
       // Don't log data when the user is an admin.
-      if (user?.role === 'admin' || !isProduction) return;
-      pageview(url);
-      logEvent({
-        action: 'view',
-        category: 'app_language',
-        label: appLanguage,
-        value: 1,
-      });
+      if (user?.role === 'admin') return;
+      pageview(url, user?.uid);
     };
 
     Router.events.on('routeChangeComplete', handleRouteChange);

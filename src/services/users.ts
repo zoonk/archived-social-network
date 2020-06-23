@@ -3,6 +3,7 @@ import { auth } from '@zoonk/firebase/auth';
 import { db } from '@zoonk/firebase/db';
 import { functions } from '@zoonk/firebase/functions';
 import { Notification, User } from '@zoonk/models';
+import { logSignIn, logSignUp } from '@zoonk/utils';
 
 /**
  * Log a user's IP address to the database.
@@ -18,6 +19,7 @@ export const signIn = (
   email: string,
   password: string,
 ): Promise<firebase.auth.UserCredential> => {
+  logSignIn('email');
   return auth.signInWithEmailAndPassword(email, password);
 };
 
@@ -30,6 +32,7 @@ export const signOut = () => {
  */
 export const signInWithFacebook = (): Promise<firebase.auth.UserCredential> => {
   const provider = new firebase.auth.FacebookAuthProvider();
+  logSignIn('facebook');
   return auth.signInWithPopup(provider);
 };
 
@@ -38,6 +41,7 @@ export const signInWithFacebook = (): Promise<firebase.auth.UserCredential> => {
  */
 export const signInWithGoogle = (): Promise<firebase.auth.UserCredential> => {
   const provider = new firebase.auth.GoogleAuthProvider();
+  logSignIn('google');
   return auth.signInWithPopup(provider);
 };
 
@@ -77,5 +81,6 @@ export const resetPassword = async (email: string) => {
 };
 
 export const signUp = (email: string, password: string) => {
+  logSignUp('email');
   return auth.signInWithEmailAndPassword(email, password);
 };

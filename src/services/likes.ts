@@ -1,5 +1,6 @@
 import { db } from '@zoonk/firebase/db';
 import { ItemLike } from '@zoonk/models';
+import { logLike } from '@zoonk/utils';
 
 /**
  * Check if a user has liked an item or not.
@@ -25,6 +26,7 @@ export const toggleLike = (
   uid: string,
   current: boolean,
 ): Promise<void> => {
+  logLike(!current, itemPath, uid);
   return db
     .doc(`${itemPath}/likes/${uid}`)
     .set({ like: !current }, { merge: true });

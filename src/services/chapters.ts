@@ -1,6 +1,6 @@
 import { db, timestamp } from '@zoonk/firebase/db';
 import { Chapter, Profile } from '@zoonk/models';
-import { generateRandomSlug } from '@zoonk/utils';
+import { generateRandomSlug, logEdit } from '@zoonk/utils';
 import { updateTopic } from './topics';
 import { serializeChapter } from '../serializers';
 
@@ -19,6 +19,7 @@ export const createChapter = async (data: Chapter.Create): Promise<string> => {
   const { title } = data;
   const slug = generateRandomSlug(title);
   await db.doc(`chapters/${slug}`).set(data);
+  logEdit('chapters', 'add', data.createdById);
   return slug;
 };
 
@@ -26,6 +27,7 @@ export const updateChapter = (
   data: Chapter.Update,
   id: string,
 ): Promise<void> => {
+  logEdit('chapters', 'edit', data.updatedById);
   return db.doc(`chapters/${id}`).update(data);
 };
 

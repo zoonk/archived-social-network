@@ -40,6 +40,12 @@ const PostCreate = ({
     }
   }, [chapterId]);
 
+  // Log when a user started creating a post
+  useEffect(() => {
+    const start = new Date().getTime();
+    localStorage.setItem('postStart', String(start));
+  }, []);
+
   if (!user || !profile) {
     return null;
   }

@@ -1,6 +1,6 @@
 import { db, timestamp } from '@zoonk/firebase/db';
 import { Group, Profile } from '@zoonk/models';
-import { appLanguage, getRandomId, generateSlug } from '@zoonk/utils';
+import { appLanguage, getRandomId, generateSlug, logEdit } from '@zoonk/utils';
 import { serializeGroup } from '../serializers';
 
 const groupConverter: firebase.firestore.FirestoreDataConverter<Group.Get> = {
@@ -32,10 +32,12 @@ export const createGroup = async (group: Group.Create): Promise<string> => {
   }
 
   await db.doc(`groups/${id}`).set(group);
+  logEdit('groups', 'add', group.createdById);
   return id;
 };
 
 export const updateGroup = (group: Group.Update, id: string): Promise<void> => {
+  logEdit('groups', 'edit', group.updatedById);
   return db.doc(`groups/${id}`).update(group);
 };
 

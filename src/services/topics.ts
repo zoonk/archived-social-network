@@ -1,6 +1,6 @@
 import { db } from '@zoonk/firebase/db';
 import { Topic } from '@zoonk/models';
-import { appLanguage } from '@zoonk/utils';
+import { appLanguage, logEdit } from '@zoonk/utils';
 import { serializeTopic } from '../serializers';
 
 const topicConverter: firebase.firestore.FirestoreDataConverter<Topic.Get> = {
@@ -15,10 +15,12 @@ const topicConverter: firebase.firestore.FirestoreDataConverter<Topic.Get> = {
 };
 
 export const createTopic = (topic: Topic.Create, id: string): Promise<void> => {
+  logEdit('topics', 'add', topic.createdById);
   return db.doc(`topics/${id}`).set(topic);
 };
 
 export const updateTopic = (topic: Topic.Update, id: string): Promise<void> => {
+  logEdit('topics', 'edit', topic.updatedById);
   return db.doc(`topics/${id}`).update(topic);
 };
 

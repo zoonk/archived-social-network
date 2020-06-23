@@ -1,5 +1,6 @@
 import { db, timestamp } from '@zoonk/firebase/db';
 import { Follower } from '@zoonk/models';
+import { logFollow } from '@zoonk/utils';
 import { serializeFollower } from '../serializers';
 
 const followerConverter: firebase.firestore.FirestoreDataConverter<Follower.Get> = {
@@ -58,6 +59,7 @@ export const follow = (
   id: string,
   userId: string,
 ): Promise<void> => {
+  logFollow('follow', collection, id, userId);
   return db
     .doc(`${collection}/${id}/followers/${userId}`)
     .set({ joined: timestamp });
@@ -68,6 +70,7 @@ export const unfollow = (
   id: string,
   userId: string,
 ): Promise<void> => {
+  logFollow('unfollow', collection, id, userId);
   return db.doc(`${collection}/${id}/followers/${userId}`).delete();
 };
 

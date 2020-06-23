@@ -1,6 +1,6 @@
 import { db, timestamp } from '@zoonk/firebase/db';
 import { Comment, Profile } from '@zoonk/models';
-import { appLanguage } from '@zoonk/utils';
+import { appLanguage, logEdit } from '@zoonk/utils';
 import { serializeComment } from '../serializers';
 import { updatePost } from './posts';
 
@@ -18,6 +18,7 @@ const commentConverter: firebase.firestore.FirestoreDataConverter<Comment.Get> =
 export const createComment = (
   comment: Comment.Create,
 ): Promise<firebase.firestore.DocumentReference> => {
+  logEdit('comments', 'add', comment.createdById);
   return db.collection('comments').add(comment);
 };
 
