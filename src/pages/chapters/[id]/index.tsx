@@ -1,39 +1,29 @@
-import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Error from 'next/error';
-import { useRouter } from 'next/router';
-import { CircularProgress, Container, Grid } from '@material-ui/core';
+import { Container, Grid } from '@material-ui/core';
 import ChapterDetails from '@zoonk/components/ChapterDetails';
 import LessonsCard from '@zoonk/components/LessonsCard';
 import Meta from '@zoonk/components/Meta';
 import TopicsBreadcrumb from '@zoonk/components/TopicsBreadcrumb';
 import { Chapter } from '@zoonk/models';
-import { getChapter, listChapters } from '@zoonk/services';
+import { getChapter } from '@zoonk/services';
 
 interface ChapterProps {
   data: Chapter.Get | null;
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const chapters = await listChapters(10);
-  const paths = chapters.map((chapter) => ({ params: { id: chapter.id } }));
-  return { paths, fallback: true };
-};
-
-export const getStaticProps: GetStaticProps<ChapterProps> = async ({
+export const getServerSideProps: GetServerSideProps<ChapterProps> = async ({
   params,
 }) => {
   const id = String(params?.id);
   const data = await getChapter(id);
-  return { props: { data }, unstable_revalidate: 1 };
+  return { props: { data } };
 };
 
 const ChapterPage = ({
   data,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const { isFallback } = useRouter();
-
-  if (!data && !isFallback) return <Error statusCode={404} />;
-  if (!data) return <CircularProgress />;
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  if (!data) return <Error statusCode={404} />;
 
   const {
     id,
