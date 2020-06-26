@@ -1,7 +1,6 @@
-import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Error from 'next/error';
-import { useRouter } from 'next/router';
-import { CircularProgress, Container } from '@material-ui/core';
+import { Container } from '@material-ui/core';
 import GroupBase from '@zoonk/components/GroupBase';
 import GroupsBreadcrumb from '@zoonk/components/GroupsBreadcrumb';
 import GroupPinned from '@zoonk/components/GroupPinned';
@@ -9,7 +8,7 @@ import Meta from '@zoonk/components/Meta';
 import PostShare from '@zoonk/components/PostShare';
 import PostsList from '@zoonk/components/PostsList';
 import { Group, Post } from '@zoonk/models';
-import { getGroup, getGroups, getPosts } from '@zoonk/services';
+import { getGroup, getPosts } from '@zoonk/services';
 import { appLanguage } from '@zoonk/utils';
 
 interface GroupPageProps {
@@ -19,29 +18,20 @@ interface GroupPageProps {
 
 const limit = 10;
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const groups = await getGroups({ limit: 20 });
-  const paths = groups.map((group) => ({ params: { id: group.id } }));
-  return { paths, fallback: true };
-};
-
-export const getStaticProps: GetStaticProps<GroupPageProps> = async ({
+export const getServerSideProps: GetServerSideProps<GroupPageProps> = async ({
   params,
 }) => {
   const groupId = String(params?.id);
   const groupReq = getGroup(groupId);
   const postsReq = getPosts({ groupId, limit });
   const [group, posts] = await Promise.all([groupReq, postsReq]);
-  return { props: { group, posts }, unstable_revalidate: 1 };
+  return { props: { group, posts } };
 };
 
 const GroupPage = ({
   group,
   posts,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const { isFallback } = useRouter();
-
-  if (!group && isFallback) return <CircularProgress />;
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   if (!group) return <Error statusCode={404} />;
 
   const { description, id, language, photo, title, topics } = group;
