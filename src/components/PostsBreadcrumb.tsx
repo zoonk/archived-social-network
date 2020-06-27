@@ -3,6 +3,7 @@ import { theme } from '@zoonk/utils';
 import LinkChapter from './LinkChapter';
 import LinkGroup from './LinkGroup';
 import LinkHome from './LinkHome';
+import LinkPost from './LinkPost';
 import LinkTopic from './LinkTopic';
 
 interface PostsBreadcrumbProps {
@@ -10,6 +11,8 @@ interface PostsBreadcrumbProps {
   chapterName?: string;
   groupId?: string | null;
   groupName?: string;
+  postId?: string;
+  postTitle?: string;
   title?: string;
   topicId?: string;
 }
@@ -19,6 +22,8 @@ const PostsBreadcrumb = ({
   chapterName,
   groupId,
   groupName,
+  postId,
+  postTitle,
   title,
   topicId,
 }: PostsBreadcrumbProps) => {
@@ -29,6 +34,7 @@ const PostsBreadcrumb = ({
         {topicId && <LinkTopic id={topicId} />}
         {chapterId && <LinkChapter id={chapterId} title={chapterName} />}
         {groupId && <LinkGroup id={groupId} title={groupName} />}
+        {postId && postTitle && <LinkPost id={postId} title={postTitle} />}
         {title && <Typography color="textPrimary">{title}</Typography>}
       </Breadcrumbs>
     </Paper>

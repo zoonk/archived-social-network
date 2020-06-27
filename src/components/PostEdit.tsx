@@ -5,10 +5,10 @@ import { CircularProgress, IconButton } from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
 import { Post } from '@zoonk/models';
 import { deletePost, getPost } from '@zoonk/services';
-import BackButton from './BackButton';
 import EditNotAllowed from './EditNotAllowed';
 import LoginForm from './LoginForm';
 import PostEditForm from './PostEditForm';
+import PostsBreadcrumb from './PostsBreadcrumb';
 import useAuth from './useAuth';
 import useSnackbar from './useSnackbar';
 import useTranslation from './useTranslation';
@@ -42,11 +42,12 @@ const PostEdit = ({ id }: PostEditProps) => {
   if (data === undefined || user === undefined) return <CircularProgress />;
   if (!canEdit) return <EditNotAllowed />;
 
+  const { chapterId, chapterData, groupId, groupData, title, topics } = data;
+
   const handleDelete = () => {
     if (profile && window.confirm(translate('post_delete_confirmation'))) {
       snackbar('progress', translate('deleting'));
 
-      const { chapterId, topics } = data;
       const linkPath = chapterId ? '/chapters/[id]' : '/topics/[id]';
       const linkAs = chapterId
         ? `/chapters/${chapterId}`
@@ -70,7 +71,16 @@ const PostEdit = ({ id }: PostEditProps) => {
           alignItems: 'center',
         }}
       >
-        <BackButton />
+        <PostsBreadcrumb
+          chapterId={chapterId}
+          chapterName={chapterData?.title}
+          groupId={groupId}
+          groupName={groupData?.title}
+          postId={id}
+          postTitle={title}
+          title={translate('edit')}
+          topicId={topics[0]}
+        />
         {canDelete && (
           <IconButton
             color="secondary"
