@@ -1,4 +1,4 @@
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { NextPage } from 'next';
 import Error from 'next/error';
 import { Container, Grid } from '@material-ui/core';
 import ChapterDetails from '@zoonk/components/ChapterDetails';
@@ -7,22 +7,13 @@ import Meta from '@zoonk/components/Meta';
 import TopicsBreadcrumb from '@zoonk/components/TopicsBreadcrumb';
 import { Chapter } from '@zoonk/models';
 import { getChapter } from '@zoonk/services';
+import { preRender } from '@zoonk/utils';
 
 interface ChapterProps {
   data: Chapter.Get | null;
 }
 
-export const getServerSideProps: GetServerSideProps<ChapterProps> = async ({
-  params,
-}) => {
-  const id = String(params?.id);
-  const data = await getChapter(id);
-  return { props: { data } };
-};
-
-const ChapterPage = ({
-  data,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const ChapterPage: NextPage<ChapterProps> = ({ data }) => {
   if (!data) return <Error statusCode={404} />;
 
   const {
@@ -68,6 +59,13 @@ const ChapterPage = ({
       </Grid>
     </Container>
   );
+};
+
+ChapterPage.getInitialProps = async ({ query }) => {
+  const id = String(query.id);
+  const data = await getChapter(id);
+  preRender();
+  return { data };
 };
 
 export default ChapterPage;
