@@ -5,6 +5,7 @@ import { Link, makeStyles, Paper, Typography } from '@material-ui/core';
 import { getDomainFromUrl, isInternal } from '@zoonk/utils';
 import PostListMeta from './PostListMeta';
 import { getPlainText, getPostImage } from './rich-text/posts';
+import useTranslation from './useTranslation';
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -31,6 +32,7 @@ interface PostListItemProps {
 
 const PostListItem = ({ item }: PostListItemProps) => {
   const classes = useStyles();
+  const translate = useTranslation();
   const { content, cover, id, sites, title } = item;
   const siteImg = sites.find((site) => Boolean(site.image));
   const image = cover || getPostImage(content) || siteImg?.image;
@@ -42,6 +44,7 @@ const PostListItem = ({ item }: PostListItemProps) => {
           <NextLink href="/posts/[id]" as={`/posts/${id}`} passHref>
             <a
               className={classes.image}
+              aria-label={translate('open_page', { title })}
               style={{
                 background: `url(${image}) no-repeat center center`,
                 backgroundSize: 'cover',

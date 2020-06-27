@@ -156,6 +156,7 @@ export type TranslationKeys =
   | 'no_chapters'
   | 'no_lessons'
   | 'notifications'
+  | 'open_page'
   | 'order'
   | 'page_edits_title'
   | 'page_edits'

@@ -6,17 +6,20 @@ import {
   Typography,
 } from '@material-ui/core';
 import { isInternal, theme } from '@zoonk/utils';
+import useTranslation from './useTranslation';
 
 interface LinkCardProps {
   site: Post.Link;
 }
 
 const LinkCard = ({ site }: LinkCardProps) => {
+  const translate = useTranslation();
   const { description, image, title, url } = site;
 
   return (
     <Card variant="outlined">
       <CardActionArea
+        aria-label={translate('open_page', { title })}
         component="a"
         href={url}
         target={isInternal(url) ? '_self' : '_blank'}

@@ -161,6 +161,7 @@ const translate: TranslationFn = (key, args) => {
     no_chapters: `Os capítulos têm aulas para ensinar um assunto. Ajude mais pessoas a aprenderem sobre ${args?.title}.`,
     no_lessons: `Ajude outras pessoas a aprenderem sobre ${args?.title}.`,
     notifications: 'Notificações',
+    open_page: `Abrir página: ${args?.title}`,
     order: 'Ordem',
     page_edits_title: 'Alterações na página:',
     page_edits: 'Alterações na página',
