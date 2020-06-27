@@ -1,4 +1,4 @@
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import Error from 'next/error';
 import { Container, Divider, makeStyles } from '@material-ui/core';
@@ -11,7 +11,7 @@ import RichTextViewer from '@zoonk/components/rich-text/RichTextViewer';
 import { getPlainText, getPostImage } from '@zoonk/components/rich-text/posts';
 import { Post } from '@zoonk/models';
 import { getPost } from '@zoonk/services';
-import { appLanguage, PostContext } from '@zoonk/utils';
+import { appLanguage, PostContext, preRender } from '@zoonk/utils';
 
 const CommentList = dynamic(() => import('@zoonk/components/CommentList'), {
   ssr: false,
@@ -34,17 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const getServerSideProps: GetServerSideProps<PostPageProps> = async ({
-  params,
-}) => {
-  const id = String(params?.id);
-  const data = await getPost(id);
-  return { props: { data } };
-};
-
-const PostPage = ({
-  data,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const PostPage: NextPage<PostPageProps> = ({ data }) => {
   const classes = useStyles();
 
   if (!data) return <Error statusCode={404} />;
@@ -76,6 +66,13 @@ const PostPage = ({
       </main>
     </PostContext.Provider>
   );
+};
+
+PostPage.getInitialProps = async ({ query }) => {
+  const id = String(query.id);
+  const data = await getPost(id);
+  preRender();
+  return { data };
 };
 
 export default PostPage;
