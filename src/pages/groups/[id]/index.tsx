@@ -1,4 +1,4 @@
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { NextPage } from 'next';
 import Error from 'next/error';
 import { Container } from '@material-ui/core';
 import GroupBase from '@zoonk/components/GroupBase';
@@ -9,7 +9,7 @@ import PostShare from '@zoonk/components/PostShare';
 import PostsList from '@zoonk/components/PostsList';
 import { Group, Post } from '@zoonk/models';
 import { getGroup, getPosts } from '@zoonk/services';
-import { appLanguage } from '@zoonk/utils';
+import { appLanguage, preRender } from '@zoonk/utils';
 
 interface GroupPageProps {
   group: Group.Get | null;
@@ -18,20 +18,7 @@ interface GroupPageProps {
 
 const limit = 10;
 
-export const getServerSideProps: GetServerSideProps<GroupPageProps> = async ({
-  params,
-}) => {
-  const groupId = String(params?.id);
-  const groupReq = getGroup(groupId);
-  const postsReq = getPosts({ groupId, limit });
-  const [group, posts] = await Promise.all([groupReq, postsReq]);
-  return { props: { group, posts } };
-};
-
-const GroupPage = ({
-  group,
-  posts,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const GroupPage: NextPage<GroupPageProps> = ({ group, posts }) => {
   if (!group) return <Error statusCode={404} />;
 
   const { description, id, language, photo, title, topics } = group;
@@ -54,6 +41,15 @@ const GroupPage = ({
       </GroupBase>
     </Container>
   );
+};
+
+GroupPage.getInitialProps = async ({ query }) => {
+  const groupId = String(query.id);
+  const groupReq = getGroup(groupId);
+  const postsReq = getPosts({ groupId, limit });
+  const [group, posts] = await Promise.all([groupReq, postsReq]);
+  preRender();
+  return { group, posts };
 };
 
 export default GroupPage;
