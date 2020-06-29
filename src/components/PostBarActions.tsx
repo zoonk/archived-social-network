@@ -1,10 +1,8 @@
-import dynamic from 'next/dynamic';
 import NextLink from 'next/link';
 import { Button, makeStyles } from '@material-ui/core';
 import { Edit } from '@material-ui/icons';
+import LikeButton from './LikeButton';
 import useTranslation from './useTranslation';
-
-const LikeButton = dynamic(() => import('./LikeButton'));
 
 interface PostBarActionsProps {
   id: string;
