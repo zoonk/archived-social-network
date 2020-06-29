@@ -7,7 +7,6 @@ import useTranslation from './useTranslation';
 const LikeButton = dynamic(() => import('./LikeButton'));
 
 interface PostBarActionsProps {
-  canEdit: boolean;
   id: string;
   likes: number;
 }
@@ -21,26 +20,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PostBarActions = ({ canEdit, id, likes }: PostBarActionsProps) => {
+const PostBarActions = ({ id, likes }: PostBarActionsProps) => {
   const translate = useTranslation();
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
       <LikeButton likes={likes} itemPath={`posts/${id}`} />
-      {canEdit && (
-        <NextLink href="/posts/[id]/edit" as={`/posts/${id}/edit`} passHref>
-          <Button
-            color="primary"
-            variant="outlined"
-            component="a"
-            aria-label={translate('edit')}
-            title={translate('edit')}
-          >
-            <Edit />
-          </Button>
-        </NextLink>
-      )}
+      <NextLink href="/posts/[id]/edit" as={`/posts/${id}/edit`} passHref>
+        <Button
+          color="primary"
+          variant="outlined"
+          component="a"
+          aria-label={translate('edit')}
+          title={translate('edit')}
+        >
+          <Edit />
+        </Button>
+      </NextLink>
     </div>
   );
 };
