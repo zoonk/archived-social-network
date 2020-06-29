@@ -13,3 +13,7 @@ export namespace ChapterProgress {
     lessons?: string[];
   }
 }
+
+export interface TopicProgress {
+  [chapterId: string]: { examples: number; lessons: number; posts: number };
+}
