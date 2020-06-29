@@ -9,7 +9,10 @@ import { SearchIndex } from './search';
 export namespace Chapter {
   export interface Summary {
     description: string;
+    examples: number;
     id: string;
+    lessons: number;
+    posts: number;
     title: string;
   }
 

@@ -44,7 +44,13 @@ test('update all posts', async (done) => {
   const req = await wrapped(snap);
   const payload = {
     chapterId: 'chapterId',
-    chapterData: { ...data, id: 'chapterId' },
+    chapterData: {
+      ...data,
+      examples: 2,
+      id: 'chapterId',
+      lessons: 2,
+      posts: 4,
+    },
   };
 
   expect(req).toBe('updated');

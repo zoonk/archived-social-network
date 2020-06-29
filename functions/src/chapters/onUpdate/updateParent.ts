@@ -17,7 +17,7 @@ export const onUpdateChapterUpdateParentItem = functions.firestore
     const { id } = change.after;
     const before = change.before.data() as Chapter.Response;
     const after = change.after.data() as Chapter.Response;
-    const fieldsToTrack = ['description', 'title'];
+    const fieldsToTrack = ['description', 'examples', 'lessons', 'title'];
     const beforeChanges = pick(before, fieldsToTrack);
     const afterChanges = pick(after, fieldsToTrack);
     const noChanges = isEqual(beforeChanges, afterChanges);
@@ -26,9 +26,14 @@ export const onUpdateChapterUpdateParentItem = functions.firestore
       return false;
     }
 
+    const examples = after.examples.length;
+    const lessons = after.lessons.length;
     const summary: Chapter.Summary = {
       description: after.description.slice(0, 500),
+      examples,
       id,
+      lessons,
+      posts: examples + lessons,
       title: after.title,
     };
 

@@ -23,8 +23,18 @@ test('return when there are no changes', async (done) => {
 test("update this chapter's topic", async (done) => {
   spyOn(db.doc(''), 'update').and.returnValue('updated');
 
-  const oldData = { description: 'description', title: 'title' };
-  const newData = { description: 'new desc', title: 'new title' };
+  const oldData = {
+    description: 'description',
+    examples: [],
+    lessons: [],
+    title: 'title',
+  };
+  const newData = {
+    description: 'new desc',
+    examples: ['1', '2'],
+    lessons: ['3'],
+    title: 'new title',
+  };
   const change = {
     before: { data: () => oldData },
     after: {
@@ -35,7 +45,13 @@ test("update this chapter's topic", async (done) => {
   const wrapped = testEnv.wrap(onUpdateChapterUpdateParentItem);
   const req = await wrapped(change);
   const expected = {
-    'chapterData.chapterId': { ...newData, id: 'chapterId' },
+    'chapterData.chapterId': {
+      ...newData,
+      examples: 2,
+      id: 'chapterId',
+      lessons: 1,
+      posts: 3,
+    },
   };
 
   expect(req).toBe('updated');

@@ -17,7 +17,7 @@ export const onUpdateChapterUpdatePosts = functions.firestore
     const { id } = change.after;
     const before = change.before.data() as Chapter.Response;
     const after = change.after.data() as Chapter.Response;
-    const fieldsToTrack = ['description', 'title'];
+    const fieldsToTrack = ['description', 'examples', 'lessons', 'title'];
     const beforeChanges = pick(before, fieldsToTrack);
     const afterChanges = pick(after, fieldsToTrack);
     const noChanges = isEqual(beforeChanges, afterChanges);
@@ -31,7 +31,10 @@ export const onUpdateChapterUpdatePosts = functions.firestore
       const ref = db.doc(`posts/${post}`);
       const summary: Chapter.Summary = {
         description: after.description.slice(0, 500),
+        examples: after.examples.length,
         id,
+        lessons: after.lessons.length,
+        posts: posts.length,
         title: after.title,
       };
       batch.update(ref, { chapterData: summary });

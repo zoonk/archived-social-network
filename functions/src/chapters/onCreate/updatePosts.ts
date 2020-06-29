@@ -25,7 +25,14 @@ export const onCreateChapterUpdatePosts = functions.firestore
     }
 
     const batch = db.batch();
-    const chapterData: Chapter.Summary = { description, id: snap.id, title };
+    const chapterData: Chapter.Summary = {
+      description,
+      examples: examples.length,
+      id: snap.id,
+      lessons: lessons.length,
+      posts: posts.length,
+      title,
+    };
     posts.forEach((post) => {
       const ref = db.doc(`posts/${post}`);
       batch.update(ref, { chapterId: snap.id, chapterData });

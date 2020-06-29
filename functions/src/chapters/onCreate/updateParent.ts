@@ -11,7 +11,10 @@ export const onCreateChapterUpdateParentItem = functions.firestore
     const { description, title, topics } = snap.data() as Chapter.Response;
     const summary: Chapter.Summary = {
       description: description.slice(0, 500),
+      examples: 0,
       id,
+      lessons: 0,
+      posts: 0,
       title,
     };
 

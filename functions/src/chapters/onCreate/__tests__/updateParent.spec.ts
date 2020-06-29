@@ -21,7 +21,10 @@ test("update the chapter's data for the parent item", async (done) => {
     chapters: 'added: chapterId',
     'chapterData.chapterId': {
       description: 'description',
+      examples: 0,
       id: 'chapterId',
+      lessons: 0,
+      posts: 0,
       title: 'title',
     },
   };
