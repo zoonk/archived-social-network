@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic';
 import NextLink from 'next/link';
-import { Button, Hidden, makeStyles } from '@material-ui/core';
+import { Button, makeStyles } from '@material-ui/core';
 import { Edit } from '@material-ui/icons';
 import useTranslation from './useTranslation';
 
@@ -19,12 +19,6 @@ const useStyles = makeStyles((theme) => ({
       marginRight: theme.spacing(1),
     },
   },
-  button: {
-    marginRight: theme.spacing(0),
-    [theme.breakpoints.up('sm')]: {
-      marginRight: theme.spacing(0.5),
-    },
-  },
 }));
 
 const PostBarActions = ({ canEdit, id, likes }: PostBarActionsProps) => {
@@ -36,9 +30,14 @@ const PostBarActions = ({ canEdit, id, likes }: PostBarActionsProps) => {
       <LikeButton likes={likes} itemPath={`posts/${id}`} />
       {canEdit && (
         <NextLink href="/posts/[id]/edit" as={`/posts/${id}/edit`} passHref>
-          <Button color="primary" variant="outlined" component="a">
-            <Edit className={classes.button} />
-            <Hidden xsDown>{translate('edit')}</Hidden>
+          <Button
+            color="primary"
+            variant="outlined"
+            component="a"
+            aria-label={translate('edit')}
+            title={translate('edit')}
+          >
+            <Edit />
           </Button>
         </NextLink>
       )}
