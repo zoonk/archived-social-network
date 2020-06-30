@@ -19,7 +19,10 @@ export interface TopicProgress {
 }
 
 export namespace UserProgress {
+  export type ChapterStatus = 'started' | 'completed' | 'notStarted';
+
   export interface Topic {
+    chapters: TopicProgress;
     progress: number;
   }
 }

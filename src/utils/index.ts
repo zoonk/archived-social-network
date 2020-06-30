@@ -6,6 +6,7 @@ export * from './i18n';
 export * from './links';
 export * from './misc';
 export * from './posts';
+export * from './progress';
 export * from './routing';
 export * from './server';
 export * from './settings';

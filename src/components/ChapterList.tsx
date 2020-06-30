@@ -1,19 +1,18 @@
 import { Fragment } from 'react';
 import dynamic from 'next/dynamic';
 import { List } from '@material-ui/core';
-import { Chapter } from '@zoonk/models';
+import { Chapter, UserProgress } from '@zoonk/models';
+import { getChapterStatus } from '@zoonk/utils';
 import ChapterListItem from './ChapterListItem';
 
 const NoChapters = dynamic(() => import('./NoChapters'));
 
 interface ChapterListProps {
   items: Chapter.Summary[];
+  progress?: UserProgress.Topic;
 }
 
-/**
- * Display a list of chapters.
- */
-const ChapterList = ({ items }: ChapterListProps) => {
+const ChapterList = ({ items, progress }: ChapterListProps) => {
   if (items.length === 0) {
     return <NoChapters />;
   }
@@ -27,6 +26,7 @@ const ChapterList = ({ items }: ChapterListProps) => {
             divider={index !== items.length - 1}
             item={item}
             index={index}
+            status={getChapterStatus(item, progress?.chapters)}
           />
         ))}
       </List>

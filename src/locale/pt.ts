@@ -57,6 +57,7 @@ const translate: TranslationFn = (key, args) => {
     comment_not_found: 'Comentário não encontrado.',
     comment_notification: `${args?.name} comentou o seu post.`,
     comments: 'Comentários',
+    completed: 'Completo',
     confirm: 'Confirmar',
     contact_us: 'Fale conosco',
     content_changes: 'Edições de conteúdo',
@@ -161,6 +162,7 @@ const translate: TranslationFn = (key, args) => {
     no_chapters: `Os capítulos têm aulas para ensinar um assunto. Ajude mais pessoas a aprenderem sobre ${args?.title}.`,
     no_lessons: `Ajude outras pessoas a aprenderem sobre ${args?.title}.`,
     notifications: 'Notificações',
+    notStarted: 'Não iniciado',
     open_page: `Abrir página: ${args?.title}`,
     order: 'Ordem',
     page_edits_title: 'Alterações na página:',
@@ -302,6 +304,7 @@ const translate: TranslationFn = (key, args) => {
     social_description:
       'Zoonk é uma rede social onde você pode aprender qualquer coisa de graça online.',
     social_media: 'Redes sociais',
+    started: 'Iniciado',
     stats: 'Estatísticas',
     subtitle: 'Subtítulo',
     teach_article_title: 'Escrever um artigo',

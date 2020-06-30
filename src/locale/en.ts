@@ -54,6 +54,7 @@ const translate: TranslationFn = (key, args) => {
     comment_not_found: 'Comment not found.',
     comment_notification: `${args?.name} commented your post.`,
     comments: 'Comments',
+    completed: 'Completed',
     confirm: 'Confirm',
     contact_us: 'Contact us',
     content_changes: 'Content edits',
@@ -159,6 +160,7 @@ const translate: TranslationFn = (key, args) => {
     no_chapters: `Chapters have lessons for teaching a topic. Help more people learn about ${args?.title}.`,
     no_lessons: `Help others to learn about ${args?.title}.`,
     notifications: 'Notifications',
+    notStarted: 'Not started',
     open_page: `Open page: ${args?.title}`,
     order: 'Order',
     page_edits: 'Page changes',
@@ -297,6 +299,7 @@ const translate: TranslationFn = (key, args) => {
     social_description:
       'Zoonk is a social network where you can learn anything for free.',
     social_media: 'Social media',
+    started: 'Started',
     stats: 'Stats',
     subtitle: 'Subtitle',
     teach_article_title: 'Write an article',

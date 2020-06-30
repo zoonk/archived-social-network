@@ -14,13 +14,13 @@ export const getTopicProgress = async (
   const progress = await db.doc(`topics/${topic.id}/progress/${userId}`).get();
   const data = progress.data() as TopicProgress | undefined;
 
-  if (!data) return { progress: 0 };
+  if (!data) return { chapters: {}, progress: 0 };
 
   const userPosts: number = sum(Object.values(data), 'posts');
-  if (userPosts === 0) return { progress: 0 };
+  if (userPosts === 0) return { chapters: data, progress: 0 };
 
   const topicPosts: number = sum(topic.chapterData, 'posts');
-  return { progress: (userPosts / topicPosts) * 100 };
+  return { chapters: data, progress: (userPosts / topicPosts) * 100 };
 };
 
 export const togglePostProgress = (

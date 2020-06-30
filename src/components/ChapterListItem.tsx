@@ -3,21 +3,37 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
+  makeStyles,
 } from '@material-ui/core';
 import NextLink from 'next/link';
-import { Chapter } from '@zoonk/models';
-import { theme } from '@zoonk/utils';
+import { Chapter, UserProgress } from '@zoonk/models';
+import useTranslation from './useTranslation';
 
 interface ChapterListItemProps {
   divider?: boolean;
   index: number;
   item: Chapter.Summary;
+  status: UserProgress.ChapterStatus;
 }
 
-/**
- * Display a single chapter as a list item.
- */
-const ChapterListItem = ({ divider, index, item }: ChapterListItemProps) => {
+const useStyles = makeStyles((theme) => ({
+  notStarted: {
+    backgroundColor: 'white',
+    color: theme.palette.primary.main,
+    border: `1px solid ${theme.palette.primary.main}`,
+  },
+  started: { backgroundColor: theme.palette.primary.main },
+  completed: { backgroundColor: theme.palette.success.main },
+}));
+
+const ChapterListItem = ({
+  divider,
+  index,
+  item,
+  status,
+}: ChapterListItemProps) => {
+  const translate = useTranslation();
+  const classes = useStyles();
   const { description, title } = item;
 
   return (
@@ -30,7 +46,11 @@ const ChapterListItem = ({ divider, index, item }: ChapterListItemProps) => {
         disableGutters
       >
         <ListItemAvatar>
-          <Avatar style={{ backgroundColor: theme.palette.primary.main }}>
+          <Avatar
+            variant="rounded"
+            className={classes[status]}
+            title={translate(status)}
+          >
             {index + 1}
           </Avatar>
         </ListItemAvatar>
