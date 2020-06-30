@@ -1,15 +1,11 @@
 import { Box, LinearProgressProps, Typography } from '@material-ui/core';
 import BorderLinearProgress from './BorderLinearProgress';
 
-interface LinearProgressWithLabelProps extends LinearProgressProps {
-  value: number;
-}
-
-const LinearProgressWithLabel = (props: LinearProgressWithLabelProps) => {
+const LinearProgressWithLabel = (props: LinearProgressProps) => {
   const { value } = props;
-  let progressValue: number = value;
-  if (value < 0) progressValue = 0;
-  if (value > 0) progressValue = 100;
+  let progressValue: number = value || 0;
+  if (progressValue < 0) progressValue = 0;
+  if (progressValue > 100) progressValue = 100;
 
   return (
     <Box display="flex" alignItems="center">
