@@ -1,19 +1,14 @@
-import dynamic from 'next/dynamic';
 import { Card, CardContent, Typography } from '@material-ui/core';
 import { Chapter } from '@zoonk/models';
-
-const ItemActionsMenu = dynamic(() => import('./ItemActionsMenu'), {
-  ssr: false,
-});
+import ItemActionsMenu from './ItemActionsMenu';
+import ItemProgress from './ItemProgress';
 
 interface ChapterDetailsProps {
+  completed: number;
   data: Chapter.Get;
 }
 
-/**
- * Card containing details about a chapter.
- */
-const ChapterDetails = ({ data }: ChapterDetailsProps) => {
+const ChapterDetails = ({ completed, data }: ChapterDetailsProps) => {
   const { description, title } = data;
 
   return (
@@ -31,6 +26,7 @@ const ChapterDetails = ({ data }: ChapterDetailsProps) => {
           </Typography>
           <ItemActionsMenu />
         </div>
+        <ItemProgress progress={completed} />
         <Typography variant="body1">{description}</Typography>
       </CardContent>
     </Card>

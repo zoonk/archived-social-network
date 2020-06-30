@@ -23,6 +23,16 @@ export const getTopicProgress = async (
   return { chapters: data, progress: (userPosts / topicPosts) * 100 };
 };
 
+export const getChapterProgress = async (
+  chapterId: string,
+  userId: string,
+): Promise<ChapterProgress.Response | undefined> => {
+  const progress = await db
+    .doc(`chapters/${chapterId}/progress/${userId}`)
+    .get();
+  return progress.data() as ChapterProgress.Response | undefined;
+};
+
 export const togglePostProgress = (
   postId: string,
   chapterId: string,

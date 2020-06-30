@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core';
 import LinearProgressWithLabel from './LinearProgressWithLabel';
 
-interface TopicProgressProps {
+interface ItemProgressProps {
   progress: number;
 }
 
@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
   root: { margin: theme.spacing(1, 0) },
 }));
 
-const TopicProgress = ({ progress = 0 }: TopicProgressProps) => {
+const ItemProgress = ({ progress = 0 }: ItemProgressProps) => {
   const classes = useStyles();
 
   return (
@@ -19,4 +19,4 @@ const TopicProgress = ({ progress = 0 }: TopicProgressProps) => {
   );
 };
 
-export default TopicProgress;
+export default ItemProgress;

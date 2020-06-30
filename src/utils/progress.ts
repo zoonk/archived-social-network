@@ -1,4 +1,9 @@
-import { Chapter, TopicProgress, UserProgress } from '@zoonk/models';
+import {
+  Chapter,
+  ChapterProgress,
+  TopicProgress,
+  UserProgress,
+} from '@zoonk/models';
 
 export const getChapterStatus = (
   chapter: Chapter.Summary,
@@ -13,4 +18,16 @@ export const getChapterStatus = (
 
   if (userPosts < chapterPosts) return 'started';
   return 'completed';
+};
+
+export const getChapterCompleted = (
+  chapter: Chapter.Get,
+  progress: ChapterProgress.Response,
+): number => {
+  const chapterPosts = chapter.posts;
+  const userExamples = progress.examples?.length || 0;
+  const userLessons = progress.lessons?.length || 0;
+  const userPosts = userExamples + userLessons;
+
+  return (userPosts / chapterPosts) * 100;
 };

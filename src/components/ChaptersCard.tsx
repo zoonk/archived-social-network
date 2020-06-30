@@ -4,7 +4,7 @@ import { Chapter, Topic, UserProgress } from '@zoonk/models';
 import { getTopicProgress } from '@zoonk/services';
 import ChaptersHeader from './ChaptersHeader';
 import ChapterList from './ChapterList';
-import TopicProgress from './TopicProgress';
+import ItemProgress from './ItemProgress';
 import useAuth from './useAuth';
 
 interface ChaptersCardProps {
@@ -26,7 +26,7 @@ const ChaptersCard = ({ chapters, topic }: ChaptersCardProps) => {
     <Card variant="outlined">
       <CardContent style={{ paddingBottom: 0 }}>
         <ChaptersHeader />
-        <TopicProgress progress={userProgress?.progress || 0} />
+        <ItemProgress progress={userProgress?.progress || 0} />
         <ChapterList items={chapters} progress={userProgress} />
       </CardContent>
     </Card>

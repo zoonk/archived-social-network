@@ -5,6 +5,7 @@ import ChapterDetails from '@zoonk/components/ChapterDetails';
 import LessonsCard from '@zoonk/components/LessonsCard';
 import Meta from '@zoonk/components/Meta';
 import TopicsBreadcrumb from '@zoonk/components/TopicsBreadcrumb';
+import useChapterProgress from '@zoonk/components/useChapterProgress';
 import { Chapter } from '@zoonk/models';
 import { getChapter } from '@zoonk/services';
 import { preRender } from '@zoonk/utils';
@@ -14,6 +15,8 @@ interface ChapterProps {
 }
 
 const ChapterPage: NextPage<ChapterProps> = ({ data }) => {
+  const { completed } = useChapterProgress(data);
+
   if (!data) return <Error statusCode={404} />;
 
   const {
@@ -38,7 +41,7 @@ const ChapterPage: NextPage<ChapterProps> = ({ data }) => {
 
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <ChapterDetails data={data} />
+          <ChapterDetails completed={completed} data={data} />
         </Grid>
         <Grid item xs={12} sm={6}>
           <LessonsCard
