@@ -17,3 +17,9 @@ export namespace ChapterProgress {
 export interface TopicProgress {
   [chapterId: string]: { examples: number; lessons: number; posts: number };
 }
+
+export namespace UserProgress {
+  export interface Topic {
+    progress: number;
+  }
+}

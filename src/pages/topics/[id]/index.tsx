@@ -42,7 +42,7 @@ const TopicPage: NextPage<TopicPageProps> = ({ posts, topic }) => {
           title={translate('post_share_topic', { title })}
           topicId={id}
         />
-        <ChaptersCard chapters={chapterData} />
+        <ChaptersCard chapters={chapterData} topic={topic} />
         <PostsList data={posts} topicId={id} limit={10} />
       </TopicBase>
     </Container>

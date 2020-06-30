@@ -283,6 +283,10 @@ service cloud.firestore {
         && isValidProfile('updatedBy')
         && request.resource.data.updatedById == request.auth.uid
       ;
+
+      match /progress/{userId} {
+        allow read: if request.auth.uid == userId;
+      }
     }
 
     match /usernames/{username} {

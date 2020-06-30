@@ -1,20 +1,20 @@
 import { Card, CardContent } from '@material-ui/core';
-import { Chapter } from '@zoonk/models';
+import { Chapter, Topic } from '@zoonk/models';
 import ChaptersHeader from './ChaptersHeader';
 import ChapterList from './ChapterList';
+import TopicProgress from './TopicProgress';
 
 interface ChaptersCardProps {
   chapters: Chapter.Summary[];
+  topic: Topic.Get;
 }
 
-/**
- * Card containing a list of chapters.
- */
-const ChaptersCard = ({ chapters }: ChaptersCardProps) => {
+const ChaptersCard = ({ chapters, topic }: ChaptersCardProps) => {
   return (
     <Card variant="outlined">
       <CardContent style={{ paddingBottom: 0 }}>
         <ChaptersHeader />
+        <TopicProgress topic={topic} />
         <ChapterList items={chapters} />
       </CardContent>
     </Card>
