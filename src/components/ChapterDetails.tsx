@@ -27,7 +27,9 @@ const ChapterDetails = ({ completed, data }: ChapterDetailsProps) => {
           <ItemActionsMenu />
         </div>
         <ItemProgress progress={completed} />
-        <Typography variant="body1">{description}</Typography>
+        <Typography variant="body1" gutterBottom>
+          {description}
+        </Typography>
       </CardContent>
     </Card>
   );

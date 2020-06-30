@@ -2,6 +2,7 @@ import { NextPage } from 'next';
 import Error from 'next/error';
 import { Container, Grid } from '@material-ui/core';
 import ChapterDetails from '@zoonk/components/ChapterDetails';
+import ChapterNav from '@zoonk/components/ChapterNav';
 import LessonsCard from '@zoonk/components/LessonsCard';
 import Meta from '@zoonk/components/Meta';
 import TopicsBreadcrumb from '@zoonk/components/TopicsBreadcrumb';
@@ -63,6 +64,9 @@ const ChapterPage: NextPage<ChapterProps> = ({ data }) => {
             category="examples"
             progress={progress}
           />
+        </Grid>
+        <Grid item xs={12}>
+          <ChapterNav chapterId={id} topicId={topics[0]} />
         </Grid>
       </Grid>
     </Container>

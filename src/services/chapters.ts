@@ -1,7 +1,7 @@
 import { db, timestamp } from '@zoonk/firebase/db';
 import { Chapter, Profile } from '@zoonk/models';
 import { generateRandomSlug, logEdit } from '@zoonk/utils';
-import { updateTopic } from './topics';
+import { getTopic, updateTopic } from './topics';
 import { serializeChapter } from '../serializers';
 
 const chapterConverter: firebase.firestore.FirestoreDataConverter<Chapter.Get> = {
@@ -92,4 +92,42 @@ export const deleteChapter = async (
   };
   await updateChapter(update, id);
   return db.doc(`chapters/${id}`).delete();
+};
+
+export const getNextChapter = async (
+  current: string,
+  topicId: string,
+): Promise<string | null> => {
+  const topic = await getTopic(topicId);
+  if (!topic) return null;
+
+  const { chapters } = topic;
+  const chapterOrder = chapters.findIndex((chapter) => chapter === current);
+  const nextChapter = chapterOrder + 1;
+
+  // If there's another chapter after the current one, then use its ID.
+  return chapters[nextChapter] || null;
+};
+
+interface ChapterNav {
+  next: string | null;
+  previous: string | null;
+}
+
+export const getChapterNavigation = async (
+  current: string,
+  topicId: string,
+): Promise<ChapterNav> => {
+  const topic = await getTopic(topicId);
+  if (!topic) return { next: null, previous: null };
+
+  const { chapters } = topic;
+  const chapterOrder = chapters.findIndex((chapter) => chapter === current);
+  const previousChapter = chapterOrder - 1;
+  const nextChapter = chapterOrder + 1;
+
+  return {
+    next: chapters[nextChapter] || null,
+    previous: chapters[previousChapter] || null,
+  };
 };
