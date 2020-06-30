@@ -2,15 +2,16 @@ import { Fragment, useEffect, useState } from 'react';
 import Router from 'next/router';
 import { Button, Drawer, Hidden, makeStyles } from '@material-ui/core';
 import { Apps } from '@material-ui/icons';
-import { Post } from '@zoonk/models';
+import { ChapterProgress, Post } from '@zoonk/models';
 import { getChapterLive } from '@zoonk/services';
 import LessonsDrawer from './LessonsDrawer';
 import NextLesson from './NextLesson';
 import PreviousLesson from './PreviousLesson';
+import useChapterProgress from './useChapterProgress';
 import useTranslation from './useTranslation';
 
 interface PostBarLessonsProps {
-  category: Post.Category;
+  category: keyof ChapterProgress.Response;
   chapterId: string;
   postId: string;
   topicId: string;
@@ -41,6 +42,7 @@ const PostBarLessons = ({
   topicId,
 }: PostBarLessonsProps) => {
   const classes = useStyles();
+  const { progress } = useChapterProgress({ chapterId });
   const [drawer, setDrawer] = useState<boolean>(false);
   const [lessons, setLessons] = useState<Post.Summary[]>([]);
   const translate = useTranslation();
@@ -85,7 +87,12 @@ const PostBarLessons = ({
       </div>
 
       <Drawer open={drawer} onClose={() => setDrawer(false)} anchor="bottom">
-        <LessonsDrawer lessons={lessons} onReturn={() => setDrawer(false)} />
+        <LessonsDrawer
+          category={category}
+          lessons={lessons}
+          progress={progress}
+          onReturn={() => setDrawer(false)}
+        />
       </Drawer>
     </Fragment>
   );

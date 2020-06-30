@@ -15,7 +15,10 @@ interface ChapterProps {
 }
 
 const ChapterPage: NextPage<ChapterProps> = ({ data }) => {
-  const { completed } = useChapterProgress(data);
+  const { completed, progress } = useChapterProgress({
+    chapter: data,
+    chapterId: data?.id,
+  });
 
   if (!data) return <Error statusCode={404} />;
 
@@ -49,6 +52,7 @@ const ChapterPage: NextPage<ChapterProps> = ({ data }) => {
             topicId={topics[0]}
             lessons={lessonData}
             category="lessons"
+            progress={progress}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -57,6 +61,7 @@ const ChapterPage: NextPage<ChapterProps> = ({ data }) => {
             topicId={topics[0]}
             lessons={exampleData}
             category="examples"
+            progress={progress}
           />
         </Grid>
       </Grid>

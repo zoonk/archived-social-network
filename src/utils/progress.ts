@@ -31,3 +31,13 @@ export const getChapterCompleted = (
 
   return (userPosts / chapterPosts) * 100;
 };
+
+export const getLessonStatus = (
+  category: keyof ChapterProgress.Response,
+  itemId: string,
+  progress?: ChapterProgress.Response,
+): 'completed' | 'notStarted' => {
+  if (!progress) return 'notStarted';
+  if (progress[category]?.includes(itemId)) return 'completed';
+  return 'notStarted';
+};

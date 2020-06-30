@@ -13,7 +13,7 @@ const PostBar = () => {
     <Fragment>
       <BottomBar>
         <PostBarActions id={id} likes={likes} />
-        {category === 'lessons' && chapterId && (
+        {(category === 'lessons' || category === 'examples') && chapterId && (
           <PostBarLessons
             category={category}
             postId={id}

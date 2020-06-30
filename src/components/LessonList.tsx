@@ -1,15 +1,15 @@
 import { List } from '@material-ui/core';
-import { Post } from '@zoonk/models';
+import { ChapterProgress, Post } from '@zoonk/models';
+import { getLessonStatus } from '@zoonk/utils';
 import LessonListItem from './LessonListItem';
 
 interface LessonListProps {
+  category: keyof ChapterProgress.Response;
   items: Post.Summary[];
+  progress?: ChapterProgress.Response;
 }
 
-/**
- * Display a list of lessons.
- */
-const LessonList = ({ items }: LessonListProps) => {
+const LessonList = ({ category, items, progress }: LessonListProps) => {
   return (
     <List disablePadding>
       {items.map((item, index) => (
@@ -18,6 +18,7 @@ const LessonList = ({ items }: LessonListProps) => {
           divider={index !== items.length - 1}
           index={index}
           item={item}
+          status={getLessonStatus(category, item.id, progress)}
         />
       ))}
     </List>

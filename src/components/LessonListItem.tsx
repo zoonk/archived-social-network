@@ -4,22 +4,35 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
+  makeStyles,
 } from '@material-ui/core';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { Post } from '@zoonk/models';
-import { theme } from '@zoonk/utils';
 
 interface LessonListItemProps {
   divider?: boolean;
   index: number;
   item: Post.Summary;
+  status: 'completed' | 'notStarted';
 }
 
-/**
- * Display a single lesson as a list item.
- */
-const LessonListItem = ({ divider, index, item }: LessonListItemProps) => {
+const useStyles = makeStyles((theme) => ({
+  notStarted: {
+    backgroundColor: 'white',
+    color: theme.palette.primary.main,
+    border: `1px solid ${theme.palette.primary.main}`,
+  },
+  completed: { backgroundColor: theme.palette.success.main },
+}));
+
+const LessonListItem = ({
+  divider,
+  index,
+  item,
+  status,
+}: LessonListItemProps) => {
+  const classes = useStyles();
   const { query } = useRouter();
   const { description, id, title } = item;
   const lessonId = String(query.id);
@@ -44,7 +57,7 @@ const LessonListItem = ({ divider, index, item }: LessonListItemProps) => {
         selected={lessonId === id}
       >
         <ListItemAvatar>
-          <Avatar style={{ backgroundColor: theme.palette.primary.main }}>
+          <Avatar variant="rounded" className={classes[status]}>
             {index + 1}
           </Avatar>
         </ListItemAvatar>

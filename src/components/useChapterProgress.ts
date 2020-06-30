@@ -4,23 +4,29 @@ import { getChapterProgress } from '@zoonk/services';
 import { getChapterCompleted } from '@zoonk/utils';
 import useAuth from './useAuth';
 
-interface useChapterProgressProps {
+interface ProgressResponse {
   completed: number;
   progress: ChapterProgress.Response | undefined;
 }
 
-const useChapterProgress = (
-  chapter: Chapter.Get | null,
-): useChapterProgressProps => {
+interface ProgressProps {
+  chapter?: Chapter.Get | null;
+  chapterId?: string;
+}
+
+const useChapterProgress = ({
+  chapter,
+  chapterId,
+}: ProgressProps): ProgressResponse => {
   const { user } = useAuth();
   const [progress, setProgress] = useState<ChapterProgress.Response>();
   const [completed, setCompleted] = useState<number>(0);
 
   useEffect(() => {
-    if (chapter?.id && user) {
-      getChapterProgress(chapter?.id, user.uid).then(setProgress);
+    if (chapterId && user) {
+      getChapterProgress(chapterId, user.uid).then(setProgress);
     }
-  }, [chapter, user]);
+  }, [chapterId, user]);
 
   useEffect(() => {
     if (chapter && progress) {

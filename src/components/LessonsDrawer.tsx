@@ -1,11 +1,14 @@
 import { Fragment } from 'react';
 import { Button, Grid, makeStyles } from '@material-ui/core';
-import { Post } from '@zoonk/models';
+import { ChapterProgress, Post } from '@zoonk/models';
+import { getLessonStatus } from '@zoonk/utils';
 import LessonListItem from './LessonListItem';
 import useTranslation from './useTranslation';
 
 interface LessonDrawerProps {
+  category: keyof ChapterProgress.Response;
   lessons: Post.Summary[];
+  progress?: ChapterProgress.Response;
   onReturn: () => void;
 }
 
@@ -16,7 +19,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LessonsDrawer = ({ lessons, onReturn }: LessonDrawerProps) => {
+const LessonsDrawer = ({
+  category,
+  lessons,
+  progress,
+  onReturn,
+}: LessonDrawerProps) => {
   const translate = useTranslation();
   const classes = useStyles();
 
@@ -35,7 +43,11 @@ const LessonsDrawer = ({ lessons, onReturn }: LessonDrawerProps) => {
       <Grid container spacing={2} className={classes.grid}>
         {lessons.map((lesson, index) => (
           <Grid item key={lesson.id} xs={12} sm={6}>
-            <LessonListItem item={lesson} index={index} />
+            <LessonListItem
+              item={lesson}
+              index={index}
+              status={getLessonStatus(category, lesson.id, progress)}
+            />
           </Grid>
         ))}
       </Grid>

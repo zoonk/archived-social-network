@@ -1,5 +1,5 @@
 import { Card, CardContent } from '@material-ui/core';
-import { Post } from '@zoonk/models';
+import { ChapterProgress, Post } from '@zoonk/models';
 import LessonList from './LessonList';
 import LessonsHeader from './LessonsHeader';
 import NoLessons from './NoLessons';
@@ -8,16 +8,15 @@ interface LessonsCardProps {
   category: 'examples' | 'lessons';
   chapterId: string;
   lessons: Post.Summary[];
+  progress?: ChapterProgress.Response;
   topicId: string;
 }
 
-/**
- * Cards for display a list of lessons.
- */
 const LessonsCard = ({
   category,
   chapterId,
   lessons,
+  progress,
   topicId,
 }: LessonsCardProps) => {
   return (
@@ -31,7 +30,7 @@ const LessonsCard = ({
             topicId={topicId}
           />
         )}
-        <LessonList items={lessons} />
+        <LessonList category={category} items={lessons} progress={progress} />
       </CardContent>
     </Card>
   );
