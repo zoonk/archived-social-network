@@ -19,7 +19,7 @@
     "cheerio": "^1.0.0-rc.3",
     "firebase-admin": "^8.12.1",
     "firebase-functions": "^3.7.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "node-fetch": "^2.6.0",
     "slate": "^0.58.3"
   },
