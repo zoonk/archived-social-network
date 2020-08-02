@@ -31,7 +31,7 @@ export const getStaticProps: GetStaticProps<GroupReferencesProps> = async ({
   const groupReq = getGroup(groupId);
   const referencesReq = getPosts({ category: ['references'], groupId, limit });
   const [group, references] = await Promise.all([groupReq, referencesReq]);
-  return { props: { references, group }, unstable_revalidate: 1 };
+  return { props: { references, group }, revalidate: 1 };
 };
 
 const GroupReferences = ({

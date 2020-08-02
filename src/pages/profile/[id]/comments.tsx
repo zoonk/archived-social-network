@@ -26,7 +26,7 @@ export const getStaticProps: GetStaticProps<ProfileProps> = async ({
   const id = String(params?.id);
   const profile = await getUserLeaderboard(id);
   const comments = await getComments(limit, profile?.id);
-  return { props: { comments, profile }, unstable_revalidate: 1 };
+  return { props: { comments, profile }, revalidate: 1 };
 };
 
 const ProfileComments = ({

@@ -24,7 +24,7 @@ export const getStaticProps: GetStaticProps<GroupEditsProps> = async ({
 }) => {
   const groupId = String(params?.id);
   const data = await getActivities(limit, `groups/${groupId}`);
-  return { props: { groupId, data }, unstable_revalidate: 1 };
+  return { props: { groupId, data }, revalidate: 1 };
 };
 
 const GroupEdits = ({

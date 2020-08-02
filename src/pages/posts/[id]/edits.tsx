@@ -27,7 +27,7 @@ export const getStaticProps: GetStaticProps<PostEditsProps> = async ({
   const editsReq = getActivities(limit, `posts/${postId}`);
   const postReq = getPost(postId);
   const [edits, post] = await Promise.all([editsReq, postReq]);
-  return { props: { edits, post }, unstable_revalidate: 1 };
+  return { props: { edits, post }, revalidate: 1 };
 };
 
 const PostEdits = ({

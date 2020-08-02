@@ -15,7 +15,7 @@ interface EditsProps {
 
 export const getStaticProps: GetStaticProps<EditsProps> = async () => {
   const data = await getActivities(limit);
-  return { props: { data }, unstable_revalidate: 1 };
+  return { props: { data }, revalidate: 1 };
 };
 
 const Edits = ({ data }: InferGetStaticPropsType<typeof getStaticProps>) => {

@@ -20,7 +20,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps<EditProps> = async ({ params }) => {
   const id = String(params?.id);
   const data = await getActivity(id);
-  return { props: { data }, unstable_revalidate: 1 };
+  return { props: { data }, revalidate: 1 };
 };
 
 const Edit = ({ data }: InferGetStaticPropsType<typeof getStaticProps>) => {

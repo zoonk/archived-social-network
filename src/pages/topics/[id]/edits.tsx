@@ -24,7 +24,7 @@ export const getStaticProps: GetStaticProps<TopicEditsProps> = async ({
 }) => {
   const topicId = String(params?.id);
   const data = await getActivities(limit, `topics/${topicId}`);
-  return { props: { topicId, data }, unstable_revalidate: 1 };
+  return { props: { topicId, data }, revalidate: 1 };
 };
 
 const TopicEdits = ({

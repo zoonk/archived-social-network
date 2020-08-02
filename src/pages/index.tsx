@@ -17,7 +17,7 @@ const limit = 10;
 
 export const getStaticProps: GetStaticProps<HomeProps> = async () => {
   const posts = await getPosts({ limit });
-  return { props: { posts }, unstable_revalidate: 1 };
+  return { props: { posts }, revalidate: 1 };
 };
 
 const Home = ({ posts }: InferGetStaticPropsType<typeof getStaticProps>) => {

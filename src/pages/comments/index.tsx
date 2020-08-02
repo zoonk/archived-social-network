@@ -13,7 +13,7 @@ interface CommentsProps {
 
 export const getStaticProps: GetStaticProps<CommentsProps> = async () => {
   const data = await getComments();
-  return { props: { data }, unstable_revalidate: 1 };
+  return { props: { data }, revalidate: 1 };
 };
 
 const Comments = ({ data }: InferGetStaticPropsType<typeof getStaticProps>) => {

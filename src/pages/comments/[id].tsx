@@ -47,7 +47,7 @@ export const getStaticProps: GetStaticProps<CommentPageProps> = async ({
     replies = await getReplies(id);
   }
 
-  return { props: { comment, parent, replies }, unstable_revalidate: 1 };
+  return { props: { comment, parent, replies }, revalidate: 1 };
 };
 
 const CommentPage = ({

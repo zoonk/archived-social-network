@@ -16,7 +16,7 @@ const limit = 10;
 
 export const getStaticProps: GetStaticProps<ReferencesProps> = async () => {
   const data = await getPosts({ category: ['references'], limit });
-  return { props: { data }, unstable_revalidate: 1 };
+  return { props: { data }, revalidate: 1 };
 };
 
 const References = ({

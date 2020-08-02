@@ -31,7 +31,7 @@ export const getStaticProps: GetStaticProps<TopicQuestionsProps> = async ({
   const topicReq = getTopic(topicId);
   const questionsReq = getPosts({ category: ['questions'], topicId, limit });
   const [topic, questions] = await Promise.all([topicReq, questionsReq]);
-  return { props: { questions, topic }, unstable_revalidate: 1 };
+  return { props: { questions, topic }, revalidate: 1 };
 };
 
 const TopicQuestions = ({

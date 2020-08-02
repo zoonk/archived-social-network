@@ -17,7 +17,7 @@ interface GroupsProps {
 
 export const getStaticProps: GetStaticProps<GroupsProps> = async () => {
   const data = await getGroups({ limit });
-  return { props: { data }, unstable_revalidate: 1 };
+  return { props: { data }, revalidate: 1 };
 };
 
 const Groups = ({ data }: InferGetStaticPropsType<typeof getStaticProps>) => {

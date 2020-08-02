@@ -16,7 +16,7 @@ const limit = 10;
 
 export const getStaticProps: GetStaticProps<ExamplesProps> = async () => {
   const data = await getPosts({ category: ['examples'], limit });
-  return { props: { data }, unstable_revalidate: 1 };
+  return { props: { data }, revalidate: 1 };
 };
 
 const Examples = ({ data }: InferGetStaticPropsType<typeof getStaticProps>) => {

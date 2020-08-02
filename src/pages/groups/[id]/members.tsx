@@ -30,7 +30,7 @@ export const getStaticProps: GetStaticProps<GroupMembersProps> = async ({
   const groupReq = getGroup(doc);
   const followersReq = getFollowers({ collection: 'groups', doc, limit });
   const [group, followers] = await Promise.all([groupReq, followersReq]);
-  return { props: { followers, group }, unstable_revalidate: 1 };
+  return { props: { followers, group }, revalidate: 1 };
 };
 
 const GroupMembers = ({

@@ -24,7 +24,7 @@ export const getStaticProps: GetStaticProps<ChapterEditsProps> = async ({
 }) => {
   const chapterId = String(params?.id);
   const data = await getActivities(limit, `chapters/${chapterId}`);
-  return { props: { chapterId, data }, unstable_revalidate: 1 };
+  return { props: { chapterId, data }, revalidate: 1 };
 };
 
 const ChapterEdits = ({

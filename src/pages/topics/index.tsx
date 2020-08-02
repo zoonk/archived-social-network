@@ -17,7 +17,7 @@ interface TopicsProps {
 
 export const getStaticProps: GetStaticProps<TopicsProps> = async () => {
   const data = await getTopics({ limit });
-  return { props: { data }, unstable_revalidate: 1 };
+  return { props: { data }, revalidate: 1 };
 };
 
 const Topics = ({ data }: InferGetStaticPropsType<typeof getStaticProps>) => {

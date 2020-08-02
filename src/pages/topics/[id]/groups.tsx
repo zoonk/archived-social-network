@@ -44,7 +44,7 @@ export const getStaticProps: GetStaticProps<TopicGroupsProps> = async ({
   const topicReq = getTopic(topicId);
   const groupsReq = getGroups({ topicId, limit });
   const [topic, groups] = await Promise.all([topicReq, groupsReq]);
-  return { props: { groups, topic }, unstable_revalidate: 1 };
+  return { props: { groups, topic }, revalidate: 1 };
 };
 
 const TopicGroups = ({

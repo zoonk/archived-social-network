@@ -31,7 +31,7 @@ export const getStaticProps: GetStaticProps<GroupPostsProps> = async ({
   const groupReq = getGroup(groupId);
   const postsReq = getPosts({ category: ['lessons', 'posts'], groupId, limit });
   const [group, posts] = await Promise.all([groupReq, postsReq]);
-  return { props: { posts, group }, unstable_revalidate: 1 };
+  return { props: { posts, group }, revalidate: 1 };
 };
 
 const GroupPosts = ({
