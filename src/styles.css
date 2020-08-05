@@ -28,7 +28,7 @@ code {
   color: #f8f8f2;
   border-radius: 3px;
   font-size: 1.1rem;
-  overflow: visible;
+  overflow: auto;
 }
 
 pre {
