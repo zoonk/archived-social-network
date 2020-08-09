@@ -1,6 +1,6 @@
 import NextLink from 'next/link';
 import { makeStyles } from '@material-ui/core';
-import { Dictionary, Post } from '@zoonk/models';
+import { Post } from '@zoonk/models';
 import useTranslation from './useTranslation';
 
 const useStyles = makeStyles((theme) => ({
@@ -28,7 +28,7 @@ interface PostShareProps {
 const PostShare = ({ category, groupId, title, topicId }: PostShareProps) => {
   const translate = useTranslation();
   const classes = useStyles();
-  const query: Dictionary<string> = {};
+  const query: Record<string, string> = {};
 
   if (category) {
     query.category = category;

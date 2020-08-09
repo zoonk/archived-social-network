@@ -1,7 +1,3 @@
-export interface Dictionary<T> {
-  [id: string]: T;
-}
-
 export interface Dropdown<T> {
   label: string;
   value: T;

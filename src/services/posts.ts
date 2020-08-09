@@ -1,6 +1,6 @@
 import { db, timestamp } from '@zoonk/firebase/db';
 import { functions } from '@zoonk/firebase/functions';
-import { Dictionary, Post, Profile } from '@zoonk/models';
+import { Post, Profile } from '@zoonk/models';
 import {
   appLanguage,
   generateRandomSlug,
@@ -238,7 +238,7 @@ export const getPreviousLesson = async (
 };
 
 // Create a cache for generated links.
-const linkCache: Dictionary<Post.Link> = {};
+const linkCache: Record<string, Post.Link> = {};
 
 export const getLinkMetadata = async (url: string): Promise<Post.Link> => {
   // If the link already exists on cache, then return it.

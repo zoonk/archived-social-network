@@ -1,5 +1,4 @@
 import { ContentMetadata } from './content';
-import { Dictionary } from './misc';
 import { Post } from './post';
 import { SearchIndex } from './search';
 
@@ -42,8 +41,8 @@ export namespace Chapter {
    * Fields returned from the backend.
    */
   export interface Response extends Fields, ContentMetadata.Response {
-    exampleData?: Dictionary<Post.Summary>;
-    lessonData?: Dictionary<Post.Summary>;
+    exampleData?: Record<string, Post.Summary>;
+    lessonData?: Record<string, Post.Summary>;
   }
 
   /**

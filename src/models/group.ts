@@ -1,5 +1,4 @@
 import { ContentMetadata } from './content';
-import { Dictionary } from './misc';
 import { Post } from './post';
 import { SearchIndex } from './search';
 
@@ -30,7 +29,7 @@ export namespace Group {
 
   export interface Response extends Fields, ContentMetadata.Response {
     joined?: firebase.firestore.Timestamp;
-    pinnedPosts?: Dictionary<Post.Summary>;
+    pinnedPosts?: Record<string, Post.Summary>;
   }
 
   export interface Get extends Fields, ContentMetadata.Get {

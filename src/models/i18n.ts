@@ -1,5 +1,3 @@
-import { Dictionary } from './misc';
-
 export type UILanguage = 'en' | 'pt';
 
 export type TranslationKeys =
@@ -323,5 +321,5 @@ export type TranslationData = {
 
 export type TranslationFn = (
   key: TranslationKeys,
-  args?: Dictionary<string | number>,
+  args?: Record<string, string | number>,
 ) => string;

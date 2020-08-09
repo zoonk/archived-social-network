@@ -2,7 +2,6 @@ import { Node } from 'slate';
 import { Chapter } from './chapter';
 import { ContentMetadata } from './content';
 import { Group } from './group';
-import { Dictionary } from './misc';
 import { Profile } from './profile';
 import { SearchIndex } from './search';
 
@@ -64,7 +63,7 @@ export namespace Post {
     chapterData?: Chapter.Summary | null;
     groupData?: Group.Summary | null;
     editors?: string[];
-    editorsData?: Dictionary<Profile.Get>;
+    editorsData?: Record<string, Profile.Get>;
     sites?: Link[];
   }
 
@@ -74,7 +73,7 @@ export namespace Post {
     createdBy: Profile.Get;
     groupData?: Group.Summary | null;
     editors: Profile.Get[];
-    editorsData: Dictionary<Profile.Get>;
+    editorsData: Record<string, Profile.Get>;
     id: string;
     sites: Link[];
   }
